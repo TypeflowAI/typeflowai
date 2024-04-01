@@ -1,0 +1,5 @@
+{
+  "extends": "@typeflowai/tsconfig/js-library.json",
+  "include": ["."],
+  "exclude": ["dist", "build", "node_modules"]
+}

@@ -1,0 +1,75 @@
+import UseCaseLayout from "@/components/shared/UseCaseLayout";
+import Image from "next/image";
+import { UseCaseCallout } from "@/components/shared/UseCaseCallout";
+import EmpathyMapGenerator from "@/images/templates/empathy-map-generator.png";
+
+export const meta = {
+  title: "How to generate empathy maps with AI",
+  description:
+    "Empathy maps are a powerful tool to understand your leads and customers. Learn how to generate empathy maps in 20 seconds with AI.",
+};
+
+If you want to start a new business or launch a new product, then you need an empathy map. What is an empathy map? It is a written exercise that helps to understand the needs and desires of your buyer personas by answering questions like:
+
+- What do they think and feel?
+- What do they hear?
+- What do they see?
+- What do they say and do?
+- What pain points do they face?
+- What benefits do they get from products or services?
+
+The idea is that by knowing your leads and customers better, you can find the coveted product-market fit, meaning the exact service or product they are looking for. 
+
+Additionally, it also helps generate appealing content for this audience, as this exercise allows you to understand them more deeply: their interests, cultural references, etc.
+
+What's the problem? That carrying out this exercise takes quite some time because you have to identify the different buyer personas, conduct research through interviews or consulting different studies, or worse, making up answers to these questions based on assumptions that may not correspond with reality.
+
+But, what if I told you there's a way to obtain an empathy map of any buyer persona in just a few seconds using an AI Form?
+
+Let me explain: thanks to TypeflowAI, you now have the opportunity to use a form powered by artificial intelligence that turns the answers to questions into a prompt to generate the specific responses you're looking for.
+
+Let's see an example: imagine you have a wine specialty store and you want to better understand your store's customers to give them a better user experience.
+
+<Image
+  src={EmpathyMapGenerator}
+  alt="Empathy Map Generator"
+  className="rounded-xl max-w-full" 
+/>
+
+Well, you could use the Empathy Map Generator template from TypeFlowAI and answer these simple questions:
+
+<UseCaseCallout title="Example questions" type="questions">
+
+- What type of business do you want to generate an empathy map for?
+- In which industry?
+- What is the predominant age of your customers?
+- What is the predominant gender of your customers?
+- In which city or country are your customers primarily located?
+- What is the goal of the empathy map?
+
+</UseCaseCallout>
+
+<UseCaseCallout title="Result" type="result">
+
+After answering, in less than 20 seconds you would get a result like this:
+
+| Category                 | Details                                                                                                                                                                                                 |
+|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| What they think and feel | Concerns: Authenticity and quality of the wine, finding unique or limited edition wines. Aspirations: Expand their knowledge about wines, discover wines from different regions of the world. Worries: Paying too much for lower quality wines, not having access to exclusive wine tasting events. |
+| What they hear           | Influences: Recommendations from sommeliers and wine experts, reviews in specialized magazines, conversations with other wine enthusiasts.                                                                                                                       |
+| What they see            | Environment: Specialty wine stores, gourmet restaurants, social media with content about wines and gastronomy. Friends: Share their passion for wine, exchange recommendations and experiences. Market: Trends in wines, new product launches, wine tasting events and fairs.                                           |
+| What they say and do     | Attitude in public: Confident, well-informed about wines, participates in conversations and debates on the subject. Appearance: Elegant, takes care of their personal image, presents themselves professionally. Behavior towards others: Generous, likes to share their knowledge and discoveries with friends and colleagues. |
+| Pain points              | Difficulties: Finding rare or limited edition wines, inconsistent experiences at wine tastings. Fears: Making a significant investment in a wine that does not meet their expectations.                                                                                                                                         |
+| Outcomes                 | Benefits: Discovering new wines that enrich their experience and knowledge, being recognized within their circle as a connoisseur, enjoying exclusive wine-related experiences.                                                                                                                                             |
+
+</UseCaseCallout >
+
+How about that? Spectacular, right?
+
+And there's more: you could even connect TypeFlowAI with Zapier and Miro to present the results on a whiteboard and then discuss it with your marketing team.
+
+As you can see, the possibilities are endless: you could provide better service, create better content, and ultimately, sell more!
+
+Would you like to try the Empathy Map Generator template?
+
+export default ({ children }) => <UseCaseLayout meta={meta} useCaseTitle="AI forms Use Cases" useCaseTags={["Marketing","Value Proposal"]}>{children}</UseCaseLayout>;

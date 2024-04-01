@@ -1,0 +1,102 @@
+import UseCaseLayout from "@/components/shared/UseCaseLayout";
+import Image from "next/image";
+import { UseCaseCallout } from "@/components/shared/UseCaseCallout";
+import CustomerJourneyMapGenerator from "@/images/templates/customer-journey-map-generator.png";
+
+export const meta = {
+  title: "Improve Your Business with an AI Customer Journey Map",
+  description:
+    "Use AI to create a customer journey map that will help you understand your customers' needs and improve their experience.",
+};
+
+Offering an excellent customer experience is a key aspect for the proper functioning of a business:
+
+- It helps to retain them and to repeat the experience, thereby increasing the customer lifetime value.
+- It boosts competitive advantage over other market players.
+- It aids in building a robust and solid business with greater growth capacity.
+
+However, providing a good experience is a complex process that starts with understanding the needs of different buyer personas, defining what actions to take at each stage of the customer journey, how to act on different touchpoints, detecting emotional stages... in short, creating a customer journey map that helps to achieve our goals.
+
+And the problem is that this exercise takes time for research, reflection, and completion, which can extend over a few days or weeks, depending on the case.
+
+But, what if I told you that now you can drastically speed up the process by simply filling out a form? 
+
+This is what you can do with TypeflowAI, a tool that combines forms with the power of artificial intelligence to turn question responses into personalized prompts that generate incredible results.
+
+How? Let's see with an example:
+
+Imagine you want to improve the customer experience of a mobile app where you can book vacation rental homes, and for that, you need to create a customer journey map.
+
+<Image
+  src={CustomerJourneyMapGenerator}
+  alt="Customer Journey Map Generator"
+  className="rounded-xl max-w-full" 
+/>
+
+You would just need to answer some simple questions:
+
+<UseCaseCallout title="Example questions" type="questions">
+
+- What kind of business do you want to generate a customer journey map for? Vacation rental mobile app
+- In which industry? Vacation rental
+- In which city or country are your customers primarily located? Mexico
+- What is the goal of the customer journey map? Increase the number of monthly bookings
+
+</UseCaseCallout>
+
+And TypeflowAI would do the rest: first, it would create a customized buyer persona for this case, and then it would generate a complete customer journey map that includes actions to be taken at each stage of the journey so you can achieve the goal of increasing the number of monthly bookings.
+
+<UseCaseCallout title="Result" type="result">
+
+**Step 1: Buyer Persona**
+
+**Name:** Carlos López
+
+**Age:** 35 years
+
+**Occupation:** Marketing Manager
+
+**Annual Income:** $30,000 USD
+
+**Location:** Mexico City
+
+**Interests:**
+- Traveling and exploring new cultures.
+- Seeks comfort and unique experiences in his travels.
+- Values ease of use and reliability in service apps.
+
+**Motivations for vacation rental:**
+- Seeking unique accommodations that offer a more local and personal experience than traditional hotels.
+- Flexibility to choose locations not saturated by tourists.
+- Preference for accommodation options that provide good value for money.
+
+**Challenges:**
+- Finding accommodations that meet his quality and safety expectations.
+- Desiring a hassle-free booking experience with transparency in costs.
+
+**Goal:**
+- Increase the number of monthly bookings on the vacation rental app.
+
+**Step 2: Customer Journey Map**
+
+Let's define Carlos's journey from the moment he becomes aware of the need to rent a vacation accommodation until he becomes a brand advocate.
+
+| Stage        | Touchpoints                            | Jobs to Be Done                              | Emotional State | KPIs                       | Responsible       |
+|--------------|----------------------------------------|----------------------------------------------|-----------------|----------------------------|-------------------|
+| Awareness    | Social media, SEO, PPC advertising     | Discover vacation accommodation options      | 😃 Curiosity    | Increase in website visits | Marketing Team    |
+| Consideration| Reviews, comparisons, app website      | Compare accommodations, prices, locations    | 🤔 Interest     | Click-through rate on product page | Content Team |
+| Decision     | FAQ, live chat, testimonials           | Decide on the best accommodation             | 😌 Trust        | Conversions to bookings    | Sales Team        |
+| Purchase     | Booking process, confirmation email    | Book with ease                               | 😀 Satisfaction | Booking completion rate    | Operations Team   |
+| Post-purchase| Satisfaction surveys, customer support | Resolve post-booking inquiries or issues     | 🤗 Gratitude    | NPS (Net Promoter Score)   | Customer Service  |
+| Loyalty      | Personalized offers, newsletter        | Repeat accommodation experience              | 😍 Loyalty      | Rate of repeat bookings    | Loyalty Team      |
+| Advocacy     | Referral program, social media         | Recommend the app to friends and family      | 🥳 Enthusiasm   | Number of active referrals | Community Team    |
+
+</UseCaseCallout >
+
+Amazing, right?
+
+Now you can use this template to generate the customer journey map for your business and start discussing it with your team immediately.
+
+Would you like to try the Customer Journey Map Generator template?
+
+export default ({ children }) => <UseCaseLayout meta={meta} useCaseTitle="AI forms Use Cases" useCaseTags={["Business","Product Strategy"]}>{children}</UseCaseLayout>;

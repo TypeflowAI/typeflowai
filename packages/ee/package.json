@@ -1,0 +1,23 @@
+{
+  "name": "@typeflowai/ee",
+  "private": true,
+  "sideEffects": false,
+  "description": "TypeflowAI Enterprise Features",
+  "authors": "TypeflowAI",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "clean": "rimraf node_modules .turbo"
+  },
+  "devDependencies": {
+    "@typeflowai/lib": "*",
+    "@typeflowai/tsconfig": "*",
+    "@typeflowai/types": "*",
+    "@typeflowai/ui": "*",
+    "eslint-config-typeflowai": "workspace:*"
+  },
+  "dependencies": {
+    "@typeflowai/lib": "workspace:*",
+    "stripe": "^14.9.0"
+  }
+}

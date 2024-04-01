@@ -1,0 +1,300 @@
+export const metadata = {
+  title: "Comprehensive Guide to Self-Hosting TypeflowAI",
+  description:
+    "Discover versatile options to deploy TypeflowAI tailored to your expertise level. From Ubuntu setups using shell scripts, Vercel deployments, to manual source configurations, harness the flexibility and power of TypeflowAI to fit your unique hosting needs. Dive in today!",
+};
+
+#### Self-Hosting
+
+# Self Hosting TypeflowAI
+
+At TypeflowAI, we understand that different users have different needs, and we strive to cater to a wide variety of situations. This is why we currently provide two ways of running our application:
+
+1. **Local setup**: This method is designed for those who want to run TypeflowAI on their local machine for development or testing purposes. It's perfect for those who want to get a feel for the application, experiment with its features, or contribute to its development. The local setup method requires you to have a few development tools installed on your machine, such as Node.js and pnpm. It also requires you to set up a local database and configure some environment variables. This method is ideal for developers who are comfortable with setting up and configuring development environments.
+
+2. **Remote Setup**: This method is designed for those who want to deploy TypeflowAI on a remote server for production use. It's perfect for those who want to run TypeflowAI as a live application accessible to users over the internet. The remote setup method requires you to have a server with Docker installed. You can deploy TypeflowAI using Docker Compose, which makes it easy to manage the application's containers and dependencies. This method is ideal for system administrators and DevOps engineers who are comfortable with deploying and managing applications on remote servers.
+
+Please note that regardless of the method you choose, TypeflowAI is designed to be easy-to-use and flexible. So choose the method that best fits your comfort level and requirements, and start leveraging the **power of TypeflowAI** today!
+
+{/* Looking for something not mentioned here? [Join our Discord!](https://typeflowai.com/discord) and we'd be glad to assist you! */}
+
+## Local Setup
+
+Quickly set up and start using TypeflowAI without getting into the technicalities of the build process.
+
+This is ideal for those who are testing TypeflowAI or want to run it with minimal to no modifications.
+
+### Requirements
+
+To get the project running locally on your machine you need to have the following development tools installed:
+
+- Node.JS (we recommend v20)
+- [pnpm](https://pnpm.io/)
+- Supabase CLI or access to a Supabase project in the cloud
+
+1. Clone the project & move into the directory:
+
+<Col>
+   <CodeGroup title="Git clone TypeflowAI monorepo">
+
+```bash
+git clone https://github.com/TypeflowAI/typeflowai && cd typeflowai
+```
+
+   </CodeGroup>
+</Col>
+
+2. Install Node.JS packages via pnpm. Don't have pnpm? Get it [here](https://pnpm.io/installation)
+
+<Col>
+   <CodeGroup title="Install dependencies via pnpm">
+
+```bash
+pnpm install
+```
+
+   </CodeGroup>
+</Col>
+
+3. Create a `.env` file based on `.env.example`. It's already preset to work with the local development setup but you can also change values if needed.
+
+<Col>
+   <CodeGroup title="Define environment variables">
+
+```bash
+cp .env.example .env
+```
+
+   </CodeGroup>
+</Col>
+
+4. Generate & set some secret values mandatory for the ENCRYPTION_KEY & NEXTAUTH_SECRET in the .env file. You can use the following command to generate the random string of required length:
+
+<Col>
+   <CodeGroup title="Set value of ENCRYPTION_KEY">
+
+```bash
+sed -i '/^ENCRYPTION_KEY=/c\ENCRYPTION_KEY='$(openssl rand -hex 32) .env
+sed -i '/^NEXTAUTH_SECRET=/c\NEXTAUTH_SECRET='$(openssl rand -hex 32) .env
+```
+
+   </CodeGroup>
+</Col>
+
+### Install and Configure Supabase
+
+To integrate TypeflowAI with Supabase locally or in the cloud, follow these steps:
+
+1. Create a new project on [Supabase](https://app.supabase.io/). You can use the free tier for development purposes.
+
+2. Install the Supabase CLI following the instructions [here](https://supabase.io/docs/guides/cli).
+
+<Col>
+   <CodeGroup title="Install Supabase CLI">
+```bash
+npm install -g supabase
+```
+   </CodeGroup>
+</Col>
+
+3. Login to Supabase using the CLI.
+
+<Col>
+   <CodeGroup title="Login to Supabase">
+```bash
+supabase login
+```
+ </CodeGroup>
+</Col>
+
+4. Link your local project with your Supabase project.
+
+<Col>
+   <CodeGroup title="Link Supabase project">
+```bash
+supabase link --project-ref your-project-ref
+```
+   </CodeGroup>
+</Col>
+
+5. Start the local Supabase server.
+
+<Col>
+   <CodeGroup title="Start local Supabase">
+```bash
+supabase start
+```
+ </CodeGroup>
+</Col>
+
+### Deploy Prisma Schema to Supabase
+
+1. You'll need to configure your .env file with your Supabase details. You can find these details in the Supabase dashboard. You'll need to set the following environment variables in your .env file:
+- DATABASE_URL
+- NEXT_PUBLIC_SUPABASE_URL
+- NEXT_PUBLIC_SUPABASE_ANON_KEY
+- SUPABASE_SERVICE_ROLE_KEY
+
+2. After configuring your .env file with your Supabase details, deploy the Prisma schema to set up your database schema on Supabase:
+<Col>
+   <CodeGroup title="Deploy Prisma Schema">
+```bash   
+   pnpm run db:migrate:dev
+```
+  </CodeGroup>
+</Col>
+
+### Configure Trigger, Function, and Roles in Supabase
+To set up database triggers, functions, and roles, use the Supabase dashboard:
+
+1. Navigate to the SQL Editor in your project's dashboard.
+2. Write or paste the necessary SQL commands to create triggers and functions.
+3. Assign roles and permissions as needed for your application logic.
+<Col>
+   <CodeGroup title="Configure Trigger, Function, and Role">
+```sql
+CREATE OR REPLACE FUNCTION "public"."create_user"() RETURNS "trigger"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    AS $$begin
+  insert into public."User"(id, email, created_at, updated_at)
+  values (new.id, new.email, now(), now());
+
+  return new;
+end;$$;
+
+ALTER FUNCTION "public"."create_user"() OWNER TO "postgres";
+
+CREATE OR REPLACE FUNCTION "public"."delete_user"() RETURNS "trigger"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    AS $$begin
+  delete from auth.users where id = old.id;
+  return old;
+end;$$;
+
+ALTER FUNCTION "public"."delete_user"() OWNER TO "postgres";
+
+CREATE OR REPLACE FUNCTION "public"."verify_user_password"("password" "text") RETURNS boolean
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    AS $$
+BEGIN
+  RETURN EXISTS (
+    SELECT id 
+    FROM auth.users 
+    WHERE id = auth.uid() AND encrypted_password = crypt(password::text, auth.users.encrypted_password)
+  );
+END;
+$$;
+
+-- IMPORTANT: You'll find the full Query with all SQL scripts for triggers, functions, and roles in the project under the path: packages/database/supabase
+```
+   </CodeGroup>
+</Col>
+
+4. Because Supabase use its own authentication system, you'll need to sync with a new user is created in the auth.users table with your own user table in the database. You can do this by running the following SQL command in the SQL Editor:
+
+<Col>
+   <CodeGroup title="Configure Trigger, Function, and Role">
+```sql
+create or replace trigger create_user after insert on auth.users for each row execute function create_user();
+```
+   </CodeGroup>
+</Col>
+
+### Build
+
+To build all apps and packages and check for build errors, run the following command:
+
+<Col>
+<CodeGroup title="Build TypeflowAI stack">
+
+```bash
+pnpm build
+```
+
+</CodeGroup>
+</Col>
+
+### Run Environment
+
+To run the environment, run the following command:
+
+<Col>
+   <CodeGroup title="Start TypeflowAI Dev Setup">
+
+```bash
+pnpm run dev
+```
+
+   </CodeGroup>
+</Col>
+
+After starting the environment, visit http://localhost:3000 in your browser to interact with the TypeflowAI application. The first time you access this page, you'll be greeted by a setup wizard. Follow the prompts to define your first user and get started.
+
+## Remote Setup
+
+Deploying TypeflowAI remotely opens up a range of possibilities, allowing you to run our application on any platform that supports Next.js applications. We highly recommend using Vercel for its seamless compatibility with Next.js projects. Here’s how you can get started with deploying TypeflowAI on Vercel:
+
+### Deploying on Vercel
+
+Vercel is a cloud platform for static sites and Serverless Functions that fits perfectly with Next.js projects. Follow these steps to deploy your TypeflowAI project:
+
+1. Fork or Clone TypeflowAI Repository: First, ensure you have a copy of the TypeflowAI repository in your GitHub account.
+
+2. Set Up Vercel Account: If you haven't already, sign up for a Vercel account and set up a new project by importing your TypeflowAI repository.
+
+3. Configure Your Project: In your Vercel dashboard, select your imported project and configure it by setting the necessary environment variables that you would usually have in your .env file.
+
+<Col>
+   <CodeGroup title="Set up environment variables on Vercel">
+
+```bash
+- Add DATABASE_URL with your database connection string.
+- Add NEXTAUTH_URL set to your Vercel project domain.
+- Add NEXTAUTH_SECRET with a secure random string.
+```
+   </CodeGroup>
+</Col>
+
+4. Deploy: With your environment variables set, deploy your application directly through the Vercel dashboard. Vercel will automatically detect that it’s a Next.js project and configure the build settings for you.
+
+5. Domain Configuration: After your project is deployed, you can configure your custom domain or use the default one provided by Vercel.
+
+<Note>
+  The first deployment might take a bit longer due to the build process. Subsequent deployments will be faster thanks to Vercel's cache.
+</Note>
+
+## Important Run-time Variables
+
+These variables can be provided at the runtime i.e. in your .env file.
+
+| Variable                       | Description                                                                             | Required                                                | Default                                                                 |
+| ------------------------------ | --------------------------------------------------------------------------------------- | ------------------------------------------------------- | ----------------------------------------------------------------------- |
+| WEBAPP_URL                     | Base URL of the site.                                                                   | required                                                | `http://localhost:3000`                                                 |
+| DATABASE_URL                   | Database URL with credentials.                                                          | required                                                | `postgresql://postgres:postgres@postgres:5432/typeflowai?schema=public` |
+| NEXT_PUBLIC_SUPABASE_URL       | The public facing URL of your Supabase project.                                         | required                                                |                                                                         |
+| NEXT_PUBLIC_SUPABASE_ANON_KEY  | Public anonymous key to access your Supabase project.                                   | required                                                |                                                                         |
+| SUPABASE_SERVICE_ROLE_KEY      | Service role key for server-side operations in your Supabase project.                   | required                                                |                                                                         |
+| NEXTAUTH_SECRET                | Secret for NextAuth, used for session signing and encryption.                           | required                                                | (Generated by the user)                                                 |
+| NEXTAUTH_URL                   | Location of the auth server. By default, this is the TypeflowAI docker instance itself. | required                                                | `http://localhost:3000`                                                 |
+| PRIVACY_URL                    | URL for privacy policy.                                                                 | optional                                                |                                                                         |
+| TERMS_URL                      | URL for terms of service.                                                               | optional                                                |                                                                         |
+| SIGNUP_DISABLED                | Disables the ability for new users to create an account if set to `1`.                  | optional                                                |                                                                         |
+| PASSWORD_RESET_DISABLED        | Disables password reset functionality if set to `1`.                                    | optional                                                |                                                                         |
+| EMAIL_VERIFICATION_DISABLED    | Disables email verification if set to `1`.                                              | optional                                                |                                                                         |
+| INVITE_DISABLED                | Disables the ability for invited users to create an account if set to `1`.              | optional                                                |                                                                         |
+| MAIL_FROM                      | Email address to send emails from.                                                      | optional (required if email services are to be enabled) |                                                                         |
+| SMTP_HOST                      | Host URL of your SMTP server.                                                           | optional (required if email services are to be enabled) |                                                                         |
+| SMTP_PORT                      | Host Port of your SMTP server.                                                          | optional (required if email services are to be enabled) |                                                                         |
+| SMTP_USER                      | Username for your SMTP Server.                                                          | optional (required if email services are to be enabled) |                                                                         |
+| SMTP_PASSWORD                  | Password for your SMTP Server.                                                          | optional (required if email services are to be enabled) |                                                                         |
+| SMTP_SECURE_ENABLED            | SMTP secure connection. For using TLS, set to `1` else to `0`.                          | optional (required if email services are to be enabled) |                                                                         |
+| CRON_SECRET                    | API Secret for running cron jobs.                                                       | optional                                                |                                                                         |
+| STRIPE_SECRET_KEY              | Secret key for Stripe integration.                                                      | optional                                                |                                                                         |
+| STRIPE_WEBHOOK_SECRET          | Webhook secret for Stripe integration.                                                  | optional                                                |                                                                         |
+| DEFAULT_BRAND_COLOR            | Default brand color for your app (Can be overwritten from the UI as well).              | optional                                                | `#7b4cfa`                                                               |
+| DEFAULT_TEAM_ID                | Automatically assign new users to a specific team when joining                          | optional                                                |                                                                         |
+| DEFAULT_TEAM_ROLE              | Role of the user in the default team.                                                   | optional                                                | `admin`                                                                 |
+| ONBOARDING_DISABLED            | Disables onboarding for new users if set to `1`                                         | optional                                                |                                                                         |
+
+{/* Still facing issues? [Join our Discord!](https://typeflowai.com/discord) and we'd be glad to assist you! */}
+

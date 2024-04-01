@@ -1,0 +1,49 @@
+{
+  "name": "@typeflowai/lib",
+  "private": true,
+  "sideEffects": false,
+  "version": "0.0.0",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "scripts": {
+    "clean": "rimraf .turbo node_modules .next coverage",
+    "lint": "eslint . --ext .ts,.js,.tsx,.jsx",
+    "lint:fix": "eslint . --ext .ts,.js,.tsx,.jsx --fix",
+    "lint:report": "eslint . --format json --output-file ../../lint-results/app-store.json",
+    "test:dev": "jest --coverage --watch",
+    "test": "jest -ci --coverage --no-cache"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "3.478.0",
+    "@aws-sdk/s3-presigned-post": "3.478.0",
+    "@aws-sdk/s3-request-presigner": "3.478.0",
+    "@paralleldrive/cuid2": "^2.2.2",
+    "@t3-oss/env-nextjs": "^0.7.1",
+    "@typeflowai/api": "*",
+    "@typeflowai/database": "*",
+    "@typeflowai/types": "*",
+    "aws-crt": "^1.20.0",
+    "date-fns": "^3.0.4",
+    "eventsource-parser": "^1.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "markdown-it": "^14.0.0",
+    "mime": "4.0.1",
+    "nanoid": "^5.0.4",
+    "next-auth": "^4.24.5",
+    "nodemailer": "^6.9.7",
+    "posthog-node": "^3.2.1",
+    "server-only": "^0.0.1",
+    "tailwind-merge": "^2.1.0"
+  },
+  "devDependencies": {
+    "@typeflowai/tsconfig": "*",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/mime": "3.0.4",
+    "babel-jest": "^29.7.0",
+    "eslint-config-typeflowai": "workspace:*",
+    "jest": "^29.7.0",
+    "jest-mock-extended": "^3.0.5",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.2"
+  }
+}

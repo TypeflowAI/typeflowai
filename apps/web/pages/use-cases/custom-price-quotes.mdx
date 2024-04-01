@@ -1,0 +1,98 @@
+import UseCaseLayout from "@/components/shared/UseCaseLayout";
+import Image from "next/image";
+import { UseCaseCallout } from "@/components/shared/UseCaseCallout";
+import CustomPriceQuotes from "@/images/templates/custom-price-quotes.png";
+
+export const meta = {
+  title: "How to Create Custom Quotes with AI Forms",
+  description:
+    "Learn how to create custom quotes in 10 seconds using the power of AI forms. Generate custom quotes for your business using AI forms.",
+};
+
+If you own a business that provides services such as web page creation, you know that typically, generating quotes is a tedious and unproductive task that often doesn’t bear fruit.
+
+Think about it: it’s a waste of resources to have to talk to the client, understand their needs, offer them a specific service according to their goals, calculate prices, and deliver a document with all the requirements, prices, timeline…
+
+The good news is: you can save a lot of time and money by prequalifying your leads before taking action to avoid those who are just “picking the best price,” so you can focus directly on developing your products and services, that is, on paying customers.
+
+How can you do this? By using TypeflowAI, a service that lets you create AI-powered forms that turn form responses into self-executing prompts that generate, in this case, a customized quote for each client without you having to write anything at all.
+
+You read that right: NOTHING.
+
+Let's look at a real-life example:
+
+<Image
+  src={CustomPriceQuotes}
+  alt="Custom Price Quotes"
+  className="rounded-xl max-w-full" 
+/>
+
+Imagine you are a web design agency and have an AI Form on your website with the following questions:
+
+<UseCaseCallout title="Example questions" type="questions">
+
+- What is your name?
+- What is the name of your company?
+- What kind of website do you want?
+- What is the goal of creating the website?
+- Will it have a blog?
+- Do you want to include basic SEO improvements?
+- Do you want to include hosting?
+
+</UseCaseCallout>
+
+Well, once the lead fills out these questions, it would turn their answers into a prepared quote by simply executing a preset prompt.
+
+Want to see the result? Here it is.
+
+<UseCaseCallout title="Result" type="result">
+
+**Index**
+
+- Introduction
+- Detail of Services and Prices
+- Project Timeline
+- Conclusion
+
+**Introduction**
+
+We sincerely thank Charles from Madison Avocado Farm for trusting us to develop his new website.
+
+The main goal of this project is to establish a strong online presence for selling food products that Madison Avocado Farm produces, such as spreadable cream, smoothies, soups, etc.
+
+This project seeks not only to expand the market reach of Madison Avocado Farm but also to provide an easy-to-use platform for customers to purchase their products directly.
+
+**Detail of Services and Prices**
+
+- **Ecommerce:** $3000
+- **Blog:** $800
+- **Basic SEO improvements:** $500
+- **Hosting:** $200
+
+**Price Justification**
+
+- **Ecommerce:** This service is essential for achieving the goal of selling online. It provides a robust platform for listing products, managing inventories, and processing payments.
+- **Blog:** A blog will be a vital tool for educating customers about the products, sharing recipes, and avocado-related news, which can increase engagement and improve organic SEO.
+- **Basic SEO improvements:** Optimizing the website for search engines is crucial to ensure that potential customers can easily find the online store on Google and other search engines.
+- **Hosting:** Hosting ensures that the website is available to users at all times, with fast loading times and without interruptions, offering an optimal user experience.
+
+**Project Timeline**
+
+- **Phase 1:** Planning and Design (1 week): Project scope definition, template selection, and initial design.
+- **Phase 2:** Development (3 weeks): Ecommerce platform setup, blog creation, and implementation of SEO improvements.
+- **Phase 3:** Testing and Launch (1 week): Functionality testing, final adjustments, and website launch.
+
+
+</UseCaseCallout >
+
+Incredible, right? Can you imagine all the time you could save using this template?
+
+But there’s more: you can further automate the process. Thanks to TypeFlowAI's integration with Zapier, you can directly send the quote by email to the lead. 
+
+Additionally, you could follow up by email to see if they accept it. This can be done by connecting Zapier with your email marketing provider, whether it’s MailChimp, Brevo, ActiveCampaign, or whichever you prefer!
+
+As you can see, the possibilities are endless…
+
+Would you like to try the Custom Price Quotes template?
+
+export default ({ children }) => <UseCaseLayout meta={meta} useCaseTitle="AI forms Use Cases" useCaseTags={["Business","Pricing"]}>{children}</UseCaseLayout>;

@@ -1,0 +1,100 @@
+import UseCaseLayout from "@/components/shared/UseCaseLayout";
+import Image from "next/image";
+import { UseCaseCallout } from "@/components/shared/UseCaseCallout";
+import GoogleAdsCopyGenerator from "@/images/templates/google-ads-copy-generator.png";
+
+export const meta = {
+  title: "How to Write Google Ads with +80% CTR and High Profitability",
+  description:
+    "Learn how to write Google Ads that have a high click-through rate and are highly profitable. We'll show you how to write Google Ads that convert.",
+};
+
+Did you know we're exposed to 1 ad every 10 seconds? 
+
+That's over 6,000 ads per day – from video to text to images. 
+
+Standing out in this saturated landscape requires squeezing creativity, whether through a catchy slogan, striking image, or a no-brainer value proposition.
+
+Choosing the right channel, one that's measurable and impactful, is crucial. That's where Google Ads comes in.
+
+Google Ads search campaigns are ideal for reaching people actively seeking services or products. But mastering ad writing is key to outshining the competition.
+
+To write effectively, you need two things: a deep understanding of your audience and a copywriter well-versed in consumer psychology.
+
+But what if I told you creating dozens or hundreds of ad variants could take minutes? 
+
+With TypeFlowAI, answer a few questions about your target and product/service to generate ads instantly using AI.
+
+Plus, leverage a template where AI:
+- Draws insights from top copywriting books.
+- Tailors tone to your brand and audience.
+- Mixes proven headline structures.
+- Offers precise character counts for Google Ads campaigns.
+
+<UseCaseCallout title="Example questions" type="questions">
+See a practical example for an eco-friendly shoe store:
+
+- What is the target gender demographic for this campaign? Women
+- What age group is the intended audience for this marketing effort? 30-40
+- In which city or country will this campaign be targeted? US
+- What specific product or service will be promoted in this campaign? Eco-friendly sport shoes for women
+- Which brand is associated with the product or service being marketed? Eco-friendly shoes
+- What is the primary keyword that best represents the product or service? Eco-friendly sport shoes for women.
+- What secondary keyword complements the main keyword in this campaign? Sustainable athletic footwear.
+- What is the URL of the website or landing page associated with the advertised product or service? www.typeflowai.com
+- What is the URL of the main competitor's website or landing page for comparison? nike.com
+
+</UseCaseCallout>
+
+<Image
+  src={GoogleAdsCopyGenerator}
+  alt="Google Ads Copy Generator"
+  className="rounded-xl max-w-full" 
+/>
+
+<UseCaseCallout title="Result" type="result">
+
+**Headline 1:**
+
+"Innovate in Sports + Eco-Friendly Kicks + Unique Design"
+(A blend of benefit, primary keyword, and unique proposition, standing out from competitors like Nike.)
+
+**Headline 2:**
+
+"Premium Comfort, Minimal Impact"
+(Highlights a key benefit and unique value, differentiating with comfort and environmental consciousness.)
+
+
+**Headline 3 (optional):**
+
+"Discover +20% Off Your Pair"
+(A CTA combined with a special offer, prompting quick action.)
+
+**Display Path:**
+
+www.typeflowai.com
+(Friendly URL with keywords and "Offer" to boost relevance and interest.)
+
+**Description 1:**
+
+"Elevate performance, care for the planet. Shoes offering comfort without sacrificing style."
+(Emotionally connects, emphasizing performance, planet care, and product's life enhancement.)
+
+**Description 2:**
+
+"Limited edition available. Be the change in Seville. Free shipping this week."
+(Adds details about the offer, special promos, and a CTA for immediate action.)
+
+**Ad Extensions (optional but recommended):**
+
+- Sitelink Text Extensions: "Free Shipping," "Eco-Friendly," "Innovative Design," "Total Comfort," "Limited Edition," "Shop Local"
+- Site Link Extensions: "Our Story," "2024 Collection," "Testimonials," "Promotions," "Sustainability Blog," "Contact"
+
+</UseCaseCallout>
+
+The possibilities are truly endless.
+
+Ready to use TypeflowAI’s Google Ads Copy Generator?
+
+
+export default ({ children }) => <UseCaseLayout meta={meta} useCaseTitle="AI forms Use Cases" useCaseTags={["Marketing","Ads"]}>{children}</UseCaseLayout>;

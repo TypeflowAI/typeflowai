@@ -1,0 +1,99 @@
+import UseCaseLayout from "@/components/shared/UseCaseLayout";
+import Image from "next/image";
+import { UseCaseCallout } from "@/components/shared/UseCaseCallout";
+import EcommerceProductDescriptions from "@/images/templates/ecommerce-product-descriptions.png";
+
+export const meta = {
+  title: "Write Ecommerce Product Descriptions 10X Faster Using AI Forms",
+  description:
+    "Efficiently generate compelling product descriptions for your ecommerce store with AI. Boost productivity and enhance your online presence.",
+};
+
+Writing product descriptions for an ecommerce site is a time-consuming activity that, to be effective and address key customer objections, requires analysis, reflection, and, of course, writing. 
+
+If, for example, this process takes around 30 minutes (at a minimum) per product and you have a catalog of 100 products, you'd need to dedicate about 50 hours to write all the descriptions, without taking breaks and working tirelessly. 
+
+Not to mention the time it takes to take photos, upload them to the content management system...
+
+But you created an ecommerce to sell, right? 
+
+So, if you can save all that time, all the better, because you'll be able to devote it to more valuable actions, like marketing campaigns, for instance.
+
+What if I told you that now you can do the descriptions in 10% of the time using AI-powered forms from TypeFlowAI?
+
+Confirmed.
+
+It's now possible! 
+
+You just need to set up a series of questions in the form, and the answers will be used in a prompt to generate customized responses for each product.
+
+<Image
+  src={EcommerceProductDescriptions}
+  alt="Ecommerce Product Descriptions"
+  className="rounded-xl max-w-full" 
+/>
+
+Here's an example of a description for women's Nike sneakers:
+
+<UseCaseCallout title="Example questions" type="questions">
+
+- What type of product is it? Footwear
+- Under which category does the product fall? Athletic shoes
+- What specific activity is the product designed for? Running
+- What is the size or measurement of the product? 8
+- Which brand manufactures the product? Nike
+- What is the color of the product? White
+- Is the product specifically designed for a particular gender? Women
+- What is the first benefit or advantage of using this product? Lightweight
+- What is the second benefit or advantage of using this product? Breathable
+- What is the third benefit or advantage of using this product? Slip-resistant
+
+</UseCaseCallout>
+
+And here is the result:
+
+<UseCaseCallout title="Result" type="result">
+
+**Short description:**
+
+- Light and Comfortable: Specifically designed for runners, these Nike sneakers offer an ultra-light experience that enables optimal performance during the run.
+- Superior Breathability: Made with high-quality material that ensures proper ventilation, keeping your feet cool and dry, even in the most intense workouts
+- Non-slip Sole: Equipped with a robust and non-slip sole, these sneakers provide exceptional traction on various surfaces, ensuring greater safety while running
+- Style and Versatility: Their sleek design and white color make them a versatile option that matches any sports outfit, making them perfect for both training and competitions.
+- Size 8 Specifically for Women: Perfect fit that adapts to the natural shape of the female foot, offering comfort and support at every step.
+
+**Extended description:**
+
+**Introduction:**
+
+The Nike women's sports sneakers are designed for runners looking to maximize their performance. Focusing on lightness, breathability, and safety, these sneakers are presented as the ideal choice for those wanting to push their limits.
+
+**Description:**
+
+Made with the highest quality materials, these size 39 Nike sneakers ensure a comfortable and secure fit. Their lightweight design allows the foot to move naturally, while the ventilation system keeps feet cool, dry, and comfortable throughout the workout. The non-slip sole is capable of offering excellent traction on a variety of surfaces, from athletics tracks to dirt trails, making them suitable for any type of race. Moreover, their sleek aesthetics and white color make them a perfect addition to your sports equipment, adding style and functionality.
+
+**Context of use and compatibility:**
+
+These sneakers are perfect for runners of all levels, from beginners to professionals, providing the support and comfort necessary for any distance. Their versatile design also makes them suitable for a variety of sports activities, ensuring they are a valuable addition to any sports wardrobe.
+
+**Care instructions:**
+
+To keep your sneakers in optimal condition, it is recommended to clean them regularly with a damp cloth and avoid prolonged exposure to the sun. Washing them in the washing machine is not recommended.
+
+**Warranty and support:**
+
+Nike is committed to providing high-quality products. These sneakers come with a limited warranty covering manufacturing defects and materials. For more information about the warranty or if you need support, please visit the official Nike website or contact our customer service team.
+
+</UseCaseCallout >
+
+But there's more...
+
+Can you imagine being able to publish content automatically on your ecommerce?
+
+You can also do this thanks to TypeflowAI's integrations with Zapier, allowing you to connect with WordPress and Shopify and reduce the time you spend on this process that does not add any value.
+
+As you can see, the possibilities are endless!
+
+Would you like to try the Ecommerce Product Descriptions template?
+
+export default ({ children }) => <UseCaseLayout meta={meta} useCaseTitle="AI forms Use Cases" useCaseTags={["Business","Ecommerce"]}>{children}</UseCaseLayout>;

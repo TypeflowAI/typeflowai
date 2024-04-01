@@ -1,0 +1,383 @@
+import { Libraries } from "@/components/docs/Libraries";
+import Image from "next/image";
+
+import SetupChecklist from "./setup-checklist.png";
+import WidgetConnected from "./widget-connected.png";
+import WidgetNotConnected from "./widget-not-connected.png";
+
+export const metadata = {
+  title: "Integrate TypeflowAI: Comprehensive Framework Guide & Integration Tutorial",
+  description:
+    "Master the integration of TypeflowAI into your application with our detailed guides. From HTML to ReactJS, NextJS, and VueJS, get step-by-step instructions and ensure seamless setup.",
+};
+
+# Framework Guides
+
+One can integrate TypeflowAI into their app using multiple options! Checkout the options below that we provide! If you are looking
+for something else, please send us an email to support@typeflowai.com and we would be glad to help. {{ className: 'lead' }}
+
+{/* One can integrate TypeflowAI into their app using multiple options! Checkout the options below that we provide! If you are looking
+for something else, please [join our Discord!](https://typeflowai.com/discord) and we would be glad to help. {{ className: 'lead' }} */}
+
+<Libraries />
+
+---
+
+## Prerequisites
+
+Before getting started, make sure you have:
+
+1. A web application in your desired framework is set up and running.
+2. A TypeflowAI account with access to your environment ID and API host. You can find these in the **Setup Checklist** in the Settings:
+
+<Image
+  src={SetupChecklist}
+  alt="Step 2 - Setup Checklist"
+  quality="100"
+  className="max-w-full rounded-lg sm:max-w-3xl"
+/>
+
+---
+
+## HTML
+
+All you need to do is copy a `<script>` tag to your HTML head, and that’s about it!
+
+<Col>
+<CodeGroup title="HTML">
+```html {{ title: 'index.html' }}
+<!-- START TypeflowAI Workflows -->
+<script type="text/javascript">
+    !function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://unpkg.com/@typeflowai/js@^1.0.0/dist/index.umd.js";var e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(t,e),setTimeout(function(){window.typeflowai.init({environmentId: "<your-environment-id>", apiHost: "<api-host>"})},500)}();
+    </script>
+<!-- END TypeflowAI Workflows -->
+```
+</CodeGroup>
+</Col>
+### Required Customizations to be Made
+
+<Properties>
+  <Property name="environment-id" type="string">
+    TypeflowAI Environment ID.
+  </Property>
+</Properties>
+<Properties>
+  <Property name="api-host" type="string">
+    URL of the hosted TypeflowAI instance.
+  </Property>
+</Properties>
+
+Now visit the [Validate your Setup](#validate-your-setup) section to verify your setup!
+
+---
+
+## ReactJS
+
+Install the TypeflowAI SDK using one of the package managers ie `npm`,`pnpm`,`yarn`.
+
+<Col>
+<CodeGroup title="Install TypeflowAI JS library">
+```shell {{ title: 'npm' }}
+npm install --save @typeflowai/js
+```
+```shell {{ title: 'pnpm' }}
+pnpm add @typeflowai/js
+```
+```shell {{ title: 'yarn' }}
+yarn add @typeflowai/js
+```
+
+</CodeGroup>
+</Col>
+Now, update your App.js/ts file to initialise TypeflowAI.
+<Col>
+<CodeGroup title="src/App.js">
+
+```js
+// other imports
+import typeflowai from "@typeflowai/js";
+
+if (typeof window !== "undefined") {
+  typeflowai.init({
+    environmentId: "<environment-id>",
+    apiHost: "<api-host>",
+    debug: true, // remove when in production
+  });
+}
+
+function App() {
+  // your own app
+}
+
+export default App;
+```
+
+</CodeGroup>
+</Col>
+### Required Customizations to be Made
+
+<Properties>
+  <Property name="environment-id" type="string">
+    TypeflowAI Environment ID.
+  </Property>
+</Properties>
+<Properties>
+  <Property name="api-host" type="string">
+    URL of the hosted TypeflowAI instance.
+  </Property>
+</Properties>
+
+### What are we doing here?
+
+The app initializes 'typeflowai' when it's loaded in a browser environment (due to the typeof window !== "undefined" check) and then renders your components or content.
+
+Now visit the [Validate your Setup](#validate-your-setup) section to verify your setup!
+
+---
+
+## NextJS
+
+NextJs projects typically follow two main conventions: the App Directory and the Pages Directory.
+To ensure smooth integration with the TypeflowAI SDK, which operates solely on the client side, follow the
+guidelines for each convention below:
+
+- App directory: You will have to define a new component in `app/typeflowai.tsx` file and call it in your `app/layout.tsx` file.
+- Pages directory: You will have to visit your `_app.tsx` and just initialise TypeflowAI there.
+
+Code snippets for the integration for both conventions are provided to further assist you.
+
+<Col>
+<CodeGroup title="Install TypeflowAI JS library">
+```shell {{ title: 'npm' }}
+npm install --save @typeflowai/js
+```
+```shell {{ title: 'pnpm' }}
+pnpm add @typeflowai/js
+```
+```shell {{ title: 'yarn' }}
+yarn add @typeflowai/js
+```
+
+</CodeGroup>
+</Col>
+### App Directory
+<Col>
+<CodeGroup title="app/typeflowai.tsx">
+```tsx {{title: 'Typescript'}}
+"use client";
+import typeflowai from "@typeflowai/js";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+
+export default function TypeflowAIProvider() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+useEffect(() => {
+typeflowai.init({
+environmentId: "<environment-id>",
+apiHost: "<api-host>",
+debug: true, // remove when in production
+});
+}, []);
+
+useEffect(() => {
+typeflowai?.registerRouteChange();
+}, [pathname, searchParams]);
+
+return null;
+}
+
+````
+</CodeGroup>
+
+<CodeGroup title="app/layout.tsx">
+```tsx {{title: 'Typescript'}}
+// other imports
+import TypeflowAIProvider from "./typeflowai";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <TypeflowAIProvider />
+      <body>{children}</body>
+    </html>
+  );
+}
+````
+
+</CodeGroup>
+</Col>
+
+### Pages Directory
+
+<Col>
+<CodeGroup title="src/pages/_app.tsx">
+
+```tsx {{ title: 'Typescript' }}
+// other import
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+
+import typeflowai from "@typeflowai/js";
+
+if (typeof window !== "undefined") {
+  typeflowai.init({
+    environmentId: "<environment-id>",
+    apiHost: "<api-host>",
+    debug: true, // remove when in production
+  });
+}
+
+export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+
+  useEffect(() => {
+    // Connect next.js router to TypeflowAI
+    const handleRouteChange = typeflowai?.registerRouteChange;
+    router.events.on("routeChangeComplete", handleRouteChange);
+
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, []);
+  return <Component {...pageProps} />;
+}
+```
+
+</CodeGroup>
+</Col>
+
+### Required Customizations to be Made
+
+<Properties>
+  <Property name="environment-id" type="string">
+    TypeflowAI Environment ID.
+  </Property>
+</Properties>
+<Properties>
+  <Property name="api-host" type="string">
+    URL of the hosted TypeflowAI instance.
+  </Property>
+</Properties>
+
+### Optional Customizations to be Made
+
+<Properties>
+  <Property name="debug" type="boolean">
+    Whether you want to see debug messages from TypeflowAI on your client-side console.
+  </Property>
+</Properties>
+
+### What are we doing here?
+
+First we need to initialize the TypeflowAI SDK, making sure it only runs on the client side.
+To connect the Next.js router to TypeflowAI and ensure the SDK can keep track of every page change, we are registering the route change event.
+
+Now visit the [Validate your Setup](#validate-your-setup) section to verify your setup!
+
+---
+
+## VueJs
+
+Integrating the TypeflowAI SDK with Vue.js is a straightforward process.
+We will make sure the SDK is only loaded and used on the client side, as it's not intended for server-side usage.
+
+<Col>
+<CodeGroup title="Install TypeflowAI JS library">
+```shell {{ title: 'npm' }}
+npm install --save @typeflowai/js
+````
+
+```shell {{ title: 'pnpm' }}
+pnpm add @typeflowai/js
+```
+
+```shell {{ title: 'yarn' }}
+yarn add @typeflowai/js
+```
+
+</CodeGroup>
+
+<CodeGroup title="src/typeflowai.js">
+
+```js
+import typeflowai from "@typeflowai/js";
+
+if (typeof window !== "undefined") {
+  typeflowai.init({
+    environmentId: "<environment-id>",
+    apiHost: "<api-host>",
+  });
+}
+
+export default typeflowai;
+```
+
+</CodeGroup>
+
+<CodeGroup title="src/main.js">
+
+```js
+// other imports
+import typeflowai from "@/typeflowai";
+
+const app = createApp(App);
+
+app.use(router);
+
+app.mount("#app");
+
+router.afterEach((to, from) => {
+  if (typeof typeflowai !== "undefined") {
+    typeflowai.registerRouteChange();
+  }
+});
+```
+
+</CodeGroup>
+</Col>
+### Required Customizations to be Made
+
+<Properties>
+  <Property name="environment-id" type="string">
+    TypeflowAI Environment ID.
+  </Property>
+</Properties>
+<Properties>
+  <Property name="api-host" type="string">
+    URL of the hosted TypeflowAI instance.
+  </Property>
+</Properties>
+
+### Optional Customizations to be Made
+
+<Properties>
+  <Property name="debug" type="boolean">
+    Whether you want to see debug messages from TypeflowAI on your client-side console.
+  </Property>
+</Properties>
+
+## Validate your setup
+
+Once you have completed the steps above, you can validate your setup by checking the **Setup Checklist** in the Settings. Your widget status indicator should go from this:
+
+<Image
+  src={WidgetNotConnected}
+  alt="Widget isnt connected"
+  quality="100"
+  className="max-w-full rounded-lg sm:max-w-3xl"
+/>
+
+To this:
+
+<Image
+  src={WidgetConnected}
+  alt="Widget is connected"
+  quality="100"
+  className="max-w-full rounded-lg sm:max-w-3xl"
+/>
+
+{/* **Can’t figure it out? [Join our Discord!](https://typeflowai.com/discord)** */}
+
+---

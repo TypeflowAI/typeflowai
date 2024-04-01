@@ -1,0 +1,16 @@
+{
+  "name": "@typeflowai/types",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.ts",
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rimraf node_modules .turbo"
+  },
+  "devDependencies": {
+    "@typeflowai/tsconfig": "workspace:*"
+  },
+  "dependencies": {
+    "zod": "^3.22.4"
+  }
+}

@@ -1,0 +1,82 @@
+import UseCaseLayout from "@/components/shared/UseCaseLayout";
+import Image from "next/image";
+import { UseCaseCallout } from "@/components/shared/UseCaseCallout";
+import SwotAnalysis from "@/images/templates/swot-analysis.png";
+
+export const meta = {
+  title: "Perform a SWOT analysis by answering 2 questions with AI",
+  description:
+    "Simplify SWOT analysis with AI by answering two questions. Let AI take over and provide comprehensive insights for your business strategy.",
+};
+
+The SWOT analysis is a classic method used to determine the exact point where a company stands in relation to the market it serves and its competitors. By identifying strengths, weaknesses, opportunities, and threats, a clear framework can be established to discuss the best strategies moving forward.
+
+It's a process typically undertaken by a company's Board of Directors or its various departments, requiring input from various team members to seek the best answers.
+
+Moreover, analyzing the market and reflecting on the current state of the company takes time, so at best, it's conducted once a year when strategies, plans, and budgets for each department are drawn up.
+
+But what if you could perform a SWOT analysis every month or even every week without needing the whole team or dedicating more than 30 seconds?
+
+Now you can, thanks to TypeflowAI, a tool that combines the power of forms with artificial intelligence to analyze your business and the market (including current trends and competitors) to offer a highly specific analysis of the exact point your company is at…
+
+<Image
+  src={SwotAnalysis}
+  alt="Swot Analysis"
+  className="rounded-xl max-w-full" 
+/>
+
+And all it takes is answering 2 simple questions:
+
+<UseCaseCallout title="Example questions" type="questions">
+
+- What products or services do you sell? 
+- What's your target market? 
+
+</UseCaseCallout>
+
+Let's see an example:
+
+Imagine you're a cosmetics company specializing in reducing skin wrinkles, primarily operating in Paris. In this case, you'd use a TypeflowAI form, answer the two questions to feed information to the artificial intelligence, and automatically, an advanced prompt would execute, delivering a response like this:
+
+<UseCaseCallout title="Result" type="result">
+
+For a company selling anti-wrinkle cosmetics targeted at women aged 50 in Paris, the SWOT analysis considers current market trends, product innovation, and consumer expectations. Here's the analysis based on emerging trends and market challenges:
+
+**Strengths**
+
+- **Innovation and Quality:** Leveraging artificial intelligence to accelerate the formulation and development of innovative products, such as mineral filters with no negative environmental impact.
+- **Reputation and Experience:** Ability to provide personalized advice and products tailored to specific consumer needs.
+- **Sustainability:** Commitment to sustainability throughout the value chain, from raw materials to packaging and waste management.
+
+**Weaknesses**
+
+- **Intense Competition:** The cosmetics market in Paris is highly competitive, with established players possibly having an advantage in terms of visibility and resources.
+- **Differentiation Limitations:** Difficulty in standing out in a saturated market where consumers are constantly seeking innovation and efficacy.
+
+**Opportunities**
+
+- **Consumer Trends:** Increasing demand for natural, clean, sustainable, and customizable cosmetic products, opening a pathway for innovative products that meet these expectations.
+- **Technology and Personalization:** Opportunity to exploit technology for providing personalized products and experiences to consumers, enhancing customer loyalty and satisfaction.
+- **Holistic Well-being:** Growing consumer interest in well-being, including anti-aging products and beauty supplements.
+
+**Threats**
+
+- **Regulatory Changes:** Government regulations in France and the EU could change, affecting the formulation of cosmetic products and their marketing.
+- **Price Sensitivity:** Economic uncertainty could make consumers more price-sensitive, affecting the demand for premium products.
+- **Changing Trends:** The rapid evolution of consumer preferences and the emergence of new trends could quickly render products obsolete. Emerging trends like skinimalism, which promotes using fewer but more effective products, vegan retinol (bakuchiol) as a natural alternative to retinol, and bodyskinification, emphasizing body care as intensely as facial care, offer significant opportunities for innovation and meeting the changing demands of the market. Additionally, the growing demand for "botox like" products that offer similar effects to botox without injections highlights an opportunity to develop and market non-invasive alternatives to traditional aesthetic treatments.
+
+This SWOT analysis suggests that to succeed in the Parisian anti-wrinkle cosmetic market for women aged 50, it's crucial to innovate in products that are not only effective but also sustainable, customizable, and aligned with wellness and natural beauty trends. Adapting to changing consumer expectations and clearly differentiating from the competition will be key to seizing opportunities and mitigating threats in this dynamic market.
+
+</UseCaseCallout >
+
+BOOM! Extraordinary, right?
+
+Imagine all the information you've just gleaned in just a few seconds. You didn't have to analyze the market or competitors, nor did you need to review hundreds of studies to know the latest trends. 
+
+Most importantly, you avoided hiring a consultancy or involving the whole team in a task that diverts them from their work…
+
+As you can see, the possibilities are endless…
+
+Would you like to try the SWOT Analysis template?
+
+export default ({ children }) => <UseCaseLayout meta={meta} useCaseTitle="AI forms Use Cases" useCaseTags={["Business","Strategy"]}>{children}</UseCaseLayout>;

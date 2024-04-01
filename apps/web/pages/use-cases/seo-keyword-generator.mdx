@@ -1,0 +1,82 @@
+import UseCaseLayout from "@/components/shared/UseCaseLayout";
+import Image from "next/image";
+import { UseCaseCallout } from "@/components/shared/UseCaseCallout";
+import SeoKeywordGenerator from "@/images/templates/seo-keyword-generator.png";
+
+export const meta = {
+  title: "How to generate a Keyword Research using AI",
+  description:
+    "Learn how to get profitable keywords that rank and convert for your business thanks to AI. Use AI to generate keywords that will help you rank and convert.",
+};
+
+Creating content takes time, but now it can be radically sped up thanks to artificial intelligence. However, this effort is futile if the content doesn't properly rank on major search engines.
+
+Thus, to make your efforts worthwhile, it's crucial to combine content marketing strategy with research on the main keywords you want to rank for.
+
+What's the problem? Conducting research takes time and money (as it often requires paid tools like Semrush, AHREF, etc.)...
+
+But...
+
+What if I told you that now you can do it just by filling out a form? That's what you can do with TypeflowAI, a tool that combines the power of forms with artificial intelligence to produce unique results in minutes, not hours or days.
+
+For example, imagine you're tasked with creating content for the blog of a leading supermarket brand. 
+
+The process would go like this:
+
+- Analyze the competition
+- Use tools to find keywords
+- Develop content using these keywords in H1, H2, and body text.
+
+<Image
+  src={SeoKeywordGenerator}
+  alt="Seo Keyword Generator"
+  className="rounded-xl max-w-full" 
+/>
+
+However, using TypeflowAI, you'd only have to answer these questions:
+
+<UseCaseCallout title="Example questions" type="questions">
+
+- What is the name of your business? UK Supermarkets
+- What industry do you belong to? Retail
+- What is the URL of competitor 1? Tesco
+- What is the URL of competitor 2? Waitrose
+- What is the URL of competitor 3? Sainsbury's
+- What categories of products and services do you offer? Food, beauty, cleaning, etc.
+
+</UseCaseCallout>
+
+And the responses will be used within a prompt to generate a result.
+
+Let's see it with an example:
+
+<UseCaseCallout title="Result" type="result">
+
+After reviewing the websites of Tesco, Waitrose, and Sainsbury's, several key areas and potential supermarket-related keywords were identified that could be valuable for UK Supermarkets. 
+
+Below is a table with examples of keywords, associated content ideas, and an estimate of the ranking difficulty for each:
+
+| Keyword                     | Content Idea                                                             | Ranking Difficulty |
+|-----------------------------|--------------------------------------------------------------------------|--------------------|
+| Easy recipes                | Blog with quick recipes using supermarket products                       | Medium             |
+| Supermarket deals           | Weekly deals page with discounts on specific categories                  | Low                |
+| Supermarket price comparison| Comparative analysis of basic product prices among different chains      | High               |
+| Eco-friendly cleaning products| Guide on sustainable cleaning products and how to use them efficiently   | Medium             |
+| Healthy eating              | Tips and recipes for a balanced diet, including vegan and gluten-free options | Medium         |
+| Online supermarket shopping | Tutorial on how to shop online efficiently on the website                | Low                |
+| Supermarket loyalty club    | Information on the loyalty program and how to maximize benefits          | Low                |
+| Recommended supermarket wines| Reviews and recommendations of wines available at the supermarket       | Medium             |
+
+</UseCaseCallout >
+
+In less than 1 minute, we've generated different keyword ideas classified by ranking difficulty.
+
+Incredible, right?
+
+And there's more: you can even connect TypeflowAI with other tools like Google Spreadsheet, Notion, or Airtable and save the results with all the keywords.
+
+As you can see, the possibilities are endless…
+
+Would you like to try the SEO Keyword Generator template?
+
+export default ({ children }) => <UseCaseLayout meta={meta} useCaseTitle="AI forms Use Cases" useCaseTags={["Marketing","SEO"]}>{children}</UseCaseLayout>;

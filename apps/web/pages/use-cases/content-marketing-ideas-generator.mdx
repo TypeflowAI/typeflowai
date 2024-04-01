@@ -1,0 +1,79 @@
+import UseCaseLayout from "@/components/shared/UseCaseLayout";
+import Image from "next/image";
+import { UseCaseCallout } from "@/components/shared/UseCaseCallout";
+import ContentMarketingIdeasGenerator from "@/images/templates/content-marketing-ideas-generator.png";
+
+export const meta = {
+  title: "How To Generate Content Marketing Strategy using AI",
+  description:
+    "Generate innovative content marketing strategies with AI tools. Learn to provoke thought and engagement through strategic content creation.",
+};
+
+The internet is saturated with content: millions of posts are published every day on social media, blogs, YouTube channels, Instagram, TikTok, podcasts, etc. Moreover, all sectors are highly saturated, whether it’s food, automotive, technology, finance…
+
+But that's not all; the number of influencers is overwhelming, and their professionalism is increasing to the point where new figures are emerging beyond the traditional content manager or community manager, such as the podcast manager, because a higher degree of specialization is needed to create content that makes an impact in that specific format or channel.
+
+Therefore, if you want to develop a content marketing strategy that truly makes an impact, you now have to make an extra effort to come up with innovative ideas that are thought-provoking and stand out from the rest… or, as marketing guru Seth Godin would say, you need to become a purple cow.
+
+The good news is that you now have many tools at your disposal that allow you to generate ideas for interesting content without having to spend hours brainstorming with the rest of the team.
+
+Can you imagine the hours you could save?
+
+Imagine the difference between dedicating 1 hour of work from 2 or 3 people in the company's Marketing Department to being able to simulate a conversation among various experts using artificial intelligence.
+
+This is what you can do with TypeflowAI, a form where you have the option to set up questions and answers that you can then use as variables to include in a prompt to generate dynamic results.
+
+<Image
+  src={ContentMarketingIdeasGenerator}
+  alt="ContentMarketingIdeasGenerator"
+  className="rounded-xl max-w-full" 
+/>
+
+For example, in the case shown below about a company who want to craft a content marketing strategy to promote a new electric car, we have set up these questions:
+
+
+<UseCaseCallout title="Example questions" type="questions">
+
+- What is the focus of the Sector?
+- What topics are covered under Subject?
+- What is the gender of the target audience?
+- What is the age range of the target audience?
+- Where is the audience located (City or Country)?
+- Which brainstorming technique will be used? Please, choose one.
+- Which roles will contribute to brainstorming? Choose as much as you like.
+
+</UseCaseCallout>
+
+And once the answers are obtained, the prompt generates a response like this:
+
+<UseCaseCallout title="Result" type="result">
+
+Using the Brainwriting technique, the Content Manager, the CMO, and the Community Manager from the marketing department focus on developing ideas for a content campaign aimed at the electric car sector, targeted at 40-year-old men in New York.
+
+Here's the list of ideas:
+
+- **Blog about life with an electric car in New York:** Share real experiences of electric car drivers in the city, highlighting benefits and lifestyle.
+- **Series of testimonial videos:** Create a series of short videos with testimonials from electric car users in New York, focusing on how these cars fit their needs and lifestyle.
+- **Interactive guide to charging stations in New York:** Develop an interactive digital guide that shows the locations of charging stations and tips for charging electric cars in the city.
+- **Infographics on savings and environmental benefits:** Create attractive infographics showing how electric cars help save money and benefit the environment.
+- **Interactive comparisons with combustion cars:** Provide an interactive tool where users can compare costs and benefits of electric cars versus combustion cars.
+- **Articles on electric car innovations:** Regularly publish content on the latest innovations in electric cars, with a focus on technology and performance.
+- **Webinars on transitioning to electric mobility:** Organize educational webinars with electric car experts, addressing topics such as the transition to electric mobility and tips for new users.
+- **Social media campaigns with local influencers:** Collaborate with local New York influencers who are electric car enthusiasts to reach the target audience.
+- **Electric car photography contest in New York:** Organize a photography contest where participants capture their experiences with electric cars in different locations around New York.
+- **Featured user stories on social media:** Share stories and experiences of electric car users on social media platforms, encouraging interaction and engagement.
+
+But you can go even further and turn the workflow into a more advanced response generator:
+
+- You can add to the prompt that it converts the results into pillar pages and topic clusters to improve SEO.
+- You can request more related topics and subtopics.
+- You can connect this tool with Airtable to create a bank of ideas that can then be used to create content.
+- You can also do the same with applications like Google Docs or Notion and create a database…
+
+</UseCaseCallout >
+
+The possibilities are endless!
+
+Would you like to get new ideas to create your own content strategy?
+
+export default ({ children }) => <UseCaseLayout meta={meta} useCaseTitle="AI forms Use Cases" useCaseTags={["Marketing","Content"]}>{children}</UseCaseLayout>;

@@ -1,0 +1,91 @@
+import UseCaseLayout from "@/components/shared/UseCaseLayout";
+import Image from "next/image";
+import { UseCaseCallout } from "@/components/shared/UseCaseCallout";
+import TiktokVideoScript from "@/images/templates/tiktok-video-script.png";
+
+export const meta = {
+  title: "How To Generate TikTok Video Scripts using AI Forms",
+  description:
+    "Automate your TikTok video script creation with AI. Produce engaging and creative scripts effortlessly to captivate your audience.",
+};
+
+Do you need to create content for TikTok on a regular basis? If so, you're probably familiar with these challenges:
+
+- Sometimes, you hit a creative block, struggling to find a topic that resonates with your audience.
+- You're unsure how to structure the content to keep viewers engaged from start to finish.
+- You waste time rewriting and tweaking scripts because you're not satisfied with the outcome.
+
+Now, imagine having a tool that allows you to generate new ideas daily and write scripts in seconds by simply filling out a form. This could exponentially increase your productivity, freeing you up for the most important task: recording and posting videos on TikTok.
+
+<Image
+  src={TiktokVideoScript}
+  alt="TikTok Video Script"
+  className="rounded-xl max-w-full" 
+/>
+
+With TypeflowAI, you can use the TikTok Video Script form template and customize it according to your needs. Here are some of the questions you can tailor to your liking:
+
+<UseCaseCallout title="Example questions" type="questions">
+
+- What is the subject or issue we aim to address in the video?
+- How does this concept relate to the chosen topic?
+- What gender are we primarily targeting?
+- What is the age range of our intended audience?
+- Which city or regional audience are we focusing on?
+- In which industry context does our topic and concept best apply?
+
+</UseCaseCallout>
+
+The form uses your answers as variables, incorporating them into a predefined prompt that leverages artificial intelligence to generate results. Thus, the outputs are always new and original, enabling you to fill your entire editorial calendar with this tool.
+
+Of course, you can always add a human touch and tweak it to convey your message, but you won't have to start from scratch or rely on inspiration to create new content.
+
+For instance, imagine you want to create a script for a TikTok video on how Feng Shui influences home decor. You would simply need to answer the questions, and you would get a result like this:
+
+<UseCaseCallout title="Result" type="result">
+
+**[Introduction] - (0-5 seconds)**
+
+Narrator: "Did you know moving your sofa could change your life? Yes, seriously!"
+
+**[Engaging Development] (6-35 seconds)**
+
+Narrator: "In Feng Shui, every corner of your home affects your energy. Let's transform your space, and maybe your luck!"
+
+(Shows a cluttered living room)
+
+ "Does your living room look like this after a busy week? Don't worry, we've all been there."
+
+(Begins rearranging the room) 
+
+"First, let's clear the entrance. In Feng Shui, it's the mouth of chi, where vital energy flows!"
+
+"Now, place the sofa facing the door, but not directly opposite. Welcome good vibes and goodbye stress!"
+
+(Adds plants and decorative elements) 
+
+"Some plants here, a mirror there. In Feng Shui, every detail counts."
+
+**[Climax] (36-48 seconds)**
+
+Narrator: "And now, for the most shocking part... Check this out."
+
+(Reveals a completely transformed space) 
+
+"We only moved a few pieces of furniture, but can you feel the difference? It's like magic!"
+
+**[Conclusion] (49-59 seconds)**
+
+Narrator: "Ready to try these Feng Shui tricks at home? Share your transformations, hit 'like', and follow for more life-changing tips. See you next time!
+
+</UseCaseCallout >
+
+Moreover, you can implement more advanced automations within the workflow, connecting those responses with Google Docs to organize all scripts. 
+
+You can also integrate with Zapier to email the script to the person who will do the recording or connect with Airtable to create a weekly or monthly content calendar...
+
+The possibilities are endless!
+
+Want to try TikTok Video Script now?
+
+export default ({ children }) => <UseCaseLayout meta={meta} useCaseTitle="AI forms Use Cases" useCaseTags={["Marketing","Social Media"]}>{children}</UseCaseLayout>;
