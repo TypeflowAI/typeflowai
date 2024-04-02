@@ -14,7 +14,7 @@ const jost = Jost({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className={jost.className}>
-      <PlausibleProvider domain="typeflowai.com" selfHosted={true}>
+      <PlausibleProvider domain="typeflowai.com">
         <Component {...pageProps} />
       </PlausibleProvider>
     </div>
