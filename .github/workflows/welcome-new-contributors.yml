@@ -22,6 +22,5 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           pr-message: |-
             Thank you so much for making your first Pull Request and taking the time to improve TypeflowAI! 🚀🙏❤️
-            # Feel free to join the conversation at [Discord](https://typeflowai.com/discord)
           issue-message: |
             Thank you for opening your first issue! 🙏❤️ One of our team members will review it and get back to you as soon as it possible. 😊
