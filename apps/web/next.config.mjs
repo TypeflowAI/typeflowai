@@ -1,5 +1,4 @@
 import nextMDX from "@next/mdx";
-import { withPlausibleProxy } from "next-plausible";
 
 import { recmaPlugins } from "./mdx/recma.mjs";
 import { rehypePlugins } from "./mdx/rehype.mjs";
@@ -134,7 +133,3 @@ const nextConfig = {
     };
   },
 };
-
-export default withPlausibleProxy({ customDomain: "https://plausible.typeflowai.com" })(
-  withSearch(withMDX(nextConfig))
-);

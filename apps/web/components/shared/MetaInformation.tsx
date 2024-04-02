@@ -58,7 +58,7 @@ export default function MetaInformation({
         name="keywords"
         content="AI forms, smart data collection, conversational engagement, TypeflowAI, advanced form builder, user experience design, form automation, GPT technology, personalized forms, typeform alternative, involve.me alternative, youform.io alternative, formwise.ai alternative, data-driven insights"
       />
-      <meta name="theme-color" content="#00C4B8" />
+      <meta name="theme-color" content="#2e1065" />
     </Head>
   );
 }
