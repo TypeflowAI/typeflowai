@@ -60,8 +60,8 @@ export const Hero: React.FC = () => {
                 />
               </div>
               <div className="mx-auto mt-16 flex max-w-2xl justify-center sm:mt-24 lg:my-12 lg:ml-10 lg:mr-0 lg:max-w-none lg:flex-none xl:ml-32">
-                <div className="relative max-w-3xl flex-none sm:max-w-5xl lg:max-w-none">
-                  <div className="ring-outset relative z-[1100] -m-2 rounded-xl bg-gray-900/50 p-2 ring-1 ring-gray-900/50 lg:-m-4 lg:rounded-2xl lg:p-3">
+                <div className="relative max-w-3xl max-w-full flex-none sm:max-w-5xl lg:max-w-none ">
+                  <div className="ring-outset  relative z-[1100] -m-2 rounded-xl bg-gray-900/50 p-2 ring-1 ring-gray-900/50 lg:-m-4 lg:rounded-2xl lg:p-3">
                     <Image
                       className="w-[40rem] rounded-md shadow-2xl ring-1 ring-gray-900/20"
                       alt="Hero Image"
