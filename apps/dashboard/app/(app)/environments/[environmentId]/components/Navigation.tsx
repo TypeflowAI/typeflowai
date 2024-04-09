@@ -1,7 +1,6 @@
 "use client";
 
 import FaveIcon from "@/app/favicon.ico";
-import { typeflowaiEnabled } from "@/app/lib/typeflowai";
 import { typeflowaiLogout } from "@/app/lib/typeflowai";
 import {
   AdjustmentsVerticalIcon,
@@ -19,9 +18,10 @@ import {
   UserCircleIcon,
   UsersIcon,
 } from "@heroicons/react/24/solid";
-import { createBrowserClient } from "@supabase/ssr";
 import clsx from "clsx";
 import { MenuIcon } from "lucide-react";
+import type { Session } from "next-auth";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -62,6 +62,7 @@ import UrlShortenerModal from "./UrlShortenerModal";
 interface NavigationProps {
   environment: TEnvironment;
   teams: TTeam[];
+  session: Session;
   team: TTeam;
   products: TProduct[];
   environments: TEnvironment[];
@@ -74,16 +75,13 @@ export default function Navigation({
   environment,
   teams,
   team,
+  session,
   products,
   environments,
   isTypeflowAICloud,
   webAppUrl,
   membershipRole,
 }: NavigationProps) {
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
   const router = useRouter();
   const pathname = usePathname();
   const [currentTeamName, setCurrentTeamName] = useState("");
@@ -96,21 +94,6 @@ export default function Navigation({
   const [mobileNavMenuOpen, setMobileNavMenuOpen] = useState(false);
   const { isAdmin, isOwner, isViewer } = getAccessFlags(membershipRole);
   const isPricingDisabled = !isOwner && !isAdmin;
-  const [user, setUser] = useState<any>(null);
-
-  useEffect(() => {
-    const getUser = async () => {
-      const { data } = await supabase.auth.getUser();
-
-      setUser(data.user);
-    };
-
-    getUser();
-  }, []);
-
-  const handleSignOut = () => {
-    supabase.auth.signOut();
-  };
 
   useEffect(() => {
     if (environment && environment.widgetSetupCompleted) {
@@ -331,17 +314,17 @@ export default function Navigation({
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <div tabIndex={0} className="flex cursor-pointer flex-row items-center space-x-5">
-                      {user &&
-                        (user.imageUrl ? (
+                      {session.user &&
+                        (session.user.imageUrl ? (
                           <Image
-                            src={user.imageUrl}
+                            src={session.user.imageUrl}
                             width="40"
                             height="40"
                             className="ph-no-capture h-10 w-10 rounded-full"
                             alt="Profile picture"
                           />
                         ) : (
-                          <ProfileAvatar userId={user.id} />
+                          <ProfileAvatar userId={session.user.id} />
                         ))}
                       <div>
                         <p className="ph-no-capture ph-no-capture -mb-0.5 text-sm font-bold text-white">
@@ -355,19 +338,19 @@ export default function Navigation({
                   <DropdownMenuContent className="w-56">
                     <DropdownMenuLabel className="cursor-default break-all">
                       <span className="ph-no-capture font-normal">Signed in as </span>
-                      {user?.name && user?.name.length > 30 ? (
+                      {session?.user?.name && session?.user?.name.length > 30 ? (
                         <TooltipProvider delayDuration={50}>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <span>{truncate(user?.name, 30)}</span>
+                              <span>{truncate(session?.user?.name, 30)}</span>
                             </TooltipTrigger>
                             <TooltipContent className="max-w-[45rem] break-all" side="left" sideOffset={5}>
-                              {user?.name}
+                              {session?.user?.name}
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       ) : (
-                        user?.name
+                        session?.user?.name
                       )}
                     </DropdownMenuLabel>
 
@@ -521,11 +504,8 @@ export default function Navigation({
                       )}
                       <DropdownMenuItem
                         onClick={async () => {
-                          await handleSignOut();
-                          if (typeflowaiEnabled && user && typeflowai) {
-                            await typeflowaiLogout();
-                          }
-                          window.location.href = "/";
+                          await signOut();
+                          await typeflowaiLogout();
                         }}>
                         <div className="flex h-full w-full items-center">
                           <ArrowRightOnRectangleIcon className="mr-2 h-4 w-4" />

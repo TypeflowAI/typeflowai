@@ -3,12 +3,12 @@ import WorkflowDropDownMenu from "@/app/(app)/environments/[environmentId]/workf
 import WorkflowStarter from "@/app/(app)/environments/[environmentId]/workflows/components/WorkflowStarter";
 import { generateWorkflowSingleUseId } from "@/app/lib/singleUseWorkflows";
 import { ComputerDesktopIcon, LinkIcon, PlusIcon } from "@heroicons/react/24/solid";
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 
 import { getIsEngineLimited } from "@typeflowai/ee/lib/service";
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment, getEnvironments } from "@typeflowai/lib/environment/service";
 import { getMembershipByUserIdTeamId } from "@typeflowai/lib/membership/service";
@@ -22,24 +22,7 @@ import { Badge } from "@typeflowai/ui/Badge";
 import { WorkflowStatusIndicator } from "@typeflowai/ui/WorkflowStatusIndicator";
 
 export default async function WorkflowsList({ environmentId }: { environmentId: string }) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
-
+  const session = await getServerSession(authOptions);
   const product = await getProductByEnvironmentId(environmentId);
   const team = await getTeamByEnvironmentId(environmentId);
 

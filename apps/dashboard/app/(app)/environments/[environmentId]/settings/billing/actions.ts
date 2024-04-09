@@ -1,7 +1,6 @@
 "use server";
 
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 
 import { StripePriceLookupKeys } from "@typeflowai/ee/billing/lib/constants";
 import { createCustomerPortalSession } from "@typeflowai/ee/billing/lib/createCustomerPortalSession";
@@ -9,6 +8,7 @@ import { createSubscription } from "@typeflowai/ee/billing/lib/createSubscriptio
 import { reactivateSubscription } from "@typeflowai/ee/billing/lib/reactivateSubscription";
 import { removeSubscription } from "@typeflowai/ee/billing/lib/removeSubscription";
 import { updateSubscription } from "@typeflowai/ee/billing/lib/updateSubscription";
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { WEBAPP_URL } from "@typeflowai/lib/constants";
 import { canUserAccessTeam } from "@typeflowai/lib/team/auth";
 import { getTeam } from "@typeflowai/lib/team/service";
@@ -19,23 +19,7 @@ export async function createPlanAction(
   environmentId: string,
   priceLookupKey: StripePriceLookupKeys
 ) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 
@@ -52,23 +36,7 @@ export async function updatePlanAction(
   environmentId: string,
   priceLookupKey: StripePriceLookupKeys
 ) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 
@@ -80,23 +48,7 @@ export async function updatePlanAction(
 }
 
 export async function manageSubscriptionAction(teamId: string, environmentId: string) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 
@@ -115,23 +67,7 @@ export async function manageSubscriptionAction(teamId: string, environmentId: st
 }
 
 export async function removeSubscriptionAction(teamId: string, environmentId: string) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 
@@ -144,23 +80,7 @@ export async function removeSubscriptionAction(teamId: string, environmentId: st
 }
 
 export async function reactivateSubscriptionAction(teamId: string, environmentId: string) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 

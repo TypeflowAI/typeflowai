@@ -91,7 +91,7 @@ model AttributeClass {
 
 model Person {
   id            String      @id @default(cuid())
-  userId        String      @db.Uuid
+  userId        String
   createdAt     DateTime    @default(now()) @map(name: "created_at")
   updatedAt     DateTime    @updatedAt @map(name: "updated_at")
   environment   Environment @relation(fields: [environmentId], references: [id], onDelete: Cascade)
@@ -143,7 +143,7 @@ model ResponseNote {
   response   Response @relation(fields: [responseId], references: [id], onDelete: Cascade)
   responseId String
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     String   @db.Uuid
+  userId     String
   text       String
   isResolved Boolean  @default(false)
   isEdited   Boolean  @default(false)
@@ -446,7 +446,7 @@ model Membership {
   team     Team           @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId   String
   user     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId   String         @db.Uuid
+  userId   String
   accepted Boolean        @default(false)
   role     MembershipRole
 
@@ -462,9 +462,9 @@ model Invite {
   team       Team           @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId     String
   creator    User           @relation("inviteCreatedBy", fields: [creatorId], references: [id])
-  creatorId  String         @db.Uuid
+  creatorId  String
   acceptor   User?          @relation("inviteAcceptedBy", fields: [acceptorId], references: [id], onDelete: Cascade)
-  acceptorId String?        @db.Uuid
+  acceptorId String?
   accepted   Boolean        @default(false)
   createdAt  DateTime       @default(now())
   expiresAt  DateTime
@@ -498,7 +498,7 @@ model Account {
   createdAt         DateTime @default(now()) @map(name: "created_at")
   updatedAt         DateTime @updatedAt @map(name: "updated_at")
   user              User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId            String   @db.Uuid
+  userId            String
   type              String
   provider          String
   providerAccountId String
@@ -546,7 +546,7 @@ enum Intention {
 }
 
 model User {
-  id                        String           @id @db.Uuid
+  id                        String           @id @default(cuid())
   createdAt                 DateTime         @default(now()) @map(name: "created_at")
   updatedAt                 DateTime         @updatedAt @map(name: "updated_at")
   name                      String?
@@ -556,6 +556,7 @@ model User {
   twoFactorSecret           String?
   twoFactorEnabled          Boolean          @default(false)
   backupCodes               String?
+  password                  String?
   onboardingCompleted       Boolean          @default(false)
   identityProvider          IdentityProvider @default(email)
   identityProviderAccountId String?

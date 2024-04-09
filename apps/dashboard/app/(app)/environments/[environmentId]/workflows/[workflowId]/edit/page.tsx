@@ -1,9 +1,9 @@
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 
 import { getIsEngineLimited } from "@typeflowai/ee/lib/service";
 import { getActionClasses } from "@typeflowai/lib/actionClass/service";
 import { getAttributeClasses } from "@typeflowai/lib/attributeClass/service";
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { colours } from "@typeflowai/lib/constants";
 import { WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
@@ -25,7 +25,7 @@ export const generateMetadata = async ({ params }) => {
 };
 
 export default async function WorkflowsEditPage({ params }) {
-  const [workflow, product, environment, actionClasses, attributeClasses, responseCount, team] =
+  const [workflow, product, environment, actionClasses, attributeClasses, responseCount, team, session] =
     await Promise.all([
       getWorkflow(params.workflowId),
       getProductByEnvironmentId(params.environmentId),
@@ -34,25 +34,8 @@ export default async function WorkflowsEditPage({ params }) {
       getAttributeClasses(params.environmentId),
       getResponseCountByWorkflowId(params.workflowId),
       getTeamByEnvironmentId(params.environmentId),
+      getServerSession(authOptions),
     ]);
-
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
 
   if (!session) {
     throw new Error("Session not found");

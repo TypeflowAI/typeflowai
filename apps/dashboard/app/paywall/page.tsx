@@ -1,7 +1,7 @@
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { getFirstEnvironmentByUserId } from "@typeflowai/lib/environment/service";
 import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
 import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
@@ -11,23 +11,7 @@ import Paywall from "./components/Paywall";
 import { plansAndFeatures } from "./plans";
 
 export default async function PaywallPage() {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     redirect("/auth/login");

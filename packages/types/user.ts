@@ -11,17 +11,6 @@ const ZRole = z.enum([
   "other",
 ]);
 
-export const ZUuid = z.string().refine(
-  (val) => {
-    // Regex para validar un UUID v4
-    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[4][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    return uuidRegex.test(val);
-  },
-  {
-    message: "Invalid UUID",
-  }
-);
-
 export const ZUserObjective = z.enum([
   "enhance_online_presence",
   "boost_engagement_and_conversion",
@@ -36,7 +25,7 @@ export const ZUserObjective = z.enum([
 export type TUserObjective = z.infer<typeof ZUserObjective>;
 
 export const ZUser = z.object({
-  id: ZUuid,
+  id: z.string(),
   name: z.string().nullable(),
   email: z.string(),
   emailVerified: z.date().nullable(),

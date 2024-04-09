@@ -1,11 +1,10 @@
-import { createServerClient } from "@supabase/ssr";
 import crypto from "crypto";
-import { cookies } from "next/headers";
 import { authenticator } from "otplib";
 import qrcode from "qrcode";
 
 import { prisma } from "@typeflowai/database";
 
+import { verifyPassword } from "../auth";
 import { ENCRYPTION_KEY } from "../constants";
 import { symmetricDecrypt, symmetricEncrypt } from "../crypto";
 import { totpAuthenticatorCheck } from "../totp";
@@ -27,45 +26,28 @@ export const setupTwoFactorAuth = async (
   // generate backup codes with 10 character length
   const backupCodes = Array.from(Array(10), () => crypto.randomBytes(5).toString("hex"));
 
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { user: supabaseUser },
-  } = await supabaseServerClient.auth.getUser();
-
   const user = await prisma.user.findUnique({
     where: {
       id: userId,
     },
   });
 
-  if (!supabaseUser || !user) {
+  if (!user) {
     throw new Error("User not found");
+  }
+
+  if (!user.password) {
+    throw new Error("User does not have a password set");
   }
 
   if (user.identityProvider !== "email") {
     throw new Error("Third party login is already enabled");
   }
 
-  const { data: isValidOldPassword, error: passwordError } = await supabaseServerClient.rpc(
-    "verify_user_password",
-    { password: password }
-  );
+  const isCorrectPassword = await verifyPassword(password, user.password);
 
-  if (passwordError || !isValidOldPassword) {
-    throw passwordError;
+  if (!isCorrectPassword) {
+    throw new Error("Incorrect password");
   }
 
   if (!ENCRYPTION_KEY) {
@@ -99,6 +81,10 @@ export const enableTwoFactorAuth = async (id: string, code: string) => {
 
   if (!user) {
     throw new Error("User not found");
+  }
+
+  if (!user.password) {
+    throw new Error("User does not have a password set");
   }
 
   if (user.identityProvider !== "email") {
@@ -162,6 +148,10 @@ export const disableTwoFactorAuth = async (id: string, params: TDisableTwoFactor
     throw new Error("User not found");
   }
 
+  if (!user.password) {
+    throw new Error("User does not have a password set");
+  }
+
   if (!user.twoFactorEnabled) {
     throw new Error("Two factor authentication is not enabled");
   }
@@ -171,35 +161,9 @@ export const disableTwoFactorAuth = async (id: string, params: TDisableTwoFactor
   }
 
   const { code, password, backupCode } = params;
+  const isCorrectPassword = await verifyPassword(password, user.password);
 
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { user: supabaseUser },
-  } = await supabaseServerClient.auth.getUser();
-
-  if (!supabaseUser || !user) {
-    throw new Error("User not found");
-  }
-
-  const { data: isValidOldPassword, error: passwordError } = await supabaseServerClient.rpc(
-    "verify_user_password",
-    { password: password }
-  );
-
-  if (passwordError || !isValidOldPassword) {
+  if (!isCorrectPassword) {
     throw new Error("Incorrect password");
   }
 

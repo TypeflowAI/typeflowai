@@ -1,10 +1,10 @@
 import { responses } from "@/app/lib/api/response";
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 import { NextRequest } from "next/server";
 import * as z from "zod";
 
 import { getTables } from "@typeflowai/lib/airtable/service";
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { hasUserEnvironmentAccess } from "@typeflowai/lib/environment/auth";
 import { getIntegrationByType } from "@typeflowai/lib/integration/service";
 import { TIntegrationAirtable } from "@typeflowai/types/integration/airtable";
@@ -14,23 +14,7 @@ export async function GET(req: NextRequest) {
   const environmentId = req.headers.get("environmentId");
   const queryParams = new URLSearchParams(url.split("?")[1]);
 
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   const baseId = z.string().safeParse(queryParams.get("baseId"));
 

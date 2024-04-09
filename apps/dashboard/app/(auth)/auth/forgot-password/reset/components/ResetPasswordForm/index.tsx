@@ -3,7 +3,7 @@
 import IsPasswordValid from "@/app/(auth)/auth/components/IsPasswordValid";
 import { resetPassword } from "@/app/lib/users/users";
 import { XCircleIcon } from "@heroicons/react/24/solid";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 
@@ -11,6 +11,7 @@ import { Button } from "@typeflowai/ui/Button";
 import { PasswordInput } from "@typeflowai/ui/PasswordInput";
 
 export const ResetPasswordForm = () => {
+  const searchParams = useSearchParams();
   const router = useRouter();
   const [error, setError] = useState<string>("");
   const [password, setPassword] = useState<string | null>(null);
@@ -25,8 +26,11 @@ export const ResetPasswordForm = () => {
       return;
     }
     setLoading(true);
+    const token = searchParams?.get("token");
     try {
-      await resetPassword(e.target.elements.password.value);
+      if (!token) throw new Error("No token provided");
+      await resetPassword(token, e.target.elements.password.value);
+
       router.push("/auth/forgot-password/reset/success");
     } catch (e) {
       setError(e.message);

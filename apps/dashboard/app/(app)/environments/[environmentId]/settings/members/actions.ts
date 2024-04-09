@@ -1,9 +1,9 @@
 "use server";
 
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 
 import { hasTeamAuthority } from "@typeflowai/lib/auth";
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { INVITE_DISABLED } from "@typeflowai/lib/constants";
 import { deleteInvite, getInvite, inviteUser, resendInvite } from "@typeflowai/lib/invite/service";
 import { createInviteToken } from "@typeflowai/lib/jwt";
@@ -19,23 +19,7 @@ import { AuthenticationError, AuthorizationError, ValidationError } from "@typef
 import { TMembershipRole } from "@typeflowai/types/memberships";
 
 export const updateTeamNameAction = async (teamId: string, teamName: string) => {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     throw new AuthenticationError("Not authenticated");
@@ -50,23 +34,7 @@ export const updateTeamNameAction = async (teamId: string, teamName: string) => 
 };
 
 export const deleteInviteAction = async (inviteId: string, teamId: string) => {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     throw new AuthenticationError("Not authenticated");
@@ -82,23 +50,7 @@ export const deleteInviteAction = async (inviteId: string, teamId: string) => {
 };
 
 export const deleteMembershipAction = async (userId: string, teamId: string) => {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     throw new AuthenticationError("Not authenticated");
@@ -123,23 +75,7 @@ export const deleteMembershipAction = async (userId: string, teamId: string) => 
 };
 
 export const leaveTeamAction = async (teamId: string) => {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     throw new AuthenticationError("Not authenticated");
@@ -182,23 +118,7 @@ export const inviteUserAction = async (
   name: string,
   role: TMembershipRole
 ) => {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     throw new AuthenticationError("Not authenticated");
@@ -239,23 +159,7 @@ export const inviteUserAction = async (
 };
 
 export const deleteTeamAction = async (teamId: string) => {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     throw new AuthenticationError("Not authenticated");

@@ -8,7 +8,6 @@ import { ZString } from "@typeflowai/types/common";
 import { ZId } from "@typeflowai/types/environment";
 import { DatabaseError, ResourceNotFoundError } from "@typeflowai/types/errors";
 import { TResponseNote, ZResponseNote } from "@typeflowai/types/responses";
-import { ZUuid } from "@typeflowai/types/user";
 
 import { SERVICES_REVALIDATION_INTERVAL } from "../constants";
 import { responseCache } from "../response/cache";
@@ -42,7 +41,7 @@ export const createResponseNote = async (
   userId: string,
   text: string
 ): Promise<TResponseNote> => {
-  validateInputs([responseId, ZId], [userId, ZUuid], [text, ZString]);
+  validateInputs([responseId, ZId], [userId, ZId], [text, ZString]);
 
   try {
     const responseNote = await prisma.responseNote.create({

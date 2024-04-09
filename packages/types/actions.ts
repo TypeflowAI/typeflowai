@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 import { ZActionClass } from "./actionClasses";
-import { ZUuid } from "./user";
 
 export const ZAction = z.object({
   id: z.string(),
@@ -15,7 +14,7 @@ export type TAction = z.infer<typeof ZAction>;
 
 export const ZActionInput = z.object({
   environmentId: z.string().cuid(),
-  userId: ZUuid,
+  userId: z.string(),
   name: z.string(),
   properties: z.record(z.string()),
 });

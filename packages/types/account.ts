@@ -1,9 +1,7 @@
 import { z } from "zod";
 
-import { ZUuid } from "./user";
-
 export const ZAccountInput = z.object({
-  userId: ZUuid,
+  userId: z.string(),
   type: z.string(),
   provider: z.string(),
   providerAccountId: z.string(),
@@ -21,7 +19,7 @@ export const ZAccount = z.object({
   id: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
-  userId: ZUuid,
+  userId: z.string(),
   type: z.string(),
   provider: z.string(),
   providerAccountId: z.string(),

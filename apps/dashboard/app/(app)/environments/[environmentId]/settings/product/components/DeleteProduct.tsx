@@ -1,7 +1,7 @@
 import DeleteProductRender from "@/app/(app)/environments/[environmentId]/settings/product/components/DeleteProductRender";
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { getMembershipByUserIdTeamId } from "@typeflowai/lib/membership/service";
 import { getProducts } from "@typeflowai/lib/product/service";
 import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
@@ -13,23 +13,7 @@ type DeleteProductProps = {
 };
 
 export default async function DeleteProduct({ environmentId, product }: DeleteProductProps) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     throw new Error("Session not found");

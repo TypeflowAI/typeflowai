@@ -1,55 +1,27 @@
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import type { Session } from "next-auth";
+import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { ONBOARDING_DISABLED } from "@typeflowai/lib/constants";
 import { getFirstEnvironmentByUserId } from "@typeflowai/lib/environment/service";
 import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
 import ClientLogout from "@typeflowai/ui/ClientLogout";
 
 export default async function Home() {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session: Session | null = await getServerSession(authOptions);
 
   if (!session) {
     redirect("/auth/login");
   }
 
-  const userId = session.user?.id as string;
-
-  const { data: userDetails, error } = await supabaseServerClient
-    .from("User")
-    .select("*")
-    .eq("id", userId)
-    .single();
-
-  if (error) {
-    console.error("Error getting user details:", error);
-    return <ClientLogout />;
-  }
-
-  if (!ONBOARDING_DISABLED && userDetails && !userDetails.onboardingCompleted) {
+  if (!ONBOARDING_DISABLED && session?.user && !session?.user?.onboardingCompleted) {
     return redirect(`/onboarding`);
   }
 
   let environment;
   try {
-    environment = await getFirstEnvironmentByUserId(userId);
+    environment = await getFirstEnvironmentByUserId(session?.user.id);
     if (!environment) {
       throw new Error("No environment found");
     }

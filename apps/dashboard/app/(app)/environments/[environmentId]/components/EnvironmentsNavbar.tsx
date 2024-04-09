@@ -1,7 +1,7 @@
 // import Navigation from "@/app/(app)/environments/[environmentId]/components/Navigation";
 import NavigationDesktop from "@/app/(app)/environments/[environmentId]/components/NavigationDesktop";
 import NavigationMobile from "@/app/(app)/environments/[environmentId]/components/NavigationMobile";
-import { Session } from "@supabase/supabase-js";
+import { Session } from "next-auth";
 
 import { IS_TYPEFLOWAI_CLOUD, WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment, getEnvironments } from "@typeflowai/lib/environment/service";
@@ -60,6 +60,7 @@ export default async function EnvironmentsNavbar({
       teams={teams}
       products={products}
       environments={environments}
+      session={session}
       isTypeflowAICloud={IS_TYPEFLOWAI_CLOUD}
       webAppUrl={WEBAPP_URL}
       membershipRole={currentUserMembership?.role}

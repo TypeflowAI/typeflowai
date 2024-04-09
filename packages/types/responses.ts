@@ -2,7 +2,6 @@ import { z } from "zod";
 
 import { ZPerson, ZPersonAttributes } from "./people";
 import { ZTag } from "./tags";
-import { ZUuid } from "./user";
 import { ZWorkflow } from "./workflows";
 
 export const ZResponseData = z.record(z.union([z.string(), z.number(), z.array(z.string())]));
@@ -18,7 +17,7 @@ export const ZResponsePersonAttributes = ZPersonAttributes.nullable();
 export type TResponsePersonAttributes = z.infer<typeof ZResponsePersonAttributes>;
 
 export const ZResponseNoteUser = z.object({
-  id: ZUuid,
+  id: z.string().cuid2(),
   name: z.string().nullable(),
 });
 
@@ -71,7 +70,7 @@ export type TResponse = z.infer<typeof ZResponse>;
 export const ZResponseInput = z.object({
   environmentId: z.string().cuid2(),
   workflowId: z.string().cuid2(),
-  userId: ZUuid.nullish(),
+  userId: z.string().nullish(),
   singleUseId: z.string().nullable().optional(),
   finished: z.boolean(),
   data: ZResponseData,

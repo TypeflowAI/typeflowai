@@ -1,7 +1,6 @@
 import { unstable_cache } from "next/cache";
 
 import { ZId } from "@typeflowai/types/environment";
-import { ZUuid } from "@typeflowai/types/user";
 
 import { SERVICES_REVALIDATION_INTERVAL } from "../constants";
 import { hasUserEnvironmentAccess } from "../environment/auth";
@@ -12,7 +11,7 @@ import { getWebhook } from "./service";
 export const canUserAccessWebhook = async (userId: string, webhookId: string): Promise<boolean> =>
   await unstable_cache(
     async () => {
-      validateInputs([userId, ZUuid], [webhookId, ZId]);
+      validateInputs([userId, ZId], [webhookId, ZId]);
 
       const webhook = await getWebhook(webhookId);
       if (!webhook) return false;

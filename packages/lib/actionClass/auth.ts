@@ -3,7 +3,6 @@ import "server-only";
 import { unstable_cache } from "next/cache";
 
 import { ZId } from "@typeflowai/types/environment";
-import { ZUuid } from "@typeflowai/types/user";
 
 import { SERVICES_REVALIDATION_INTERVAL } from "../constants";
 import { hasUserEnvironmentAccess } from "../environment/auth";
@@ -17,7 +16,7 @@ import { getActionClass } from "./service";
 export const canUserUpdateActionClass = async (userId: string, actionClassId: string): Promise<boolean> =>
   await unstable_cache(
     async () => {
-      validateInputs([userId, ZUuid], [actionClassId, ZId]);
+      validateInputs([userId, ZId], [actionClassId, ZId]);
       if (!userId) return false;
 
       const actionClass = await getActionClass(actionClassId);

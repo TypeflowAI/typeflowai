@@ -1,7 +1,7 @@
 "use client";
 
 import { updateUserAction } from "@/app/(app)/onboarding/actions";
-import { Session } from "@supabase/supabase-js";
+import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { toast } from "react-hot-toast";

@@ -5,9 +5,9 @@ import { unstable_cache } from "next/cache";
 import { z } from "zod";
 
 import { prisma } from "@typeflowai/database";
+import { ZId } from "@typeflowai/types/environment";
 import { DatabaseError, ResourceNotFoundError } from "@typeflowai/types/errors";
 import { TMembership } from "@typeflowai/types/memberships";
-import { ZUuid } from "@typeflowai/types/user";
 import { TUser, TUserCreateInput, TUserUpdateInput, ZUser, ZUserUpdateInput } from "@typeflowai/types/user";
 
 import { SERVICES_REVALIDATION_INTERVAL } from "../constants";
@@ -35,7 +35,7 @@ const responseSelection = {
 export const getUser = async (id: string): Promise<TUser | null> => {
   const user = await unstable_cache(
     async () => {
-      validateInputs([id, ZUuid]);
+      validateInputs([id, ZId]);
 
       try {
         const user = await prisma.user.findUnique({
@@ -114,7 +114,7 @@ const getAdminMemberships = (memberships: TMembership[]): TMembership[] =>
 
 // function to update a user's user
 export const updateUser = async (personId: string, data: TUserUpdateInput): Promise<TUser> => {
-  validateInputs([personId, ZUuid], [data, ZUserUpdateInput.partial()]);
+  validateInputs([personId, ZId], [data, ZUserUpdateInput.partial()]);
 
   try {
     const updatedUser = await prisma.user.update({
@@ -141,7 +141,7 @@ export const updateUser = async (personId: string, data: TUserUpdateInput): Prom
 };
 
 const deleteUserById = async (id: string): Promise<TUser> => {
-  validateInputs([id, ZUuid]);
+  validateInputs([id, ZId]);
 
   const user = await prisma.user.delete({
     where: {
@@ -158,20 +158,11 @@ const deleteUserById = async (id: string): Promise<TUser> => {
   return user;
 };
 
-export const createUser = async (data: TUserCreateInput, supabaseUser: string): Promise<TUser> => {
+export const createUser = async (data: TUserCreateInput): Promise<TUser> => {
   validateInputs([data, ZUserUpdateInput]);
 
-  const user = await prisma.user.upsert({
-    where: {
-      id: supabaseUser,
-    },
-    update: {
-      ...data,
-    },
-    create: {
-      ...data,
-      id: supabaseUser,
-    },
+  const user = await prisma.user.create({
+    data: data,
     select: responseSelection,
   });
 
@@ -185,7 +176,7 @@ export const createUser = async (data: TUserCreateInput, supabaseUser: string): 
 
 // function to delete a user's user including teams
 export const deleteUser = async (id: string): Promise<TUser> => {
-  validateInputs([id, ZUuid]);
+  validateInputs([id, ZId]);
 
   try {
     const currentUserMemberships = await prisma.membership.findMany({

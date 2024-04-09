@@ -1,6 +1,6 @@
 # Security Policy of TypeflowAI
 
-This is Formbrick's security policy. Please reach out to us
+This is TypeflowAI's security policy. Please reach out to us
 on our Discord or, if privately, via <security@typeflowai.com>
 
 ## Introduction

@@ -1,11 +1,11 @@
 import FormWrapper from "@/app/(auth)/auth/components/FormWrapper";
 import SidebarLogin from "@/app/(auth)/auth/components/SidebarLogin";
 import { SigninForm } from "@/app/(auth)/auth/login/components/SigninForm";
-import { createServerClient } from "@supabase/ssr";
 import { Metadata } from "next";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
+import { authOptions } from "@typeflowai/lib/authOptions";
 import {
   AZURE_OAUTH_ENABLED,
   GITHUB_OAUTH_ENABLED,
@@ -20,23 +20,7 @@ export const metadata: Metadata = {
 };
 
 export default async function SignInPage() {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (session) {
     redirect(`/`);

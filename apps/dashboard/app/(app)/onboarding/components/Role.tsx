@@ -2,7 +2,7 @@
 
 import { updateUserAction } from "@/app/(app)/onboarding/actions";
 import { createResponse, typeflowaiEnabled } from "@/app/lib/typeflowai";
-import { Session } from "@supabase/supabase-js";
+import { Session } from "next-auth";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 

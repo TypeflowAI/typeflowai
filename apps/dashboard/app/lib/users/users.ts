@@ -1,9 +1,12 @@
+import { hashPassword } from "@typeflowai/lib/auth/util";
+
 export const createUser = async (
   name: string,
   email: string,
   password: string,
   inviteToken?: string | null
 ): Promise<any> => {
+  const hashedPassword = await hashPassword(password);
   try {
     const res = await fetch(`/api/v1/users`, {
       method: "POST",
@@ -11,7 +14,7 @@ export const createUser = async (
       body: JSON.stringify({
         name,
         email,
-        password: password,
+        password: hashedPassword,
         inviteToken,
         onboardingCompleted: false,
       }),
@@ -64,13 +67,15 @@ export const forgotPassword = async (email: string) => {
   }
 };
 
-export const resetPassword = async (password: string): Promise<any> => {
+export const resetPassword = async (token: string, password: string): Promise<any> => {
+  const hashedPassword = await hashPassword(password);
   try {
     const res = await fetch(`/api/v1/users/reset-password`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        password,
+        token,
+        hashedPassword,
       }),
     });
     if (res.status !== 200) {

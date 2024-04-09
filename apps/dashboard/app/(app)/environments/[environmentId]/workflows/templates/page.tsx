@@ -1,39 +1,16 @@
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 
 import { getIsEngineLimited } from "@typeflowai/ee/lib/service";
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
 import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
 import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
-import { getUser } from "@typeflowai/lib/user/service";
 
 import TemplateContainerWithPreview from "./TemplateContainer";
 
 export default async function WorkflowTemplatesPage({ params }) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
-
-  const currentUser = session && session.user ? await getUser(session.user.id) : null;
-
-  if (!currentUser) {
-    throw new Error("User not available");
-  }
+  const session = await getServerSession(authOptions);
 
   const environmentId = params.environmentId;
 
@@ -64,7 +41,7 @@ export default async function WorkflowTemplatesPage({ params }) {
   return (
     <TemplateContainerWithPreview
       environmentId={environmentId}
-      user={currentUser}
+      user={session.user}
       environment={environment}
       product={product}
       webAppUrl={WEBAPP_URL}

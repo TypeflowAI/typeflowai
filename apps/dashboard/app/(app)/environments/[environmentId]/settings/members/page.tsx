@@ -1,9 +1,9 @@
 import TeamActions from "@/app/(app)/environments/[environmentId]/settings/members/components/EditMemberships/TeamActions";
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 import { Suspense } from "react";
 
 import { getRoleManagementPermission } from "@typeflowai/ee/lib/service";
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { INVITE_DISABLED, IS_TYPEFLOWAI_CLOUD } from "@typeflowai/lib/constants";
 import { getMembershipByUserIdTeamId, getMembershipsByUserId } from "@typeflowai/lib/membership/service";
 import { getAccessFlags } from "@typeflowai/lib/membership/utils";
@@ -43,23 +43,7 @@ const MembersLoading = () => (
 );
 
 export default async function MembersSettingsPage({ params }: { params: { environmentId: string } }) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     throw new Error("Unauthenticated");

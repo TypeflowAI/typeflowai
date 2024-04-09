@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-import { ZUuid } from "./user";
-
 export const ZDisplay = z.object({
   id: z.string().cuid(),
   createdAt: z.date(),
@@ -17,7 +15,7 @@ export type TDisplay = z.infer<typeof ZDisplay>;
 export const ZDisplayCreateInput = z.object({
   environmentId: z.string().cuid(),
   workflowId: z.string().cuid(),
-  userId: ZUuid.optional(),
+  userId: z.string().optional(),
   responseId: z.string().cuid().optional(),
 });
 
@@ -25,7 +23,7 @@ export type TDisplayCreateInput = z.infer<typeof ZDisplayCreateInput>;
 
 export const ZDisplayUpdateInput = z.object({
   environmentId: z.string().cuid(),
-  userId: ZUuid.optional(),
+  userId: z.string().optional(),
   responseId: z.string().cuid().optional(),
 });
 

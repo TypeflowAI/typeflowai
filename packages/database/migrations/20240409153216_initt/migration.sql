@@ -93,7 +93,7 @@ CREATE TABLE "AttributeClass" (
 -- CreateTable
 CREATE TABLE "Person" (
     "id" TEXT NOT NULL,
-    "userId" UUID NOT NULL,
+    "userId" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "environmentId" TEXT NOT NULL,
@@ -124,7 +124,7 @@ CREATE TABLE "ResponseNote" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "responseId" TEXT NOT NULL,
-    "userId" UUID NOT NULL,
+    "userId" TEXT NOT NULL,
     "text" TEXT NOT NULL,
     "isResolved" BOOLEAN NOT NULL DEFAULT false,
     "isEdited" BOOLEAN NOT NULL DEFAULT false,
@@ -301,7 +301,7 @@ CREATE TABLE "Team" (
 -- CreateTable
 CREATE TABLE "Membership" (
     "teamId" TEXT NOT NULL,
-    "userId" UUID NOT NULL,
+    "userId" TEXT NOT NULL,
     "accepted" BOOLEAN NOT NULL DEFAULT false,
     "role" "MembershipRole" NOT NULL,
 
@@ -314,8 +314,8 @@ CREATE TABLE "Invite" (
     "email" TEXT NOT NULL,
     "name" TEXT,
     "teamId" TEXT NOT NULL,
-    "creatorId" UUID NOT NULL,
-    "acceptorId" UUID,
+    "creatorId" TEXT NOT NULL,
+    "acceptorId" TEXT,
     "accepted" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "expiresAt" TIMESTAMP(3) NOT NULL,
@@ -341,7 +341,7 @@ CREATE TABLE "Account" (
     "id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
-    "userId" UUID NOT NULL,
+    "userId" TEXT NOT NULL,
     "type" TEXT NOT NULL,
     "provider" TEXT NOT NULL,
     "providerAccountId" TEXT NOT NULL,
@@ -359,7 +359,7 @@ CREATE TABLE "Account" (
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" UUID NOT NULL,
+    "id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "name" TEXT,
@@ -369,6 +369,7 @@ CREATE TABLE "User" (
     "twoFactorSecret" TEXT,
     "twoFactorEnabled" BOOLEAN NOT NULL DEFAULT false,
     "backupCodes" TEXT,
+    "password" TEXT,
     "onboardingCompleted" BOOLEAN NOT NULL DEFAULT false,
     "identityProvider" "IdentityProvider" NOT NULL DEFAULT 'email',
     "identityProviderAccountId" TEXT,

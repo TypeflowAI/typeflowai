@@ -2,31 +2,15 @@
 
 import "server-only";
 
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 
 import { AuthenticationError, ResourceNotFoundError } from "@typeflowai/types/errors";
 
+import { authOptions } from "../../authOptions";
 import { getTeam, getTeamBillingInfo } from "../service";
 
 export const getTeamBillingInfoAction = async (teamId: string) => {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   const team = await getTeam(teamId);
 

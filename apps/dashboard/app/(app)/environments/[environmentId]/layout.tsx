@@ -1,10 +1,10 @@
 import EnvironmentAlert from "@/app/(app)/environments/[environmentId]/components/EnvironmentAlert";
 import EnvironmentsNavbar from "@/app/(app)/environments/[environmentId]/components/EnvironmentsNavbar";
 import { ResponseFilterProvider } from "@/app/(app)/environments/[environmentId]/components/ResponseFilterContext";
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { IS_TYPEFLOWAI_CLOUD } from "@typeflowai/lib/constants";
 import { hasUserEnvironmentAccess } from "@typeflowai/lib/environment/auth";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
@@ -15,23 +15,7 @@ import ToasterClient from "@typeflowai/ui/ToasterClient";
 import TypeflowAIClient from "../../components/TypeflowAIClient";
 
 export default async function EnvironmentLayout({ children, params }) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     redirect("/auth/login");
