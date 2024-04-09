@@ -65,7 +65,6 @@ export const sendEmail = async (emailData: sendEmailData) => {
   }
 };
 
-//TODO: Remove this method since with Supabse isn't needed
 export const sendVerificationEmail = async (user: TEmailUser) => {
   const token = createToken(user.id, user.email, {
     expiresIn: "1d",
@@ -88,7 +87,6 @@ export const sendVerificationEmail = async (user: TEmailUser) => {
   });
 };
 
-//TODO: Remove this method since with Supabse isn't needed
 export const sendForgotPasswordEmail = async (user: TEmailUser) => {
   const token = createToken(user.id, user.email, {
     expiresIn: "1d",
@@ -117,7 +115,6 @@ export const sendPasswordResetNotifyEmail = async (user: TEmailUser) => {
   });
 };
 
-//TODO: Remove this method since with Supabse isn't needed
 export const sendInviteMemberEmail = async (
   inviteId: string,
   email: string,
