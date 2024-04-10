@@ -53,16 +53,16 @@ export const authOptions: NextAuthOptions = {
         }
 
         if (!user || !credentials) {
-          throw new Error("No user matches the provided credentials if (!user || !credentials)");
+          throw new Error("No user matches the provided credentials");
         }
         if (!user.password) {
-          throw new Error("No user matches the provided credentials if (!user.password)");
+          throw new Error("No user matches the provided credentials");
         }
 
         const isValid = await verifyPassword(credentials.password, user.password);
 
         if (!isValid) {
-          throw new Error("No user matches the provided credentials if (!isValid)");
+          throw new Error("No user matches the provided credentials");
         }
 
         return {
