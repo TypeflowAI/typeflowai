@@ -5034,108 +5034,108 @@ export const marketingTemplates: TTemplate[] = [
       hiddenFields: hiddenFieldsDefault,
     },
   },
-  {
-    name: "High-Quality Image Generator",
-    icon: imageIcon.src,
-    category: "Marketing",
-    subcategory: "",
-    description: "Create custom images by aligning with precise specifications.",
-    objectives: ["other"],
-    isPremium: true,
-    preset: {
-      name: "High-Quality Image Generator",
-      welcomeCard: welcomeCardDefault,
-      icon: imageIcon.src,
-      questions: [
-        {
-          id: "character",
-          type: TWorkflowQuestionType.OpenText,
-          headline: "What type of subject do you prefer for your artwork?",
-          subheader: "Person, animal, character, place, object...",
-          required: true,
-          inputType: "text",
-        },
-        {
-          id: "artistic-medium",
-          type: TWorkflowQuestionType.OpenText,
-          headline: "What is your preferred medium for creating art?",
-          subheader: "Photography, painting, illustration, sculpture, drawing, tapestry...",
-          required: true,
-          inputType: "text",
-        },
-        {
-          id: "environment",
-          type: TWorkflowQuestionType.OpenText,
-          headline: "In what type of environment would you like to set your artwork?",
-          subheader: "Indoor, outdoor, on the moon, underwater, in the city...",
-          required: true,
-          inputType: "text",
-        },
-        {
-          id: "lighting",
-          type: TWorkflowQuestionType.OpenText,
-          headline: "What type of lighting do you think your artwork should have?",
-          subheader: "Soft, ambient, cloudy, neon, studio lights...",
-          required: true,
-          inputType: "text",
-        },
-        {
-          id: "color",
-          type: TWorkflowQuestionType.OpenText,
-          headline: "What color scheme do you prefer for your composition?",
-          subheader: "Vibrant, muted, bright, monochromatic, colorful, black and white, pastel...",
-          required: true,
-          inputType: "text",
-        },
-        {
-          id: "mood",
-          type: TWorkflowQuestionType.OpenText,
-          headline: "What mood do you wish to convey with your work?",
-          subheader: "Soothing, calm, thunderous, energetic...",
-          required: true,
-          inputType: "text",
-        },
-        {
-          id: "composition",
-          type: TWorkflowQuestionType.OpenText,
-          headline: "Which do you prefer to be the composition of your work?",
-          subheader: "Portrait, close-up of the face, close-up, aerial view...",
-          required: true,
-          inputType: "text",
-        },
-        {
-          id: "purpose",
-          type: TWorkflowQuestionType.OpenText,
-          headline: "What will this image be used for?",
-          subheader: "Social media, advertising, illustrating a book...",
-          required: true,
-          inputType: "text",
-        },
-      ],
-      prompt: {
-        enabled: true,
-        id: "prompt",
-        description: "Prompt",
-        message: `
-        Create an image based on this context:
+  // {
+  //   name: "High-Quality Image Generator",
+  //   icon: imageIcon.src,
+  //   category: "Marketing",
+  //   subcategory: "",
+  //   description: "Create custom images by aligning with precise specifications.",
+  //   objectives: ["other"],
+  //   isPremium: true,
+  //   preset: {
+  //     name: "High-Quality Image Generator",
+  //     welcomeCard: welcomeCardDefault,
+  //     icon: imageIcon.src,
+  //     questions: [
+  //       {
+  //         id: "character",
+  //         type: TWorkflowQuestionType.OpenText,
+  //         headline: "What type of subject do you prefer for your artwork?",
+  //         subheader: "Person, animal, character, place, object...",
+  //         required: true,
+  //         inputType: "text",
+  //       },
+  //       {
+  //         id: "artistic-medium",
+  //         type: TWorkflowQuestionType.OpenText,
+  //         headline: "What is your preferred medium for creating art?",
+  //         subheader: "Photography, painting, illustration, sculpture, drawing, tapestry...",
+  //         required: true,
+  //         inputType: "text",
+  //       },
+  //       {
+  //         id: "environment",
+  //         type: TWorkflowQuestionType.OpenText,
+  //         headline: "In what type of environment would you like to set your artwork?",
+  //         subheader: "Indoor, outdoor, on the moon, underwater, in the city...",
+  //         required: true,
+  //         inputType: "text",
+  //       },
+  //       {
+  //         id: "lighting",
+  //         type: TWorkflowQuestionType.OpenText,
+  //         headline: "What type of lighting do you think your artwork should have?",
+  //         subheader: "Soft, ambient, cloudy, neon, studio lights...",
+  //         required: true,
+  //         inputType: "text",
+  //       },
+  //       {
+  //         id: "color",
+  //         type: TWorkflowQuestionType.OpenText,
+  //         headline: "What color scheme do you prefer for your composition?",
+  //         subheader: "Vibrant, muted, bright, monochromatic, colorful, black and white, pastel...",
+  //         required: true,
+  //         inputType: "text",
+  //       },
+  //       {
+  //         id: "mood",
+  //         type: TWorkflowQuestionType.OpenText,
+  //         headline: "What mood do you wish to convey with your work?",
+  //         subheader: "Soothing, calm, thunderous, energetic...",
+  //         required: true,
+  //         inputType: "text",
+  //       },
+  //       {
+  //         id: "composition",
+  //         type: TWorkflowQuestionType.OpenText,
+  //         headline: "Which do you prefer to be the composition of your work?",
+  //         subheader: "Portrait, close-up of the face, close-up, aerial view...",
+  //         required: true,
+  //         inputType: "text",
+  //       },
+  //       {
+  //         id: "purpose",
+  //         type: TWorkflowQuestionType.OpenText,
+  //         headline: "What will this image be used for?",
+  //         subheader: "Social media, advertising, illustrating a book...",
+  //         required: true,
+  //         inputType: "text",
+  //       },
+  //     ],
+  //     prompt: {
+  //       enabled: true,
+  //       id: "prompt",
+  //       description: "Prompt",
+  //       message: `
+  //       Create an image based on this context:
 
-        Character: @character
-        Artistic Medium: @artistic-medium
-        Environment: @environment
-        Lighting: @lighting
-        Color: @color
-        Mood: @mood
-        Composition: @composition
-        Purpose: @purpose
-        `,
-        attributes: {},
-        isVisible: true,
-        engine: OpenAIModel.GPT4,
-      },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
-    },
-  },
+  //       Character: @character
+  //       Artistic Medium: @artistic-medium
+  //       Environment: @environment
+  //       Lighting: @lighting
+  //       Color: @color
+  //       Mood: @mood
+  //       Composition: @composition
+  //       Purpose: @purpose
+  //       `,
+  //       attributes: {},
+  //       isVisible: true,
+  //       engine: OpenAIModel.GPT4,
+  //     },
+  //     thankYouCard: thankYouCardDefault,
+  //     hiddenFields: hiddenFieldsDefault,
+  //   },
+  // },
   {
     name: "Allan Dib 1-Page Marketing Plan",
     icon: planIcon.src,
