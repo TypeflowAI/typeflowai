@@ -1,6 +1,6 @@
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
 import { getMembershipByUserIdTeamId } from "@typeflowai/lib/membership/service";
 import { getAccessFlags } from "@typeflowai/lib/membership/utils";
@@ -20,24 +20,7 @@ export default async function MembersSettingsPage({ params }) {
   const tags = await getTagsByEnvironmentId(params.environmentId);
   const environmentTagsCount = await getTagsOnResponsesCount(params.environmentId);
   const team = await getTeamByEnvironmentId(params.environmentId);
-
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!environment) {
     throw new Error("Environment not found");

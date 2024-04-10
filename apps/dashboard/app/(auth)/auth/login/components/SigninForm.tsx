@@ -6,7 +6,7 @@ import { GoogleButton } from "@/app/(auth)/auth/components/GoogleButton";
 import TwoFactor from "@/app/(auth)/auth/login/components/TwoFactor";
 import TwoFactorBackup from "@/app/(auth)/auth/login/components/TwoFactorBackup";
 import { XCircleIcon } from "@heroicons/react/24/solid";
-import { createBrowserClient } from "@supabase/ssr";
+import { signIn } from "next-auth/react";
 import Link from "next/dist/client/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -36,10 +36,6 @@ export const SigninForm = ({
   githubOAuthEnabled: boolean;
   azureOAuthEnabled: boolean;
 }) => {
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
   const router = useRouter();
   const searchParams = useSearchParams();
   const emailRef = useRef<HTMLInputElement>(null);
@@ -50,36 +46,28 @@ export const SigninForm = ({
     setLoggingIn(true);
 
     try {
-      const {
-        data: { session: session },
-        error: authError,
-      } = await supabase.auth.signInWithPassword({
+      const signInResponse = await signIn("credentials", {
+        callbackUrl: searchParams?.get("callbackUrl") || "/",
         email: data.email.toLowerCase(),
         password: data.password,
+        ...(totpLogin && { totpCode: data.totpCode }),
+        ...(totpBackup && { backupCode: data.backupCode }),
+        redirect: false,
       });
 
-      if (authError) {
-        const errorMessage = authError.toString();
+      if (signInResponse?.error === "second factor required") {
+        setTotpLogin(true);
         setLoggingIn(false);
-        setSignInError(errorMessage);
+        return;
       }
 
-      //TODO: Pending review for implement 2FA
-      // const { data: userDetails, error: userDetailsError } = await supabase
-      //   .from("User")
-      //   .select("*")
-      //   .eq("id", user?.id)
-      //   .single();
+      if (signInResponse?.error) {
+        setLoggingIn(false);
+        setSignInError(signInResponse.error);
+        return;
+      }
 
-      // if (userDetailsError) throw userDetailsError;
-
-      // if (userDetails.twoFactorEnabled) {
-      //   setTotpLogin(true);
-      //   setLoggingIn(false);
-      //   return;
-      // }
-
-      if (session) {
+      if (!signInResponse?.error) {
         router.push(searchParams?.get("callbackUrl") || "/");
       }
     } catch (error) {

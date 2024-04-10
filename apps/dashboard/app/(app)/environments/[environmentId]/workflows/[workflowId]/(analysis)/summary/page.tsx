@@ -1,8 +1,8 @@
 import { getAnalysisData } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/data";
 import SummaryPage from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/SummaryPage";
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { TEXT_RESPONSES_PER_PAGE, WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
 import { getMembershipByUserIdTeamId } from "@typeflowai/lib/membership/service";
@@ -12,23 +12,7 @@ import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
 import { getUser } from "@typeflowai/lib/user/service";
 
 export default async function Page({ params }) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     throw new Error("Unauthorized");

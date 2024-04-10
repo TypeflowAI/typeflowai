@@ -17,9 +17,6 @@ build
 # node
 dist/
 
-# supabase
-supabase/
-
 # misc
 .DS_Store
 *.pem

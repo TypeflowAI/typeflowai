@@ -1,53 +1,25 @@
 import TypeflowAIClient from "@/app/(app)/components/TypeflowAIClient";
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { IS_TYPEFLOWAI_CLOUD } from "@typeflowai/lib/constants";
 import { getFirstEnvironmentByUserId } from "@typeflowai/lib/environment/service";
 import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
-import ClientLogout from "@typeflowai/ui/ClientLogout";
 import { NoMobileOverlay } from "@typeflowai/ui/NoMobileOverlay";
 import { PHProvider, PostHogPageview } from "@typeflowai/ui/PostHogClient";
 
 import PosthogIdentify from "./components/PosthogIdentify";
 
 export default async function AppLayout({ children }) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     redirect("/auth/login");
   }
 
   const userId = session.user?.id as string;
-
-  const { data: userDetails, error } = await supabaseServerClient
-    .from("User")
-    .select("*")
-    .eq("id", userId)
-    .single();
-
-  if (error) {
-    console.error("Error getting user details:", error);
-    return <ClientLogout />;
-  }
 
   if (IS_TYPEFLOWAI_CLOUD) {
     let environment;
@@ -71,8 +43,8 @@ export default async function AppLayout({ children }) {
     }
 
     if (
-      userDetails &&
-      userDetails.onboardingCompleted &&
+      session &&
+      session.user.onboardingCompleted &&
       team.billing.subscriptionType === null &&
       team.billing.subscriptionStatus === "inactive"
     ) {
@@ -90,7 +62,7 @@ export default async function AppLayout({ children }) {
         <>
           {session ? (
             <>
-              <PosthogIdentify session={session} userDetails={userDetails} />
+              <PosthogIdentify session={session} />
               <TypeflowAIClient session={session} />
             </>
           ) : null}

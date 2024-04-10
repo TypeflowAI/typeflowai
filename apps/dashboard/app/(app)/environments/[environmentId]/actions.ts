@@ -2,10 +2,10 @@
 
 import { Team } from "@prisma/client";
 import { Prisma as prismaClient } from "@prisma/client/";
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 
 import { prisma } from "@typeflowai/database";
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { SHORT_URL_BASE, WEBAPP_URL } from "@typeflowai/lib/constants";
 import { hasUserEnvironmentAccess } from "@typeflowai/lib/environment/auth";
 import { createMembership } from "@typeflowai/lib/membership/service";
@@ -18,23 +18,7 @@ import { deleteWorkflow, duplicateWorkflow, getWorkflow } from "@typeflowai/lib/
 import { AuthenticationError, AuthorizationError, ResourceNotFoundError } from "@typeflowai/types/errors";
 
 export const createShortUrlAction = async (url: string) => {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthenticationError("Not authenticated");
 
@@ -49,23 +33,7 @@ export const createShortUrlAction = async (url: string) => {
 };
 
 export async function createTeamAction(teamName: string): Promise<Team> {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 
@@ -86,23 +54,7 @@ export async function createTeamAction(teamName: string): Promise<Team> {
 }
 
 export async function duplicateWorkflowAction(environmentId: string, workflowId: string) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 
@@ -118,23 +70,7 @@ export async function copyToOtherEnvironmentAction(
   workflowId: string,
   targetEnvironmentId: string
 ) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 
@@ -285,23 +221,7 @@ export async function copyToOtherEnvironmentAction(
 }
 
 export const deleteWorkflowAction = async (workflowId: string) => {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 
@@ -317,23 +237,7 @@ export const deleteWorkflowAction = async (workflowId: string) => {
 };
 
 export const createProductAction = async (environmentId: string, productName: string) => {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 

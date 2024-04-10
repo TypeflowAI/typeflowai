@@ -1,10 +1,10 @@
 import { responses } from "@/app/lib/api/response";
 import { transformErrorToDetails } from "@/app/lib/api/validator";
 import { handleDeleteFile } from "@/app/storage/[environmentId]/[accessType]/[fileName]/lib/deleteFile";
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 import { NextRequest } from "next/server";
 
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { hasUserEnvironmentAccess } from "@typeflowai/lib/environment/auth";
 import { ZStorageRetrievalParams } from "@typeflowai/types/storage";
 
@@ -34,23 +34,7 @@ export async function GET(
 
   // auth and download private file
 
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
     return responses.notAuthenticatedResponse();
@@ -86,23 +70,7 @@ export async function DELETE(_: NextRequest, { params }: { params: { fileName: s
   }
   // check if user is authenticated
 
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
     return responses.notAuthenticatedResponse();

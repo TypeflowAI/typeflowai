@@ -72,7 +72,7 @@ export const withEmailTemplate = (content: string) =>
   
         .button {
           margin-top:12px;
-          background: #0f172a;
+          background: #2e1065;
           border-radius: 8px;
           text-decoration: none !important;
           color: #fff !important;
@@ -145,7 +145,7 @@ export const withEmailTemplate = (content: string) =>
       <div class="gutter" style="padding: 30px">
         <a href="https://typeflowai.com" target="_blank">
           <img
-            src="https://s3.eu-central-1.amazonaws.com/listmonk-typeflowai/TypeflowAI-Light-transparent.png"
+            src="https://typeflowai-assets-bucket.s3.us-east-2.amazonaws.com/logo_dark.svg"
             alt="TypeflowAI Logo"
         /></a>
       </div>
@@ -166,46 +166,8 @@ export const withEmailTemplate = (content: string) =>
         class="footer"
         style="text-align: center; font-size: 12px; color: #cbd5e1"
       >
-        <table class="socialicons">
-          <tr>
-            <td>
-              <a target="_blank" href="https://twitter.com/typeflowai"
-                ><img
-                  title="Twitter"
-                  src="https://s3.eu-central-1.amazonaws.com/listmonk-typeflowai/Twitter-transp.png"
-                  alt="Tw"
-                  width="32"
-              /></a>
-            </td>
-            <td>
-              <a target="_blank" href="https://typeflowai.com/github"
-                ><img
-                  title="GitHub"
-                  src="https://s3.eu-central-1.amazonaws.com/listmonk-typeflowai/Github-transp.png"
-                  alt="GitHub"
-                  width="32"
-              /></a>
-            </td>
-            <td>
-              <a target="_blank" href="https://typeflowai.com/discord"
-                ><img
-                  title="Discord"
-                  src="https://s3.eu-central-1.amazonaws.com/listmonk-typeflowai/Discord-transp.png"
-                  alt="Discord"
-                  width="32"
-              /></a>
-            </td>
-          </tr>
-        </table>
         <p style="padding-top: 8px; line-height: initial">
           TypeflowAI ${new Date().getFullYear()}. All rights reserved.<br />
-          <a
-            style="text-decoration: none"
-            href="https://typeflowai.com/imprint"
-            target="_blank"
-            >Imprint</a
-          >
-          |
           <a
             style="text-decoration: none"
             href="https://typeflowai.com/privacy-policy"

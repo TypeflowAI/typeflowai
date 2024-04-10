@@ -3,7 +3,6 @@ import z from "zod";
 import { ZActionClass } from "./actionClasses";
 import { ZPersonAttributes, ZPersonClient } from "./people";
 import { ZProduct } from "./product";
-import { ZUuid } from "./user";
 import { ZWorkflow } from "./workflows";
 
 const ZWorkflowWithTriggers = ZWorkflow.extend({
@@ -47,7 +46,7 @@ export type TJsPublicSyncInput = z.infer<typeof ZJsPublicSyncInput>;
 
 export const ZJsSyncInput = z.object({
   environmentId: z.string().cuid(),
-  userId: ZUuid.optional().optional(),
+  userId: z.string().optional().optional(),
   jsVersion: z.string().optional(),
 });
 
@@ -56,7 +55,7 @@ export type TJsSyncInput = z.infer<typeof ZJsSyncInput>;
 export const ZJsConfig = z.object({
   environmentId: z.string().cuid(),
   apiHost: z.string(),
-  userId: ZUuid.optional(),
+  userId: z.string().optional(),
   state: ZJsState,
   expiresAt: z.date(),
 });
@@ -66,7 +65,7 @@ export type TJsConfig = z.infer<typeof ZJsConfig>;
 export const ZJsConfigUpdateInput = z.object({
   environmentId: z.string().cuid(),
   apiHost: z.string(),
-  userId: ZUuid.optional(),
+  userId: z.string().optional(),
   state: ZJsState,
 });
 
@@ -77,7 +76,7 @@ export const ZJsConfigInput = z.object({
   apiHost: z.string(),
   debug: z.boolean().optional(),
   errorHandler: z.function().args(z.any()).returns(z.void()).optional(),
-  userId: ZUuid.optional(),
+  userId: z.string().optional(),
   attributes: ZPersonAttributes.optional(),
 });
 
@@ -99,7 +98,7 @@ export type TJsPeopleAttributeInput = z.infer<typeof ZJsPeopleAttributeInput>;
 
 export const ZJsActionInput = z.object({
   environmentId: z.string().cuid(),
-  userId: ZUuid.optional(),
+  userId: z.string().optional(),
   name: z.string(),
   properties: z.record(z.string()),
 });
@@ -109,7 +108,7 @@ export type TJsActionInput = z.infer<typeof ZJsActionInput>;
 export const ZJsSyncParams = z.object({
   environmentId: z.string().cuid(),
   apiHost: z.string(),
-  userId: ZUuid.optional(),
+  userId: z.string().optional(),
 });
 
 export type TJsSyncParams = z.infer<typeof ZJsSyncParams>;

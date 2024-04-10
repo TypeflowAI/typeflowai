@@ -1,7 +1,6 @@
 import { unstable_cache } from "next/cache";
 
 import { ZId } from "@typeflowai/types/environment";
-import { ZUuid } from "@typeflowai/types/user";
 
 import { SERVICES_REVALIDATION_INTERVAL } from "../constants";
 import { hasUserEnvironmentAccess } from "../environment/auth";
@@ -15,7 +14,7 @@ import { getWorkflow } from "./service";
 export const canUserAccessWorkflow = async (userId: string, workflowId: string): Promise<boolean> =>
   await unstable_cache(
     async () => {
-      validateInputs([workflowId, ZId], [userId, ZUuid]);
+      validateInputs([workflowId, ZId], [userId, ZId]);
 
       if (!userId) return false;
 

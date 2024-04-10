@@ -1,7 +1,6 @@
 import { unstable_cache } from "next/cache";
 
 import { ZId } from "@typeflowai/types/environment";
-import { ZUuid } from "@typeflowai/types/user";
 
 import { SERVICES_REVALIDATION_INTERVAL } from "../constants";
 import { getMembershipByUserIdTeamId } from "../membership/service";
@@ -14,7 +13,7 @@ import { getProduct } from "./service";
 export const canUserAccessProduct = async (userId: string, productId: string): Promise<boolean> =>
   await unstable_cache(
     async () => {
-      validateInputs([userId, ZUuid], [productId, ZId]);
+      validateInputs([userId, ZId], [productId, ZId]);
 
       if (!userId || !productId) return false;
 

@@ -1,10 +1,10 @@
 import { responses } from "@/app/lib/api/response";
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import * as z from "zod";
 
 import { connectAirtable, fetchAirtableAuthToken } from "@typeflowai/lib/airtable/service";
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { AIRTABLE_CLIENT_ID, WEBAPP_URL } from "@typeflowai/lib/constants";
 import { hasUserEnvironmentAccess } from "@typeflowai/lib/environment/auth";
 
@@ -26,23 +26,7 @@ export async function GET(req: NextRequest) {
   const environmentId = queryParams.get("state"); // Get the value of the 'state' parameter
   const code = queryParams.get("code");
 
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!environmentId) {
     return responses.badRequestResponse("Invalid environmentId");

@@ -1,9 +1,10 @@
-import { createServerClient } from "@supabase/ssr";
 import { createHash } from "crypto";
 import { NextApiRequest, NextApiResponse } from "next";
-import { cookies } from "next/headers";
+import type { Session } from "next-auth";
+import { getServerSession } from "next-auth";
 
 import { prisma } from "@typeflowai/database";
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { hasUserEnvironmentAccess } from "@typeflowai/lib/environment/auth";
 
 export const hashApiKey = (key: string): string => createHash("sha256").update(key).digest("hex");
@@ -65,32 +66,13 @@ export const hasTeamAccess = async (user, teamId) => {
 
 export const getSessionUser = async (req?: NextApiRequest, res?: NextApiResponse) => {
   // check for session (browser usage)
-  // let session: Session | null;
-  // if (req && res) {
-  //   session = await getServerSession(req, res, authOptions);
-  // } else {
-  //   session = await getServerSession(authOptions);
-  // }
+  let session: Session | null;
   if (req && res) {
-    const cookieStore = cookies();
-
-    const supabaseServerClient = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return cookieStore.get(name)?.value;
-          },
-        },
-      }
-    );
-
-    const {
-      data: { session },
-    } = await supabaseServerClient.auth.getSession();
-    if (session && "user" in session) return session.user;
+    session = await getServerSession(req, res, authOptions);
+  } else {
+    session = await getServerSession(authOptions);
   }
+  if (session && "user" in session) return session.user;
 };
 
 export const isOwner = async (user, teamId) => {

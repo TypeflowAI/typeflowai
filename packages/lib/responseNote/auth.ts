@@ -1,7 +1,6 @@
 import { unstable_cache } from "next/cache";
 
 import { ZId } from "@typeflowai/types/environment";
-import { ZUuid } from "@typeflowai/types/user";
 
 import { canUserAccessResponse } from "../response/auth";
 import { getResponse } from "../response/service";
@@ -11,7 +10,7 @@ import { getResponseNote } from "./service";
 export const canUserModifyResponseNote = async (userId: string, responseNoteId: string): Promise<boolean> =>
   await unstable_cache(
     async () => {
-      validateInputs([userId, ZUuid], [responseNoteId, ZId]);
+      validateInputs([userId, ZId], [responseNoteId, ZId]);
 
       if (!userId || !responseNoteId) return false;
 
@@ -31,7 +30,7 @@ export const canUserResolveResponseNote = async (
 ): Promise<boolean> =>
   await unstable_cache(
     async () => {
-      validateInputs([userId, ZUuid], [responseNoteId, ZId]);
+      validateInputs([userId, ZId], [responseNoteId, ZId]);
 
       if (!userId || !responseId || !responseNoteId) return false;
 

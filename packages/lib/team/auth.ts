@@ -3,7 +3,6 @@ import "server-only";
 import { unstable_cache } from "next/cache";
 
 import { ZId } from "@typeflowai/types/environment";
-import { ZUuid } from "@typeflowai/types/user";
 
 import { SERVICES_REVALIDATION_INTERVAL } from "../constants";
 import { getMembershipByUserIdTeamId } from "../membership/service";
@@ -15,7 +14,7 @@ import { getTeamsByUserId } from "./service";
 export const canUserAccessTeam = async (userId: string, teamId: string): Promise<boolean> =>
   await unstable_cache(
     async () => {
-      validateInputs([userId, ZUuid], [teamId, ZId]);
+      validateInputs([userId, ZId], [teamId, ZId]);
 
       const userTeams = await getTeamsByUserId(userId);
 

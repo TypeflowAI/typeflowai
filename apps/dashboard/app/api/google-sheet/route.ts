@@ -1,9 +1,9 @@
 import { responses } from "@/app/lib/api/response";
-import { createServerClient } from "@supabase/ssr";
 import { google } from "googleapis";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 import { NextRequest } from "next/server";
 
+import { authOptions } from "@typeflowai/lib/authOptions";
 import {
   GOOGLE_SHEETS_CLIENT_ID,
   GOOGLE_SHEETS_CLIENT_SECRET,
@@ -19,24 +19,7 @@ const scopes = [
 
 export async function GET(req: NextRequest) {
   const environmentId = req.headers.get("environmentId");
-
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!environmentId) {
     return responses.badRequestResponse("environmentId is missing");

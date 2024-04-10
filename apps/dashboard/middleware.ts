@@ -10,68 +10,15 @@ import {
   shareUrlRoute,
   signupRoute,
 } from "@/app/middleware/endpointValidator";
-import { type CookieOptions, createServerClient } from "@supabase/ssr";
-import { type NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  let response = NextResponse.next({
-    request: {
-      headers: request.headers,
-    },
-  });
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value;
-        },
-        set(name: string, value: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value,
-            ...options,
-          });
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          });
-          response.cookies.set({
-            name,
-            value,
-            ...options,
-          });
-        },
-        remove(name: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value: "",
-            ...options,
-          });
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          });
-          response.cookies.set({
-            name,
-            value: "",
-            ...options,
-          });
-        },
-      },
-    }
-  );
-
-  await supabase.auth.getSession();
-
   if (process.env.NODE_ENV !== "production") {
     return NextResponse.next();
   }
 
+  const res = NextResponse.next();
   let ip = request.ip ?? request.headers.get("x-real-ip");
   const forwardedFor = request.headers.get("x-forwarded-for");
   if (!ip && forwardedFor) {
@@ -89,15 +36,14 @@ export async function middleware(request: NextRequest) {
       } else if (shareUrlRoute(request.nextUrl.pathname)) {
         await shareUrlLimiter.check(ip);
       }
-      return response;
+      return res;
     } catch (_e) {
       console.log("Rate Limiting IP: ", ip);
 
       return NextResponse.json({ error: "Too many requests, Please try after a while!" }, { status: 429 });
     }
   }
-
-  return response;
+  return res;
 }
 
 export const config = {

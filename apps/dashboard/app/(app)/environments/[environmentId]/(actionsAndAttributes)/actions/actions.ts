@@ -1,7 +1,6 @@
 "use server";
 
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 
 import {
   getActionCountInLast7Days,
@@ -10,6 +9,7 @@ import {
 } from "@typeflowai/lib/action/service";
 import { canUserUpdateActionClass, verifyUserRoleAccess } from "@typeflowai/lib/actionClass/auth";
 import { createActionClass, deleteActionClass, updateActionClass } from "@typeflowai/lib/actionClass/service";
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { hasUserEnvironmentAccess } from "@typeflowai/lib/environment/auth";
 import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
 import { getWorkflowsByActionClassId } from "@typeflowai/lib/workflow/service";
@@ -17,23 +17,7 @@ import { TActionClassInput } from "@typeflowai/types/actionClasses";
 import { AuthorizationError } from "@typeflowai/types/errors";
 
 export async function deleteActionClassAction(environmentId, actionClassId: string) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 
@@ -57,23 +41,7 @@ export async function updateActionClassAction(
   actionClassId: string,
   updatedAction: Partial<TActionClassInput>
 ) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 
@@ -93,23 +61,7 @@ export async function updateActionClassAction(
 }
 
 export async function createActionClassAction(action: TActionClassInput) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 
@@ -120,23 +72,7 @@ export async function createActionClassAction(action: TActionClassInput) {
 }
 
 export const getActionCountInLastHourAction = async (actionClassId: string, environmentId: string) => {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 
@@ -153,23 +89,7 @@ export const getActionCountInLastHourAction = async (actionClassId: string, envi
 };
 
 export const getActionCountInLast24HoursAction = async (actionClassId: string, environmentId: string) => {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 
@@ -186,23 +106,7 @@ export const getActionCountInLast24HoursAction = async (actionClassId: string, e
 };
 
 export const getActionCountInLast7DaysAction = async (actionClassId: string, environmentId: string) => {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 
@@ -222,23 +126,7 @@ export const GetActiveInactiveWorkflowsAction = async (
   actionClassId: string,
   environmentId: string
 ): Promise<{ activeWorkflows: string[]; inactiveWorkflows: string[] }> => {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 

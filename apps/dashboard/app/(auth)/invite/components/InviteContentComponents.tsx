@@ -12,8 +12,6 @@ const ContentLayout = ({ headline, description, children }) => {
   );
 };
 
-// TODO: replace support link with actual support email
-
 export const NotLoggedInContent = ({ email, token, redirectUrl }) => {
   email = encodeURIComponent(email);
   return (

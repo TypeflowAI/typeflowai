@@ -16,7 +16,6 @@ To get the project running locally on your machine you need to have the followin
 
 - Node.JS (we recommend v20)
 - [pnpm](https://pnpm.io/)
-- Supabase CLI or access to a Supabase project in the cloud
 
 1. Clone the project & move into the directory:
 
@@ -67,123 +66,18 @@ sed -i '/^NEXTAUTH_SECRET=/c\NEXTAUTH_SECRET='$(openssl rand -hex 32) .env
    </CodeGroup>
 </Col>
 
-### Install and Configure Supabase
+### Deploy Prisma Schema to your Database
 
-To integrate TypeflowAI with Supabase locally or in the cloud, follow these steps:
-
-1. Create a new project on [Supabase](https://app.supabase.io/). You can use the free tier for development purposes.
-
-2. Install the Supabase CLI following the instructions [here](https://supabase.io/docs/guides/cli).
-
-<Col>
-   <CodeGroup title="Install Supabase CLI">
-```bash
-npm install -g supabase
-```
-   </CodeGroup>
-</Col>
-
-3. Login to Supabase using the CLI.
-
-<Col>
-   <CodeGroup title="Login to Supabase">
-```bash
-supabase login
-```
- </CodeGroup>
-</Col>
-
-4. Link your local project with your Supabase project.
-
-<Col>
-   <CodeGroup title="Link Supabase project">
-```bash
-supabase link --project-ref your-project-ref
-```
-   </CodeGroup>
-</Col>
-
-5. Start the local Supabase server.
-
-<Col>
-   <CodeGroup title="Start local Supabase">
-```bash
-supabase start
-```
- </CodeGroup>
-</Col>
-
-### Deploy Prisma Schema to Supabase
-
-1. You'll need to configure your .env file with your Supabase details. You can find these details in the Supabase dashboard. You'll need to set the following environment variables in your .env file:
+1. You'll need to configure your .env file with your database string connection url. You'll need to set the following environment variable in your .env file:
 - DATABASE_URL
-- NEXT_PUBLIC_SUPABASE_URL
-- NEXT_PUBLIC_SUPABASE_ANON_KEY
-- SUPABASE_SERVICE_ROLE_KEY
 
-2. After configuring your .env file with your Supabase details, deploy the Prisma schema to set up your database schema on Supabase:
+2. After configuring your .env file with your database string connection url, deploy the Prisma schema to set up your database running:
 <Col>
    <CodeGroup title="Deploy Prisma Schema">
 ```bash   
    pnpm run db:migrate:dev
 ```
   </CodeGroup>
-</Col>
-
-### Configure Trigger, Function, and Roles in Supabase
-To set up database triggers, functions, and roles, use the Supabase dashboard:
-
-1. Navigate to the SQL Editor in your project's dashboard.
-2. Write or paste the necessary SQL commands to create triggers and functions.
-3. Assign roles and permissions as needed for your application logic.
-<Col>
-   <CodeGroup title="Configure Trigger, Function, and Role">
-```sql
-CREATE OR REPLACE FUNCTION "public"."create_user"() RETURNS "trigger"
-    LANGUAGE "plpgsql" SECURITY DEFINER
-    AS $$begin
-  insert into public."User"(id, email, created_at, updated_at)
-  values (new.id, new.email, now(), now());
-
-  return new;
-end;$$;
-
-ALTER FUNCTION "public"."create_user"() OWNER TO "postgres";
-
-CREATE OR REPLACE FUNCTION "public"."delete_user"() RETURNS "trigger"
-    LANGUAGE "plpgsql" SECURITY DEFINER
-    AS $$begin
-  delete from auth.users where id = old.id;
-  return old;
-end;$$;
-
-ALTER FUNCTION "public"."delete_user"() OWNER TO "postgres";
-
-CREATE OR REPLACE FUNCTION "public"."verify_user_password"("password" "text") RETURNS boolean
-    LANGUAGE "plpgsql" SECURITY DEFINER
-    AS $$
-BEGIN
-  RETURN EXISTS (
-    SELECT id 
-    FROM auth.users 
-    WHERE id = auth.uid() AND encrypted_password = crypt(password::text, auth.users.encrypted_password)
-  );
-END;
-$$;
-
--- IMPORTANT: You'll find the full Query with all SQL scripts for triggers, functions, and roles in the project under the path: packages/database/supabase
-```
-   </CodeGroup>
-</Col>
-
-4. Because Supabase use its own authentication system, you'll need to sync with a new user is created in the auth.users table with your own user table in the database. You can do this by running the following SQL command in the SQL Editor:
-
-<Col>
-   <CodeGroup title="Configure Trigger, Function, and Role">
-```sql
-create or replace trigger create_user after insert on auth.users for each row execute function create_user();
-```
-   </CodeGroup>
 </Col>
 
 ### Build

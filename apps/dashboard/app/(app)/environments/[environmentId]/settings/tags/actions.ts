@@ -1,30 +1,14 @@
 "use server";
 
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { canUserAccessTag, verifyUserRoleAccess } from "@typeflowai/lib/tag/auth";
 import { deleteTag, getTag, mergeTags, updateTagName } from "@typeflowai/lib/tag/service";
 import { AuthorizationError } from "@typeflowai/types/errors";
 
 export const deleteTagAction = async (tagId: string) => {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 
@@ -39,23 +23,7 @@ export const deleteTagAction = async (tagId: string) => {
 };
 
 export const updateTagNameAction = async (tagId: string, name: string) => {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 
@@ -70,23 +38,7 @@ export const updateTagNameAction = async (tagId: string, name: string) => {
 };
 
 export const mergeTagsAction = async (originalTagId: string, newTagId: string) => {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 

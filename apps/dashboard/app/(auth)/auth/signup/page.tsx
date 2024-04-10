@@ -1,10 +1,7 @@
 import FormWrapper from "@/app/(auth)/auth/components/FormWrapper";
 import SidebarLogin from "@/app/(auth)/auth/components/SidebarLogin";
 import { SignupForm } from "@/app/(auth)/auth/signup/components/SignupForm";
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 import {
   AZURE_OAUTH_ENABLED,
@@ -24,27 +21,6 @@ export default async function SignUpPage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
-
-  if (session) {
-    redirect(`/`);
-  }
   const inviteToken = searchParams["inviteToken"] ?? null;
 
   return (

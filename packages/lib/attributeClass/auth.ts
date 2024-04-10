@@ -3,7 +3,6 @@ import "server-only";
 import { unstable_cache } from "next/cache";
 
 import { ZId } from "@typeflowai/types/environment";
-import { ZUuid } from "@typeflowai/types/user";
 
 import { SERVICES_REVALIDATION_INTERVAL } from "../constants";
 import { hasUserEnvironmentAccess } from "../environment/auth";
@@ -16,7 +15,7 @@ export const canUserAccessAttributeClass = async (
 ): Promise<boolean> =>
   await unstable_cache(
     async () => {
-      validateInputs([userId, ZUuid], [attributeClassId, ZId]);
+      validateInputs([userId, ZId], [attributeClassId, ZId]);
       if (!userId) return false;
 
       const attributeClass = await getAttributeClass(attributeClassId);

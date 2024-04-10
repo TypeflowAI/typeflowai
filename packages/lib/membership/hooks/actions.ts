@@ -2,37 +2,21 @@
 
 import "server-only";
 
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 
 import { AuthenticationError } from "@typeflowai/types/errors";
+import { TUser } from "@typeflowai/types/user";
 
+import { authOptions } from "../../authOptions";
 import { getTeamByEnvironmentId } from "../../team/service";
-import { getUser } from "../../user/service";
 import { getMembershipByUserIdTeamId } from "../service";
 
 export const getMembershipByUserIdTeamIdAction = async (environmentId: string) => {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   const team = await getTeamByEnvironmentId(environmentId);
 
-  const user = session && session.user ? await getUser(session.user.id) : null;
+  const user = session?.user as TUser;
 
   if (!session || !user) {
     throw new AuthenticationError("Not authenticated");

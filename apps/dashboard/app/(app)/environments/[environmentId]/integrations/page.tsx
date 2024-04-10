@@ -4,10 +4,10 @@ import JsLogo from "@/images/jslogo.png";
 import notionLogo from "@/images/notion.png";
 import WebhookLogo from "@/images/webhook.png";
 import ZapierLogo from "@/images/zapier-small.png";
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 import Image from "next/image";
 
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
 import { getIntegrations } from "@typeflowai/lib/integration/service";
 import { getMembershipByUserIdTeamId } from "@typeflowai/lib/membership/service";
@@ -22,30 +22,13 @@ import AirtableLogo from "./airtable/images/airtable.svg";
 import GoogleSheetsLogo from "./google-sheets/images/google-sheets-small.png";
 
 export default async function IntegrationsPage({ params }) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
-
   const environmentId = params.environmentId;
 
   const [
     environment,
     integrations,
     team,
+    session,
     userWebhookCount,
     zapierWebhookCount,
     // makeWebhookCount,
@@ -54,6 +37,7 @@ export default async function IntegrationsPage({ params }) {
     getEnvironment(environmentId),
     getIntegrations(environmentId),
     getTeamByEnvironmentId(params.environmentId),
+    getServerSession(authOptions),
     getWebhookCountBySource(environmentId, "user"),
     getWebhookCountBySource(environmentId, "zapier"),
     // getWebhookCountBySource(environmentId, "make"),

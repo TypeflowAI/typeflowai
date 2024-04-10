@@ -1,6 +1,6 @@
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
 
 import SettingsCard from "../components/SettingsCard";
@@ -10,23 +10,7 @@ import { EditApiKey } from "./components/EditApiKey";
 export default async function OpenaiSettingsPage({ params }: { params: { environmentId: string } }) {
   const { environmentId } = params;
 
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   let team = await getTeamByEnvironmentId(environmentId);
 

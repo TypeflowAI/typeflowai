@@ -1,18 +1,18 @@
 "use client";
 
 import { updateAvatarAction } from "@/app/(app)/environments/[environmentId]/settings/profile/actions";
+import { Session } from "next-auth";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 
-import { TUser } from "@typeflowai/types/user";
 import { ProfileAvatar } from "@typeflowai/ui/Avatars";
 import { Button } from "@typeflowai/ui/Button";
 
 import { handleFileUpload } from "../lib";
 
-export function EditAvatar({ user, environmentId }: { user: TUser | null; environmentId: string }) {
+export function EditAvatar({ session, environmentId }: { session: Session | null; environmentId: string }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -54,9 +54,9 @@ export function EditAvatar({ user, environmentId }: { user: TUser | null; enviro
           </div>
         )}
 
-        {user?.imageUrl ? (
+        {session?.user?.imageUrl ? (
           <Image
-            src={user.imageUrl}
+            src={session.user.imageUrl}
             width="40"
             height="40"
             style={{
@@ -66,7 +66,7 @@ export function EditAvatar({ user, environmentId }: { user: TUser | null; enviro
             alt="Avatar placeholder"
           />
         ) : (
-          <ProfileAvatar userId={user!.id} />
+          <ProfileAvatar userId={session!.user.id} />
         )}
       </div>
 

@@ -1,8 +1,8 @@
 import { responses } from "@/app/lib/api/response";
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { hasUserEnvironmentAccess } from "@typeflowai/lib/environment/auth";
 
 import getSignedUrlForPublicFile from "./lib/getSignedUrl";
@@ -39,23 +39,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   // auth and upload private file
 
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
     return responses.notAuthenticatedResponse();

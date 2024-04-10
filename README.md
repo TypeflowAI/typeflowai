@@ -72,7 +72,6 @@ Our mission is to transform the user's online presence by creating engaging cont
 - [React.js](https://reactjs.org/?ref=typeflowai.com)
 - [Tailwind CSS](https://tailwindcss.com/?ref=typeflowai.com)
 - [Prisma.io](https://prisma.io/?ref=typeflowai.com)
-- [Supabase](https://supabase.com/?ref=typeflowai.com)
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -85,7 +84,7 @@ Jumpstart your TypeflowAI experience with our cloud service, offering a generous
 
 ### Self-hosting TypeflowAI
 
-TypeflowAI is accessible as an open-source under AGPLv3 license, allowing you to host it on your servers using Supabase, free of any subscription fees. Future updates may introduce features not included in the open-source version.
+TypeflowAI is accessible as an open-source under AGPLv3 license, allowing you to host it on your servers, free of any subscription fees. Future updates may introduce features not included in the open-source version.
 
 To start with self-hosting, check our [self-hosting guide](https://typeflowai.com/docs/self-hosting/self-hosting-guide).
 
@@ -97,7 +96,6 @@ To get the project running locally you'll needd:
 
 - [Node.JS](https://nodejs.org/en) (we recommend v20)
 - [pnpm](https://pnpm.io/)
-- [Supabase](https://supabase.com/?ref=typeflowai.com) CLI or access to a Supabase project in the cloud
 
 #### Local Setup
 

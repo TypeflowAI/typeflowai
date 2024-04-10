@@ -1,8 +1,8 @@
-import { createServerClient } from "@supabase/ssr";
 import { Metadata } from "next";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 
 import { getIsEnterpriseSubscription } from "@typeflowai/ee/lib/service";
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { IS_TYPEFLOWAI_CLOUD } from "@typeflowai/lib/constants";
 import { getMembershipByUserIdTeamId } from "@typeflowai/lib/membership/service";
 import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
@@ -15,27 +15,10 @@ export const metadata: Metadata = {
 };
 
 export default async function SettingsLayout({ children, params }) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
-
-  const [team, product] = await Promise.all([
+  const [team, product, session] = await Promise.all([
     getTeamByEnvironmentId(params.environmentId),
     getProductByEnvironmentId(params.environmentId),
+    getServerSession(authOptions),
   ]);
   if (!team) {
     throw new Error("Team not found");

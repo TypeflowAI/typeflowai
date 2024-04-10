@@ -1,12 +1,8 @@
-import { type CookieOptions, createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { prisma } from "@typeflowai/database";
-// import { EMAIL_VERIFICATION_DISABLED, INVITE_DISABLED, SIGNUP_ENABLED } from "@typeflowai/lib/constants";
-// import { sendInviteAcceptedEmail, sendVerificationEmail } from "@typeflowai/lib/emails/emails";
-import { INVITE_DISABLED, SIGNUP_ENABLED } from "@typeflowai/lib/constants";
-// import { sendInviteAcceptedEmail } from "@typeflowai/lib/emails/emails";
+import { EMAIL_VERIFICATION_DISABLED, INVITE_DISABLED, SIGNUP_ENABLED } from "@typeflowai/lib/constants";
+import { sendInviteAcceptedEmail, sendVerificationEmail } from "@typeflowai/lib/emails/emails";
 import { env } from "@typeflowai/lib/env.mjs";
 import { deleteInvite } from "@typeflowai/lib/invite/service";
 import { verifyInviteToken } from "@typeflowai/lib/jwt";
@@ -16,7 +12,7 @@ import { createTeam, getTeam } from "@typeflowai/lib/team/service";
 import { createUser } from "@typeflowai/lib/user/service";
 
 export async function POST(request: Request) {
-  let { inviteToken, password, ...user } = await request.json();
+  let { inviteToken, ...user } = await request.json();
   if (inviteToken ? INVITE_DISABLED : !SIGNUP_ENABLED) {
     return NextResponse.json({ error: "Signup disabled" }, { status: 403 });
   }
@@ -27,44 +23,8 @@ export async function POST(request: Request) {
   try {
     let invite;
 
-    if (!password) {
-      throw new Error("Password is required");
-    }
-
-    const cookieStore = cookies();
-
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return cookieStore.get(name)?.value;
-          },
-          set(name: string, value: string, options: CookieOptions) {
-            cookieStore.set({ name, value, ...options });
-          },
-          remove(name: string, options: CookieOptions) {
-            cookieStore.set({ name, value: "", ...options });
-          },
-        },
-      }
-    );
-
-    const { data: dataSupabase, error: signUpError } = await supabase.auth.signUp({
-      email: user.email,
-      password: password,
-      options: {
-        emailRedirectTo: `${process.env.WEBAPP_URL}/api/auth/callback`,
-      },
-    });
-
-    if (signUpError) throw signUpError;
-
     // create the user
-    if (dataSupabase.user) {
-      user = await createUser(user, dataSupabase.user.id);
-    }
+    user = await createUser(user);
 
     // User is invited to team
     if (inviteToken) {
@@ -87,13 +47,12 @@ export async function POST(request: Request) {
         accepted: true,
         role: invite.role,
       });
-      //TODO: Fix This, remove or configure with Supabase
-      // if (!EMAIL_VERIFICATION_DISABLED) {
-      //   await sendVerificationEmail(user);
-      // }
 
-      //TODO: Reactivate once SMPT will be configured
-      // await sendInviteAcceptedEmail(invite.creator.name, user.name, invite.creator.email);
+      if (!EMAIL_VERIFICATION_DISABLED) {
+        await sendVerificationEmail(user);
+      }
+
+      await sendInviteAcceptedEmail(invite.creator.name, user.name, invite.creator.email);
       await deleteInvite(inviteId);
 
       return NextResponse.json(user);
@@ -119,10 +78,10 @@ export async function POST(request: Request) {
       await createMembership(team.id, user.id, { role: "owner", accepted: true });
       await createProduct(team.id, { name: "My Product" });
     }
-    //TODO: Fix This, remove or configure with Supabase
-    // if (!EMAIL_VERIFICATION_DISABLED) {
-    //   await sendVerificationEmail(user);
-    // }
+    // send verification email amd return user
+    if (!EMAIL_VERIFICATION_DISABLED) {
+      await sendVerificationEmail(user);
+    }
     return NextResponse.json(user);
   } catch (e) {
     if (e.code === "P2002") {

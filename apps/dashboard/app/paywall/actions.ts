@@ -1,30 +1,14 @@
 "use server";
 
 import { Team } from "@prisma/client";
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { updateTeam } from "@typeflowai/lib/team/service";
 import { AuthorizationError } from "@typeflowai/types/errors";
 
 export async function startFreeTrialAction(team: Team): Promise<Team> {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 

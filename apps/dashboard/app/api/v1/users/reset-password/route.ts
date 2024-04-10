@@ -1,39 +1,27 @@
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
+import { prisma } from "@typeflowai/database";
+import { sendPasswordResetNotifyEmail } from "@typeflowai/lib/emails/emails";
+import { verifyToken } from "@typeflowai/lib/jwt";
+
 export async function POST(request: Request) {
-  const { password } = await request.json();
+  const { token, hashedPassword } = await request.json();
 
   try {
-    const cookieStore = cookies();
-
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return cookieStore.get(name)?.value;
-          },
-        },
-      }
-    );
-
-    await supabase.auth.getSession();
-
-    const { data: userPasswordUpdated, error: resetPasswordError } = await supabase.auth.updateUser({
-      password: password,
+    const { id } = await verifyToken(token);
+    const user = await prisma.user.findUnique({
+      where: {
+        id: id,
+      },
     });
-
-    if (resetPasswordError) {
-      throw resetPasswordError;
+    if (!user) {
+      return NextResponse.json({ error: "Invalid token provided or no longer valid" }, { status: 409 });
     }
-
-    if (!userPasswordUpdated) {
-      return NextResponse.json({ error: "User passwod have not been updated" }, { status: 409 });
-    }
-
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { password: hashedPassword },
+    });
+    await sendPasswordResetNotifyEmail(user);
     return NextResponse.json({});
   } catch (e) {
     return NextResponse.json(

@@ -1,8 +1,8 @@
 "use server";
 
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { canUserAccessProduct, verifyUserRoleAccess } from "@typeflowai/lib/product/auth";
 import { getProduct, updateProduct } from "@typeflowai/lib/product/service";
 import { updateUser } from "@typeflowai/lib/user/service";
@@ -11,23 +11,7 @@ import { TProductUpdateInput } from "@typeflowai/types/product";
 import { TUserUpdateInput } from "@typeflowai/types/user";
 
 export async function updateUserAction(updatedUser: TUserUpdateInput) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 
@@ -35,23 +19,7 @@ export async function updateUserAction(updatedUser: TUserUpdateInput) {
 }
 
 export async function updateProductAction(productId: string, updatedProduct: Partial<TProductUpdateInput>) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 

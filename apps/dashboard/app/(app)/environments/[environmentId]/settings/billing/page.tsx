@@ -1,7 +1,7 @@
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { BASIC_AI_RESPONSES, IS_TYPEFLOWAI_CLOUD, PRO_AI_RESPONSES } from "@typeflowai/lib/constants";
 import { getMembershipByUserIdTeamId } from "@typeflowai/lib/membership/service";
 import { getAccessFlags } from "@typeflowai/lib/membership/utils";
@@ -16,23 +16,7 @@ export default async function ProfileSettingsPage({ params }) {
     notFound();
   }
 
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   let team = await getTeamByEnvironmentId(params.environmentId);
 

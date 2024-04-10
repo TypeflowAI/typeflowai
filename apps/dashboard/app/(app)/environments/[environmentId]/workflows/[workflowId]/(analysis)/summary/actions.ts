@@ -2,10 +2,10 @@
 
 import { getEmailTemplateHtml } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/lib/emailTemplate";
 import { generateWorkflowSingleUseId } from "@/app/lib/singleUseWorkflows";
-import { createServerClient } from "@supabase/ssr";
 import { customAlphabet } from "nanoid";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { sendEmbedWorkflowPreviewEmail } from "@typeflowai/lib/emails/emails";
 import { canUserAccessWorkflow } from "@typeflowai/lib/workflow/auth";
 import { getWorkflow, updateWorkflow } from "@typeflowai/lib/workflow/service";
@@ -18,23 +18,7 @@ type TSendEmailActionArgs = {
 };
 
 export async function generateSingleUseIdAction(workflowId: string, isEncrypted: boolean): Promise<string> {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 
@@ -46,23 +30,7 @@ export async function generateSingleUseIdAction(workflowId: string, isEncrypted:
 }
 
 export const sendEmailAction = async ({ html, subject, to }: TSendEmailActionArgs) => {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     throw new AuthenticationError("Not authenticated");
@@ -71,23 +39,7 @@ export const sendEmailAction = async ({ html, subject, to }: TSendEmailActionArg
 };
 
 export async function generateResultShareUrlAction(workflowId: string): Promise<string> {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 
@@ -111,23 +63,7 @@ export async function generateResultShareUrlAction(workflowId: string): Promise<
 }
 
 export async function getResultShareUrlAction(workflowId: string): Promise<string | null> {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 
@@ -144,23 +80,7 @@ export async function getResultShareUrlAction(workflowId: string): Promise<strin
 }
 
 export async function deleteResultShareUrlAction(workflowId: string): Promise<void> {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 
@@ -177,23 +97,7 @@ export async function deleteResultShareUrlAction(workflowId: string): Promise<vo
 }
 
 export const getEmailHtmlAction = async (workflowId: string) => {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");
 

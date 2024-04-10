@@ -1,6 +1,6 @@
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
 import { getMembershipByUserIdTeamId } from "@typeflowai/lib/membership/service";
 import { getAccessFlags } from "@typeflowai/lib/membership/utils";
@@ -16,27 +16,10 @@ import EditProductName from "./components/EditProductName";
 import EditWaitingTime from "./components/EditWaitingTime";
 
 export default async function ProfileSettingsPage({ params }: { params: { environmentId: string } }) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
-
-  const [, product, team] = await Promise.all([
+  const [, product, session, team] = await Promise.all([
     getEnvironment(params.environmentId),
     getProductByEnvironmentId(params.environmentId),
+    getServerSession(authOptions),
     getTeamByEnvironmentId(params.environmentId),
   ]);
 

@@ -1,12 +1,11 @@
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { sendInviteAcceptedEmail } from "@typeflowai/lib/emails/emails";
 import { env } from "@typeflowai/lib/env.mjs";
 import { deleteInvite, getInvite } from "@typeflowai/lib/invite/service";
 import { verifyInviteToken } from "@typeflowai/lib/jwt";
 import { createMembership } from "@typeflowai/lib/membership/service";
-import { getUser } from "@typeflowai/lib/user/service";
 
 import {
   ExpiredContent,
@@ -28,25 +27,7 @@ function extractTokenFromMetadata(metadata) {
 }
 
 export default async function JoinTeam({ searchParams }) {
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
-
-  const currentUser = session && session.user ? await getUser(session.user.id) : null;
+  const currentUser = await getServerSession(authOptions);
 
   try {
     const inviteToken = extractTokenFromMetadata(searchParams.metadata);
@@ -64,13 +45,13 @@ export default async function JoinTeam({ searchParams }) {
     } else if (!currentUser) {
       const redirectUrl = env.NEXTAUTH_URL + "/invite?token=" + inviteToken;
       return <NotLoggedInContent email={email} token={inviteToken} redirectUrl={redirectUrl} />;
-    } else if (currentUser?.email !== email) {
+    } else if (currentUser?.user?.email !== email) {
       return <WrongAccountContent />;
     } else {
-      await createMembership(invite.teamId, currentUser.id, { accepted: true, role: invite.role });
+      await createMembership(invite.teamId, currentUser.user.id, { accepted: true, role: invite.role });
       await deleteInvite(inviteId);
 
-      sendInviteAcceptedEmail(invite.creator.name ?? "", currentUser?.name ?? "", invite.creator.email);
+      sendInviteAcceptedEmail(invite.creator.name ?? "", currentUser.user?.name ?? "", invite.creator.email);
 
       return <RightAccountContent />;
     }

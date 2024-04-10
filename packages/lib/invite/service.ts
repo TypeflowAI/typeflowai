@@ -1,9 +1,7 @@
 import "server-only";
 
 import { Prisma } from "@prisma/client";
-import { createServerClient } from "@supabase/ssr";
 import { unstable_cache } from "next/cache";
-import { cookies } from "next/headers";
 
 import { prisma } from "@typeflowai/database";
 import { ZOptionalNumber, ZString } from "@typeflowai/types/common";
@@ -20,7 +18,7 @@ import {
 } from "@typeflowai/types/invites";
 
 import { ITEMS_PER_PAGE, SERVICES_REVALIDATION_INTERVAL } from "../constants";
-import { createInviteToken } from "../jwt";
+import { sendInviteMemberEmail } from "../emails/emails";
 import { getMembershipByUserIdTeamId } from "../membership/service";
 import { formatDateFields } from "../utils/datetime";
 import { validateInputs } from "../utils/validate";
@@ -173,29 +171,7 @@ export const resendInvite = async (inviteId: string): Promise<TInvite> => {
     throw new ResourceNotFoundError("Invite", inviteId);
   }
 
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  await supabaseServerClient.auth.getSession();
-
-  await supabaseServerClient.auth.admin.inviteUserByEmail(invite.email, {
-    data: {
-      token: createInviteToken(inviteId, invite.email, {
-        expiresIn: "7d",
-      }),
-    },
-  });
+  await sendInviteMemberEmail(inviteId, invite.creator?.name ?? "", invite.name ?? "", invite.email);
 
   const updatedInvite = await prisma.invite.update({
     where: {
@@ -226,7 +202,7 @@ export const inviteUser = async ({
   validateInputs([teamId, ZString], [invitee, ZInvitee], [currentUser, ZCurrentUser]);
 
   const { name, email, role } = invitee;
-  const { id: currentUserId } = currentUser;
+  const { id: currentUserId, name: currentUserName } = currentUser;
   const existingInvite = await prisma.invite.findFirst({ where: { email, teamId } });
 
   if (existingInvite) {
@@ -258,46 +234,11 @@ export const inviteUser = async ({
     },
   });
 
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  await supabaseServerClient.auth.getSession();
-
-  await supabaseServerClient.auth.admin.inviteUserByEmail(invite.email, {
-    data: {
-      token: createInviteToken(invite.id, invite.email, {
-        expiresIn: "7d",
-      }),
-    },
-  });
-
-  const { error: inviteUserError } = await supabaseServerClient.auth.admin.inviteUserByEmail(invite.email, {
-    data: {
-      token: createInviteToken(invite.id, invite.email, {
-        expiresIn: "7d",
-      }),
-    },
-  });
-
-  if (inviteUserError) {
-    throw inviteUserError;
-  }
-
   inviteCache.revalidate({
     id: invite.id,
     teamId: invite.teamId,
   });
 
+  await sendInviteMemberEmail(invite.id, email, currentUserName, name);
   return invite;
 };

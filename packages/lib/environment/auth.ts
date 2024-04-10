@@ -2,7 +2,6 @@ import { unstable_cache } from "next/cache";
 
 import { prisma } from "@typeflowai/database";
 import { ZId } from "@typeflowai/types/environment";
-import { ZUuid } from "@typeflowai/types/user";
 
 import { SERVICES_REVALIDATION_INTERVAL } from "../constants";
 import { teamCache } from "../team/cache";
@@ -11,7 +10,7 @@ import { validateInputs } from "../utils/validate";
 export const hasUserEnvironmentAccess = async (userId: string, environmentId: string) => {
   return await unstable_cache(
     async (): Promise<boolean> => {
-      validateInputs([userId, ZUuid], [environmentId, ZId]);
+      validateInputs([userId, ZId], [environmentId, ZId]);
 
       const environment = await prisma.environment.findUnique({
         where: {

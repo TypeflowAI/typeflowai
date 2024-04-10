@@ -2,11 +2,11 @@
 // body -> should be a valid file object (buffer)
 // method -> PUT (to be the same as the signedUrl method)
 import { responses } from "@/app/lib/api/response";
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
+import { authOptions } from "@typeflowai/lib/authOptions";
 import { UPLOADS_DIR } from "@typeflowai/lib/constants";
 import { validateLocalSignedUrl } from "@typeflowai/lib/crypto";
 import { env } from "@typeflowai/lib/env.mjs";
@@ -50,23 +50,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return responses.unauthorizedResponse();
   }
 
-  const cookieStore = cookies();
-
-  const supabaseServerClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabaseServerClient.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
     return responses.notAuthenticatedResponse();

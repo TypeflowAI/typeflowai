@@ -2,12 +2,12 @@
 
 import { typeflowaiLogout } from "@/app/lib/typeflowai";
 import AvatarPlaceholder from "@/images/avatar-placeholder.png";
+import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useState } from "react";
 import toast from "react-hot-toast";
 
-import { TUser } from "@typeflowai/types/user";
 import { ProfileAvatar } from "@typeflowai/ui/Avatars";
 import { Button } from "@typeflowai/ui/Button";
 import { DeleteDialog } from "@typeflowai/ui/DeleteDialog";
@@ -40,10 +40,10 @@ export function EditAvatar({ session }) {
 interface DeleteAccountModalProps {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  user: TUser;
+  session: Session;
 }
 
-function DeleteAccountModal({ setOpen, open, user }: DeleteAccountModalProps) {
+function DeleteAccountModal({ setOpen, open, session }: DeleteAccountModalProps) {
   const [deleting, setDeleting] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
@@ -73,7 +73,7 @@ function DeleteAccountModal({ setOpen, open, user }: DeleteAccountModalProps) {
       onDelete={() => deleteAccount()}
       text="Before you proceed with deleting your account, please be aware of the following consequences:"
       isDeleting={deleting}
-      disabled={inputValue !== user.email}>
+      disabled={inputValue !== session.user.email}>
       <div className="py-5">
         <ul className="list-disc pb-6 pl-6">
           <li>Permanent removal of all of your personal information and data.</li>
@@ -89,13 +89,13 @@ function DeleteAccountModal({ setOpen, open, user }: DeleteAccountModalProps) {
         </ul>
         <form>
           <label htmlFor="deleteAccountConfirmation">
-            Please enter <span className="font-bold">{user.email}</span> in the following field to confirm the
-            definitive deletion of your account:
+            Please enter <span className="font-bold">{session.user.email}</span> in the following field to
+            confirm the definitive deletion of your account:
           </label>
           <Input
             value={inputValue}
             onChange={handleInputChange}
-            placeholder={user.email}
+            placeholder={session.user.email}
             className="mt-5"
             type="text"
             id="deleteAccountConfirmation"
@@ -107,16 +107,16 @@ function DeleteAccountModal({ setOpen, open, user }: DeleteAccountModalProps) {
   );
 }
 
-export function DeleteAccount({ user }: { user: TUser | null }) {
+export function DeleteAccount({ session }: { session: Session | null }) {
   const [isModalOpen, setModalOpen] = useState(false);
 
-  if (!user) {
+  if (!session) {
     return null;
   }
 
   return (
     <div>
-      <DeleteAccountModal open={isModalOpen} setOpen={setModalOpen} user={user} />
+      <DeleteAccountModal open={isModalOpen} setOpen={setModalOpen} session={session} />
       <p className="text-sm text-slate-700">
         Delete your account with all personal data. <strong>This cannot be undone!</strong>
       </p>
