@@ -30,7 +30,7 @@ import goalIcon from "@typeflowai/ui/icons/templates/goal.svg";
 import googleAdsIcon from "@typeflowai/ui/icons/templates/googleads.svg";
 import headlineIcon from "@typeflowai/ui/icons/templates/headline.svg";
 import ideaIcon from "@typeflowai/ui/icons/templates/idea.svg";
-import imageIcon from "@typeflowai/ui/icons/templates/image.svg";
+// import imageIcon from "@typeflowai/ui/icons/templates/image.svg";
 import innovationIcon from "@typeflowai/ui/icons/templates/innovation.svg";
 import keywordResearchIcon from "@typeflowai/ui/icons/templates/keyword-research.svg";
 import landingIcon from "@typeflowai/ui/icons/templates/landing.svg";
