@@ -111,7 +111,7 @@ const nextConfig = {
       },
       {
         source: "/cla",
-        destination: "https://typeflowai.com/clucgi29800008y770tjtzgim",
+        destination: "https://dashboard.typeflowai.com/s/clutm6fyu00004otebb9tnxh5",
         permanent: true,
       },
       {
