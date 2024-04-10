@@ -13,6 +13,7 @@ import { TWorkflowInput } from "@typeflowai/types/workflows";
 import LoadingSpinner from "@typeflowai/ui/LoadingSpinner";
 
 import { createWorkflowAction } from "../actions";
+import { adjustEngineForTemplate, adjustPromptForTemplate } from "../templates/lib";
 
 export default function WorkflowStarter({
   environmentId,
@@ -29,12 +30,15 @@ export default function WorkflowStarter({
 }) {
   const [isCreateWorkflowLoading, setIsCreateWorkflowLoading] = useState(false);
   const router = useRouter();
+
   const newWorkflowFromTemplate = async (template: TTemplate) => {
     setIsCreateWorkflowLoading(true);
+    const engineTemplateAdjusted = adjustEngineForTemplate(template, isEngineLimited);
+    const adjustedTemplate = adjustPromptForTemplate(engineTemplateAdjusted);
     const workflowType = environment?.widgetSetupCompleted ? "web" : "link";
     const autoComplete = workflowType === "web" ? 50 : null;
     const augmentedTemplate = {
-      ...template.preset,
+      ...adjustedTemplate.preset,
       type: workflowType,
       autoComplete,
     } as TWorkflowInput;

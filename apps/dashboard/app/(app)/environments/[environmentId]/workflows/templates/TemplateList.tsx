@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 
 import { cn } from "@typeflowai/lib/cn";
 import type { TEnvironment } from "@typeflowai/types/environment";
-import { OpenAIModel } from "@typeflowai/types/openai";
 import type { TProduct } from "@typeflowai/types/product";
 import { TTemplate } from "@typeflowai/types/templates";
 import { TUser } from "@typeflowai/types/user";
@@ -20,6 +19,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@typef
 import diamondIcon from "@typeflowai/ui/icons/templates/diamond.svg";
 
 import { createWorkflowAction } from "../actions";
+import { adjustEngineForTemplate, adjustPromptForTemplate } from "./lib";
 import { customWorkflow, templates, testTemplate } from "./templates";
 
 type TemplateList = {
@@ -71,29 +71,14 @@ export default function TemplateList({
     setSelectedFilter(activeFilter);
   }, [user, templateSearch]);
 
-  const adjustEngineForTemplate = (template, isEngineLimited) => {
-    if (isEngineLimited) {
-      return {
-        ...template,
-        preset: {
-          ...template.preset,
-          prompt: {
-            ...template.preset.prompt,
-            engine: OpenAIModel.GPT35Turbo,
-          },
-        },
-      };
-    }
-    return template;
-  };
-
   const addWorkflow = async (activeTemplate) => {
     setLoading(true);
-    const activeTemplateAdjusted = adjustEngineForTemplate(activeTemplate, isEngineLimited);
+    const engineTemplateAdjusted = adjustEngineForTemplate(activeTemplate, isEngineLimited);
+    const adjustedTemplate = adjustPromptForTemplate(engineTemplateAdjusted);
     const workflowType = environment?.widgetSetupCompleted ? "web" : "link";
     const autoComplete = workflowType === "web" ? 50 : null;
     const augmentedTemplate = {
-      ...activeTemplateAdjusted.preset,
+      ...adjustedTemplate.preset,
       type: workflowType,
       autoComplete,
     } as TWorkflowInput;
