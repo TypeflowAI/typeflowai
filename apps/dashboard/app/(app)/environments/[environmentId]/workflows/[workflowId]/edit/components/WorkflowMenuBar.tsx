@@ -15,6 +15,7 @@ import AlertDialog from "@typeflowai/ui/AlertDialog";
 import { Button } from "@typeflowai/ui/Button";
 import { DeleteDialog } from "@typeflowai/ui/DeleteDialog";
 import { Input } from "@typeflowai/ui/Input";
+import { trackEvent } from "@typeflowai/ui/PostHogClient";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@typeflowai/ui/Tooltip";
 
 import { deleteWorkflowAction, updateWorkflowAction } from "../actions";
@@ -353,6 +354,7 @@ export default function WorkflowMenuBar({
                   return;
                 }
                 await updateWorkflowAction({ ...localWorkflow, status: "inProgress" });
+                trackEvent("WorkflowPublished", { workflowId: localWorkflow.id });
                 router.push(
                   `/environments/${environment.id}/workflows/${localWorkflow.id}/summary?success=true`
                 );

@@ -15,6 +15,7 @@ import { TTemplate } from "@typeflowai/types/templates";
 import { TUser } from "@typeflowai/types/user";
 import { TWorkflowInput } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
+import { trackEvent } from "@typeflowai/ui/PostHogClient";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@typeflowai/ui/Tooltip";
 import diamondIcon from "@typeflowai/ui/icons/templates/diamond.svg";
 
@@ -71,7 +72,7 @@ export default function TemplateList({
     setSelectedFilter(activeFilter);
   }, [user, templateSearch]);
 
-  const addWorkflow = async (activeTemplate) => {
+  const addWorkflow = async (activeTemplate, isTemplate) => {
     setLoading(true);
     const engineTemplateAdjusted = adjustEngineForTemplate(activeTemplate, isEngineLimited);
     const adjustedTemplate = adjustPromptForTemplate(engineTemplateAdjusted);
@@ -83,6 +84,7 @@ export default function TemplateList({
       autoComplete,
     } as TWorkflowInput;
     const workflow = await createWorkflowAction(environmentId, augmentedTemplate);
+    trackEvent("WorkflowCreated", { isTemplate: isTemplate, template: activeTemplate.name });
     router.push(`/environments/${environmentId}/workflows/${workflow.id}/edit`);
   };
 
@@ -176,7 +178,7 @@ export default function TemplateList({
                 className="mt-6 px-6 py-3"
                 disabled={activeTemplate === null}
                 loading={loading}
-                onClick={() => addWorkflow(activeTemplate)}>
+                onClick={() => addWorkflow(activeTemplate, false)}>
                 Create workflow
               </Button>
             </div>
@@ -276,7 +278,7 @@ export default function TemplateList({
                   className="mt-6 px-6 py-3"
                   disabled={activeTemplate === null}
                   loading={loading}
-                  onClick={() => addWorkflow(activeTemplate)}>
+                  onClick={() => addWorkflow(activeTemplate, true)}>
                   Use this template
                 </Button>
               </div>

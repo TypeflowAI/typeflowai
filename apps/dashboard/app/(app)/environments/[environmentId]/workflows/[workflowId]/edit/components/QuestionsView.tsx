@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 
 import { TProduct } from "@typeflowai/types/product";
 import { TWorkflow, TWorkflowQuestion } from "@typeflowai/types/workflows";
+import { trackEvent } from "@typeflowai/ui/PostHogClient";
 
 import AddQuestionButton from "./AddQuestionButton";
 import EditThankYouCard from "./EditThankYouCard";
@@ -177,6 +178,11 @@ export default function QuestionsView({
 
     updatedWorkflow.questions.push({ ...question, isDraft: true });
 
+    trackEvent("QuestionAdded2Workflow", {
+      type: capitalizeFirstLetter(question.type),
+      workflowId: updatedWorkflow.id,
+    });
+
     setLocalWorkflow(updatedWorkflow);
     setActiveQuestionId(question.id);
     internalQuestionIdMap[question.id] = createId();
@@ -204,6 +210,9 @@ export default function QuestionsView({
 
   const isPromptVisible = () => {
     return localWorkflow.prompt.enabled && localWorkflow.prompt.isVisible;
+  };
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
   return (

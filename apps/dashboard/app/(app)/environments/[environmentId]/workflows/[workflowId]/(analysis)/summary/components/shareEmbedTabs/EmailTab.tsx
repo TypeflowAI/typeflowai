@@ -8,6 +8,7 @@ import { AuthenticationError } from "@typeflowai/types/errors";
 import { Button } from "@typeflowai/ui/Button";
 import CodeBlock from "@typeflowai/ui/CodeBlock";
 import LoadingSpinner from "@typeflowai/ui/LoadingSpinner";
+import { trackEvent } from "@typeflowai/ui/PostHogClient";
 
 import { getEmailHtmlAction, sendEmailAction } from "../../actions";
 
@@ -65,6 +66,7 @@ export default function EmailTab({ workflowId, email }: EmailTabProps) {
             title="Embed workflow in your website"
             aria-label="Embed workflow in your website"
             onClick={() => {
+              trackEvent("WorkflowShared", { workflowId: workflowId, shareMethod: "Email Embed" });
               toast.success("Embed code copied to clipboard!");
               navigator.clipboard.writeText(emailHtml);
             }}

@@ -36,6 +36,16 @@ export function PostHogPageview(): JSX.Element {
   return <></>;
 }
 
+interface EventProperties {
+  [key: string]: string | number | boolean;
+}
+
+export function trackEvent(eventName: string, properties?: EventProperties) {
+  if (posthogEnabled) {
+    posthog.capture(eventName, properties);
+  }
+}
+
 export function PHProvider({ children }: { children: React.ReactNode }) {
   return posthogEnabled ? <PostHogProvider client={posthog}>{children}</PostHogProvider> : children;
 }

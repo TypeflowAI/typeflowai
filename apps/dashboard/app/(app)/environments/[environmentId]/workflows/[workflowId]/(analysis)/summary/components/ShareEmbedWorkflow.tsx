@@ -97,7 +97,7 @@ export default function ShareEmbedWorkflow({
               ) : activeId === "email" ? (
                 <EmailTab workflowId={workflow.id} email={email} />
               ) : activeId === "webpage" ? (
-                <WebpageTab workflowUrl={workflowUrl} />
+                <WebpageTab workflowUrl={workflowUrl} workflowId={workflow.id} />
               ) : null}
             </div>
             <div className="mx-auto flex max-w-max rounded-md bg-slate-100 p-1 lg:hidden">

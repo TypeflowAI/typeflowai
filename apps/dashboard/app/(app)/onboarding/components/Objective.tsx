@@ -9,6 +9,7 @@ import { cn } from "@typeflowai/lib/cn";
 import { env } from "@typeflowai/lib/env.mjs";
 import { TUser, TUserObjective } from "@typeflowai/types/user";
 import { Button } from "@typeflowai/ui/Button";
+import { trackEvent } from "@typeflowai/ui/PostHogClient";
 
 import { handleTabNavigation } from "../utils";
 
@@ -54,6 +55,7 @@ const Objective: React.FC<ObjectiveProps> = ({ next, skip, typeflowaiResponseId,
       const selectedObjective = objectives.find((objective) => objective.label === selectedChoice);
       if (selectedObjective) {
         try {
+          trackEvent("ObjectiveSelected", { objective: selectedObjective.label });
           setIsProfileUpdating(true);
           await updateUserAction({
             objective: selectedObjective.id,

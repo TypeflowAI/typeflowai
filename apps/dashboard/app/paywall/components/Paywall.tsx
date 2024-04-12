@@ -9,6 +9,7 @@ import { StripePriceLookupKeys, StripeProductNames } from "@typeflowai/ee/billin
 import { TTeam } from "@typeflowai/types/teams";
 import { Logo } from "@typeflowai/ui/Logo";
 import { PlanSelector } from "@typeflowai/ui/PlanSelector";
+import { trackEvent } from "@typeflowai/ui/PostHogClient";
 
 import { startFreeTrialAction } from "../actions";
 
@@ -55,6 +56,10 @@ export default function Paywall({ plansAndFeatures, team, environmentId }: Paywa
       setSelectingPlan(false);
 
       if (response.status === 200) {
+        trackEvent("PlanCreated", {
+          plan: capitalizeFirstLetter(priceLookupKey),
+          isPaywall: true,
+        });
         if (response.url) {
           router.push(response.url);
         } else {
@@ -75,6 +80,7 @@ export default function Paywall({ plansAndFeatures, team, environmentId }: Paywa
     try {
       setSelectingPlan(true);
       await startFreeTrialAction(team);
+      trackEvent("FreeTrialCreated");
       router.push("/");
       setSelectingPlan(false);
     } catch (err) {
@@ -82,6 +88,10 @@ export default function Paywall({ plansAndFeatures, team, environmentId }: Paywa
     } finally {
       setSelectingPlan(false);
     }
+  };
+
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
   return (
