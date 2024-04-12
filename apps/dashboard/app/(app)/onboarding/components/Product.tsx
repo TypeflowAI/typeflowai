@@ -12,6 +12,7 @@ import { ErrorComponent } from "@typeflowai/ui/ErrorComponent";
 import { Input } from "@typeflowai/ui/Input";
 import { Label } from "@typeflowai/ui/Label";
 import LoadingSpinner from "@typeflowai/ui/LoadingSpinner";
+import { trackEvent } from "@typeflowai/ui/PostHogClient";
 
 type Product = {
   done: () => void;
@@ -56,6 +57,7 @@ const Product: React.FC<Product> = ({ done, isLoading, environmentId, product })
 
     try {
       await updateProductAction(product.id, { name, brandColor: color });
+      trackEvent("TeamCreated", { productName: name });
     } catch (e) {
       toast.error("An error occured saving your settings");
       console.error(e);

@@ -22,6 +22,7 @@ import AlertDialog from "@typeflowai/ui/AlertDialog";
 import { Button } from "@typeflowai/ui/Button";
 import { PlanCard } from "@typeflowai/ui/PlanCard";
 import { PlanSelector } from "@typeflowai/ui/PlanSelector";
+import { trackEvent } from "@typeflowai/ui/PostHogClient";
 
 import { FreeTrialCard } from "./FreeTrialCard";
 
@@ -66,6 +67,10 @@ export default function PricingTableComponent({
       setChangingPlan(false);
 
       if (response.status === 200) {
+        trackEvent("PlanChanged", {
+          actionType: capitalizeFirstLetter(actionType),
+          plan: capitalizeFirstLetter(priceLookupKey),
+        });
         toast.success(`Plan ${actionType}d successfully`);
         if (response.url) {
           router.push(response.url);
@@ -97,6 +102,7 @@ export default function PricingTableComponent({
     try {
       if (!activeLookupKey) throw new Error("No active lookup key");
       await removeSubscriptionAction(team.id, environmentId);
+      trackEvent("PlanDeleted", { plan: capitalizeFirstLetter(activeLookupKey) });
       router.refresh();
       toast.success("Subscription deleted successfully");
     } catch (err) {
@@ -109,6 +115,7 @@ export default function PricingTableComponent({
   const handleReactivateSubscription = async () => {
     try {
       await reactivateSubscriptionAction(team.id, environmentId);
+      trackEvent("PlanReactivated", { plan: capitalizeFirstLetter(activeLookupKey) });
       router.refresh();
       toast.success("Subscription re-activated successfully");
     } catch (err) {
@@ -130,6 +137,10 @@ export default function PricingTableComponent({
       setSelectingPlan(false);
 
       if (response.status === 200) {
+        trackEvent("PlanCreated", {
+          plan: capitalizeFirstLetter(priceLookupKey),
+          isPaywall: false,
+        });
         if (response.url) {
           router.push(response.url);
         } else {
@@ -144,6 +155,10 @@ export default function PricingTableComponent({
     } finally {
       setSelectingPlan(false);
     }
+  };
+
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
   return (

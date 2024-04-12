@@ -11,9 +11,11 @@ import { TTemplate } from "@typeflowai/types/templates";
 import { TUser } from "@typeflowai/types/user";
 import { TWorkflowInput } from "@typeflowai/types/workflows";
 import LoadingSpinner from "@typeflowai/ui/LoadingSpinner";
+import { trackEvent } from "@typeflowai/ui/PostHogClient";
 
 import { createWorkflowAction } from "../actions";
 import { adjustEngineForTemplate, adjustPromptForTemplate } from "../templates/lib";
+import { customWorkflow } from "../templates/templates";
 
 export default function WorkflowStarter({
   environmentId,
@@ -42,8 +44,10 @@ export default function WorkflowStarter({
       type: workflowType,
       autoComplete,
     } as TWorkflowInput;
+    const isTemplate = template.name === customWorkflow.name ? false : true;
     try {
       const workflow = await createWorkflowAction(environmentId, augmentedTemplate);
+      trackEvent("WorkflowCreated", { isTemplate: isTemplate, template: template.name });
       router.push(`/environments/${environmentId}/workflows/${workflow.id}/edit`);
     } catch (e) {
       toast.error("An error occured creating a new workflow");

@@ -36,7 +36,11 @@ export function PostHogPageview(): JSX.Element {
   return <></>;
 }
 
-export function trackEvent(eventName: string, properties: any) {
+interface EventProperties {
+  [key: string]: string | number | boolean;
+}
+
+export function trackEvent(eventName: string, properties?: EventProperties) {
   if (posthogEnabled) {
     posthog.capture(eventName, properties);
   }
