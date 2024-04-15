@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 interface Props {
   title: string;
@@ -19,8 +20,10 @@ export default function MetaInformation({
   section,
   tags,
 }: Props) {
+  const router = useRouter();
   const pageTitle = `${title}`;
-  const BASE_URL = `https://${process.env.VERCEL_URL}`;
+  const BASE_URL = `typeflowai.com`;
+  const canonicalLink = `https://${BASE_URL}${router.asPath}`;
   return (
     <Head>
       <title>{pageTitle}</title>
@@ -30,7 +33,7 @@ export default function MetaInformation({
       <meta name="image" content={`https://${BASE_URL}/favicon.ico`} />
       <meta property="og:image" content={`https://${BASE_URL}/social-image.png`} />
       <link rel="icon" type="image/x-icon" href={`https://${BASE_URL}/favicon.ico`} />
-      <link rel="canonical" href="https://typeflowai.com/" />
+      <link rel="canonical" href={canonicalLink} />
       <meta name="msapplication-TileColor" content="#7b4cfa" />
       <meta name="msapplication-TileImage" content={`https://${BASE_URL}/favicon.ico`} />
       <meta property="og:image:alt" content="TypeflowAI Next-Gen AI Forms with GPT Superpowers" />
