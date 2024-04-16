@@ -43,35 +43,35 @@ const navigation = {
   useCases: [
     {
       name: "Content Marketing Ideas",
-      href: "/templates/content-marketing-ideas",
+      href: "/use-cases/content-marketing-ideas",
     },
     {
       name: "LinkedIn Post Gen.",
-      href: "/templates/linkedin-post-generation",
+      href: "/use-cases/linkedin-post-generation",
     },
     {
       name: "Google Ads Copy Gen.",
-      href: "/templates/google-ads-copy-generator",
+      href: "/use-cases/google-ads-copy-generator",
     },
     {
       name: "Tweets Generator",
-      href: "/templates/tweets-generator",
+      href: "/use-cases/tweets-generator",
     },
     {
       name: "Dynamic Lead Magnet",
-      href: "/templates/dynamic-lead-magnet",
+      href: "/use-cases/dynamic-lead-magnet",
     },
     {
       name: "Cold Email Generator",
-      href: "/templates/cold-email-generator",
+      href: "/use-cases/cold-email-generator",
     },
     {
       name: "AI Keyword Research",
-      href: "/templates/ai-keyword-research",
+      href: "/use-cases/ai-keyword-research",
     },
     {
       name: "Buyer Persona Gen.",
-      href: "/templates/buyer-persona-generator",
+      href: "/use-cases/buyer-persona-generator",
     },
   ],
   social: [
