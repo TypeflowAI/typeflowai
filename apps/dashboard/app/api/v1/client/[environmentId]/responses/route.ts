@@ -114,7 +114,7 @@ export async function POST(request: Request, context: Context): Promise<NextResp
   }
 
   if (teamDetails?.teamOwnerId) {
-    await capturePosthogEvent(teamDetails.teamOwnerId, "response created", teamDetails.teamId, {
+    await capturePosthogEvent(teamDetails.teamOwnerId, "ResponseCreated", teamDetails.teamId, {
       workflowId: response.workflowId,
       workflowType: workflow.type,
     });

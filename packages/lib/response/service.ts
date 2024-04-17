@@ -201,7 +201,7 @@ export const getResponseBySingleUseId = async (
 
 export const createResponse = async (responseInput: TResponseInput): Promise<TResponse> => {
   validateInputs([responseInput, ZResponseInput]);
-  captureTelemetry("response created");
+  captureTelemetry("ResponseCreated");
 
   const { environmentId, userId, workflowId, finished, data, meta, singleUseId } = responseInput;
 
