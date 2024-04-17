@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { cn } from "@typeflowai/lib/cn";
 import { TWorkflow } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
-import { trackEvent } from "@typeflowai/ui/PostHogClient";
+import { capturePosthogEvent } from "@typeflowai/ui/PostHogClient";
 import { WorkflowInline } from "@typeflowai/ui/Workflow";
 
 interface EmailTabProps {
@@ -49,7 +49,7 @@ export default function LinkTab({ workflowUrl, webAppUrl, workflow, brandColor }
           aria-label="Copy workflow link to clipboard"
           onClick={() => {
             navigator.clipboard.writeText(workflowUrl);
-            trackEvent("WorkflowShared", { workflowId: workflow.id, shareMethod: "Link" });
+            capturePosthogEvent("WorkflowShared", { workflowId: workflow.id, shareMethod: "Link" });
             toast.success("URL copied to clipboard!");
           }}
           EndIcon={DocumentDuplicateIcon}>

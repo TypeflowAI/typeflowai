@@ -40,7 +40,7 @@ interface EventProperties {
   [key: string]: string | number | boolean;
 }
 
-export function trackEvent(eventName: string, properties?: EventProperties) {
+export function capturePosthogEvent(eventName: string, properties?: EventProperties) {
   if (posthogEnabled) {
     posthog.capture(eventName, properties);
   }

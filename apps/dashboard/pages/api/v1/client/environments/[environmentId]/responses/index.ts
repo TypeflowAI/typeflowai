@@ -189,9 +189,9 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       });
     }
 
-    captureTelemetry("response created");
+    captureTelemetry("ResponseCreated");
     if (teamOwnerId) {
-      await capturePosthogEvent(teamOwnerId, "response created", teamId, {
+      await capturePosthogEvent(teamOwnerId, "ResponseCreated", teamId, {
         workflowId,
         workflowType: workflow.type,
       });

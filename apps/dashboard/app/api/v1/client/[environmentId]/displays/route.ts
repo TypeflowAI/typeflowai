@@ -5,7 +5,8 @@ import { NextResponse } from "next/server";
 import { createDisplay } from "@typeflowai/lib/display/service";
 import { capturePosthogEvent } from "@typeflowai/lib/posthogServer";
 import { getTeamDetails } from "@typeflowai/lib/teamDetail/service";
-import { ZDisplayCreateInput } from "@typeflowai/types/displays";
+import { getWorkflow } from "@typeflowai/lib/workflow/service";
+import { TDisplay, ZDisplayCreateInput } from "@typeflowai/types/displays";
 import { InvalidInputError } from "@typeflowai/types/errors";
 
 interface Context {
@@ -35,12 +36,11 @@ export async function POST(request: Request, context: Context): Promise<NextResp
 
   // find teamId & teamOwnerId from environmentId
   const teamDetails = await getTeamDetails(inputValidation.data.environmentId);
-  let response = {};
+  let response: TDisplay;
 
   // create display
   try {
-    const { id } = await createDisplay(inputValidation.data);
-    response = { id };
+    response = await createDisplay(inputValidation.data);
   } catch (error) {
     if (error instanceof InvalidInputError) {
       return responses.badRequestResponse(error.message);
@@ -50,8 +50,13 @@ export async function POST(request: Request, context: Context): Promise<NextResp
     }
   }
 
+  const workflow = await getWorkflow(response.workflowId);
+
   if (teamDetails?.teamOwnerId) {
-    await capturePosthogEvent(teamDetails.teamOwnerId, "display created", teamDetails.teamId);
+    await capturePosthogEvent(teamDetails.teamOwnerId, "DisplayCreated", teamDetails.teamId, {
+      workflowId: response.workflowId,
+      workflowType: workflow?.type,
+    });
   } else {
     console.warn("Posthog capture not possible. No team owner found");
   }

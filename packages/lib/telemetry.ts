@@ -10,11 +10,11 @@ export const captureTelemetry = async (eventName: string, properties = {}) => {
     process.env.INSTANCE_ID
   ) {
     try {
-      await fetch("https://eu.posthog.com/capture/", {
+      await fetch("https://app.posthog.com/capture/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          api_key: "phc_6XBUthOJLVe0Ij9EYkwEKpV96fUbA1aXxnHDq5ryASk",
+          api_key: "phc_SNlxcxF2SMnKllQir8DZEJSiAAg1eBmOghzdZFwkVmX",
           event: eventName,
           properties: {
             distinct_id: process.env.INSTANCE_ID,

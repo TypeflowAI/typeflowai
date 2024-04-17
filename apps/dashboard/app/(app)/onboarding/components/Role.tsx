@@ -9,7 +9,7 @@ import { toast } from "react-hot-toast";
 import { cn } from "@typeflowai/lib/cn";
 import { env } from "@typeflowai/lib/env.mjs";
 import { Button } from "@typeflowai/ui/Button";
-import { trackEvent } from "@typeflowai/ui/PostHogClient";
+import { capturePosthogEvent } from "@typeflowai/ui/PostHogClient";
 
 import { handleTabNavigation } from "../utils";
 
@@ -61,7 +61,7 @@ const Role: React.FC<RoleProps> = ({ next, skip, setTypeflowAIResponseId, sessio
     if (selectedChoice) {
       const selectedRole = roles.find((role) => role.label === selectedChoice);
       if (selectedRole) {
-        trackEvent("RoleSelected", { role: selectedRole.label });
+        capturePosthogEvent("RoleSelected", { role: selectedRole.label });
         try {
           setIsUpdating(true);
           await updateUserAction({ role: selectedRole.id });
