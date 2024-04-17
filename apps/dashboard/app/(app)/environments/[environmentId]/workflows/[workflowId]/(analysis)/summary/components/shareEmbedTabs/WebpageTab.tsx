@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 import { Button } from "@typeflowai/ui/Button";
 import CodeBlock from "@typeflowai/ui/CodeBlock";
-import { trackEvent } from "@typeflowai/ui/PostHogClient";
+import { capturePosthogEvent } from "@typeflowai/ui/PostHogClient";
 
 export default function WebpageTab({ workflowUrl, workflowId }) {
   const iframeCode = `<div style="position: relative; height:100vh; max-height:100vh; overflow:auto;"> 
@@ -24,7 +24,7 @@ export default function WebpageTab({ workflowUrl, workflowId }) {
           title="Embed workflow in your website"
           aria-label="Embed workflow in your website"
           onClick={() => {
-            trackEvent("WorkflowShared", { workflowId: workflowId, shareMethod: "Web Embed" });
+            capturePosthogEvent("WorkflowShared", { workflowId: workflowId, shareMethod: "Web Embed" });
             navigator.clipboard.writeText(iframeCode);
             toast.success("Embed code copied to clipboard!");
           }}

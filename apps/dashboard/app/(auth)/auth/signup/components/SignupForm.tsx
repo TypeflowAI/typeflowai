@@ -12,7 +12,7 @@ import { useMemo, useRef, useState } from "react";
 
 import { Button } from "@typeflowai/ui/Button";
 import { PasswordInput } from "@typeflowai/ui/PasswordInput";
-import { trackEvent } from "@typeflowai/ui/PostHogClient";
+import { capturePosthogEvent } from "@typeflowai/ui/PostHogClient";
 
 export const SignupForm = ({
   webAppUrl,
@@ -68,7 +68,7 @@ export const SignupForm = ({
         ? `/auth/signup-without-verification-success`
         : `/auth/verification-requested?email=${encodeURIComponent(e.target.elements.email.value)}`;
 
-      trackEvent("SignupFormCompleted");
+      capturePosthogEvent("SignupFormCompleted");
 
       router.push(url);
     } catch (e: any) {

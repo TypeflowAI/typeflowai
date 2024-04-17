@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 
 import { TProduct } from "@typeflowai/types/product";
 import { TWorkflow, TWorkflowQuestion } from "@typeflowai/types/workflows";
-import { trackEvent } from "@typeflowai/ui/PostHogClient";
+import { capturePosthogEvent } from "@typeflowai/ui/PostHogClient";
 
 import AddQuestionButton from "./AddQuestionButton";
 import EditThankYouCard from "./EditThankYouCard";
@@ -178,7 +178,7 @@ export default function QuestionsView({
 
     updatedWorkflow.questions.push({ ...question, isDraft: true });
 
-    trackEvent("QuestionAdded2Workflow", {
+    capturePosthogEvent("QuestionAdded2Workflow", {
       type: capitalizeFirstLetter(question.type),
       workflowId: updatedWorkflow.id,
     });
