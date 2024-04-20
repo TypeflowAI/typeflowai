@@ -19,7 +19,11 @@ export const adjustEngineForTemplate = (template, isEngineLimited) => {
 export const adjustPromptForTemplate = (template) => {
   let { message } = template.preset.prompt;
 
-  message = message.replace(/@(\w+)/g, '<span data-type="mention" class="mention" data-id="$1">@$1</span>');
+  // Modificación aquí para incluir guiones en la expresión regular
+  message = message.replace(
+    /@([\w-]+)/g,
+    '<span data-type="mention" class="mention" data-id="$1">@$1</span>'
+  );
 
   const paragraphs = message
     .split("\n")
