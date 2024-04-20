@@ -10,7 +10,7 @@ export const SignIn = ({ token }) => {
 
   useEffect(() => {
     if (token) {
-      signIn("credentials", { token, callbackUrl: `/` });
+      signIn("token", { token, callbackUrl: `/` });
     }
   }, [token]);
 
