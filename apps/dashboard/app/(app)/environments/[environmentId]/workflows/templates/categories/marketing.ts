@@ -4242,7 +4242,7 @@ export const marketingTemplates: TTemplate[] = [
           inputType: "text",
         },
         {
-          id: "position",
+          id: "role",
           type: TWorkflowQuestionType.OpenText,
           headline: "Describe your current professional status or role",
           subheader: "",
@@ -4293,11 +4293,11 @@ export const marketingTemplates: TTemplate[] = [
         id: "prompt",
         description: "Prompt",
         message: `
-        Write a LinkedIn post about a these specific topic: @topic , and concept: @concept , targeting professionals holding the title of @position within the @industry sector. The focus is on @city-country , tailored to the following structured guidelines @structure-id .
+        Write a LinkedIn post about a these specific topic: @topic , and concept: @concept , targeting professionals holding the title of @role within the @industry sector. The focus is on @city-country , tailored to the following structured guidelines @structure-id .
         
         [Classic]:
         - Introduction: Kick off with an engaging question or statement about @topic and @concept to capture interest.
-        - Body: Expand on the main idea, incorporating relevant data, personal experiences, or insights that resonate with @position .
+        - Body: Expand on the main idea, incorporating relevant data, personal experiences, or insights that resonate with @role.
         - Conclusion: Wrap up with a summary or a thought-provoking question as a call-to-action (CTA) to encourage discussion.
         
         [Bullet Points]:
@@ -4321,7 +4321,7 @@ export const marketingTemplates: TTemplate[] = [
         - Invitation to Dialogue: Encourage readers to share their viewpoints in the comments.
         
         [Personal or Professional Updates]:
-        - Context: Begin by outlining the backdrop (e.g., a new role, project, or personal milestone) related to @poisition .
+        - Context: Begin by outlining the backdrop (e.g., a new role, project, or personal milestone) related to @poisition.
         - Key Details: Elaborate on your activities, learnings, or feelings regarding @topic and @concept .
         - Reflection or Future Vision: Conclude with your contemplations on its significance or future prospects.
         
