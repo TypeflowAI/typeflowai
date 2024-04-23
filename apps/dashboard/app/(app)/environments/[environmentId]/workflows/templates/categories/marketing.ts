@@ -4139,7 +4139,7 @@ export const marketingTemplates: TTemplate[] = [
           inputType: "text",
         },
         {
-          id: "Industry",
+          id: "industry",
           type: TWorkflowQuestionType.OpenText,
           headline: "In which industry context does our topic and concept best apply?",
           subheader: "",
@@ -4162,14 +4162,14 @@ export const marketingTemplates: TTemplate[] = [
         - Gender: @gender
         - Age range: @age-range
 
-        Use one of these two structures randomly:
+        Use one of these two structures "[Structure Name]" randomly:
 
-        Structure 1:
+        [Structure 1]:
         Introduction: present a common problem or a daily situation.
         Development: offer a series of practical and easy-to-implement tips or tricks.
         Conclusion: show the final result.
         
-        Structure 2:
+        [Structure 2]:
         Introduction: a phrase that immediately captures the viewer's attention.
         Development with Engagement: keep the content interesting and relevant.  Include elements of humor, personal narratives, or useful advice that resonate with the life experiences of @gender + @age-range + @city .
         Climax: take the narrative to a high point. It could be a surprising revelation, an unexpected comedic twist, or the climax of a short story.
@@ -4293,7 +4293,7 @@ export const marketingTemplates: TTemplate[] = [
         id: "prompt",
         description: "Prompt",
         message: `
-        Write a LinkedIn post about a these specific topic: @topic , and concept: @concept , targeting professionals holding the title of @role within the @industry sector. The focus is on @city-country , tailored to the following structured guidelines @structure-id .
+        Write a LinkedIn post about a these specific topic: @topic , and concept: @concept , targeting professionals holding the title of @role within the @industry sector. The focus is on @city-country, using the "[Structure Name]" @structure. Here are all the structures, choose the correct: 
         
         [Classic]:
         - Introduction: Kick off with an engaging question or statement about @topic and @concept to capture interest.
@@ -4321,7 +4321,7 @@ export const marketingTemplates: TTemplate[] = [
         - Invitation to Dialogue: Encourage readers to share their viewpoints in the comments.
         
         [Personal or Professional Updates]:
-        - Context: Begin by outlining the backdrop (e.g., a new role, project, or personal milestone) related to @poisition.
+        - Context: Begin by outlining the backdrop (e.g., a new role, project, or personal milestone) related to @position.
         - Key Details: Elaborate on your activities, learnings, or feelings regarding @topic and @concept .
         - Reflection or Future Vision: Conclude with your contemplations on its significance or future prospects.
         
