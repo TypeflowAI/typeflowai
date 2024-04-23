@@ -66,6 +66,7 @@ export default function PromptResult({
       setIsLoading(true);
 
       const promptMessage = processPromptMessage(prompt.message, prompt.attributes, workflowResponses);
+      console.log("promptMessage: ", promptMessage);
 
       const requestData = {
         messages: [
@@ -83,6 +84,7 @@ export default function PromptResult({
       try {
         const response = await typeflowaiAPI.client.openai.sendStreamingMessage(requestData);
         if (response.ok) {
+          console.log("API response:", response);
           const decoder = new TextDecoder();
           if (response.body) {
             const reader = response.body.getReader();
