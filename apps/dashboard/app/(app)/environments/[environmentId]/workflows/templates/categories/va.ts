@@ -562,7 +562,7 @@ export const vaTemplates: TTemplate[] = [
           inputType: "text",
         },
         {
-          id: "industry-context",
+          id: "tones",
           type: TWorkflowQuestionType.OpenText,
           headline: "Specific Nuances/Tones",
           subheader: "E.g. formal, persuasive",
