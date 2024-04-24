@@ -4399,7 +4399,7 @@ export const marketingTemplates: TTemplate[] = [
           inputType: "text",
         },
         {
-          id: "braingstorming",
+          id: "brainstorming",
           type: TWorkflowQuestionType.MultipleChoiceSingle,
           headline: "Which brainstorming technique will be used?",
           subheader: "Please select one of the following options:",
@@ -4407,8 +4407,8 @@ export const marketingTemplates: TTemplate[] = [
           shuffleOption: "none",
           choices: [
             {
-              id: "braingstorming - brainstorming",
-              label: "Braingstorming",
+              id: "brainstorming - brainstorming",
+              label: "Brainstorming",
             },
             {
               id: "braingstorming - brainwriting",
@@ -4416,7 +4416,7 @@ export const marketingTemplates: TTemplate[] = [
             },
             {
               id: "braingstorming - scamper",
-              label: "SCAMPER",
+              label: "Scamper",
             },
             {
               id: "braingstorming - mind-maps",
@@ -4493,7 +4493,7 @@ export const marketingTemplates: TTemplate[] = [
         
         - [Brainstorming]: This involves participants gathering and proposing as many ideas as possible, without criticizing or evaluating them at the moment. The key is quantity over quality, aiming to promote creative thinking.
         - [Brainwriting]: each participant writes their ideas on paper or a digital platform. Then, these papers or documents are passed on to other participants for them to add to or modify the ideas. This is especially useful for larger groups or for people who are less extroverted.
-        - [SCAMPER]: This method uses a set of verbal actions as a stimulus to think differently about a problem or product. SCAMPER stands for Substitute, Combine, Adapt, Modify, Put to other uses, Eliminate, and Rearrange.
+        - [Scamper]: This method uses a set of verbal actions as a stimulus to think differently about a problem or product. SCAMPER stands for Substitute, Combine, Adapt, Modify, Put to other uses, Eliminate, and Rearrange.
         - [Mind Maps]: Starting with a central idea, participants build a map of related ideas, which in turn can branch off into more ideas. This helps visualize the relationships between different concepts and can be especially useful for complex problems.
         - [Six Thinking Hats]: this method assigns different "hats" to participants, each representing different ways of thinking (emotions, facts, critical thinking, optimism, creativity, etc.). Participants alternate hats to address the problem from different perspectives.
         - [Nominal Group Technique]: In this technique, each group member generates ideas independently and then shares them with the group. The group discusses the ideas and then votes to prioritize them or make decisions.
@@ -4605,7 +4605,7 @@ export const marketingTemplates: TTemplate[] = [
         id: "prompt",
         description: "Prompt",
         message: `
-        Create a compelling search ad to promote @product-service by @brand targeting @gender aged @age in @city-country . Incorporate the following keywords: @main-keword , @secondary-keyword . The primary competitor is @competitor-url , while our website is @your-url .
+        Create a compelling search ad to promote @product-service by @brand targeting @gender aged @age in @city-country . Incorporate the following keywords: @main-keyword , @secondary-keyword . The primary competitor is @competitor-url , while our website is @your-url .
         
         Reference Materials:
         - Scientific Advertising by Claude Hopkins
@@ -4889,7 +4889,7 @@ export const marketingTemplates: TTemplate[] = [
           inputType: "text",
         },
         {
-          id: "question 2",
+          id: "question-2",
           type: TWorkflowQuestionType.OpenText,
           headline: "Add a question for your audience",
           subheader: "",
@@ -5253,7 +5253,7 @@ export const marketingTemplates: TTemplate[] = [
         id: "prompt",
         description: "Prompt",
         message: `
-        Develop a one-page digital marketing plan based on this target market @target-market taking into account that the company offers these products or services @product and the goal is @objective .
+        Develop a one-page digital marketing plan based on this target market @target-market taking into account that the company offers these products or services @product and the goal is @objectives.
 
         The marketing plan should be structured in these sections:
         

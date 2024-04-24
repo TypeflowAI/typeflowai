@@ -548,7 +548,7 @@ export const vaTemplates: TTemplate[] = [
         {
           id: "target-language",
           type: TWorkflowQuestionType.OpenText,
-          headline: "WWhat is the gender of your client?",
+          headline: "What is the gender of your client?",
           subheader: "E.g., Japanese",
           required: true,
           inputType: "text",
@@ -641,7 +641,7 @@ export const vaTemplates: TTemplate[] = [
         {
           id: "target-language",
           type: TWorkflowQuestionType.OpenText,
-          headline: "WWhat is the gender of your client?",
+          headline: "What is the gender of your client?",
           subheader: "E.g., Japanese",
           required: true,
           inputType: "text",
@@ -695,7 +695,7 @@ export const vaTemplates: TTemplate[] = [
         {
           id: "target-language",
           type: TWorkflowQuestionType.OpenText,
-          headline: "WWhat is the gender of your client?",
+          headline: "What is the gender of your client?",
           subheader: "E.g., Japanese",
           required: true,
           inputType: "text",
@@ -749,7 +749,7 @@ export const vaTemplates: TTemplate[] = [
         {
           id: "target-language",
           type: TWorkflowQuestionType.OpenText,
-          headline: "WWhat is the gender of your client?",
+          headline: "What is the gender of your client?",
           subheader: "E.g., Japanese",
           required: true,
           inputType: "text",
@@ -803,7 +803,7 @@ export const vaTemplates: TTemplate[] = [
         {
           id: "target-language",
           type: TWorkflowQuestionType.OpenText,
-          headline: "WWhat is the gender of your client?",
+          headline: "What is the gender of your client?",
           subheader: "E.g., Japanese",
           required: true,
           inputType: "text",
