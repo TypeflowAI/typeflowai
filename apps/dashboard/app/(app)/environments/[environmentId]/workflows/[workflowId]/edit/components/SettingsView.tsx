@@ -8,8 +8,9 @@ import HowToSendCard from "./HowToSendCard";
 import RecontactOptionsCard from "./RecontactOptionsCard";
 import ResponseOptionsCard from "./ResponseOptionsCard";
 import StylingCard from "./StylingCard";
-import WhenToSendCard from "./WhenToSendCard";
-import WhoToSendCard from "./WhoToSendCard";
+
+// import WhenToSendCard from "./WhenToSendCard";
+// import WhoToSendCard from "./WhoToSendCard";
 
 interface SettingsViewProps {
   environment: TEnvironment;
@@ -40,7 +41,7 @@ export default function SettingsView({
         environment={environment}
       />
 
-      <WhoToSendCard
+      {/* <WhoToSendCard
         localWorkflow={localWorkflow}
         setLocalWorkflow={setLocalWorkflow}
         environmentId={environment.id}
@@ -53,7 +54,7 @@ export default function SettingsView({
         environmentId={environment.id}
         actionClasses={actionClasses}
         membershipRole={membershipRole}
-      />
+      /> */}
 
       <ResponseOptionsCard
         localWorkflow={localWorkflow}
