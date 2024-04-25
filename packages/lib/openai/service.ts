@@ -77,6 +77,7 @@ export async function createOpenAIStreamMessage(
     });
 
     if (!response.ok) {
+      console.error(`HTTP error status: ${response.status}`);
       throw new Error(`Error: ${response.status}`);
     }
 
@@ -100,6 +101,7 @@ export async function createOpenAIStreamMessage(
               controller.enqueue(queue);
               counter++;
             } catch (e) {
+              console.error("Parsing error in stream", e);
               controller.error(e);
             }
           }
@@ -114,6 +116,7 @@ export async function createOpenAIStreamMessage(
 
     return new Response(stream);
   } catch (error) {
+    console.error("Fetch or stream setup failed", error);
     throw error;
   }
 }

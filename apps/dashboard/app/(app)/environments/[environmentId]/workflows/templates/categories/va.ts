@@ -548,7 +548,7 @@ export const vaTemplates: TTemplate[] = [
         {
           id: "target-language",
           type: TWorkflowQuestionType.OpenText,
-          headline: "WWhat is the gender of your client?",
+          headline: "What is the gender of your client?",
           subheader: "E.g., Japanese",
           required: true,
           inputType: "text",
@@ -562,7 +562,7 @@ export const vaTemplates: TTemplate[] = [
           inputType: "text",
         },
         {
-          id: "industry-context",
+          id: "tones",
           type: TWorkflowQuestionType.OpenText,
           headline: "Specific Nuances/Tones",
           subheader: "E.g. formal, persuasive",
@@ -641,7 +641,7 @@ export const vaTemplates: TTemplate[] = [
         {
           id: "target-language",
           type: TWorkflowQuestionType.OpenText,
-          headline: "WWhat is the gender of your client?",
+          headline: "What is the gender of your client?",
           subheader: "E.g., Japanese",
           required: true,
           inputType: "text",
@@ -695,7 +695,7 @@ export const vaTemplates: TTemplate[] = [
         {
           id: "target-language",
           type: TWorkflowQuestionType.OpenText,
-          headline: "WWhat is the gender of your client?",
+          headline: "What is the gender of your client?",
           subheader: "E.g., Japanese",
           required: true,
           inputType: "text",
@@ -749,7 +749,7 @@ export const vaTemplates: TTemplate[] = [
         {
           id: "target-language",
           type: TWorkflowQuestionType.OpenText,
-          headline: "WWhat is the gender of your client?",
+          headline: "What is the gender of your client?",
           subheader: "E.g., Japanese",
           required: true,
           inputType: "text",
@@ -803,7 +803,7 @@ export const vaTemplates: TTemplate[] = [
         {
           id: "target-language",
           type: TWorkflowQuestionType.OpenText,
-          headline: "WWhat is the gender of your client?",
+          headline: "What is the gender of your client?",
           subheader: "E.g., Japanese",
           required: true,
           inputType: "text",
