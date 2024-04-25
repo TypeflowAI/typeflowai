@@ -60,11 +60,8 @@ export async function createOpenAIStreamMessage(
   validateInputs([apiKey, ZString], [requestData, ZOpenAIRequest]);
 
   const body = JSON.stringify(requestData);
-
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
-
-  let counter = 0;
 
   try {
     const response = await fetch(url, {
@@ -80,8 +77,13 @@ export async function createOpenAIStreamMessage(
       throw new Error(`Error: ${response.status}`);
     }
 
+    if (response.body === null) {
+      throw new Error("Response body is null");
+    }
+
     const stream = new ReadableStream({
       async start(controller) {
+        let counter = 0;
         function onParse(event: ParsedEvent | ReconnectInterval) {
           if (event.type === "event") {
             const data = event.data;
@@ -92,6 +94,15 @@ export async function createOpenAIStreamMessage(
             try {
               const json = JSON.parse(data);
               const text = json.choices[0].delta?.content || "";
+              // Debugging Finished Reason
+              if (
+                json.choices &&
+                json.choices[0] &&
+                json.choices[0].finish_reason !== undefined &&
+                json.choices[0].finish_reason !== null
+              ) {
+                console.log("Finished Reason: ", json.choices[0].finish_reason);
+              }
               if (counter < 2 && (text.match(/\n/) || []).length) {
                 // this is a prefix character (i.e., "\n\n"), do nothing
                 return;
@@ -106,9 +117,15 @@ export async function createOpenAIStreamMessage(
         }
 
         const parser = createParser(onParse);
-        for await (const chunk of response.body as any) {
-          parser.feed(decoder.decode(chunk, { stream: true }));
+        const reader = response.body!.getReader();
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) {
+            break;
+          }
+          parser.feed(decoder.decode(value, { stream: true }));
         }
+        controller.close();
       },
     });
 
