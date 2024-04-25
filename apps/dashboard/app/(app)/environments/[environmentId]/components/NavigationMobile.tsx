@@ -17,7 +17,12 @@ import { TProduct } from "@typeflowai/types/product";
 import { TTeam } from "@typeflowai/types/teams";
 import CreateTeamModal from "@typeflowai/ui/CreateTeamModal";
 import { Popover, PopoverContent, PopoverTrigger } from "@typeflowai/ui/Popover";
-import { CustomersIcon, DashboardIcon, FilterIcon, FormIcon, SettingsIcon } from "@typeflowai/ui/icons";
+import {
+  // CustomersIcon,
+  DashboardIcon, // FilterIcon,
+  FormIcon,
+  SettingsIcon,
+} from "@typeflowai/ui/icons";
 
 import AddProductModal from "./AddProductModal";
 import UrlShortenerModal from "./UrlShortenerModal";

@@ -54,7 +54,12 @@ import {
 } from "@typeflowai/ui/DropdownMenu";
 import { Popover, PopoverContent, PopoverTrigger } from "@typeflowai/ui/Popover";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@typeflowai/ui/Tooltip";
-import { CustomersIcon, DashboardIcon, FilterIcon, FormIcon, SettingsIcon } from "@typeflowai/ui/icons";
+import {
+  // CustomersIcon,
+  DashboardIcon, // FilterIcon,
+  FormIcon,
+  SettingsIcon,
+} from "@typeflowai/ui/icons";
 
 import AddProductModal from "./AddProductModal";
 import UrlShortenerModal from "./UrlShortenerModal";

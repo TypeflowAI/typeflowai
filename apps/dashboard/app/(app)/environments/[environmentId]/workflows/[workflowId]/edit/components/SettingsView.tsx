@@ -27,10 +27,10 @@ export default function SettingsView({
   environment,
   localWorkflow,
   setLocalWorkflow,
-  actionClasses,
-  attributeClasses,
+  // actionClasses,
+  // attributeClasses,
   responseCount,
-  membershipRole,
+  // membershipRole,
   colours,
 }: SettingsViewProps) {
   return (
