@@ -438,7 +438,7 @@ importers:
         version: 9.1.0(eslint@8.56.0)
       eslint-config-turbo:
         specifier: latest
-        version: 1.13.2(eslint@8.56.0)
+        version: 1.13.3(eslint@8.56.0)
       terser:
         specifier: ^5.26.0
         version: 5.26.0
@@ -521,7 +521,7 @@ importers:
         version: 9.1.0(eslint@8.56.0)
       eslint-config-turbo:
         specifier: latest
-        version: 1.13.2(eslint@8.56.0)
+        version: 1.13.3(eslint@8.56.0)
       eslint-plugin-react:
         specifier: 7.33.2
         version: 7.33.2(eslint@8.56.0)
@@ -581,7 +581,7 @@ importers:
         version: 9.1.0(eslint@8.56.0)
       eslint-config-turbo:
         specifier: latest
-        version: 1.13.2(eslint@8.56.0)
+        version: 1.13.3(eslint@8.56.0)
       isomorphic-fetch:
         specifier: ^3.0.0
         version: 3.0.0
@@ -894,6 +894,12 @@ importers:
       eventsource-parser:
         specifier: ^1.1.1
         version: 1.1.1
+      marked:
+        specifier: ^12.0.2
+        version: 12.0.2
+      preact-markdown:
+        specifier: ^2.1.0
+        version: 2.1.0(preact@10.19.3)
     devDependencies:
       '@calcom/embed-snippet':
         specifier: 1.1.2
@@ -924,7 +930,7 @@ importers:
         version: 9.1.0(eslint@8.56.0)
       eslint-config-turbo:
         specifier: latest
-        version: 1.13.2(eslint@8.56.0)
+        version: 1.13.3(eslint@8.56.0)
       postcss:
         specifier: ^8.4.32
         version: 8.4.32
@@ -12539,13 +12545,13 @@ packages:
       eslint: 8.56.0
     dev: true
 
-  /eslint-config-turbo@1.13.2(eslint@8.56.0):
-    resolution: {integrity: sha512-TzvsMwNJx/P4JYw79iFqbyQApnyT050gW7dBxnNeNVl3pVMnT2rwaFo9Q3Hc49Tp5NANxEwYN9RStF50P/IwGA==}
+  /eslint-config-turbo@1.13.3(eslint@8.56.0):
+    resolution: {integrity: sha512-if/QtwEiWZ5b7Bg8yZBPSvS0TeCG2Zvfa/+XBYANS7uSYucjmW+BBC8enJB0PqpB/YLGGOumeo3x7h1Nuba9iw==}
     peerDependencies:
       eslint: '>6.6.0'
     dependencies:
       eslint: 8.56.0
-      eslint-plugin-turbo: 1.13.2(eslint@8.56.0)
+      eslint-plugin-turbo: 1.13.3(eslint@8.56.0)
     dev: true
 
   /eslint-import-resolver-node@0.3.9:
@@ -12729,8 +12735,8 @@ packages:
       - typescript
     dev: true
 
-  /eslint-plugin-turbo@1.13.2(eslint@8.56.0):
-    resolution: {integrity: sha512-QNaihF0hTRjfOBd1SLHrftm8V3pOU35CNS/C0/Z6qY1xxdL1PSv4IctEIldSMX7/A1jOPYwMPO7wYwPXgjgp/g==}
+  /eslint-plugin-turbo@1.13.3(eslint@8.56.0):
+    resolution: {integrity: sha512-RjmlnqYsEqnJ+U3M3IS5jLJDjWv5NsvReCpsC61n5pJ4JMHTZ/lU0EIoL1ccuL1L5wP0APzdXdByBxERcPQ+Nw==}
     peerDependencies:
       eslint: '>6.6.0'
     dependencies:
@@ -15928,6 +15934,18 @@ packages:
       react: 18.2.0
     dev: true
 
+  /marked@12.0.2:
+    resolution: {integrity: sha512-qXUm7e/YKFoqFPYPa3Ukg9xlI5cyAtGmyEIzMfW//m6kXwCy2Ps9DYf5ioijFKQ8qyuscrHoY04iJGctu2Kg0Q==}
+    engines: {node: '>= 18'}
+    hasBin: true
+    dev: false
+
+  /marked@4.3.0:
+    resolution: {integrity: sha512-PRsaiG84bK+AMvxziE/lCFss8juXjNaWzVbN5tXAm4XjeaS9NAHhop+PjQxz2A9h8Q4M/xGmzP8vqNwy6JeK0A==}
+    engines: {node: '>= 12'}
+    hasBin: true
+    dev: false
+
   /md5@2.3.0:
     resolution: {integrity: sha512-T1GITYmFaKuO91vxyoQMFETst+O71VUPEU3ze5GNzDm0OWdP8v1ziTaAEPUr/3kLsY3Sftgz242A1SetQiDL7g==}
     dependencies:
@@ -17786,6 +17804,23 @@ packages:
       rusha: 0.8.14
     transitivePeerDependencies:
       - debug
+    dev: false
+
+  /preact-markdown@2.1.0(preact@10.19.3):
+    resolution: {integrity: sha512-6c2hfarjLFkVDNa1hUKytXID6wl6yilZnGb2y83xKXnfk5SpXYAwhJc+JENgffAcNALWggqvX/ezlk8/8qJsuA==}
+    dependencies:
+      marked: 4.3.0
+      preact-markup: 2.1.1(preact@10.19.3)
+    transitivePeerDependencies:
+      - preact
+    dev: false
+
+  /preact-markup@2.1.1(preact@10.19.3):
+    resolution: {integrity: sha512-8JL2p36mzK8XkspOyhBxUSPjYwMxDM0L5BWBZWxsZMVW8WsGQrYQDgVuDKkRspt2hwrle+Cxr/053hpc9BJwfw==}
+    peerDependencies:
+      preact: '>=10'
+    dependencies:
+      preact: 10.19.3
     dev: false
 
   /preact-render-to-string@5.2.6(preact@10.19.3):

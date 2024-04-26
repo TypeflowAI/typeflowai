@@ -13,8 +13,9 @@ import CopyPromptButton from "../buttons/CopyPromptButton";
 import StartOverButton from "../buttons/StartOverButton";
 import TestPromptButton from "../buttons/TestPromptButton";
 import LoadingSpinner from "./LoadingSpinner";
+import PromptMarkdownResponse from "./PromptMarkdownResponse";
 
-interface PromptResultProps {
+interface PromptResponseProps {
   prompt: TWorkflowPrompt;
   webAppUrl: string;
   environmentId: string;
@@ -27,7 +28,7 @@ interface PromptResultProps {
   isPreview?: boolean;
 }
 
-export default function PromptResult({
+export default function PromptResponse({
   prompt,
   workflowResponses,
   webAppUrl,
@@ -38,7 +39,7 @@ export default function PromptResult({
   ttc,
   setTtc,
   isPreview,
-}: PromptResultProps) {
+}: PromptResponseProps) {
   const [startTime, setStartTime] = useState(performance.now());
   useTtc(prompt.id, ttc, setTtc, startTime, setStartTime);
   const [openAIResponse, setOpenAIResponse] = useState("");
@@ -215,7 +216,7 @@ export default function PromptResult({
                 ) : isOpenAIIssue ? (
                   <p>There has been a problem calling OpenAI. Review your config.</p>
                 ) : (
-                  <p style={{ whiteSpace: "pre-wrap" }}>{displayResponse}</p>
+                  <PromptMarkdownResponse content={displayResponse} />
                 )}
               </div>
             )}

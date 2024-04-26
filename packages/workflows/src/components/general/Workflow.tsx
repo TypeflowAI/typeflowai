@@ -13,7 +13,7 @@ import { TOpenAIResponse } from "@typeflowai/types/openai";
 import type { TResponseData, TResponseTtc } from "@typeflowai/types/responses";
 
 import ActivatePromptCard from "./ActivatePromptCard";
-import PromptResult from "./PromptResult";
+import PromptResponse from "./PromptResponse";
 import QuestionConditional from "./QuestionConditional";
 import SavingCard from "./SavingCard";
 import ThankYouCard from "./ThankYouCard";
@@ -175,7 +175,7 @@ export function Workflow({
       return <SavingCard headline="Saving your response..." />;
     } else if (questionId === "prompt" && workflow.prompt.enabled && workflow.prompt.isVisible) {
       return (
-        <PromptResult
+        <PromptResponse
           prompt={workflow.prompt}
           webAppUrl={webAppUrl}
           environmentId={workflow.environmentId}

@@ -54,6 +54,8 @@
     "vite-tsconfig-paths": "^4.2.2"
   },
   "dependencies": {
-    "eventsource-parser": "^1.1.1"
+    "eventsource-parser": "^1.1.1",
+    "marked": "^12.0.2",
+    "preact-markdown": "^2.1.0"
   }
 }
