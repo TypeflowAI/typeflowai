@@ -94,15 +94,6 @@ export async function createOpenAIStreamMessage(
             try {
               const json = JSON.parse(data);
               const text = json.choices[0].delta?.content || "";
-              // Debugging Finished Reason
-              if (
-                json.choices &&
-                json.choices[0] &&
-                json.choices[0].finish_reason !== undefined &&
-                json.choices[0].finish_reason !== null
-              ) {
-                console.log("Finished Reason: ", json.choices[0].finish_reason);
-              }
               if (counter < 2 && (text.match(/\n/) || []).length) {
                 // this is a prefix character (i.e., "\n\n"), do nothing
                 return;
