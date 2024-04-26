@@ -393,11 +393,11 @@ export const hrTemplates: TTemplate[] = [
         - **Optimization**: Include keywords relevant for SEO to make the job description easily searchable.
         
         Information About the Role:
-        - **Job Title**: [Your job title here]
-        - **Industry**: [Your industry here]
-        - **Company Size**: [Small/Medium/Large]
-        - **Location**: [Remote/On-site/Hybrid]
-        - **Experience Level**: [Entry-Level/Mid-Level/Senior]
+        - **Job Title**: @job-title
+        - **Industry**: @industry
+        - **Company Size**: @company-size
+        - **Location**: @location
+        - **Experience Level**: @experience-level
         `,
         attributes: {},
         isVisible: true,

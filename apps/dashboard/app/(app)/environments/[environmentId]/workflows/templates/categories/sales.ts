@@ -2751,24 +2751,27 @@ export const salesTemplates: TTemplate[] = [
         description: "Prompt",
         message: `
         @lead-name , holding the position of @position at @lead-company in this industry @lead-company-do faces these challenges: @challenges . The company specializes in @lead-company-do .
+        
         My company @company-name offers @solution with these benefits @benefits .
         
-        Write a first cold email based on these structures:
+        Write a first cold email choosing only one of these [structures] randomly:
         
-        Structure 1 based on problem-solution: Start by identifying a specific problem your prospect might be facing and then present your product or service as the solution. This structure focuses on creating an immediate connection through a deep understanding of the prospect's challenges.
+        [Structure 1 based on problem-solution]: Start by identifying a specific problem your prospect might be facing and then present your product or service as the solution. This structure focuses on creating an immediate connection through a deep understanding of the prospect's challenges.
         
         Example of structure 1:
         Subject: Improve Your Time Management with @solution
         
         Hi @lead-name ,
+        
         Many professionals in @lead-company-do struggle with efficient time management, preventing them from maximizing their productivity. Do you face this challenge in your day-to-day?
         
         I'm @my-name , from @company-name . Our tool helps optimize your schedule and prioritize tasks effectively, giving you more control over your time.
+        
         Could we have a meeting this week to show you a demo?
         
         Here is the link to my calendar:
         
-        Structure 2 based on open-ended questions: Start the email with an open-ended question that invites the prospect to reflect on their current situation and possible improvements. This can help generate curiosity and encourage a response.
+        [Structure 2 based on open-ended questions]: Start the email with an open-ended question that invites the prospect to reflect on their current situation and possible improvements. This can help generate curiosity and encourage a response.
         
         Example of structure 2:
         
@@ -2781,9 +2784,8 @@ export const salesTemplates: TTemplate[] = [
         I'm @my-name with @company-name, and we've helped companies like yours to improve visibility and control over their projects, ensuring each one is a profitable investment.
         
         I would love to learn more about your current strategies to discuss how we can support you.
-        Structure 3 based on value: Highlight the unique value your product or service can bring to the prospect. Instead of focusing on features, concentrate the message on how you can help improve their business or personal life.
         
-        Structure 3 based on value: Highlight the unique value your product or service can bring to the prospect. Instead of focusing on the features, focus the message on how you can help improve their business or personal life.
+        [Structure 3 based on value]: Highlight the unique value your product or service can bring to the prospect. Instead of focusing on features, concentrate the message on how you can help improve their business or personal life.
         
         Example of structure 3:
         
@@ -2794,16 +2796,16 @@ export const salesTemplates: TTemplate[] = [
         Have you faced the challenge of managing inefficient processes that drain your time and resources? At @company-name , we specialize in turning those challenges into efficiency and growth.
         
         I'm @my-name , and I've seen how businesses in @sector-industry like yours encounter obstacles that prevent them from reaching their full potential. Our innovative solution simplifies complex operations, automates tedious tasks, and frees up valuable resources, allowing you to focus on growth strategies and what truly matters.
-        Imagine significantly reducing the time spent on manual processes, improving not only productivity but also your team's satisfaction. I am confident that a collaboration between 
         
-        @lead-company and @company-name can unlock this potential.
+        Imagine significantly reducing the time spent on manual processes, improving not only productivity but also your team's satisfaction. I am confident that a collaboration between
+        
+        lead-company and @company-name can unlock this potential.
         
         Can we schedule a 15-minute call this week to explore how our solution can be tailored to your specific needs?
         
         I look forward to your response.
         
         Kind regards.
-        
         `,
         attributes: {},
         isVisible: true,
@@ -3033,9 +3035,9 @@ export const salesTemplates: TTemplate[] = [
           inputType: "text",
         },
         {
-          id: "goal",
+          id: "goals",
           type: TWorkflowQuestionType.OpenText,
-          headline: "What goal do you want to achieve?",
+          headline: "What goals do you want to achieve?",
           subheader: "",
           required: true,
           inputType: "text",
@@ -3106,14 +3108,6 @@ export const salesTemplates: TTemplate[] = [
           id: "industry",
           type: TWorkflowQuestionType.OpenText,
           headline: "In which industry?",
-          subheader: "",
-          required: true,
-          inputType: "text",
-        },
-        {
-          id: "area",
-          type: TWorkflowQuestionType.OpenText,
-          headline: "In which city or country are your customers primarily located? ",
           subheader: "",
           required: true,
           inputType: "text",
@@ -3205,14 +3199,14 @@ export const salesTemplates: TTemplate[] = [
         id: "prompt",
         description: "Prompt",
         message: `
-        Generate email subjects (maximum 15 words) with the goal of @goal for a company that focuses on @focus and whose solution involves @solution thanks to its @benefit . 
-
-        Randomly select 5 of these structures and generate 5 email subjects:
+        Generate email subjects (maximum 15 words) with the goal of @goal for a company that focuses on @focus and whose solution involves @solution thanks to its @benefit .
         
-        Structure 1: [Benefit] + [Limited Time]
+        Use these structures and generate email subjects:
+        
+        Structure 1: @benefit + [Limited Time]
         Example: "Boost your productivity by 50%: Access the course before Sunday"
         
-        Structure 2: [Solution to a problem] + [Limited availability]
+        Structure 2: @solution  + [Limited availability]
         Example: "Eliminate back pain in 30 days: Only 100 spots available"
         
         Structure 3: Resonating question
@@ -3235,7 +3229,6 @@ export const salesTemplates: TTemplate[] = [
         
         Structure 9: Provocation or controversy
         Example: "Why everything you know about [subject] is wrong"
-           
         `,
         attributes: {},
         isVisible: true,
@@ -3286,14 +3279,6 @@ export const salesTemplates: TTemplate[] = [
           id: "gender",
           type: TWorkflowQuestionType.OpenText,
           headline: "What is the predominant gender of your customers?",
-          subheader: "",
-          required: true,
-          inputType: "text",
-        },
-        {
-          id: "area",
-          type: TWorkflowQuestionType.OpenText,
-          headline: "In which city or country are your customers primarily located?",
           subheader: "",
           required: true,
           inputType: "text",
@@ -3387,14 +3372,6 @@ export const salesTemplates: TTemplate[] = [
           inputType: "text",
         },
         {
-          id: "area",
-          type: TWorkflowQuestionType.OpenText,
-          headline: "In which city or country are your customers primarily located?",
-          subheader: "",
-          required: true,
-          inputType: "text",
-        },
-        {
           id: "products",
           type: TWorkflowQuestionType.OpenText,
           headline: "What products or services do you offer?",
@@ -3406,14 +3383,6 @@ export const salesTemplates: TTemplate[] = [
           id: "benefits",
           type: TWorkflowQuestionType.OpenText,
           headline: "What are the main benefits of your product or service?",
-          subheader: "",
-          required: true,
-          inputType: "text",
-        },
-        {
-          id: "features",
-          type: TWorkflowQuestionType.OpenText,
-          headline: "What are the main features of your product or service?",
           subheader: "",
           required: true,
           inputType: "text",
@@ -3505,7 +3474,7 @@ export const salesTemplates: TTemplate[] = [
         
         Opportunities
         
-        - Do you see any emerging trends in the specialty coffee market that you could leverage?
+        - Do you see any emerging trends in the @target-market market that you could leverage?
         - Are there new markets or demographic segments you have not yet explored?
         - Are there potential strategic alliances or collaborations that could benefit your business?
         - How could you use technology to improve your product or process?
