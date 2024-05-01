@@ -22,6 +22,7 @@ export default function Modal({
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const calculateScaling = () => {
+    if (previewMode === "mobile") return "";
     const scaleValue = (() => {
       if (windowWidth > 1600) return "1";
       else if (windowWidth > 1200) return ".9";
