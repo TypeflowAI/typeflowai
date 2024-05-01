@@ -140,7 +140,7 @@ const CustomFilter = ({ environmentTags, responses, workflow, totalResponses }: 
     return "my_workflow_responses";
   }, [workflow]);
 
-  function extracMetadataKeys(obj, parentKey = "") {
+  const extracMetadataKeys = useCallback((obj, parentKey = "") => {
     let keys: string[] = [];
 
     for (let key in obj) {
@@ -152,7 +152,7 @@ const CustomFilter = ({ environmentTags, responses, workflow, totalResponses }: 
     }
 
     return keys;
-  }
+  }, []);
 
   const downloadResponses = useCallback(
     async (filter: FilterDownload, filetype: "csv" | "xlsx") => {

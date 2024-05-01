@@ -71,7 +71,7 @@ export default function LinkWorkflow({
         },
         workflowState
       ),
-    [webAppUrl]
+    [webAppUrl, workflow.environmentId, workflowState]
   );
   const [autoFocus, setAutofocus] = useState(false);
   const hasFinishedSingleUseResponse = useMemo(() => {

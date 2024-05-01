@@ -44,7 +44,7 @@ export default function QuestionsView({
       acc[question.id] = createId();
       return acc;
     }, {});
-  }, []);
+  }, [localWorkflow.questions]);
 
   const [backButtonLabel, setbackButtonLabel] = useState(null);
 

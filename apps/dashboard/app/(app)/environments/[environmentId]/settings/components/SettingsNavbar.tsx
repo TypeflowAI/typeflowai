@@ -208,7 +208,7 @@ export default function SettingsNavbar({
         hidden: false,
       },
     ],
-    [environmentId, isTypeflowAICloud, pathname]
+    [environmentId, isEnterprise, isTypeflowAICloud, pathname, isPricingDisabled, isViewer]
   );
 
   if (!navigation) return null;

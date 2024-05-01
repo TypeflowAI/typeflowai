@@ -149,7 +149,7 @@ export default function NavigationDesktop({
         hidden: false,
       },
     ],
-    [environment.id, pathname]
+    [environment.id, pathname, isViewer]
   );
 
   const dropdownnavigation = [

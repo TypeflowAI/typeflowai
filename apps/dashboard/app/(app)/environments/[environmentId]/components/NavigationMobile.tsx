@@ -90,7 +90,7 @@ export default function NavigationMobile({
         hidden: false,
       },
     ],
-    [environment.id, pathname]
+    [environment.id, pathname, isViewer]
   );
 
   if (pathname?.includes("/edit")) return null;

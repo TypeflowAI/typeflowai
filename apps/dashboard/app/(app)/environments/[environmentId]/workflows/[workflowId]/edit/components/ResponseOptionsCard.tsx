@@ -248,7 +248,13 @@ export default function ResponseOptionsCard({
       setCloseOnDate(localWorkflow.closeOnDate);
       setWorkflowCloseOnDateToggle(true);
     }
-  }, [localWorkflow]);
+  }, [
+    localWorkflow,
+    singleUseMessage.heading,
+    singleUseMessage.subheading,
+    workflowClosedMessage.heading,
+    workflowClosedMessage.subheading,
+  ]);
 
   const handleCheckMark = () => {
     if (autoComplete) {

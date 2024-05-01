@@ -113,7 +113,7 @@ export default function WhenToSendCard({
 
       setActiveIndex(null);
     }
-  }, [actionClassArray, activeIndex, setTriggerEvent]);
+  }, [actionClassArray, activeIndex, setTriggerEvent, isAddEventModalOpen, localWorkflow.triggers]);
 
   useEffect(() => {
     if (localWorkflow.type === "link") {

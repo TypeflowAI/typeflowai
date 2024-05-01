@@ -32,7 +32,7 @@ const Greeting: React.FC<Greeting> = ({ next, skip, name }) => {
         button.removeEventListener("keydown", handleKeyDown);
       }
     };
-  }, []);
+  }, [next]);
 
   return (
     <div className="flex h-full w-full max-w-xl flex-col justify-around gap-8 px-8">

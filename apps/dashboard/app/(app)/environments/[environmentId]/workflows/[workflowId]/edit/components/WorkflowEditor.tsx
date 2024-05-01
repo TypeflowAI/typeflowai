@@ -56,7 +56,7 @@ export default function WorkflowEditor({
         setActiveQuestionId(workflow.questions[0].id);
       }
     }
-  }, [workflow]);
+  }, [workflow, localWorkflow]);
 
   // when the workflow type changes, we need to reset the active question id to the first question
   useEffect(() => {
