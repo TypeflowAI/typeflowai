@@ -48,6 +48,9 @@ export default function EditWelcomeCard({
       },
     });
   };
+  useEffect(() => {
+    setFirstRender(true);
+  }, [activeQuestionId]);
 
   return (
     <div
