@@ -294,7 +294,7 @@ export default function NavigationDesktop({
                     {/* User Dropdown */}
                     <div className="hidden lg:mx-6 lg:flex lg:items-center lg:py-4">
                       <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
+                        <DropdownMenuTrigger asChild id="userDropdownTrigger">
                           <div tabIndex={0} className="flex cursor-pointer flex-row items-center space-x-5">
                             {session.user &&
                               (session.user.imageUrl ? (
@@ -317,7 +317,7 @@ export default function NavigationDesktop({
                             <ChevronDownIcon className="h-5 w-5 text-white hover:text-slate-500" />
                           </div>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="mx-auto mb-2 w-56">
+                        <DropdownMenuContent className="mx-auto mb-2 w-56" id="userDropdownContentWrapper">
                           <DropdownMenuLabel className="cursor-default break-all">
                             <span className="ph-no-capture font-normal">Signed in as </span>
                             {session?.user?.name && session?.user?.name.length > 30 ? (
