@@ -9,8 +9,7 @@ import toast from "react-hot-toast";
 
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TProduct } from "@typeflowai/types/product";
-import { TWorkflowQuestionType } from "@typeflowai/types/workflows";
-import { TWorkflow } from "@typeflowai/types/workflows";
+import { TWorkflow, TWorkflowQuestionType } from "@typeflowai/types/workflows";
 import AlertDialog from "@typeflowai/ui/AlertDialog";
 import { Button } from "@typeflowai/ui/Button";
 import { DeleteDialog } from "@typeflowai/ui/DeleteDialog";
@@ -173,19 +172,21 @@ export default function WorkflowMenuBar({
 
         if (validFields < 2) {
           setInvalidQuestions([question.id]);
-          toast.error("Incomplete logic jumps detected: Please fill or delete them.");
+          toast.error("Incomplete logic jumps detected: Fill or remove them in the Questions tab.");
           return false;
         }
 
         if (question.required && logic.condition === "skipped") {
-          toast.error("You have a missing logic condition. Please update or delete it.");
+          toast.error("A logic condition is missing: Please update or delete it in the Questions tab.");
           return false;
         }
 
         const thisLogic = `${logic.condition}-${logic.value}`;
         if (existingLogicConditions.has(thisLogic)) {
           setInvalidQuestions([question.id]);
-          toast.error("You have 2 competing logic conditons. Please update or delete one.");
+          toast.error(
+            "There are two competing logic conditons: Please update or delete one in the Questions tab."
+          );
           return false;
         }
         existingLogicConditions.add(thisLogic);
