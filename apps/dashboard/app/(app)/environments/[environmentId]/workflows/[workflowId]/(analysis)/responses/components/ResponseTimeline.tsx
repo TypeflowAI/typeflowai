@@ -1,5 +1,6 @@
 "use client";
 
+import { getMoreResponses } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/actions";
 import EmptyInAppWorkflows from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/components/EmptyInAppWorkflows";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -29,22 +30,27 @@ export default function ResponseTimeline({
   environmentTags,
   responsesPerPage,
 }: ResponseTimelineProps) {
-  const [displayedResponses, setDisplayedResponses] = useState<TResponse[]>([]);
   const loadingRef = useRef(null);
-
-  useEffect(() => {
-    setDisplayedResponses(responses.slice(0, responsesPerPage));
-  }, [responses, setDisplayedResponses, responsesPerPage]);
+  const [fetchedResponses, setFetchedResponses] = useState<TResponse[]>(responses);
+  const [page, setPage] = useState(2);
+  const [hasMoreResponses, setHasMoreResponses] = useState<boolean>(responses.length > 0);
 
   useEffect(() => {
     const currentLoadingRef = loadingRef.current;
+
+    const loadResponses = async () => {
+      const newResponses = await getMoreResponses(workflow.id, page);
+      if (newResponses.length === 0) {
+        setHasMoreResponses(false);
+      } else {
+        setPage(page + 1);
+      }
+      setFetchedResponses((prevResponses) => [...prevResponses, ...newResponses]);
+    };
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          setDisplayedResponses((prevResponses) => [
-            ...prevResponses,
-            ...responses.slice(prevResponses.length, prevResponses.length + responsesPerPage),
-          ]);
+          if (hasMoreResponses) loadResponses();
         }
       },
       { threshold: 0.8 }
@@ -59,13 +65,13 @@ export default function ResponseTimeline({
         observer.unobserve(currentLoadingRef);
       }
     };
-  }, [responses, responsesPerPage]);
+  }, [responses, responsesPerPage, page, workflow.id, fetchedResponses.length, hasMoreResponses]);
 
   return (
     <div className="space-y-4">
-      {workflow.type === "web" && displayedResponses.length === 0 && !environment.widgetSetupCompleted ? (
+      {workflow.type === "web" && fetchedResponses.length === 0 && !environment.widgetSetupCompleted ? (
         <EmptyInAppWorkflows environment={environment} />
-      ) : displayedResponses.length === 0 ? (
+      ) : fetchedResponses.length === 0 ? (
         <EmptySpaceFiller
           type="response"
           environment={environment}
@@ -73,7 +79,7 @@ export default function ResponseTimeline({
         />
       ) : (
         <div>
-          {displayedResponses.map((response) => {
+          {fetchedResponses.map((response) => {
             return (
               <div key={response.id}>
                 <SingleResponseCard

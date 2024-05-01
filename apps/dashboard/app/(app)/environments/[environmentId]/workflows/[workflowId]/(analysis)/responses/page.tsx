@@ -7,9 +7,11 @@ import { RESPONSES_PER_PAGE, WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
 import { getMembershipByUserIdTeamId } from "@typeflowai/lib/membership/service";
 import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
+import { getResponses } from "@typeflowai/lib/response/service";
 import { getTagsByEnvironmentId } from "@typeflowai/lib/tag/service";
 import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
 import { getUser } from "@typeflowai/lib/user/service";
+import { getWorkflow } from "@typeflowai/lib/workflow/service";
 
 export default async function Page({ params }) {
   const session = await getServerSession(authOptions);
@@ -17,12 +19,17 @@ export default async function Page({ params }) {
   if (!session) {
     throw new Error("Unauthorized");
   }
-  const [{ responses, workflow }, environment] = await Promise.all([
-    getAnalysisData(params.workflowId, params.environmentId),
+  const [responses, workflow, environment] = await Promise.all([
+    getResponses(params.workflowId, 1),
+    getWorkflow(params.workflowId),
     getEnvironment(params.environmentId),
   ]);
+
   if (!environment) {
     throw new Error("Environment not found");
+  }
+  if (!workflow) {
+    throw new Error("Workflow not found");
   }
   const product = await getProductByEnvironmentId(environment.id);
   if (!product) {
