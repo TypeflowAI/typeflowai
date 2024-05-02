@@ -1,8 +1,8 @@
-import { getAnalysisData } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/data";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 
 import { authOptions } from "@typeflowai/lib/authOptions";
+import { getResponseCountByWorkflowId } from "@typeflowai/lib/response/service";
 import { getWorkflow } from "@typeflowai/lib/workflow/service";
 
 type Props = {
@@ -14,7 +14,7 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
   const workflow = await getWorkflow(params.workflowId);
 
   if (session) {
-    const { responseCount } = await getAnalysisData(params.workflowId, params.environmentId);
+    const responseCount = await getResponseCountByWorkflowId(params.workflowId);
     return {
       title: `${responseCount} Responses | ${workflow?.name} Results`,
     };
