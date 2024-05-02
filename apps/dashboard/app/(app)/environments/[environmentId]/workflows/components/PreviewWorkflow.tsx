@@ -308,7 +308,7 @@ export default function PreviewWorkflow({
               </Modal>
             ) : (
               <MediaBackground workflow={workflow} ContentRef={ContentRef} isEditorView>
-                <div className="z-0 w-full  max-w-md rounded-lg p-4">
+                <div className="z-0 w-full max-w-md rounded-lg p-4">
                   <WorkflowInline
                     workflow={workflow}
                     webAppUrl={webAppUrl}
