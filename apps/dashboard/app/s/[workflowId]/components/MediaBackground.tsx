@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 import { TWorkflow } from "@typeflowai/types/workflows";
 
@@ -19,6 +19,17 @@ export const MediaBackground: React.FC<MediaBackgroundProps> = ({
   isMobilePreview = false,
   ContentRef,
 }) => {
+  const animatedBackgroundRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (workflow.styling?.background?.bgType === "animation") {
+      if (animatedBackgroundRef.current && workflow.styling?.background?.bg) {
+        animatedBackgroundRef.current.src = workflow.styling?.background?.bg;
+        animatedBackgroundRef.current.play();
+      }
+    }
+  }, [workflow.styling?.background?.bg, workflow.styling?.background?.bgType]);
+
   const getFilterStyle = () => {
     return workflow.styling?.background?.brightness
       ? `brightness(${workflow.styling?.background?.brightness}%)`
@@ -40,6 +51,7 @@ export const MediaBackground: React.FC<MediaBackgroundProps> = ({
       case "animation":
         return (
           <video
+            ref={animatedBackgroundRef}
             muted
             loop
             autoPlay

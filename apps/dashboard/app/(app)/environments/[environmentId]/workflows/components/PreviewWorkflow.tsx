@@ -11,7 +11,7 @@ import {
   DevicePhoneMobileIcon,
 } from "@heroicons/react/24/solid";
 import { Variants, motion } from "framer-motion";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import type { TEnvironment } from "@typeflowai/types/environment";
 import type { TProduct } from "@typeflowai/types/product";
@@ -157,20 +157,6 @@ export default function PreviewWorkflow({
 
     setActiveQuestionId(workflow.welcomeCard.enabled ? "start" : workflow?.questions[0]?.id);
   }
-
-  const animationTrigger = useCallback(() => {
-    let storePreviewMode = previewMode;
-    setPreviewMode("null");
-    setTimeout(() => {
-      setPreviewMode(storePreviewMode);
-    }, 10);
-  }, [previewMode, setPreviewMode]);
-
-  useEffect(() => {
-    if (workflow.styling?.background?.bgType === "animation") {
-      animationTrigger();
-    }
-  }, [workflow.styling?.background?.bg, workflow.styling?.background?.bgType, animationTrigger]);
 
   useEffect(() => {
     if (environment && environment.widgetSetupCompleted) {
