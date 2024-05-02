@@ -27,7 +27,7 @@ interface WhenToSendCardProps {
   localWorkflow: TWorkflow;
   setLocalWorkflow: (workflow: TWorkflow) => void;
   environmentId: string;
-  actionClasses: TActionClass[];
+  propActionClasses: TActionClass[];
   membershipRole?: TMembershipRole;
 }
 
@@ -35,13 +35,14 @@ export default function WhenToSendCard({
   environmentId,
   localWorkflow,
   setLocalWorkflow,
-  actionClasses,
+  propActionClasses,
   membershipRole,
 }: WhenToSendCardProps) {
   const [open, setOpen] = useState(localWorkflow.type === "web" ? true : false);
   const [isAddEventModalOpen, setAddEventModalOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [actionClassArray, setActionClassArray] = useState<TActionClass[]>(actionClasses);
+  const [actionClasses, setActionClasses] = useState<TActionClass[]>(propActionClasses);
+
   const { isViewer } = getAccessFlags(membershipRole);
 
   const autoClose = localWorkflow.autoClose !== null;
@@ -55,7 +56,7 @@ export default function WhenToSendCard({
   const setTriggerEvent = useCallback(
     (idx: number, actionClassName: string) => {
       const updatedWorkflow = { ...localWorkflow };
-      const newActionClass = actionClassArray!.find((actionClass) => {
+      const newActionClass = actionClasses!.find((actionClass) => {
         return actionClass.name === actionClassName;
       });
       if (!newActionClass) {
@@ -64,7 +65,7 @@ export default function WhenToSendCard({
       updatedWorkflow.triggers[idx] = newActionClass.name;
       setLocalWorkflow(updatedWorkflow);
     },
-    [actionClassArray, localWorkflow, setLocalWorkflow]
+    [actionClasses, localWorkflow, setLocalWorkflow]
   );
 
   const removeTriggerEvent = (idx: number) => {
@@ -104,7 +105,7 @@ export default function WhenToSendCard({
   useEffect(() => {
     if (isAddEventModalOpen) return;
     if (activeIndex !== null) {
-      const newActionClass = actionClassArray[actionClassArray.length - 1].name;
+      const newActionClass = actionClasses[actionClasses.length - 1].name;
       const currentActionClass = localWorkflow.triggers[activeIndex];
 
       if (newActionClass !== currentActionClass) {
@@ -113,7 +114,7 @@ export default function WhenToSendCard({
 
       setActiveIndex(null);
     }
-  }, [actionClassArray, activeIndex, setTriggerEvent, isAddEventModalOpen, localWorkflow.triggers]);
+  }, [actionClasses, activeIndex, setTriggerEvent, isAddEventModalOpen, localWorkflow.triggers]);
 
   useEffect(() => {
     if (localWorkflow.type === "link") {
@@ -205,7 +206,7 @@ export default function WhenToSendCard({
                         Add Action
                       </button>
                       <SelectSeparator />
-                      {actionClassArray.map((actionClass) => (
+                      {actionClasses.map((actionClass) => (
                         <SelectItem
                           value={actionClass.name}
                           key={actionClass.name}
@@ -284,7 +285,8 @@ export default function WhenToSendCard({
         environmentId={environmentId}
         open={isAddEventModalOpen}
         setOpen={setAddEventModalOpen}
-        setActionClassArray={setActionClassArray}
+        actionClasses={actionClasses}
+        setActionClasses={setActionClasses}
         isViewer={isViewer}
       />
     </>

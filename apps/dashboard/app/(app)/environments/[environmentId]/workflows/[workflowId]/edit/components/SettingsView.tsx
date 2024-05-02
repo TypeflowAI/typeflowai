@@ -52,7 +52,7 @@ export default function SettingsView({
         localWorkflow={localWorkflow}
         setLocalWorkflow={setLocalWorkflow}
         environmentId={environment.id}
-        actionClasses={actionClasses}
+        propActionClasses={actionClasses}
         membershipRole={membershipRole}
       /> */}
 
