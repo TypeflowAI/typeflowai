@@ -13,12 +13,18 @@ export default async function revalidateWorkflowIdPath(environmentId: string, wo
   revalidatePath(`/environments/${environmentId}/workflows/${workflowId}`);
 }
 
-export async function getMoreResponses(workflowId: string, page: number): Promise<TResponse[]> {
+export async function getMoreResponses(
+  workflowId: string,
+  page: number,
+  batchSize?: number
+): Promise<TResponse[]> {
   const session = await getServerSession(authOptions);
   if (!session) throw new AuthorizationError("Not authorized");
 
   const isAuthorized = await canUserAccessWorkflow(session.user.id, workflowId);
   if (!isAuthorized) throw new AuthorizationError("Not authorized");
-  const responses = await getResponses(workflowId, page);
+
+  batchSize = batchSize ?? 10;
+  const responses = await getResponses(workflowId, page, batchSize);
   return responses;
 }

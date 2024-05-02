@@ -312,11 +312,15 @@ export const getResponse = async (responseId: string): Promise<TResponse | null>
   } as TResponse;
 };
 
-export const getResponses = async (workflowId: string, page?: number): Promise<TResponse[]> => {
+export const getResponses = async (
+  workflowId: string,
+  page?: number,
+  batchSize?: number
+): Promise<TResponse[]> => {
   const responses = await unstable_cache(
     async () => {
       validateInputs([workflowId, ZId], [page, ZOptionalNumber]);
-
+      batchSize = batchSize ?? RESPONSES_PER_PAGE;
       try {
         const responses = await prisma.response.findMany({
           where: {
@@ -328,8 +332,8 @@ export const getResponses = async (workflowId: string, page?: number): Promise<T
               createdAt: "desc",
             },
           ],
-          take: page ? RESPONSES_PER_PAGE : undefined,
-          skip: page ? RESPONSES_PER_PAGE * (page - 1) : undefined,
+          take: page ? batchSize : undefined,
+          skip: page ? batchSize * (page - 1) : undefined,
         });
 
         const transformedResponses: TResponse[] = await Promise.all(
@@ -351,7 +355,7 @@ export const getResponses = async (workflowId: string, page?: number): Promise<T
         throw error;
       }
     },
-    [`getResponses-${workflowId}-${page}`],
+    [`getResponses-${workflowId}-${page}-${batchSize}`],
     {
       tags: [responseCache.tag.byWorkflowId(workflowId)],
       revalidate: SERVICES_REVALIDATION_INTERVAL,

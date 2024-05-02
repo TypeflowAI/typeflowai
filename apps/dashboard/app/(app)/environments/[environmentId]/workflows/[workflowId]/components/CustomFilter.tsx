@@ -4,6 +4,7 @@ import {
   DateRange,
   useResponseFilter,
 } from "@/app/(app)/environments/[environmentId]/components/ResponseFilterContext";
+import { getMoreResponses } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/actions";
 import { fetchFile } from "@/app/lib/fetchFile";
 import { generateQuestionAndFilterOptions, getTodayDate } from "@/app/lib/workflows/workflows";
 import { createId } from "@paralleldrive/cuid2";
@@ -155,9 +156,23 @@ const CustomFilter = ({ environmentTags, responses, workflow, totalResponses }: 
     return keys;
   }, []);
 
+  const getAllResponsesInBatches = useCallback(async () => {
+    const BATCH_SIZE = 3000;
+    const responses: TResponse[] = [];
+    for (let page = 1; ; page++) {
+      const batchResponses = await getMoreResponses(workflow.id, page, BATCH_SIZE);
+      responses.push(...batchResponses);
+      if (batchResponses.length < BATCH_SIZE) {
+        break;
+      }
+    }
+    return responses;
+  }, [workflow.id]);
+
   const downloadResponses = useCallback(
     async (filter: FilterDownload, filetype: "csv" | "xlsx") => {
-      const downloadResponse = filter === FilterDownload.ALL ? totalResponses : responses;
+      const downloadResponse = filter === FilterDownload.ALL ? await getAllResponsesInBatches() : responses;
+
       const questionNames = workflow.questions?.map((question) => question.headline);
       const hiddenFieldIds = workflow.hiddenFields.fieldIds;
       const hiddenFieldResponse = {};
