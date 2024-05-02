@@ -44,6 +44,7 @@ export function Workflow({
   const currentQuestionIndex = workflow.questions.findIndex((q) => q.id === questionId);
   const currentQuestion = workflow.questions[currentQuestionIndex];
   const contentRef = useRef<HTMLDivElement | null>(null);
+  const showProgressBar = !workflow.styling?.hideProgressBar;
   const [ttc, setTtc] = useState<TResponseTtc>({});
   const typeflowaiAPI = new TypeflowAIAPI({
     apiHost: webAppUrl,
@@ -286,7 +287,9 @@ export function Workflow({
           </div>
           <div className="mt-8">
             {isBrandingEnabled && <TypeflowAIBranding />}
-            <ProgressBar workflow={workflow} questionId={questionId} isPromptVisible={isPromptVisible()} />
+            {showProgressBar && (
+              <ProgressBar workflow={workflow} questionId={questionId} isPromptVisible={isPromptVisible()} />
+            )}
           </div>
         </div>
       </AutoCloseWrapper>

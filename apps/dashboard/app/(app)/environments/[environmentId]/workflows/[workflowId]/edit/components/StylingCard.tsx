@@ -21,7 +21,7 @@ interface StylingCardProps {
 
 export default function StylingCard({ localWorkflow, setLocalWorkflow, colours }: StylingCardProps) {
   const [open, setOpen] = useState(false);
-
+  const progressBarHidden = localWorkflow.styling?.hideProgressBar ?? false;
   const { type, productOverwrites, styling } = localWorkflow;
   const { brandColor, clickOutsideClose, darkOverlay, placement, highlightBorderColor } =
     productOverwrites ?? {};
@@ -171,6 +171,16 @@ export default function StylingCard({ localWorkflow, setLocalWorkflow, colours }
       productOverwrites: {
         ...localWorkflow.productOverwrites,
         clickOutsideClose,
+      },
+    });
+  };
+
+  const toggleProgressBarVisibility = () => {
+    setLocalWorkflow({
+      ...localWorkflow,
+      styling: {
+        ...localWorkflow.styling,
+        hideProgressBar: !progressBarHidden,
       },
     });
   };
@@ -346,6 +356,23 @@ export default function StylingCard({ localWorkflow, setLocalWorkflow, colours }
               )}
             </div>
           )}
+          <div className="p-3">
+            <div className="ml-2 flex items-center space-x-1">
+              <Switch
+                id="hideProgressBar"
+                checked={progressBarHidden}
+                onCheckedChange={toggleProgressBarVisibility}
+              />
+              <Label htmlFor="hideProgressBar" className="cursor-pointer">
+                <div className="ml-2">
+                  <h3 className="text-sm font-semibold text-slate-700">Hide Progress Bar</h3>
+                  <p className="text-xs font-normal text-slate-500">
+                    Disable the visibility of survey progress
+                  </p>
+                </div>
+              </Label>
+            </div>
+          </div>
         </div>
       </Collapsible.CollapsibleContent>
     </Collapsible.Root>

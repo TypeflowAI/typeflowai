@@ -74,6 +74,7 @@ export type TWorkflowStylingBackground = z.infer<typeof ZWorkflowStylingBackgrou
 
 export const ZWorkflowStyling = z.object({
   background: ZWorkflowStylingBackground.nullish(),
+  hideProgressBar: z.boolean().nullish(),
 });
 
 export type TWorkflowStyling = z.infer<typeof ZWorkflowStyling>;
