@@ -367,7 +367,7 @@ export default function StylingCard({ localWorkflow, setLocalWorkflow, colours }
                 <div className="ml-2">
                   <h3 className="text-sm font-semibold text-slate-700">Hide Progress Bar</h3>
                   <p className="text-xs font-normal text-slate-500">
-                    Disable the visibility of survey progress
+                    Disable the visibility of workflow progress
                   </p>
                 </div>
               </Label>

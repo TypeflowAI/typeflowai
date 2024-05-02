@@ -295,6 +295,7 @@ export default function QuestionCard({
                 />
               ) : question.type === TWorkflowQuestionType.Cal ? (
                 <CalQuestionForm
+                  localWorkflow={localWorkflow}
                   question={question}
                   questionIdx={questionIdx}
                   updateQuestion={updateQuestion}
