@@ -115,6 +115,7 @@
         "WORKFLOWS_PACKAGE_BUILD",
         "TELEMETRY_DISABLED",
         "TERMS_URL",
+        "VERCEL",
         "VERCEL_URL",
         "WEBAPP_URL"
       ]
