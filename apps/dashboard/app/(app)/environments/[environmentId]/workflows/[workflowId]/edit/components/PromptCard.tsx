@@ -1,6 +1,6 @@
 "use client";
 
-import OpenAIIcon from "@/openai.svg";
+import OpenAIIcon from "@/images/openai.svg";
 import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import * as Collapsible from "@radix-ui/react-collapsible";
 import Image from "next/image";
