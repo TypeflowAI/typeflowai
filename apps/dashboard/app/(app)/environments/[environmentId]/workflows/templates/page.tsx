@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 
-import { getIsEngineLimited } from "@typeflowai/ee/lib/service";
+import { getIsEngineLimited } from "@typeflowai/ee/subscription/lib/service";
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment } from "@typeflowai/lib/environment/service";

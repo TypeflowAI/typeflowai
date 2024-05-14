@@ -17,8 +17,8 @@ import {
   DropdownMenuTrigger,
 } from "@typeflowai/ui/DropdownMenu";
 
-import { transferOwnershipAction, updateInviteAction, updateMembershipAction } from "../lib/actions";
-import TransferOwnershipModal from "./TransferOwnershipModal";
+import { transferPropietaryAction, updateInviteAction, updateMembershipAction } from "../../actions";
+import TransferPropietaryModal from "./TransferPropietaryModal";
 
 interface Role {
   isAdminOrOwner: boolean;
@@ -32,7 +32,7 @@ interface Role {
   currentUserRole: string;
 }
 
-export const EditMembershipRole = ({
+export const EditMembershipAccess = ({
   isAdminOrOwner,
   memberRole,
   teamId,
@@ -45,12 +45,12 @@ export const EditMembershipRole = ({
 }: Role) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [isTransferOwnershipModalOpen, setTransferOwnershipModalOpen] = useState(false);
+  const [isTransferPropietaryModalOpen, setTransferPropietaryModalOpen] = useState(false);
 
   const disableRole =
     memberRole && memberId && userId ? memberRole === "owner" || memberId === userId : false;
 
-  const handleMemberRoleUpdate = async (role: TMembershipRole) => {
+  const handleMemberAccessUpdate = async (role: TMembershipRole) => {
     setLoading(true);
 
     try {
@@ -69,29 +69,29 @@ export const EditMembershipRole = ({
     router.refresh();
   };
 
-  const handleOwnershipTransfer = async () => {
+  const handlePropietaryTransfer = async () => {
     setLoading(true);
     try {
       if (memberId) {
-        await transferOwnershipAction(teamId, memberId);
+        await transferPropietaryAction(teamId, memberId);
       }
 
       setLoading(false);
-      setTransferOwnershipModalOpen(false);
+      setTransferPropietaryModalOpen(false);
       toast.success("Ownership transferred successfully");
       router.refresh();
     } catch (err: any) {
       toast.error(`Error: ${err.message}`);
       setLoading(false);
-      setTransferOwnershipModalOpen(false);
+      setTransferPropietaryModalOpen(false);
     }
   };
 
-  const handleRoleChange = (role: TMembershipRole) => {
+  const handleAccessChange = (role: TMembershipRole) => {
     if (role === "owner") {
-      setTransferOwnershipModalOpen(true);
+      setTransferPropietaryModalOpen(true);
     } else {
-      handleMemberRoleUpdate(role);
+      handleMemberAccessUpdate(role);
     }
   };
 
@@ -123,7 +123,7 @@ export const EditMembershipRole = ({
             <DropdownMenuContent>
               <DropdownMenuRadioGroup
                 value={capitalizeFirstLetter(memberRole)}
-                onValueChange={(value) => handleRoleChange(value.toLowerCase() as TMembershipRole)}>
+                onValueChange={(value) => handleAccessChange(value.toLowerCase() as TMembershipRole)}>
                 {getMembershipRoles().map((role) => (
                   <DropdownMenuRadioItem key={role} value={role} className="capitalize">
                     {role.toLowerCase()}
@@ -133,11 +133,11 @@ export const EditMembershipRole = ({
             </DropdownMenuContent>
           )}
         </DropdownMenu>
-        <TransferOwnershipModal
-          open={isTransferOwnershipModalOpen}
-          setOpen={setTransferOwnershipModalOpen}
+        <TransferPropietaryModal
+          open={isTransferPropietaryModalOpen}
+          setOpen={setTransferPropietaryModalOpen}
           memberName={memberName}
-          onSubmit={handleOwnershipTransfer}
+          onSubmit={handlePropietaryTransfer}
           isLoading={loading}
         />
       </>

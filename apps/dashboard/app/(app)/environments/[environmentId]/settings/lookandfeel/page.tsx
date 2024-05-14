@@ -1,9 +1,6 @@
 import { getServerSession } from "next-auth";
 
-import {
-  getRemoveInAppBrandingPermission,
-  getRemoveLinkBrandingPermission,
-} from "@typeflowai/ee/lib/service";
+import { getIsPaidSubscription } from "@typeflowai/ee/subscription/lib/service";
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { DEFAULT_BRAND_COLOR, IS_TYPEFLOWAI_CLOUD } from "@typeflowai/lib/constants";
 import { getMembershipByUserIdTeamId } from "@typeflowai/lib/membership/service";
@@ -36,8 +33,8 @@ export default async function ProfileSettingsPage({ params }: { params: { enviro
     throw new Error("Team not found");
   }
 
-  const canRemoveInAppBranding = getRemoveInAppBrandingPermission(team);
-  const canRemoveLinkBranding = getRemoveLinkBrandingPermission(team);
+  const canRemoveInAppBranding = getIsPaidSubscription(team);
+  const canRemoveLinkBranding = getIsPaidSubscription(team);
 
   const currentUserMembership = await getMembershipByUserIdTeamId(session?.user.id, team.id);
   const { isDeveloper, isViewer } = getAccessFlags(currentUserMembership?.role);

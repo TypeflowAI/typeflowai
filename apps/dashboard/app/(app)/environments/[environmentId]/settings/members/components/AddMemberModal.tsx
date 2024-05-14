@@ -1,15 +1,15 @@
 "use client";
 
+import { AddMemberAccess } from "@/app/(app)/environments/[environmentId]/settings/members/components/AccessManagement/AddMemberAccess";
 import { useForm } from "react-hook-form";
 
-import { AddMemberRole } from "@typeflowai/ee/RoleManagement/components/AddMemberRole";
 import { Button } from "@typeflowai/ui/Button";
 import { Input } from "@typeflowai/ui/Input";
 import { Label } from "@typeflowai/ui/Label";
 import { Modal } from "@typeflowai/ui/Modal";
 import { UpgradePlanNotice } from "@typeflowai/ui/UpgradePlanNotice";
 
-enum MembershipRole {
+enum MembershipAccess {
   Admin = "admin",
   Editor = "editor",
   Developer = "developer",
@@ -18,7 +18,7 @@ enum MembershipRole {
 interface MemberModalProps {
   open: boolean;
   setOpen: (v: boolean) => void;
-  onSubmit: (data: { name: string; email: string; role: MembershipRole }) => void;
+  onSubmit: (data: { name: string; email: string; role: MembershipAccess }) => void;
   canDoRoleManagement: boolean;
   isTypeflowAiCloud: boolean;
   environmentId: string;
@@ -35,12 +35,12 @@ export default function AddMemberModal({
   const { register, getValues, handleSubmit, reset, control } = useForm<{
     name: string;
     email: string;
-    role: MembershipRole;
+    role: MembershipAccess;
   }>();
 
   const submitEventClass = async () => {
     const data = getValues();
-    data.role = data.role || MembershipRole.Admin;
+    data.role = data.role || MembershipAccess.Admin;
     onSubmit(data);
     setOpen(false);
     reset();
@@ -89,7 +89,7 @@ export default function AddMemberModal({
                 <Label>Email Adress</Label>
                 <Input type="email" placeholder="hans@wurst.com" {...register("email", { required: true })} />
               </div>
-              {canDoRoleManagement && <AddMemberRole control={control} />}
+              {canDoRoleManagement && <AddMemberAccess control={control} />}
             </div>
           </div>
           <div className="flex justify-end border-t border-slate-200 p-6">

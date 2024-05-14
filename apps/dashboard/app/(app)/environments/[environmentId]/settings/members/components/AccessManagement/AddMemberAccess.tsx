@@ -10,18 +10,18 @@ import {
   SelectValue,
 } from "@typeflowai/ui/Select";
 
-enum MembershipRole {
+enum MembershipAccess {
   Admin = "admin",
   Editor = "editor",
   Developer = "developer",
   Viewer = "viewer",
 }
 
-type AddMemberRole = {
-  control: Control<{ name: string; email: string; role: MembershipRole }, any>;
+type AddMemberAccess = {
+  control: Control<{ name: string; email: string; role: MembershipAccess }, any>;
 };
 
-export const AddMemberRole = ({ control }: AddMemberRole) => {
+export const AddMemberAccess = ({ control }: AddMemberAccess) => {
   return (
     <Controller
       name="role"
@@ -29,13 +29,13 @@ export const AddMemberRole = ({ control }: AddMemberRole) => {
       render={({ field: { onChange, value } }) => (
         <div>
           <Label>Role</Label>
-          <Select value={value} onValueChange={(v) => onChange(v as MembershipRole)}>
+          <Select value={value} onValueChange={(v) => onChange(v as MembershipAccess)}>
             <SelectTrigger className="capitalize">
               <SelectValue placeholder={<span className="text-slate-400">Select role</span>} />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {Object.values(MembershipRole).map((role) => (
+                {Object.values(MembershipAccess).map((role) => (
                   <SelectItem className="capitalize" key={role} value={role}>
                     {role}
                   </SelectItem>

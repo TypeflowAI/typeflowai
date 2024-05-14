@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 
-import { getIsEngineLimited } from "@typeflowai/ee/lib/service";
+import { getIsEngineLimited } from "@typeflowai/ee/subscription/lib/service";
 import { getActionClasses } from "@typeflowai/lib/actionClass/service";
 import { getAttributeClasses } from "@typeflowai/lib/attributeClass/service";
 import { authOptions } from "@typeflowai/lib/authOptions";

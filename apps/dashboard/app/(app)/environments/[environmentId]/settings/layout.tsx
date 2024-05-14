@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 
-import { getIsEnterpriseSubscription } from "@typeflowai/ee/lib/service";
+import { getIsEnterpriseSubscription } from "@typeflowai/ee/subscription/lib/service";
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { IS_TYPEFLOWAI_CLOUD } from "@typeflowai/lib/constants";
 import { getMembershipByUserIdTeamId } from "@typeflowai/lib/membership/service";

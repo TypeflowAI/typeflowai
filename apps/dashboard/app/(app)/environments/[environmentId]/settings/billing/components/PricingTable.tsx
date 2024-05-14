@@ -16,7 +16,7 @@ import {
   ProductSubscriptionTypes,
   StripePriceLookupKeys,
   StripeProductNames,
-} from "@typeflowai/ee/billing/lib/constants";
+} from "@typeflowai/ee/stripe/lib/constants";
 import { TTeam } from "@typeflowai/types/teams";
 import AlertDialog from "@typeflowai/ui/AlertDialog";
 import { Button } from "@typeflowai/ui/Button";

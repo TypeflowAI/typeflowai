@@ -2,7 +2,7 @@ import TeamActions from "@/app/(app)/environments/[environmentId]/settings/membe
 import { getServerSession } from "next-auth";
 import { Suspense } from "react";
 
-import { getRoleManagementPermission } from "@typeflowai/ee/lib/service";
+import { getIsPaidSubscription } from "@typeflowai/ee/subscription/lib/service";
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { INVITE_DISABLED, IS_TYPEFLOWAI_CLOUD } from "@typeflowai/lib/constants";
 import { getMembershipByUserIdTeamId, getMembershipsByUserId } from "@typeflowai/lib/membership/service";
@@ -54,7 +54,7 @@ export default async function MembersSettingsPage({ params }: { params: { enviro
     throw new Error("Team not found");
   }
 
-  const canDoRoleManagement = getRoleManagementPermission(team);
+  const canDoRoleManagement = getIsPaidSubscription(team);
 
   const currentUserMembership = await getMembershipByUserIdTeamId(session?.user.id, team.id);
   const { isOwner, isAdmin } = getAccessFlags(currentUserMembership?.role);

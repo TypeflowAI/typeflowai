@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import CustomDialog from "@typeflowai/ui/CustomDialog";
 import { Input } from "@typeflowai/ui/Input";
 
-interface TransferOwnershipModalProps {
+interface TransferPropietaryModalProps {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   memberName: string;
@@ -13,13 +13,13 @@ interface TransferOwnershipModalProps {
   isLoading?: boolean;
 }
 
-export default function TransferOwnershipModal({
+export default function TransferPropietaryModal({
   setOpen,
   open,
   memberName,
   onSubmit,
   isLoading,
-}: TransferOwnershipModalProps) {
+}: TransferPropietaryModalProps) {
   const [inputValue, setInputValue] = useState("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +45,7 @@ export default function TransferOwnershipModal({
           <li>When you transfer the ownership, you will remain an Admin of the team.</li>
         </ul>
         <form>
-          <label htmlFor="transferOwnershipConfirmation">
+          <label htmlFor="transferPropietaryConfirmation">
             Type in <b>{memberName}</b> to confirm:
           </label>
           <Input
@@ -54,8 +54,8 @@ export default function TransferOwnershipModal({
             placeholder={memberName}
             className="mt-5"
             type="text"
-            id="transferOwnershipConfirmation"
-            name="transferOwnershipConfirmation"
+            id="transferPropietaryConfirmation"
+            name="transferPropietaryConfirmation"
           />
         </form>
       </div>

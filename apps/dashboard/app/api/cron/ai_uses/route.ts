@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { prisma } from "@typeflowai/database";
-import { ProductSubscriptionTypes } from "@typeflowai/ee/billing/lib/constants";
+import { ProductSubscriptionTypes } from "@typeflowai/ee/stripe/lib/constants";
 import { BASIC_AI_RESPONSES, CRON_SECRET, PRO_AI_RESPONSES } from "@typeflowai/lib/constants";
 import { updateTeam } from "@typeflowai/lib/team/service";
 

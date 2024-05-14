@@ -2,12 +2,12 @@
 
 import { getServerSession } from "next-auth";
 
-import { StripePriceLookupKeys } from "@typeflowai/ee/billing/lib/constants";
-import { createCustomerPortalSession } from "@typeflowai/ee/billing/lib/createCustomerPortalSession";
-import { createSubscription } from "@typeflowai/ee/billing/lib/createSubscription";
-import { reactivateSubscription } from "@typeflowai/ee/billing/lib/reactivateSubscription";
-import { removeSubscription } from "@typeflowai/ee/billing/lib/removeSubscription";
-import { updateSubscription } from "@typeflowai/ee/billing/lib/updateSubscription";
+import { StripePriceLookupKeys } from "@typeflowai/ee/stripe/lib/constants";
+import { createCustomerPortalSession } from "@typeflowai/ee/stripe/lib/createCustomerPortalSession";
+import { createSubscription } from "@typeflowai/ee/stripe/lib/createSubscription";
+import { reactivateSubscription } from "@typeflowai/ee/stripe/lib/reactivateSubscription";
+import { removeSubscription } from "@typeflowai/ee/stripe/lib/removeSubscription";
+import { updateSubscription } from "@typeflowai/ee/stripe/lib/updateSubscription";
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { WEBAPP_URL } from "@typeflowai/lib/constants";
 import { canUserAccessTeam } from "@typeflowai/lib/team/auth";

@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 
-import { getIsEngineLimited } from "@typeflowai/ee/lib/service";
+import { getIsEngineLimited } from "@typeflowai/ee/subscription/lib/service";
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment, getEnvironments } from "@typeflowai/lib/environment/service";

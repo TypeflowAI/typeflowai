@@ -21,6 +21,12 @@ export const getIsEnterpriseSubscription = (team: TTeam): boolean => {
   else return false;
 };
 
+export const getIsPaidSubscription = (team: TTeam): boolean => {
+  if (IS_TYPEFLOWAI_CLOUD) return team.billing.subscriptionStatus !== "inactive";
+  else if (!IS_TYPEFLOWAI_CLOUD) return true;
+  else return false;
+};
+
 export const getSubscriptionType = (team: TTeam): string => {
   if (getIsBasicSubscription(team)) {
     return "basic";
@@ -41,21 +47,4 @@ export const getIsEngineLimited = (team: TTeam): boolean => {
       return false;
     } else return true;
   }
-};
-
-export const getRemoveInAppBrandingPermission = (team: TTeam): boolean => {
-  if (IS_TYPEFLOWAI_CLOUD) return team.billing.subscriptionStatus !== "inactive";
-  else if (!IS_TYPEFLOWAI_CLOUD) return true;
-  else return false;
-};
-
-export const getRemoveLinkBrandingPermission = (team: TTeam): boolean => {
-  if (IS_TYPEFLOWAI_CLOUD) return team.billing.subscriptionStatus !== "inactive";
-  else if (!IS_TYPEFLOWAI_CLOUD) return true;
-  else return false;
-};
-
-export const getRoleManagementPermission = (team: TTeam): boolean => {
-  if (IS_TYPEFLOWAI_CLOUD) return team.billing.subscriptionStatus !== "inactive";
-  else return false;
 };

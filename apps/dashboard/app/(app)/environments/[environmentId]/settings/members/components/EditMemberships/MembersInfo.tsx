@@ -1,8 +1,8 @@
+import { EditMembershipAccess } from "@/app/(app)/environments/[environmentId]/settings/members/components/AccessManagement/EditMembershipAccess";
 import MemberActions from "@/app/(app)/environments/[environmentId]/settings/members/components/EditMemberships/MemberActions";
 import { isInviteExpired } from "@/app/lib/utils";
 import React from "react";
 
-import { EditMembershipRole } from "@typeflowai/ee/RoleManagement/components/EditMembershipRole";
 import { TInvite } from "@typeflowai/types/invites";
 import { TMember, TMembershipRole } from "@typeflowai/types/memberships";
 import { TTeam } from "@typeflowai/types/teams";
@@ -57,7 +57,7 @@ const MembersInfo = async ({
 
           <div className="ph-no-capture col-span-3 flex flex-col items-start justify-center break-all">
             {canDoRoleManagement && allMembers?.length > 0 && (
-              <EditMembershipRole
+              <EditMembershipAccess
                 isAdminOrOwner={isUserAdminOrOwner}
                 memberRole={member.role}
                 memberId={!isInvitee(member) ? member.userId : ""}
