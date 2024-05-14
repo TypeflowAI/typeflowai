@@ -1,5 +1,12 @@
 import { createId } from "@paralleldrive/cuid2";
 
+import { agencyTemplates } from "@typeflowai/ee/prompt-templates/agency";
+import { hrTemplates } from "@typeflowai/ee/prompt-templates/hr";
+import { marketingTemplates } from "@typeflowai/ee/prompt-templates/marketing";
+import { salesTemplates } from "@typeflowai/ee/prompt-templates/sales";
+import { startupTemplates } from "@typeflowai/ee/prompt-templates/startup";
+import { supportTemplates } from "@typeflowai/ee/prompt-templates/support";
+import { vaTemplates } from "@typeflowai/ee/prompt-templates/va";
 import { OpenAIModel } from "@typeflowai/types/openai";
 import { TTemplate } from "@typeflowai/types/templates";
 import {
@@ -9,14 +16,6 @@ import {
   TWorkflowWelcomeCard,
 } from "@typeflowai/types/workflows";
 import templateIcon from "@typeflowai/ui/icons/templates/default.svg";
-
-import { agencyTemplates } from "./categories/agency";
-import { hrTemplates } from "./categories/hr";
-import { marketingTemplates } from "./categories/marketing";
-import { salesTemplates } from "./categories/sales";
-import { startupTemplates } from "./categories/startup";
-import { supportTemplates } from "./categories/support";
-import { vaTemplates } from "./categories/va";
 
 const thankYouCardDefault = {
   enabled: true,

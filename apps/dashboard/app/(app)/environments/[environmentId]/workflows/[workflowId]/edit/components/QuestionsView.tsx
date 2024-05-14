@@ -13,7 +13,7 @@ import { capturePosthogEvent } from "@typeflowai/ui/PostHogClient";
 import AddQuestionButton from "./AddQuestionButton";
 import EditThankYouCard from "./EditThankYouCard";
 import EditWelcomeCard from "./EditWelcomeCard";
-import GPTPromptCard from "./GPTPromptCard";
+import PromptCard from "./PromptCard";
 import QuestionCard from "./QuestionCard";
 import { StrictModeDroppable } from "./StrictModeDroppable";
 import { validateQuestion } from "./Validation";
@@ -257,7 +257,7 @@ export default function QuestionsView({
       </DragDropContext>
       <AddQuestionButton addQuestion={addQuestion} product={product} />
       <div className="mt-5 flex flex-col gap-5">
-        <GPTPromptCard
+        <PromptCard
           localWorkflow={localWorkflow}
           setLocalWorkflow={setLocalWorkflow}
           prompt={localWorkflow.prompt}

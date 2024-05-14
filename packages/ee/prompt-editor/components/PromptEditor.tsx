@@ -8,7 +8,7 @@ import Text from "@tiptap/extension-text";
 import { EditorContent, useEditor } from "@tiptap/react";
 import React, { useCallback, useEffect } from "react";
 
-import { Suggestion } from "./lib/suggestion";
+import { Suggestion } from "../lib/suggestion";
 
 interface PromptEditorProps {
   promptMessage: string | undefined;

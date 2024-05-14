@@ -1,11 +1,12 @@
 "use client";
 
-import openAIIcon from "@/images/openai-icon.svg";
+import OpenAIIcon from "@/openai.svg";
 import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import * as Collapsible from "@radix-ui/react-collapsible";
 import Image from "next/image";
 import { useState } from "react";
 
+import PromptEditor from "@typeflowai/ee/prompt-editor/components/PromptEditor";
 import { cn } from "@typeflowai/lib/cn";
 import { OpenAIModel } from "@typeflowai/types/openai";
 import {
@@ -19,7 +20,6 @@ import {
   promptTone,
 } from "@typeflowai/types/prompt";
 import { TWorkflow, TWorkflowPrompt } from "@typeflowai/types/workflows";
-import PromptEditor from "@typeflowai/ui//PromptEditor";
 import { Input } from "@typeflowai/ui/Input";
 import { Label } from "@typeflowai/ui/Label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@typeflowai/ui/Select";
@@ -42,7 +42,7 @@ const getEngineValueForKey = (displayKey) => {
   return engineOptions[displayKey];
 };
 
-interface GPTPromptCardProps {
+interface PromptCardProps {
   localWorkflow: TWorkflow;
   prompt: TWorkflowPrompt;
   setLocalWorkflow: (workflow: TWorkflow) => void;
@@ -51,14 +51,14 @@ interface GPTPromptCardProps {
   isEngineLimited: boolean;
 }
 
-export default function GPTPromtCard({
+export default function PromptCard({
   localWorkflow,
   setLocalWorkflow,
   prompt,
   activeQuestionId,
   setActiveQuestionId,
   isEngineLimited,
-}: GPTPromptCardProps) {
+}: PromptCardProps) {
   const open = activeQuestionId === "prompt";
   const [isPromptEditorFocused, setIsPromptEditorFocused] = useState(false);
   const [openAdvanced, setOpenAdvanced] = useState(false);
@@ -108,7 +108,7 @@ export default function GPTPromtCard({
           open ? "bg-violet-950" : "bg-violet-950",
           "flex w-10 items-center justify-center rounded-l-lg hover:bg-slate-600 group-aria-expanded:rounded-bl-none"
         )}>
-        <Image src={openAIIcon} className="h-6 w-6 text-white" alt="GPT Logo" />
+        <Image src={OpenAIIcon} className="h-6 w-6 text-white" alt="GPT Logo" />
       </div>
       <Collapsible.Root
         open={open}
