@@ -1,6 +1,5 @@
 import { createId } from "@paralleldrive/cuid2";
 import { withSentryConfig } from "@sentry/nextjs";
-
 import createJiti from "jiti";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
@@ -8,7 +7,7 @@ import { fileURLToPath } from "node:url";
 const jiti = createJiti(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
 
-jiti("@typeflowAI/lib/env");
+jiti("@typeflowai/lib/env");
 
 /** @type {import('next').NextConfig} */
 
