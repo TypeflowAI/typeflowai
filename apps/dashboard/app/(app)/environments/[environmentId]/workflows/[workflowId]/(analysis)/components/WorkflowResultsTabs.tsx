@@ -1,6 +1,7 @@
 import revalidateWorkflowIdPath from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/actions";
-import { InboxStackIcon, PresentationChartLineIcon } from "@heroicons/react/24/solid";
+import { InboxIcon, PresentationIcon } from "lucide-react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 import { cn } from "@typeflowai/lib/cn";
 
@@ -8,21 +9,35 @@ interface WorkflowResultsTabProps {
   activeId: string;
   environmentId: string;
   workflowId: string;
+  responseCount: number | null;
 }
 
-export default function WorkflowResultsTab({ activeId, environmentId, workflowId }: WorkflowResultsTabProps) {
+export const WorkflowResultsTabs = ({
+  activeId,
+  environmentId,
+  workflowId,
+  responseCount,
+}: WorkflowResultsTabProps) => {
+  const params = useParams();
+  const sharingKey = params.sharingKey as string;
+  const isSharingPage = !!sharingKey;
+
+  const url = isSharingPage
+    ? `/share/${sharingKey}`
+    : `/environments/${environmentId}/workflows/${workflowId}`;
+
   const tabs = [
     {
       id: "summary",
       label: "Summary",
-      icon: <PresentationChartLineIcon />,
-      href: `/environments/${environmentId}/workflows/${workflowId}/summary?referer=true`,
+      icon: <PresentationIcon className="h-5 w-5" />,
+      href: `${url}/summary?referer=true`,
     },
     {
       id: "responses",
-      label: "Responses",
-      icon: <InboxStackIcon />,
-      href: `/environments/${environmentId}/workflows/${workflowId}/responses?referer=true`,
+      label: `Responses ${responseCount !== null ? `(${responseCount})` : ""}`,
+      icon: <InboxIcon className="h-5 w-5" />,
+      href: `${url}/responses?referer=true`,
     },
   ];
 
@@ -52,4 +67,4 @@ export default function WorkflowResultsTab({ activeId, environmentId, workflowId
       </div>
     </div>
   );
-}
+};

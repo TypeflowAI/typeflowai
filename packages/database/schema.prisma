@@ -63,7 +63,7 @@ model Attribute {
   personId         String
   value            String
 
-  @@unique([attributeClassId, personId])
+  @@unique([personId, attributeClassId])
 }
 
 enum AttributeType {
@@ -85,8 +85,8 @@ model AttributeClass {
   attributes       Attribute[]
   attributeFilters WorkflowAttributeFilter[]
 
-  @@unique([name, environmentId])
-  @@index([environmentId])
+  @@index([environmentId, createdAt])
+  @@index([environmentId, archived])
 }
 
 model Person {
@@ -130,6 +130,7 @@ model Response {
   personAttributes Json?
   // singleUseId, used to prevent multiple responses
   singleUseId      String?
+  language         String?
 
   @@unique([workflowId, singleUseId])
   @@index([workflowId, createdAt])
@@ -176,6 +177,7 @@ model TagsOnResponses {
 
 enum WorkflowStatus {
   draft
+  scheduled
   inProgress
   paused
   completed
@@ -198,7 +200,7 @@ model Display {
   status     DisplayStatus?
 
   @@index([workflowId])
-  @@index([personId])
+  @@index([personId, createdAt])
 }
 
 model WorkflowTrigger {
@@ -236,10 +238,10 @@ model WorkflowAttributeFilter {
 }
 
 enum WorkflowType {
-  email
   link
-  mobile
   web
+  website
+  app
 }
 
 enum displayOptions {
@@ -258,6 +260,8 @@ model Workflow {
   type                  WorkflowType              @default(web)
   environment           Environment               @relation(fields: [environmentId], references: [id], onDelete: Cascade)
   environmentId         String
+  creator               User?                     @relation(fields: [createdBy], references: [id])
+  createdBy             String?
   status                WorkflowStatus            @default(draft)
   /// @zod.custom(imports.ZWorkflowWelcomeCard)
   /// [WorkflowWelcomeCard]
@@ -278,34 +282,44 @@ model Workflow {
   displayOption         displayOptions            @default(displayOnce)
   recontactDays         Int?
   triggers              WorkflowTrigger[]
+  /// @zod.custom(imports.ZWorkflowInlineTriggers)
+  /// [WorkflowInlineTriggers]
+  inlineTriggers        Json?
   attributeFilters      WorkflowAttributeFilter[]
   displays              Display[]
   autoClose             Int?
-  delay                 Int                       @default(0)
   autoComplete          Int?
+  delay                 Int                       @default(0)
+  runOnDate             DateTime?
   closeOnDate           DateTime?
   /// @zod.custom(imports.ZWorkflowClosedMessage)
   /// [WorkflowClosedMessage]
   workflowClosedMessage Json?
-  /// @zod.custom(imports.ZWorkflowSingleUse)
-  /// [WorkflowSingleUse]
+  segmentId             String?
+  segment               Segment?                  @relation(fields: [segmentId], references: [id])
 
   /// @zod.custom(imports.ZWorkflowProductOverwrites)
   /// [WorkflowProductOverwrites]
   productOverwrites Json?
+
   /// @zod.custom(imports.ZWorkflowStyling)
   /// [WorkflowStyling]
-  styling           Json?
+  styling Json?
+
   /// @zod.custom(imports.ZWorkflowSingleUse)
   /// [WorkflowSingleUse]
-  singleUse         Json?   @default("{\"enabled\": false, \"isEncrypted\": true}")
+  singleUse Json? @default("{\"enabled\": false, \"isEncrypted\": true}")
+
   /// @zod.custom(imports.ZWorkflowVerifyEmail)
   /// [WorkflowVerifyEmail]
   verifyEmail       Json?
   pin               String?
-  resultShareKey    String? @unique
+  resultShareKey    String?            @unique
+  displayPercentage Int?
+  languages         WorkflowLanguage[]
 
-  @@index([environmentId])
+  @@index([environmentId, updatedAt])
+  @@index([segmentId])
 }
 
 enum ActionType {
@@ -330,6 +344,7 @@ model ActionClass {
   actions       Action[]
 
   @@unique([name, environmentId])
+  @@index([environmentId, createdAt])
 }
 
 model Action {
@@ -344,8 +359,9 @@ model Action {
   /// [ActionProperties]
   properties    Json        @default("{}")
 
-  @@index([personId])
-  @@index([actionClassId])
+  @@index([personId, actionClassId, createdAt])
+  @@index([actionClassId, createdAt])
+  @@index([personId, createdAt])
 }
 
 enum EnvironmentType {
@@ -357,6 +373,7 @@ enum IntegrationType {
   googleSheets
   notion
   airtable
+  slack
 }
 
 model Integration {
@@ -387,6 +404,7 @@ model Environment {
   apiKeys              ApiKey[]
   webhooks             Webhook[]
   tags                 Tag[]
+  segments             Segment[]
   integration          Integration[]
 
   @@index([productId])
@@ -408,14 +426,21 @@ model Product {
   team                  Team            @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId                String
   environments          Environment[]
-  brandColor            String          @default("#64748b")
+  brandColor            String?
   highlightBorderColor  String?
+  /// @zod.custom(imports.ZProductStyling)
+  /// [Styling]
+  styling               Json            @default("{\"allowStyleOverwrite\":true}")
   recontactDays         Int             @default(7)
   linkWorkflowBranding  Boolean         @default(true)
   inAppWorkflowBranding Boolean         @default(true)
   placement             WidgetPlacement @default(bottomRight)
   clickOutsideClose     Boolean         @default(true)
   darkOverlay           Boolean         @default(false)
+  languages             Language[]
+  /// @zod.custom(imports.ZLogo)
+  /// [Logo]
+  logo                  Json?
 
   @@unique([teamId, name])
   @@index([teamId])
@@ -491,6 +516,7 @@ enum IdentityProvider {
   github
   google
   azuread
+  openid
 }
 
 model Account {
@@ -572,6 +598,7 @@ model User {
   /// @zod.custom(imports.ZUserNotificationSettings)
   /// [UserNotificationSettings]
   notificationSettings      Json             @default("{}")
+  workflows                 Workflow[]
 
   @@index([email])
 }
@@ -581,4 +608,48 @@ model ShortUrl {
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
   url       String   @unique
+}
+
+model Segment {
+  id            String      @id @default(cuid())
+  createdAt     DateTime    @default(now()) @map(name: "created_at")
+  updatedAt     DateTime    @updatedAt @map(name: "updated_at")
+  title         String
+  description   String?
+  isPrivate     Boolean     @default(true)
+  /// @zod.custom(imports.ZSegmentFilters)
+  /// [SegmentFilter]
+  filters       Json        @default("[]")
+  environmentId String
+  environment   Environment @relation(fields: [environmentId], references: [id], onDelete: Cascade)
+  workflows     Workflow[]
+
+  @@unique([environmentId, title])
+  @@index([environmentId])
+}
+
+model Language {
+  id                String             @id @default(cuid())
+  createdAt         DateTime           @default(now()) @map(name: "created_at")
+  updatedAt         DateTime           @updatedAt @map(name: "updated_at")
+  code              String
+  alias             String?
+  product           Product            @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId         String
+  workflowLanguages WorkflowLanguage[]
+
+  @@unique([productId, code])
+}
+
+model WorkflowLanguage {
+  language   Language @relation(fields: [languageId], references: [id], onDelete: Cascade)
+  languageId String
+  workflowId String
+  workflow   Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  default    Boolean  @default(false)
+  enabled    Boolean  @default(true)
+
+  @@id([languageId, workflowId])
+  @@index([workflowId])
+  @@index([languageId])
 }

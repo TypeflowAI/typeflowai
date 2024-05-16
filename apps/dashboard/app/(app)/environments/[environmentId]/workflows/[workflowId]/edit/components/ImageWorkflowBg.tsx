@@ -1,42 +1,34 @@
-import { TWorkflow } from "@typeflowai/types/workflows";
-import FileInput from "@typeflowai/ui/FileInput";
+import { FileInput } from "@typeflowai/ui/FileInput";
 
-interface ImageWorkflowBgBgProps {
-  localWorkflow?: TWorkflow;
+interface UploadImageWorkflowBgProps {
+  environmentId: string;
   handleBgChange: (url: string, bgType: string) => void;
+  background: string;
 }
 
-export default function ImageWorkflowBg({ localWorkflow, handleBgChange }: ImageWorkflowBgBgProps) {
-  const isUrl = (str: string) => {
-    try {
-      new URL(str);
-      return true;
-    } catch (error) {
-      return false;
-    }
-  };
-
-  const fileUrl = isUrl(localWorkflow?.styling?.background?.bg ?? "")
-    ? localWorkflow?.styling?.background?.bg ?? ""
-    : "";
-
+export const UploadImageWorkflowBg = ({
+  environmentId,
+  handleBgChange,
+  background,
+}: UploadImageWorkflowBgProps) => {
   return (
-    <div className="mb-2 mt-4 w-full rounded-lg border bg-slate-50 p-4">
+    <div className="mt-2 w-full">
       <div className="flex w-full items-center justify-center">
         <FileInput
           id="workflow-bg-file-input"
           allowedFileExtensions={["png", "jpeg", "jpg"]}
-          environmentId={localWorkflow?.environmentId}
+          environmentId={environmentId}
           onFileUpload={(url: string[]) => {
             if (url.length > 0) {
-              handleBgChange(url[0], "image");
+              handleBgChange(url[0], "upload");
             } else {
-              handleBgChange("#ffff", "color");
+              handleBgChange("", "upload");
             }
           }}
-          fileUrl={fileUrl}
+          fileUrl={background}
+          maxSizeInMB={2}
         />
       </div>
     </div>
   );
-}
+};

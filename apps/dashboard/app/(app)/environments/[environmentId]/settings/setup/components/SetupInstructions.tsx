@@ -1,6 +1,5 @@
 "use client";
 
-import jsPackageJson from "@/../../packages/js/package.json";
 import packageJson from "@/package.json";
 import Link from "next/link";
 import "prismjs/themes/prism.css";
@@ -32,8 +31,10 @@ export default function SetupInstructions({
       <div className="px-6 py-5">
         {activeTab === "npm" ? (
           <div className="prose prose-slate">
-            <p className="text-lg font-semibold text-slate-800">Step 1: NPM Install</p>
-            <CodeBlock language="sh">npm install @typeflowai/js --save</CodeBlock>
+            <p className="text-lg font-semibold text-slate-800">Step 1: Install with NPM or Yarn</p>
+            <CodeBlock language="sh">npm install @typeflowai/js</CodeBlock>
+            <p>or</p>
+            <CodeBlock language="sh">yarn add @typeflowai/js</CodeBlock>
             <p className="pt-4 text-lg font-semibold text-slate-800">Step 2: Initialize widget</p>
             <p>Import TypeflowAI and initialize the widget in your Component (e.g. App.tsx):</p>
             <CodeBlock language="js">{`import typeflowai from "@typeflowai/js";
@@ -110,7 +111,7 @@ if (typeof window !== "undefined") {
             </p>
             <CodeBlock language="js">{`<!-- START TypeflowAI Workflows -->
 <script type="text/javascript">
-!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://unpkg.com/@formbricks/js@^${jsPackageJson.version}/dist/index.umd.js";var e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(t,e),setTimeout(function(){window.formbricks.init({environmentId: "${environmentId}", apiHost: "${window.location.protocol}//${window.location.host}"})},500)}();
+!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://unpkg.com/@typeflowai/js@^1.1.0/dist/index.umd.js";var e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(t,e),setTimeout(function(){window.typeflowAI.init({environmentId: "${environmentId}", apiHost: "${window.location.protocol}//${window.location.host}"})},500)}();
 </script>
 <!-- END TypeflowAI Workflows -->`}</CodeBlock>
             <p className="text-lg font-semibold text-slate-800">You&apos;re done 🎉</p>

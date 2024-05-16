@@ -1,7 +1,9 @@
 {
   "name": "@typeflowai/workflows",
   "license": "MIT",
-  "version": "1.0.1",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
   "description": "TypeflowAI-workflows is a helper library to embed workflows into your application",
   "homepage": "https://typeflowai.com",
   "repository": {
@@ -9,49 +11,50 @@
     "url": "https://github.com/TypeflowAI/typeflowai"
   },
   "sideEffects": false,
-  "source": "./src/index.ts",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "source": "src/index.ts",
+  "main": "dist/index.umd.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.umd.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.umd.cjs",
+      "types": "./dist/index.d.ts"
     }
   },
   "scripts": {
-    "dev": "WORKFLOWS_PACKAGE_MODE=development vite build --watch",
-    "build": "pnpm run build:workflows && pnpm run build:question-date",
-    "build:workflows": "tsc && WORKFLOWS_PACKAGE_BUILD=workflows vite build",
-    "build:question-date": "tsc && WORKFLOWS_PACKAGE_BUILD=question-date vite build",
-    "go": "concurrently \"pnpm dev\" \"serve dist -p 3003\"",
+    "dev": "vite build --watch --mode dev",
+    "serve": "serve dist -p 3003",
+    "build": "tsc && vite build",
+    "build:dev": "tsc && vite build --mode dev",
+    "go": "vite build --watch --mode dev",
     "lint": "eslint . --ext .ts,.js,.tsx,.jsx",
     "preview": "vite preview",
     "clean": "rimraf .turbo node_modules dist"
   },
   "devDependencies": {
-    "@calcom/embed-snippet": "1.1.2",
-    "@preact/preset-vite": "^2.8.1",
+    "@calcom/embed-snippet": "1.2.0",
     "@typeflowai/api": "workspace:*",
     "@typeflowai/lib": "workspace:*",
     "@typeflowai/tsconfig": "workspace:*",
     "@typeflowai/types": "workspace:*",
-    "autoprefixer": "^10.4.16",
+    "@preact/preset-vite": "^2.8.2",
+    "autoprefixer": "^10.4.19",
     "concurrently": "8.2.2",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-config-turbo": "latest",
-    "postcss": "^8.4.33",
-    "preact": "^10.19.3",
+    "eslint-config-typeflowai": "workspace:*",
+    "isomorphic-dompurify": "^2.7.0",
+    "postcss": "^8.4.38",
+    "preact": "^10.20.2",
     "react-date-picker": "^10.6.0",
-    "serve": "14.2.1",
-    "tailwindcss": "^3.4.1",
-    "terser": "^5.26.0",
-    "vite": "^5.0.11",
-    "vite-plugin-dts": "^3.7.0",
-    "vite-tsconfig-paths": "^4.2.3"
+    "serve": "14.2.2",
+    "tailwindcss": "^3.4.3",
+    "terser": "^5.30.4",
+    "vite": "^5.2.10",
+    "vite-plugin-dts": "^3.9.0",
+    "vite-tsconfig-paths": "^4.3.2"
   },
   "dependencies": {
     "eventsource-parser": "^1.1.1",

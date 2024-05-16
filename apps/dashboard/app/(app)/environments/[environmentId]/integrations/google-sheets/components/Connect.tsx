@@ -1,6 +1,6 @@
 "use client";
 
-import TypeflowAILogo from "@/images/logo_square_color.svg";
+import TypeflowAILogo from "@/images/logo.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -32,7 +32,7 @@ export default function Connect({ enabled, environmentId, webAppUrl }: ConnectPr
       <div className="flex w-1/2 flex-col items-center justify-center rounded-lg bg-white p-8 shadow">
         <div className="flex w-1/2 justify-center -space-x-4">
           <div className="flex h-32 w-32 items-center justify-center rounded-full bg-white p-4 shadow-md">
-            <Image className="w-1/2 rounded-md" src={TypeflowAILogo} alt="TypeflowAI Logo" />
+            <Image className="w-1/2" src={TypeflowAILogo} alt="TypeflowAI Logo" />
           </div>
           <div className="flex h-32 w-32 items-center justify-center rounded-full bg-white p-4 shadow-md">
             <Image className="w-1/2" src={GoogleSheetLogo} alt="Google Sheet logo" />
@@ -40,7 +40,7 @@ export default function Connect({ enabled, environmentId, webAppUrl }: ConnectPr
         </div>
         <p className="my-8">Sync responses directly with Google Sheets.</p>
         {!enabled && (
-          <p className="mb-8 rounded border-gray-200 bg-gray-100 p-3 text-sm">
+          <p className="mb-8 rounded border-slate-200 bg-slate-100 p-3 text-sm">
             Google Sheets Integration is not configured in your instance of TypeflowAI.
             <br />
             Please follow the{" "}

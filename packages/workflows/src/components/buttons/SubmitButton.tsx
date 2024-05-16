@@ -4,7 +4,7 @@ interface SubmitButtonProps {
   buttonLabel: string | undefined;
   isLastQuestion: boolean;
   isPromptVisible: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   focus?: boolean;
   tabIndex?: number;
   type?: "submit" | "button";
@@ -14,7 +14,7 @@ function SubmitButton({
   buttonLabel,
   isLastQuestion,
   isPromptVisible,
-  onClick,
+  onClick = () => {},
   tabIndex = 1,
   focus = false,
   type = "submit",
@@ -36,7 +36,7 @@ function SubmitButton({
       type={type}
       tabIndex={tabIndex}
       autoFocus={focus}
-      className="bg-brand border-submit-button-border text-on-brand focus:ring-focus flex items-center rounded-md border px-3 py-3 text-base font-medium leading-4 shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2"
+      className="bg-brand border-submit-button-border text-on-brand focus:ring-focus rounded-custom flex items-center border px-3 py-3 text-base font-medium leading-4 shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2"
       onClick={onClick}>
       {buttonLabel || (isLastQuestion ? (isPromptVisible ? "Next" : "Finish") : "Next")}
     </button>

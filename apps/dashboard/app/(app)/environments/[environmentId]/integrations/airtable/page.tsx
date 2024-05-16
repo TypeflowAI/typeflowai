@@ -4,6 +4,7 @@ import { getAirtableTables } from "@typeflowai/lib/airtable/service";
 import { AIRTABLE_CLIENT_ID, WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
 import { getIntegrations } from "@typeflowai/lib/integration/service";
+import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
 import { getWorkflows } from "@typeflowai/lib/workflow/service";
 import { TIntegrationItem } from "@typeflowai/types/integration";
 import { TIntegrationAirtable } from "@typeflowai/types/integration/airtable";
@@ -18,6 +19,10 @@ export default async function Airtable({ params }) {
   ]);
   if (!environment) {
     throw new Error("Environment not found");
+  }
+  const product = await getProductByEnvironmentId(params.environmentId);
+  if (!product) {
+    throw new Error("Product not found");
   }
 
   const airtableIntegration: TIntegrationAirtable | undefined = integrations?.find(

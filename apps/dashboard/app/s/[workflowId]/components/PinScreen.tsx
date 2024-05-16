@@ -19,12 +19,14 @@ interface LinkWorkflowPinScreenProps {
   product: TProduct;
   userId?: string;
   emailVerificationStatus?: string;
-  prefillAnswer?: string;
   singleUseId?: string;
   singleUseResponse?: TResponse;
   webAppUrl: string;
   IMPRINT_URL?: string;
   PRIVACY_URL?: string;
+  IS_TYPEFLOWAI_CLOUD: boolean;
+  verifiedEmail?: string;
+  languageCode: string;
 }
 
 const LinkWorkflowPinScreen: NextPage<LinkWorkflowPinScreenProps> = (props) => {
@@ -34,11 +36,13 @@ const LinkWorkflowPinScreen: NextPage<LinkWorkflowPinScreenProps> = (props) => {
     webAppUrl,
     emailVerificationStatus,
     userId,
-    prefillAnswer,
     singleUseId,
     singleUseResponse,
     IMPRINT_URL,
     PRIVACY_URL,
+    IS_TYPEFLOWAI_CLOUD,
+    verifiedEmail,
+    languageCode,
   } = props;
 
   const [localPinEntry, setLocalPinEntry] = useState<string>("");
@@ -108,22 +112,24 @@ const LinkWorkflowPinScreen: NextPage<LinkWorkflowPinScreenProps> = (props) => {
 
   return (
     <div>
-      <MediaBackground workflow={workflow}>
+      <MediaBackground workflow={workflow} product={product}>
         <LinkWorkflow
           workflow={workflow}
           product={product}
           userId={userId}
           emailVerificationStatus={emailVerificationStatus}
-          prefillAnswer={prefillAnswer}
           singleUseId={singleUseId}
           singleUseResponse={singleUseResponse}
           webAppUrl={webAppUrl}
+          verifiedEmail={verifiedEmail}
+          languageCode={languageCode}
         />
       </MediaBackground>
       <LegalFooter
-        bgColor={workflow.styling?.background?.bg || "#ffff"}
         IMPRINT_URL={IMPRINT_URL}
         PRIVACY_URL={PRIVACY_URL}
+        IS_TYPEFLOWAI_CLOUD={IS_TYPEFLOWAI_CLOUD}
+        workflowUrl={webAppUrl + "/s/" + workflow.id}
       />
     </div>
   );

@@ -1,11 +1,13 @@
 "use client";
 
+import { validateId } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/lib/validation";
 import * as Collapsible from "@radix-ui/react-collapsible";
 import { FC, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 import { cn } from "@typeflowai/lib/cn";
-import { TWorkflow, TWorkflowHiddenFields, TWorkflowQuestions } from "@typeflowai/types/workflows";
+import { TWorkflow, TWorkflowHiddenFields } from "@typeflowai/types/workflows";
+import { Button } from "@typeflowai/ui/Button";
 import { Input } from "@typeflowai/ui/Input";
 import { Label } from "@typeflowai/ui/Label";
 import { Switch } from "@typeflowai/ui/Switch";
@@ -49,14 +51,14 @@ const HiddenFieldsCard: FC<HiddenFieldsCardProps> = ({
     <div
       className={cn(
         open ? "scale-100 shadow-lg " : "scale-97 shadow-md",
-        "flex flex-row rounded-lg bg-white transition-transform duration-300 ease-in-out"
+        "group z-10 flex flex-row rounded-lg bg-white transition-transform duration-300 ease-in-out"
       )}>
       <div
         className={cn(
-          open ? "bg-violet-950" : "bg-slate-400",
-          "flex w-10 items-center justify-center rounded-l-lg hover:bg-slate-600 group-aria-expanded:rounded-bl-none"
+          open ? "bg-slate-50" : "bg-white group-hover:bg-slate-50",
+          "flex w-10 items-center justify-center rounded-l-lg border-b border-l border-t group-aria-expanded:rounded-bl-none"
         )}>
-        <p>👁️</p>
+        <p>🥷</p>
       </div>
       <Collapsible.Root
         open={open}
@@ -73,7 +75,9 @@ const HiddenFieldsCard: FC<HiddenFieldsCardProps> = ({
             </div>
 
             <div className="flex items-center space-x-2">
-              <Label htmlFor="hidden-fields-toggle">Enabled</Label>
+              <Label htmlFor="hidden-fields-toggle">
+                {localWorkflow?.hiddenFields?.enabled ? "On" : "Off"}
+              </Label>
 
               <Switch
                 id="hidden-fields-toggle"
@@ -105,33 +109,28 @@ const HiddenFieldsCard: FC<HiddenFieldsCardProps> = ({
                 );
               })
             ) : (
-              <p className="text-sm italic text-gray-500">No hidden fields yet. Add the first one below.</p>
+              <p className="mt-2 text-sm italic text-slate-500">
+                No hidden fields yet. Add the first one below.
+              </p>
             )}
           </div>
           <form
             className="mt-5"
             onSubmit={(e) => {
               e.preventDefault();
-
-              const errorMessage = validateHiddenField(
-                // current field
-                hiddenField,
-                // existing fields
-                localWorkflow.hiddenFields?.fieldIds || [],
-                // existing questions
-                localWorkflow.questions
-              );
-
-              if (errorMessage !== "") return toast.error(errorMessage);
-
-              updateWorkflow({
-                fieldIds: [...(localWorkflow.hiddenFields?.fieldIds || []), hiddenField],
-                enabled: true,
-              });
-              setHiddenField("");
+              const existingQuestionIds = localWorkflow.questions.map((question) => question.id);
+              const existingHiddenFieldIds = localWorkflow.hiddenFields.fieldIds ?? [];
+              if (validateId("Hidden field", hiddenField, existingQuestionIds, existingHiddenFieldIds)) {
+                updateWorkflow({
+                  fieldIds: [...(localWorkflow.hiddenFields?.fieldIds || []), hiddenField],
+                  enabled: true,
+                });
+                toast.success("Hidden field added successfully");
+                setHiddenField("");
+              }
             }}>
             <Label htmlFor="headline">Hidden Field</Label>
-            <div className="mt-2">
+            <div className="mt-2 flex gap-2">
               <Input
                 autoFocus
                 id="headline"
@@ -140,6 +139,9 @@ const HiddenFieldsCard: FC<HiddenFieldsCardProps> = ({
                 onChange={(e) => setHiddenField(e.target.value.trim())}
                 placeholder="Type field id..."
               />
+              <Button variant="secondary" type="submit" size="sm" className="whitespace-nowrap">
+                Add hidden field ID
+              </Button>
             </div>
           </form>
         </Collapsible.CollapsibleContent>
@@ -149,34 +151,3 @@ const HiddenFieldsCard: FC<HiddenFieldsCardProps> = ({
 };
 
 export default HiddenFieldsCard;
-
-const validateHiddenField = (
-  field: string,
-  existingFields: string[],
-  existingQuestions: TWorkflowQuestions
-): string => {
-  if (field.trim() === "") {
-    return "Please enter a question";
-  }
-  // no duplicate questions
-  if (existingFields.findIndex((q) => q.toLowerCase() === field.toLowerCase()) !== -1) {
-    return "Question already exists";
-  }
-  // no key words -- userId & suid & existing question ids
-  if (
-    ["userId", "source", "suid", "end", "start", "welcomeCard", "hidden"].includes(field) ||
-    existingQuestions.findIndex((q) => q.id === field) !== -1
-  ) {
-    return "Question not allowed";
-  }
-  // no spaced words --> should be valid query param on url
-  if (field.includes(" ")) {
-    return "Question not allowed, avoid using spaces";
-  }
-  // Check if the parameter contains only alphanumeric characters
-  if (!/^[a-zA-Z0-9]+$/.test(field)) {
-    return "Question not allowed, avoid using special characters";
-  }
-
-  return "";
-};

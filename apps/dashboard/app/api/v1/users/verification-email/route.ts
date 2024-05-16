@@ -1,7 +1,5 @@
-import { NextResponse } from "next/server";
-
 import { prisma } from "@typeflowai/database";
-import { sendVerificationEmail } from "@typeflowai/lib/emails/emails";
+import { sendVerificationEmail } from "@typeflowai/email";
 
 export async function POST(request: Request) {
   const { email } = await request.json();
@@ -11,15 +9,15 @@ export async function POST(request: Request) {
       where: { email },
     });
     if (!user) {
-      return NextResponse.json({ error: "No user with this email address found" }, { status: 404 });
+      return Response.json({ error: "No user with this email address found" }, { status: 404 });
     }
     if (user.emailVerified) {
-      return NextResponse.json({ error: "Email address has already been verified" }, { status: 400 });
+      return Response.json({ error: "Email address has already been verified" }, { status: 400 });
     }
     await sendVerificationEmail(user);
-    return NextResponse.json(user);
+    return Response.json(user);
   } catch (e) {
-    return NextResponse.json(
+    return Response.json(
       {
         error: e.message,
         errorCode: e.code,

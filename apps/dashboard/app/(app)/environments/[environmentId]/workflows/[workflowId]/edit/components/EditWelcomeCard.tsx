@@ -2,15 +2,14 @@
 
 import * as Collapsible from "@radix-ui/react-collapsible";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 
+// import { useState } from "react";
+// import { LocalizedEditor } from "@typeflowai/ee/multiLanguage/components/LocalizedEditor";
 import { cn } from "@typeflowai/lib/cn";
-import { md } from "@typeflowai/lib/markdownIt";
 import { TWorkflow } from "@typeflowai/types/workflows";
-import { Editor } from "@typeflowai/ui/Editor";
-import FileInput from "@typeflowai/ui/FileInput";
-import { Input } from "@typeflowai/ui/Input";
+import { FileInput } from "@typeflowai/ui/FileInput";
 import { Label } from "@typeflowai/ui/Label";
+import { QuestionFormInput } from "@typeflowai/ui/QuestionFormInput";
 import { Switch } from "@typeflowai/ui/Switch";
 
 interface EditWelcomeCardProps {
@@ -18,6 +17,9 @@ interface EditWelcomeCardProps {
   setLocalWorkflow: (workflow: TWorkflow) => void;
   setActiveQuestionId: (id: string | null) => void;
   activeQuestionId: string | null;
+  isInvalid: boolean;
+  selectedLanguageCode: string;
+  setSelectedLanguageCode: (languageCode: string) => void;
 }
 
 export default function EditWelcomeCard({
@@ -25,21 +27,26 @@ export default function EditWelcomeCard({
   setLocalWorkflow,
   setActiveQuestionId,
   activeQuestionId,
+  isInvalid,
+  selectedLanguageCode,
+  setSelectedLanguageCode,
 }: EditWelcomeCardProps) {
-  const [firstRender, setFirstRender] = useState(true);
+  // const [firstRender, setFirstRender] = useState(true);
   const path = usePathname();
   const environmentId = path?.split("/environments/")[1]?.split("/")[0];
-  // const [open, setOpen] = useState(false);
+
   let open = activeQuestionId == "start";
+
   const setOpen = (e) => {
     if (e) {
       setActiveQuestionId("start");
+      // setFirstRender(true);
     } else {
       setActiveQuestionId(null);
     }
   };
 
-  const updateWorkflow = (data) => {
+  const updateWorkflow = (data: Partial<TWorkflow["welcomeCard"]>) => {
     setLocalWorkflow({
       ...localWorkflow,
       welcomeCard: {
@@ -48,20 +55,18 @@ export default function EditWelcomeCard({
       },
     });
   };
-  useEffect(() => {
-    setFirstRender(true);
-  }, [activeQuestionId]);
 
   return (
     <div
       className={cn(
         open ? "scale-100 shadow-lg " : "scale-97 shadow-md",
-        "flex flex-row rounded-lg bg-white transition-transform duration-300 ease-in-out"
+        "group flex flex-row rounded-lg bg-white transition-transform duration-300 ease-in-out"
       )}>
       <div
         className={cn(
-          open ? "bg-violet-950" : "bg-slate-400",
-          "flex w-10 items-center justify-center rounded-l-lg hover:bg-slate-600 group-aria-expanded:rounded-bl-none"
+          open ? "bg-slate-50" : "",
+          "flex w-10 items-center justify-center rounded-l-lg border-b border-l border-t group-aria-expanded:rounded-bl-none",
+          isInvalid ? "bg-red-400" : "bg-white group-hover:bg-slate-50"
         )}>
         <p>✋</p>
       </div>
@@ -85,7 +90,7 @@ export default function EditWelcomeCard({
             </div>
 
             <div className="flex items-center space-x-2">
-              <Label htmlFor="welcome-toggle">Enabled</Label>
+              <Label htmlFor="welcome-toggle">{localWorkflow?.welcomeCard?.enabled ? "On" : "Off"}</Label>
 
               <Switch
                 id="welcome-toggle"
@@ -112,54 +117,54 @@ export default function EditWelcomeCard({
                   updateWorkflow({ fileUrl: url[0] });
                 }}
                 fileUrl={localWorkflow?.welcomeCard?.fileUrl}
-                imageFit="contain"
               />
             </div>
             <div className="mt-3">
-              <Label htmlFor="headline">Headline</Label>
-              <div className="mt-2">
-                <Input
-                  id="headline"
-                  name="headline"
-                  defaultValue={localWorkflow?.welcomeCard?.headline}
-                  onChange={(e) => {
-                    updateWorkflow({ headline: e.target.value });
-                  }}
-                />
-              </div>
+              <QuestionFormInput
+                id="headline"
+                value={localWorkflow.welcomeCard.headline}
+                label="Headline"
+                localWorkflow={localWorkflow}
+                questionIdx={-1}
+                isInvalid={isInvalid}
+                updateWorkflow={updateWorkflow}
+                selectedLanguageCode={selectedLanguageCode}
+                setSelectedLanguageCode={setSelectedLanguageCode}
+              />
             </div>
             <div className="mt-3">
               <Label htmlFor="subheader">Welcome Message</Label>
               <div className="mt-2">
-                <Editor
-                  getText={() =>
-                    md.render(
-                      localWorkflow?.welcomeCard?.html || "Thanks for providing your feedback - let's go!"
-                    )
-                  }
-                  setText={(value: string) => {
-                    updateWorkflow({ html: value });
-                  }}
-                  excludedToolbarItems={["blockType"]}
-                  disableLists
+                {/* <LocalizedEditor
+                  id="html"
+                  value={localWorkflow.welcomeCard.html}
+                  localWorkflow={localWorkflow}
+                  isInvalid={isInvalid}
+                  updateQuestion={updateWorkflow}
+                  selectedLanguageCode={selectedLanguageCode}
+                  setSelectedLanguageCode={setSelectedLanguageCode}
                   firstRender={firstRender}
                   setFirstRender={setFirstRender}
-                />
+                  questionIdx={-1}
+                /> */}
               </div>
             </div>
 
             <div className="mt-3 flex justify-between gap-8">
               <div className="flex w-full space-x-2">
                 <div className="w-full">
-                  <Label htmlFor="buttonLabel">Button Label</Label>
-                  <div className="mt-2">
-                    <Input
-                      id="buttonLabel"
-                      name="buttonLabel"
-                      defaultValue={localWorkflow?.welcomeCard?.buttonLabel || "Next"}
-                      onChange={(e) => updateWorkflow({ buttonLabel: e.target.value })}
-                    />
-                  </div>
+                  <QuestionFormInput
+                    id="buttonLabel"
+                    value={localWorkflow.welcomeCard.buttonLabel}
+                    localWorkflow={localWorkflow}
+                    questionIdx={-1}
+                    maxLength={48}
+                    placeholder={"Next"}
+                    isInvalid={isInvalid}
+                    updateWorkflow={updateWorkflow}
+                    selectedLanguageCode={selectedLanguageCode}
+                    setSelectedLanguageCode={setSelectedLanguageCode}
+                  />
                 </div>
               </div>
             </div>
@@ -175,10 +180,8 @@ export default function EditWelcomeCard({
                 />
               </div>
               <div className="flex-column">
-                <Label htmlFor="timeToFinish" className="">
-                  Time to Finish
-                </Label>
-                <div className="text-sm text-gray-500">
+                <Label htmlFor="timeToFinish">Time to Finish</Label>
+                <div className="text-sm text-slate-500 dark:text-slate-400">
                   Display an estimate of completion time for workflow
                 </div>
               </div>
@@ -196,10 +199,10 @@ export default function EditWelcomeCard({
                   />
                 </div>
                 <div className="flex-column">
-                  <Label htmlFor="showResponseCount" className="">
-                    Show Response Count
-                  </Label>
-                  <div className="text-sm text-gray-500">Display number of responses for workflow</div>
+                  <Label htmlFor="showResponseCount">Show Response Count</Label>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">
+                    Display number of responses for workflow
+                  </div>
                 </div>
               </div>
             )}

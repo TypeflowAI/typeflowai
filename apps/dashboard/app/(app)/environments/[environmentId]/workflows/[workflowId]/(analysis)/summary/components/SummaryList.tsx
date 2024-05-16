@@ -1,200 +1,153 @@
-import EmptyInAppWorkflows from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/components/EmptyInAppWorkflows";
-import CalSummary from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/CalSummary";
-import ConsentSummary from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/ConsentSummary";
-import HiddenFieldsSummary from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/HiddenFieldsSummary";
+import { EmptyAppWorkflows } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/components/EmptyInAppWorkflows";
+import { CTASummary } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/CTASummary";
+import { CalSummary } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/CalSummary";
+import { ConsentSummary } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/ConsentSummary";
+import { DateQuestionSummary } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/DateQuestionSummary";
+import { FileUploadSummary } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/FileUploadSummary";
+import { HiddenFieldsSummary } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/HiddenFieldsSummary";
+import { MatrixQuestionSummary } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/MatrixQuestionSummary";
+import { MultipleChoiceSummary } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/MultipleChoiceSummary";
+import { NPSSummary } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/NPSSummary";
+import { OpenTextSummary } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/OpenTextSummary";
+import { PictureChoiceSummary } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/PictureChoiceSummary";
+import { RatingSummary } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/RatingSummary";
 
 import { TEnvironment } from "@typeflowai/types/environment";
-import { TResponse } from "@typeflowai/types/responses";
+import { TWorkflowSummary } from "@typeflowai/types/workflows";
 import { TWorkflowQuestionType } from "@typeflowai/types/workflows";
-import type {
-  TWorkflowCalQuestion,
-  TWorkflowDateQuestion,
-  TWorkflowFileUploadQuestion,
-  TWorkflowPictureSelectionQuestion,
-  TWorkflowQuestionSummary,
-} from "@typeflowai/types/workflows";
-import {
-  TWorkflow,
-  TWorkflowCTAQuestion,
-  TWorkflowConsentQuestion,
-  TWorkflowMultipleChoiceMultiQuestion,
-  TWorkflowMultipleChoiceSingleQuestion,
-  TWorkflowNPSQuestion,
-  TWorkflowOpenTextQuestion,
-  TWorkflowQuestion,
-  TWorkflowRatingQuestion,
-} from "@typeflowai/types/workflows";
+import { TWorkflow } from "@typeflowai/types/workflows";
 import EmptySpaceFiller from "@typeflowai/ui/EmptySpaceFiller";
+import { SkeletonLoader } from "@typeflowai/ui/SkeletonLoader";
 
-import CTASummary from "./CTASummary";
-import DateQuestionSummary from "./DateQuestionSummary";
-import FileUploadSummary from "./FileUploadSummary";
-import MultipleChoiceSummary from "./MultipleChoiceSummary";
-import NPSSummary from "./NPSSummary";
-import OpenTextSummary from "./OpenTextSummary";
-import PictureChoiceSummary from "./PictureChoiceSummary";
-import RatingSummary from "./RatingSummary";
+import { AddressSummary } from "./AddressSummary";
 
 interface SummaryListProps {
+  summary: TWorkflowSummary["summary"];
+  responseCount: number | null;
   environment: TEnvironment;
   workflow: TWorkflow;
-  responses: TResponse[];
-  responsesPerPage: number;
+  fetchingSummary: boolean;
+  totalResponseCount: number;
 }
 
-export default function SummaryList({
+export const SummaryList = ({
+  summary,
   environment,
+  responseCount,
   workflow,
-  responses,
-  responsesPerPage,
-}: SummaryListProps) {
-  const getSummaryData = (): TWorkflowQuestionSummary<TWorkflowQuestion>[] =>
-    workflow.questions.map((question) => {
-      const questionResponses = responses
-        .filter((response) => question.id in response.data)
-        .map((r) => ({
-          id: r.id,
-          value: r.data[question.id],
-          updatedAt: r.updatedAt,
-          person: r.person,
-        }));
-
-      return {
-        question,
-        responses: questionResponses,
-      };
-    });
-
+  fetchingSummary,
+  totalResponseCount,
+}: SummaryListProps) => {
   return (
     <div className="mt-10 space-y-8">
-      {workflow.type === "web" && responses.length === 0 && !environment.widgetSetupCompleted ? (
-        <EmptyInAppWorkflows environment={environment} />
-      ) : responses.length === 0 ? (
+      {(workflow.type === "app" || workflow.type === "website") &&
+      responseCount === 0 &&
+      !environment.widgetSetupCompleted ? (
+        <EmptyAppWorkflows environment={environment} workflowType={workflow.type} />
+      ) : fetchingSummary ? (
+        <SkeletonLoader type="summary" />
+      ) : responseCount === 0 ? (
         <EmptySpaceFiller
           type="response"
           environment={environment}
           noWidgetRequired={workflow.type === "link"}
+          emptyMessage={totalResponseCount === 0 ? undefined : "No response matches your filter"}
         />
       ) : (
-        <>
-          {getSummaryData().map((questionSummary) => {
-            if (questionSummary.question.type === TWorkflowQuestionType.OpenText) {
-              return (
-                <OpenTextSummary
-                  key={questionSummary.question.id}
-                  questionSummary={questionSummary as TWorkflowQuestionSummary<TWorkflowOpenTextQuestion>}
-                  environmentId={environment.id}
-                  responsesPerPage={responsesPerPage}
-                />
-              );
-            }
-            if (
-              questionSummary.question.type === TWorkflowQuestionType.MultipleChoiceSingle ||
-              questionSummary.question.type === TWorkflowQuestionType.MultipleChoiceMulti
-            ) {
-              return (
-                <MultipleChoiceSummary
-                  key={questionSummary.question.id}
-                  questionSummary={
-                    questionSummary as TWorkflowQuestionSummary<
-                      TWorkflowMultipleChoiceMultiQuestion | TWorkflowMultipleChoiceSingleQuestion
-                    >
-                  }
-                  environmentId={environment.id}
-                  workflowType={workflow.type}
-                  responsesPerPage={responsesPerPage}
-                />
-              );
-            }
-            if (questionSummary.question.type === TWorkflowQuestionType.NPS) {
-              return (
-                <NPSSummary
-                  key={questionSummary.question.id}
-                  questionSummary={questionSummary as TWorkflowQuestionSummary<TWorkflowNPSQuestion>}
-                />
-              );
-            }
-            if (questionSummary.question.type === TWorkflowQuestionType.CTA) {
-              return (
-                <CTASummary
-                  key={questionSummary.question.id}
-                  questionSummary={questionSummary as TWorkflowQuestionSummary<TWorkflowCTAQuestion>}
-                />
-              );
-            }
-            if (questionSummary.question.type === TWorkflowQuestionType.Rating) {
-              return (
-                <RatingSummary
-                  key={questionSummary.question.id}
-                  questionSummary={questionSummary as TWorkflowQuestionSummary<TWorkflowRatingQuestion>}
-                />
-              );
-            }
-            if (questionSummary.question.type === TWorkflowQuestionType.Consent) {
-              return (
-                <ConsentSummary
-                  key={questionSummary.question.id}
-                  questionSummary={questionSummary as TWorkflowQuestionSummary<TWorkflowConsentQuestion>}
-                />
-              );
-            }
-            if (questionSummary.question.type === TWorkflowQuestionType.PictureSelection) {
-              return (
-                <PictureChoiceSummary
-                  key={questionSummary.question.id}
-                  questionSummary={
-                    questionSummary as TWorkflowQuestionSummary<TWorkflowPictureSelectionQuestion>
-                  }
-                />
-              );
-            }
-            if (questionSummary.question.type === TWorkflowQuestionType.Date) {
-              return (
-                <DateQuestionSummary
-                  key={questionSummary.question.id}
-                  questionSummary={questionSummary as TWorkflowQuestionSummary<TWorkflowDateQuestion>}
-                  environmentId={environment.id}
-                  responsesPerPage={responsesPerPage}
-                />
-              );
-            }
-            if (questionSummary.question.type === TWorkflowQuestionType.FileUpload) {
-              return (
-                <FileUploadSummary
-                  key={questionSummary.question.id}
-                  questionSummary={questionSummary as TWorkflowQuestionSummary<TWorkflowFileUploadQuestion>}
-                  environmentId={environment.id}
-                />
-              );
-            }
+        summary.map((questionSummary) => {
+          if (questionSummary.type === TWorkflowQuestionType.OpenText) {
+            return (
+              <OpenTextSummary
+                key={questionSummary.question.id}
+                questionSummary={questionSummary}
+                environmentId={environment.id}
+              />
+            );
+          }
+          if (
+            questionSummary.type === TWorkflowQuestionType.MultipleChoiceSingle ||
+            questionSummary.type === TWorkflowQuestionType.MultipleChoiceMulti
+          ) {
+            return (
+              <MultipleChoiceSummary
+                key={questionSummary.question.id}
+                questionSummary={questionSummary}
+                environmentId={environment.id}
+                workflowType={workflow.type}
+              />
+            );
+          }
+          if (questionSummary.type === TWorkflowQuestionType.NPS) {
+            return <NPSSummary key={questionSummary.question.id} questionSummary={questionSummary} />;
+          }
+          if (questionSummary.type === TWorkflowQuestionType.CTA) {
+            return <CTASummary key={questionSummary.question.id} questionSummary={questionSummary} />;
+          }
+          if (questionSummary.type === TWorkflowQuestionType.Rating) {
+            return <RatingSummary key={questionSummary.question.id} questionSummary={questionSummary} />;
+          }
+          if (questionSummary.type === TWorkflowQuestionType.Consent) {
+            return <ConsentSummary key={questionSummary.question.id} questionSummary={questionSummary} />;
+          }
+          if (questionSummary.type === TWorkflowQuestionType.PictureSelection) {
+            return (
+              <PictureChoiceSummary key={questionSummary.question.id} questionSummary={questionSummary} />
+            );
+          }
+          if (questionSummary.type === TWorkflowQuestionType.Date) {
+            return (
+              <DateQuestionSummary
+                key={questionSummary.question.id}
+                questionSummary={questionSummary}
+                environmentId={environment.id}
+              />
+            );
+          }
+          if (questionSummary.type === TWorkflowQuestionType.FileUpload) {
+            return (
+              <FileUploadSummary
+                key={questionSummary.question.id}
+                questionSummary={questionSummary}
+                environmentId={environment.id}
+              />
+            );
+          }
+          if (questionSummary.type === TWorkflowQuestionType.Cal) {
+            return (
+              <CalSummary
+                key={questionSummary.question.id}
+                questionSummary={questionSummary}
+                environmentId={environment.id}
+              />
+            );
+          }
+          if (questionSummary.type === TWorkflowQuestionType.Matrix) {
+            return (
+              <MatrixQuestionSummary key={questionSummary.question.id} questionSummary={questionSummary} />
+            );
+          }
+          if (questionSummary.type === TWorkflowQuestionType.Address) {
+            return (
+              <AddressSummary
+                key={questionSummary.question.id}
+                questionSummary={questionSummary}
+                environmentId={environment.id}
+              />
+            );
+          }
+          if (questionSummary.type === "hiddenField") {
+            return (
+              <HiddenFieldsSummary
+                key={questionSummary.id}
+                questionSummary={questionSummary}
+                environment={environment}
+              />
+            );
+          }
 
-            if (questionSummary.question.type === TWorkflowQuestionType.Cal) {
-              return (
-                <CalSummary
-                  key={questionSummary.question.id}
-                  questionSummary={questionSummary as TWorkflowQuestionSummary<TWorkflowCalQuestion>}
-                  environmentId={environment.id}
-                />
-              );
-            }
-
-            return null;
-          })}
-
-          {workflow.hiddenFields?.enabled &&
-            workflow.hiddenFields.fieldIds?.map((question) => {
-              return (
-                <HiddenFieldsSummary
-                  environment={environment}
-                  question={question}
-                  responses={responses}
-                  workflow={workflow}
-                  key={question}
-                />
-              );
-            })}
-        </>
+          return null;
+        })
       )}
     </div>
   );
-}
+};

@@ -1,7 +1,9 @@
-import QuestionImage from "@/components/general/QuestionImage";
+import { QuestionMedia } from "@/components/general/QuestionMedia";
+import { ScrollableContainer } from "@/components/wrappers/ScrollableContainer";
 import { getUpdatedTtc, useTtc } from "@/lib/ttc";
 import { useState } from "preact/hooks";
 
+import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
 import { TResponseData, TResponseTtc } from "@typeflowai/types/responses";
 import { TUploadFileConfig } from "@typeflowai/types/storage";
 import type { TWorkflowFileUploadQuestion } from "@typeflowai/types/workflows";
@@ -14,7 +16,7 @@ import Subheader from "../general/Subheader";
 
 interface FileUploadQuestionProps {
   question: TWorkflowFileUploadQuestion;
-  value: string | number | string[];
+  value: string[];
   onChange: (responseData: TResponseData) => void;
   onSubmit: (data: TResponseData, ttc: TResponseTtc) => void;
   onBack: () => void;
@@ -23,11 +25,13 @@ interface FileUploadQuestionProps {
   isLastQuestion: boolean;
   isPromptVisible: boolean;
   workflowId: string;
+  languageCode: string;
   ttc: TResponseTtc;
   setTtc: (ttc: TResponseTtc) => void;
+  isInIframe: boolean;
 }
 
-export default function FileUploadQuestion({
+export const FileUploadQuestion = ({
   question,
   value,
   onChange,
@@ -38,60 +42,72 @@ export default function FileUploadQuestion({
   isPromptVisible,
   workflowId,
   onFileUpload,
+  languageCode,
   ttc,
   setTtc,
-}: FileUploadQuestionProps) {
+}: FileUploadQuestionProps) => {
   const [startTime, setStartTime] = useState(performance.now());
+  const isMediaAvailable = question.imageUrl || question.videoUrl;
 
   useTtc(question.id, ttc, setTtc, startTime, setStartTime);
 
   return (
     <form
+      key={question.id}
       onSubmit={(e) => {
         e.preventDefault();
         const updatedTtcObj = getUpdatedTtc(ttc, question.id, performance.now() - startTime);
         setTtc(updatedTtcObj);
         if (question.required) {
-          if (value && (typeof value === "string" || Array.isArray(value)) && value.length > 0) {
-            onSubmit({ [question.id]: typeof value === "string" ? [value] : value }, updatedTtcObj);
+          if (value && value.length > 0) {
+            onSubmit({ [question.id]: value }, updatedTtcObj);
           } else {
             alert("Please upload a file");
           }
         } else {
           if (value) {
-            onSubmit({ [question.id]: typeof value === "string" ? [value] : value }, updatedTtcObj);
+            onSubmit({ [question.id]: value }, updatedTtcObj);
           } else {
             onSubmit({ [question.id]: "skipped" }, updatedTtcObj);
           }
         }
       }}
-      className="w-full">
-      {question.imageUrl && <QuestionImage imgUrl={question.imageUrl} />}
-      <Headline headline={question.headline} questionId={question.id} required={question.required} />
-      <Subheader subheader={question.subheader} questionId={question.id} />
-
-      <FileInput
-        workflowId={workflowId}
-        onFileUpload={onFileUpload}
-        onUploadCallback={(urls: string[]) => {
-          if (urls) {
-            onChange({ [question.id]: urls });
-          } else {
-            onChange({ [question.id]: "skipped" });
-          }
-        }}
-        fileUrls={value as string[]}
-        allowMultipleFiles={question.allowMultipleFiles}
-        {...(!!question.allowedFileExtensions
-          ? { allowedFileExtensions: question.allowedFileExtensions }
-          : {})}
-        {...(!!question.maxSizeInMB ? { maxSizeInMB: question.maxSizeInMB } : {})}
-      />
-
-      <div className="mt-4 flex w-full justify-between">
+      className="w-full ">
+      <ScrollableContainer>
+        <div>
+          {isMediaAvailable && <QuestionMedia imgUrl={question.imageUrl} videoUrl={question.videoUrl} />}
+          <Headline
+            headline={getLocalizedValue(question.headline, languageCode)}
+            questionId={question.id}
+            required={question.required}
+          />
+          <Subheader
+            subheader={question.subheader ? getLocalizedValue(question.subheader, languageCode) : ""}
+            questionId={question.id}
+          />
+          <FileInput
+            workflowId={workflowId}
+            onFileUpload={onFileUpload}
+            onUploadCallback={(urls: string[]) => {
+              if (urls) {
+                onChange({ [question.id]: urls });
+              } else {
+                onChange({ [question.id]: "skipped" });
+              }
+            }}
+            fileUrls={value as string[]}
+            allowMultipleFiles={question.allowMultipleFiles}
+            {...(!!question.allowedFileExtensions
+              ? { allowedFileExtensions: question.allowedFileExtensions }
+              : {})}
+            {...(!!question.maxSizeInMB ? { maxSizeInMB: question.maxSizeInMB } : {})}
+          />
+        </div>
+      </ScrollableContainer>
+      <div className="flex w-full justify-between px-6 py-4">
         {!isFirstQuestion && (
           <BackButton
-            backButtonLabel={question.backButtonLabel}
+            backButtonLabel={getLocalizedValue(question.backButtonLabel, languageCode)}
             onClick={() => {
               onBack();
             }}
@@ -99,12 +115,11 @@ export default function FileUploadQuestion({
         )}
         <div></div>
         <SubmitButton
-          buttonLabel={question.buttonLabel}
+          buttonLabel={getLocalizedValue(question.buttonLabel, languageCode)}
           isLastQuestion={isLastQuestion}
           isPromptVisible={isPromptVisible}
-          onClick={() => {}}
         />
       </div>
     </form>
   );
-}
+};

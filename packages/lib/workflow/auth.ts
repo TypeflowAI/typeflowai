@@ -1,8 +1,6 @@
-import { unstable_cache } from "next/cache";
-
 import { ZId } from "@typeflowai/types/environment";
 
-import { SERVICES_REVALIDATION_INTERVAL } from "../constants";
+import { cache } from "../cache";
 import { hasUserEnvironmentAccess } from "../environment/auth";
 import { getMembershipByUserIdTeamId } from "../membership/service";
 import { getAccessFlags } from "../membership/utils";
@@ -11,23 +9,29 @@ import { validateInputs } from "../utils/validate";
 import { workflowCache } from "./cache";
 import { getWorkflow } from "./service";
 
-export const canUserAccessWorkflow = async (userId: string, workflowId: string): Promise<boolean> =>
-  await unstable_cache(
+export const canUserAccessWorkflow = (userId: string, workflowId: string): Promise<boolean> =>
+  cache(
     async () => {
       validateInputs([workflowId, ZId], [userId, ZId]);
 
       if (!userId) return false;
 
-      const workflow = await getWorkflow(workflowId);
-      if (!workflow) throw new Error("Workflow not found");
+      try {
+        const workflow = await getWorkflow(workflowId);
+        if (!workflow) throw new Error("Workflow not found");
 
-      const hasAccessToEnvironment = await hasUserEnvironmentAccess(userId, workflow.environmentId);
-      if (!hasAccessToEnvironment) return false;
+        const hasAccessToEnvironment = await hasUserEnvironmentAccess(userId, workflow.environmentId);
+        if (!hasAccessToEnvironment) return false;
 
-      return true;
+        return true;
+      } catch (error) {
+        throw error;
+      }
     },
     [`canUserAccessWorkflow-${userId}-${workflowId}`],
-    { revalidate: SERVICES_REVALIDATION_INTERVAL, tags: [workflowCache.tag.byId(workflowId)] }
+    {
+      tags: [workflowCache.tag.byId(workflowId)],
+    }
   )();
 
 export const verifyUserRoleAccess = async (

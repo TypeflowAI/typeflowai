@@ -3,6 +3,7 @@ import NavigationDesktop from "@/app/(app)/environments/[environmentId]/componen
 import NavigationMobile from "@/app/(app)/environments/[environmentId]/components/NavigationMobile";
 import { Session } from "next-auth";
 
+import { getIsPaidSubscription } from "@typeflowai/ee/subscription/lib/service";
 import { IS_TYPEFLOWAI_CLOUD, WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment, getEnvironments } from "@typeflowai/lib/environment/service";
 import { getMembershipByUserIdTeamId } from "@typeflowai/lib/membership/service";
@@ -13,7 +14,6 @@ import { ErrorComponent } from "@typeflowai/ui/ErrorComponent";
 interface EnvironmentsNavbarProps {
   environmentId: string;
   session: Session;
-  isTypeflowAICloud: boolean;
   isMobile: boolean;
 }
 
@@ -31,6 +31,8 @@ export default async function EnvironmentsNavbar({
   if (!team || !environment) {
     return <ErrorComponent />;
   }
+
+  const isMultiLanguageAllowed = getIsPaidSubscription(team);
 
   const [products, environments] = await Promise.all([
     getProducts(team.id),
@@ -52,6 +54,7 @@ export default async function EnvironmentsNavbar({
       isTypeflowAICloud={IS_TYPEFLOWAI_CLOUD}
       webAppUrl={WEBAPP_URL}
       membershipRole={currentUserMembership?.role}
+      isMultiLanguageAllowed={isMultiLanguageAllowed}
     />
   ) : (
     <NavigationDesktop
@@ -64,6 +67,7 @@ export default async function EnvironmentsNavbar({
       isTypeflowAICloud={IS_TYPEFLOWAI_CLOUD}
       webAppUrl={WEBAPP_URL}
       membershipRole={currentUserMembership?.role}
+      isMultiLanguageAllowed={isMultiLanguageAllowed}
     />
   );
   // return (

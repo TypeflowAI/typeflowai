@@ -9,35 +9,35 @@ import Hero from "@/components/solutions/Hero";
 import ThreeColumnFeatures from "@/components/solutions/ThreeColumnFeatures";
 import CTA from "@/images/ctas/cta2.svg";
 import {
-  ArrowPathIcon,
-  ArrowTrendingUpIcon,
-  Bars3BottomLeftIcon,
-  ChatBubbleBottomCenterTextIcon,
-  ChatBubbleLeftRightIcon,
-  CursorArrowRaysIcon,
   FlagIcon,
-  RocketLaunchIcon,
+  MessageSquareMoreIcon,
+  MessagesSquareIcon,
+  MousePointerClickIcon,
+  RefreshCcwIcon,
+  RocketIcon,
+  TextIcon,
+  TrendingUpIcon,
   TrophyIcon,
-} from "@heroicons/react/24/outline";
+} from "lucide-react";
 
 const recruitingFeatures = [
   {
     id: "hr-selection-criteria",
     name: "HR Selection Criteria",
     description: "Identify key features and suggest evaluation criteria.",
-    icon: CursorArrowRaysIcon,
+    icon: MousePointerClickIcon,
   },
   {
     id: "hr-automation",
     name: "HR Automation",
     description: "Enhance HR automation: job description, onboard and programs.",
-    icon: ArrowPathIcon,
+    icon: RefreshCcwIcon,
   },
   {
     id: "job-description-copy",
     name: "Job Description Copy",
     description: "Transform job descriptions into narratives for recruiting.",
-    icon: Bars3BottomLeftIcon,
+    icon: TextIcon,
   },
 ];
 const trainingAndDevelopmentFeatures = [
@@ -45,13 +45,13 @@ const trainingAndDevelopmentFeatures = [
     id: "employee-trainer",
     name: "Employee Trainer",
     description: "Develop effective employee training based on your industry trends and methodologies.",
-    icon: ArrowTrendingUpIcon,
+    icon: TrendingUpIcon,
   },
   {
     id: "employee-career-booster",
     name: "Employee Career Booster",
     description: "Elevate your workplace boosting career prospects.",
-    icon: RocketLaunchIcon,
+    icon: RocketIcon,
   },
   {
     id: "employee-goal-setting",
@@ -66,13 +66,13 @@ const employeeRelationsFeatures = [
     id: "employee-feedback-responder",
     name: "Employee Feedback Responder",
     description: "Manage employee feedback to turn issues into improvements.",
-    icon: ChatBubbleBottomCenterTextIcon,
+    icon: MessageSquareMoreIcon,
   },
   {
     id: "employee-engagement-surveys",
     name: "Employee Engagement Surveys",
     description: "Enhance employee engagement by creating structured survey questions.",
-    icon: ChatBubbleLeftRightIcon,
+    icon: MessagesSquareIcon,
   },
   {
     id: "employee-benefits",

@@ -1,6 +1,6 @@
 import { Callout } from "@/components/shared/Callout";
 import { Fence } from "@/components/shared/Fence";
-import Image from "next/image";
+import MdxImage from "next/image";
 
 import AirtableConnected from "./airtable-connected.png";
 import ConnectWithAirtable from "./connect-with-airtable.png";
@@ -30,7 +30,7 @@ The Airtable integration allows you to automatically send responses to an Airtab
 
 1. Go to the Integrations tab in your [TypeflowAI Cloud dashboard](https://dashboard.typeflowai.com/) and click on the "Connect" button under Airtable integration.
 
-<Image
+<MdxImage
   src={IntegrationTab}
   alt="TypeflowAI Integrations Tab"
   quality="100"
@@ -39,7 +39,7 @@ The Airtable integration allows you to automatically send responses to an Airtab
 
 2. Now click on the "Connect with Airtable" button to authenticate yourself with Airtable.
 
-<Image
+<MdxImage
   src={ConnectWithAirtable}
   alt="Connect TypeflowAI with Airtable"
   quality="100"
@@ -48,7 +48,7 @@ The Airtable integration allows you to automatically send responses to an Airtab
 
 3. You will now be taken to a page where you need to add and grant access to the base you want to use for the integration.
 
-<Image
+<MdxImage
   src={ConnectWithAirtable}
   alt="Add and grant access to airtable base"
   quality="100"
@@ -57,7 +57,7 @@ The Airtable integration allows you to automatically send responses to an Airtab
 
 4. Once you add and grant access to your base, you will be taken back to TypeflowAI Cloud and see the connected status as below:
 
-<Image
+<MdxImage
   src={AirtableConnected}
   alt="TypeflowAI is now connected with Google"
   quality="100"
@@ -72,7 +72,7 @@ Before the next step, make sure that you have a TypeflowAI Workflow with at leas
 
 6. Now click on the "Link New Table" button to link a new Airtable with TypeflowAI and a modal will open up.
 
-<Image
+<MdxImage
   src={LinkWorkflowWithTable}
   alt="Link TypeflowAI with a Airtable"
   quality="100"
@@ -81,7 +81,7 @@ Before the next step, make sure that you have a TypeflowAI Workflow with at leas
 
 7. Select the Base and table you want to link with TypeflowAI and the Workflow. On doing so, you will be asked with what questions' responses you want to feed in Airtable. Select the questions and click on the "Save" button.
 
-<Image
+<MdxImage
   src={LinkWithQuestions}
   alt="Select question to link with Airtable"
   quality="100"
@@ -91,7 +91,7 @@ Before the next step, make sure that you have a TypeflowAI Workflow with at leas
 
 8. On submitting, the modal will close and you will see the linked table in the list of linked tables.
 
-<Image
+<MdxImage
   src={ListLinkedWorkflows}
   alt="List of linked tables"
   quality="100"
@@ -141,7 +141,7 @@ To remove the integration with Airtable,
 3. Click on the "Connected with `<your-email-here`>" just before the "Link new Table" button.
 4. It will now ask for a confirmation to remove the integration. Click on the "Delete" button to remove the integration. You can always come back and connect again with the same Airtable Account.
 
-<Image
+<MdxImage
   src={DeleteIntegration}
   alt="Delete Airtable Integration with TypeflowAI"
   quality="100"

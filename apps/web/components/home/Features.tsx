@@ -1,23 +1,23 @@
-import { BoltIcon, CodeBracketIcon, RectangleGroupIcon } from "@heroicons/react/24/outline";
+import { CodeIcon, LayoutPanelLeftIcon, ZapIcon } from "lucide-react";
 
 const features = [
   {
     id: "gpt-into-tools",
     name: "Transform Prompts into tools",
     description: "Build a wide suite of AI tools using forms and GPT prompts",
-    icon: RectangleGroupIcon,
+    icon: LayoutPanelLeftIcon,
   },
   {
     id: "embed",
     name: "Embed anywhere",
     description: "Easily share a link, email or integrate with your existing site",
-    icon: CodeBracketIcon,
+    icon: CodeIcon,
   },
   {
     id: "lead-magnets",
     name: "Build dynamic lead magnets",
     description: "Create dynamic lead magnets, AI quizzes, calculators and more",
-    icon: BoltIcon,
+    icon: ZapIcon,
   },
 ];
 export const Features: React.FC = () => {

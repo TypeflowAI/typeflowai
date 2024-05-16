@@ -1,39 +1,49 @@
 import { writeData as airtableWriteData } from "@typeflowai/lib/airtable/service";
 import { writeData } from "@typeflowai/lib/googleSheet/service";
+import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
 import { writeData as writeNotionData } from "@typeflowai/lib/notion/service";
-import { getWorkflow } from "@typeflowai/lib/workflow/service";
+import { processResponseData } from "@typeflowai/lib/responses";
+import { writeDataToSlack } from "@typeflowai/lib/slack/service";
 import { TIntegration } from "@typeflowai/types/integration";
 import { TIntegrationAirtable } from "@typeflowai/types/integration/airtable";
 import { TIntegrationGoogleSheets } from "@typeflowai/types/integration/googleSheet";
 import { TIntegrationNotion, TIntegrationNotionConfigData } from "@typeflowai/types/integration/notion";
+import { TIntegrationSlack } from "@typeflowai/types/integration/slack";
 import { TPipelineInput } from "@typeflowai/types/pipelines";
 import { TWorkflow, TWorkflowQuestionType } from "@typeflowai/types/workflows";
 
 export async function handleIntegrations(
   integrations: TIntegration[],
   data: TPipelineInput,
-  workflowData: TWorkflow
+  workflow: TWorkflow
 ) {
   for (const integration of integrations) {
     switch (integration.type) {
       case "googleSheets":
-        await handleGoogleSheetsIntegration(integration as TIntegrationGoogleSheets, data);
+        await handleGoogleSheetsIntegration(integration as TIntegrationGoogleSheets, data, workflow);
+        break;
+      case "slack":
+        await handleSlackIntegration(integration as TIntegrationSlack, data, workflow);
         break;
       case "airtable":
-        await handleAirtableIntegration(integration as TIntegrationAirtable, data);
+        await handleAirtableIntegration(integration as TIntegrationAirtable, data, workflow);
         break;
       case "notion":
-        await handleNotionIntegration(integration as TIntegrationNotion, data, workflowData);
+        await handleNotionIntegration(integration as TIntegrationNotion, data, workflow);
         break;
     }
   }
 }
 
-async function handleAirtableIntegration(integration: TIntegrationAirtable, data: TPipelineInput) {
+async function handleAirtableIntegration(
+  integration: TIntegrationAirtable,
+  data: TPipelineInput,
+  workflow: TWorkflow
+) {
   if (integration.config.data.length > 0) {
     for (const element of integration.config.data) {
       if (element.workflowId === data.workflowId) {
-        const values = await extractResponses(data, element.questionIds as string[]);
+        const values = await extractResponses(data, element.questionIds as string[], workflow);
 
         await airtableWriteData(integration.config.key, element, values);
       }
@@ -41,33 +51,69 @@ async function handleAirtableIntegration(integration: TIntegrationAirtable, data
   }
 }
 
-async function handleGoogleSheetsIntegration(integration: TIntegrationGoogleSheets, data: TPipelineInput) {
+async function handleGoogleSheetsIntegration(
+  integration: TIntegrationGoogleSheets,
+  data: TPipelineInput,
+  workflow: TWorkflow
+) {
   if (integration.config.data.length > 0) {
     for (const element of integration.config.data) {
       if (element.workflowId === data.workflowId) {
-        const values = await extractResponses(data, element.questionIds as string[]);
+        const values = await extractResponses(data, element.questionIds as string[], workflow);
         await writeData(integration.config.key, element.spreadsheetId, values);
       }
     }
   }
 }
 
-async function extractResponses(data: TPipelineInput, questionIds: string[]): Promise<string[][]> {
+async function handleSlackIntegration(
+  integration: TIntegrationSlack,
+  data: TPipelineInput,
+  workflow: TWorkflow
+) {
+  if (integration.config.data.length > 0) {
+    for (const element of integration.config.data) {
+      if (element.workflowId === data.workflowId) {
+        const values = await extractResponses(data, element.questionIds as string[], workflow);
+        await writeDataToSlack(integration.config.key, element.channelId, values, workflow?.name);
+      }
+    }
+  }
+}
+
+async function extractResponses(
+  data: TPipelineInput,
+  questionIds: string[],
+  workflow: TWorkflow
+): Promise<string[][]> {
   const responses: string[] = [];
   const questions: string[] = [];
-  const workflow = await getWorkflow(data.workflowId);
 
   for (const questionId of questionIds) {
+    const question = workflow?.questions.find((q) => q.id === questionId);
+    if (!question) {
+      continue;
+    }
+
     const responseValue = data.response.data[questionId];
 
     if (responseValue !== undefined) {
-      responses.push(Array.isArray(responseValue) ? responseValue.join(",") : String(responseValue));
+      let answer: typeof responseValue;
+      if (question.type === TWorkflowQuestionType.PictureSelection) {
+        const selectedChoiceIds = responseValue as string[];
+        answer = question?.choices
+          .filter((choice) => selectedChoiceIds.includes(choice.id))
+          .map((choice) => choice.imageUrl)
+          .join("\n");
+      } else {
+        answer = responseValue;
+      }
+
+      responses.push(processResponseData(answer));
     } else {
       responses.push("");
     }
-
-    const question = workflow?.questions.find((q) => q.id === questionId);
-    questions.push(question?.headline || "");
+    questions.push(getLocalizedValue(question?.headline, "default") || "");
   }
 
   return [responses, questions];
@@ -124,7 +170,7 @@ function buildNotionPayloadProperties(
 
 // notion requires specific payload for each column type
 // * TYPES NOT SUPPORTED BY NOTION API - rollup, created_by, created_time, last_edited_by, or last_edited_time
-function getValue(colType: string, value: string | string[] | number) {
+function getValue(colType: string, value: string | string[] | number | Record<string, string>) {
   try {
     switch (colType) {
       case "select":

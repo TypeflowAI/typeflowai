@@ -1,6 +1,6 @@
 "use client";
 
-import { CodeBracketIcon, DocumentDuplicateIcon, EnvelopeIcon } from "@heroicons/react/24/solid";
+import { Code2Icon, CopyIcon, MailIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -10,7 +10,7 @@ import CodeBlock from "@typeflowai/ui/CodeBlock";
 import LoadingSpinner from "@typeflowai/ui/LoadingSpinner";
 import { capturePosthogEvent } from "@typeflowai/ui/PostHogClient";
 
-import { getEmailHtmlAction, sendEmailAction } from "../../actions";
+import { getEmailHtmlAction, sendEmbedWorkflowPreviewEmailAction } from "../../actions";
 
 interface EmailTabProps {
   workflowId: string;
@@ -36,17 +36,11 @@ export default function EmailTab({ workflowId, email }: EmailTabProps) {
       const emailHtml = await getEmailHtmlAction(workflowId);
       setEmailHtmlPreview(emailHtml);
     }
-  });
+  }, [workflowId]);
 
-  const subject = "TypeflowAI Email Workflow Preview";
-
-  const sendPreviewEmail = async (html) => {
+  const sendPreviewEmail = async () => {
     try {
-      await sendEmailAction({
-        html,
-        subject,
-        to: email,
-      });
+      await sendEmbedWorkflowPreviewEmailAction(workflowId);
       toast.success("Email sent!");
     } catch (err) {
       if (err instanceof AuthenticationError) {
@@ -58,11 +52,11 @@ export default function EmailTab({ workflowId, email }: EmailTabProps) {
   };
 
   return (
-    <div className="flex h-full grow flex-col gap-5">
+    <div className="flex flex-col gap-5 ">
       <div className="flex items-center justify-end gap-4">
         {showEmbed ? (
           <Button
-            variant="darkCTA"
+            variant="secondary"
             title="Embed workflow in your website"
             aria-label="Embed workflow in your website"
             onClick={() => {
@@ -71,7 +65,7 @@ export default function EmailTab({ workflowId, email }: EmailTabProps) {
               navigator.clipboard.writeText(emailHtml);
             }}
             className="shrink-0"
-            EndIcon={DocumentDuplicateIcon}>
+            EndIcon={CopyIcon}>
             Copy code
           </Button>
         ) : (
@@ -80,8 +74,8 @@ export default function EmailTab({ workflowId, email }: EmailTabProps) {
               variant="secondary"
               title="send preview email"
               aria-label="send preview email"
-              onClick={() => sendPreviewEmail(emailHtmlPreview)}
-              EndIcon={EnvelopeIcon}
+              onClick={() => sendPreviewEmail()}
+              EndIcon={MailIcon}
               className="shrink-0">
               Send Preview
             </Button>
@@ -94,42 +88,42 @@ export default function EmailTab({ workflowId, email }: EmailTabProps) {
           onClick={() => {
             setShowEmbed(!showEmbed);
           }}
-          EndIcon={CodeBracketIcon}
+          EndIcon={Code2Icon}
           className="shrink-0">
           {showEmbed ? "Hide Embed Code" : "View Embed Code"}
         </Button>
       </div>
-      <div className="grow overflow-y-scroll rounded-xl border border-gray-200 bg-white px-4 py-[18px]">
-        {showEmbed ? (
+      {showEmbed ? (
+        <div className="prose prose-slate -mt-4 max-w-full">
           <CodeBlock
-            customCodeClass="!whitespace-normal sm:!whitespace-pre-wrap !break-all sm:!break-normal"
+            customCodeClass="text-sm h-48 overflow-y-scroll"
             language="html"
             showCopyToClipboard={false}>
             {emailHtml}
           </CodeBlock>
-        ) : (
+        </div>
+      ) : (
+        <div className="mb-12 grow overflow-y-auto rounded-xl border border-slate-200 bg-white p-4">
+          <div className="mb-6 flex gap-2">
+            <div className="h-3 w-3 rounded-full bg-red-500"></div>
+            <div className="h-3 w-3 rounded-full bg-amber-500"></div>
+            <div className="h-3 w-3 rounded-full bg-emerald-500"></div>
+          </div>
           <div>
-            <div className="mb-6 flex gap-2">
-              <div className="h-3 w-3 rounded-full bg-red-500"></div>
-              <div className="h-3 w-3 rounded-full bg-amber-500"></div>
-              <div className="h-3 w-3 rounded-full bg-emerald-500"></div>
+            <div className="mb-2 border-b border-slate-200 pb-2 text-sm">To : {email || "user@mail.com"}</div>
+            <div className="border-b border-slate-200 pb-2 text-sm">
+              Subject : TypeflowAI Email Workflow Preview
             </div>
-            <div className="">
-              <div className="mb-2 border-b border-slate-200 pb-2 text-sm">
-                To : {email || "user@mail.com"}
-              </div>
-              <div className="border-b border-slate-200 pb-2 text-sm">Subject : {subject}</div>
-              <div className="p-4">
-                {emailHtml ? (
-                  <div dangerouslySetInnerHTML={{ __html: emailHtmlPreview }}></div>
-                ) : (
-                  <LoadingSpinner />
-                )}
-              </div>
+            <div className="p-4">
+              {emailHtml ? (
+                <div dangerouslySetInnerHTML={{ __html: emailHtmlPreview }}></div>
+              ) : (
+                <LoadingSpinner />
+              )}
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

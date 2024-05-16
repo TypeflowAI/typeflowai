@@ -1,39 +1,57 @@
 "use client";
 
-import QuestionFormInput from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/QuestionFormInput";
-import { PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { createId } from "@paralleldrive/cuid2";
+import { PlusIcon, TrashIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "react-hot-toast";
 
-import { cn } from "@typeflowai/lib/cn";
-import { TWorkflow, TWorkflowMultipleChoiceMultiQuestion } from "@typeflowai/types/workflows";
+import {
+  createI18nString,
+  extractLanguageCodes,
+  isLabelValidForAllLanguages,
+} from "@typeflowai/lib/i18n/utils";
+import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
+import {
+  TI18nString,
+  TShuffleOption,
+  TWorkflow,
+  TWorkflowMultipleChoiceMultiQuestion,
+  TWorkflowQuestionType,
+} from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
-import { Input } from "@typeflowai/ui/Input";
 import { Label } from "@typeflowai/ui/Label";
+import { QuestionFormInput } from "@typeflowai/ui/QuestionFormInput";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@typeflowai/ui/Select";
 
 interface OpenQuestionFormProps {
   localWorkflow: TWorkflow;
   question: TWorkflowMultipleChoiceMultiQuestion;
   questionIdx: number;
-  updateQuestion: (questionIdx: number, updatedAttributes: any) => void;
+  updateQuestion: (
+    questionIdx: number,
+    updatedAttributes: Partial<TWorkflowMultipleChoiceMultiQuestion>
+  ) => void;
   lastQuestion: boolean;
-  isPromptVisible: boolean;
-  isInValid: boolean;
+  selectedLanguageCode: string;
+  setSelectedLanguageCode: (languageCode: string) => void;
+  isInvalid: boolean;
 }
 
-export default function MultipleChoiceMultiForm({
+export const MultipleChoiceMultiForm = ({
   question,
   questionIdx,
   updateQuestion,
-  isInValid,
+  isInvalid,
   localWorkflow,
-}: OpenQuestionFormProps): JSX.Element {
+  selectedLanguageCode,
+  setSelectedLanguageCode,
+}: OpenQuestionFormProps): JSX.Element => {
   const lastChoiceRef = useRef<HTMLInputElement>(null);
   const [isNew, setIsNew] = useState(true);
   const [showSubheader, setShowSubheader] = useState(!!question.subheader);
   const questionRef = useRef<HTMLInputElement>(null);
-  const [isInvalidValue, setIsInvalidValue] = useState<string | null>(null);
+  const [isInvalidValue, setisInvalidValue] = useState<string | null>(null);
+  const workflowLanguageCodes = extractLanguageCodes(localWorkflow.languages);
 
   const shuffleOptionsTypes = {
     none: {
@@ -53,8 +71,8 @@ export default function MultipleChoiceMultiForm({
     },
   };
 
-  const updateChoice = (choiceIdx: number, updatedAttributes: { label: string }) => {
-    const newLabel = updatedAttributes.label;
+  const updateChoice = (choiceIdx: number, updatedAttributes: { label: TI18nString }) => {
+    const newLabel = updatedAttributes.label.en;
     const oldLabel = question.choices[choiceIdx].label;
     let newChoices: any[] = [];
     if (question.choices) {
@@ -68,9 +86,11 @@ export default function MultipleChoiceMultiForm({
     question.logic?.forEach((logic) => {
       let newL: string | string[] | undefined = logic.value;
       if (Array.isArray(logic.value)) {
-        newL = logic.value.map((value) => (value === oldLabel ? newLabel : value));
+        newL = logic.value.map((value) =>
+          newLabel && value === oldLabel[selectedLanguageCode] ? newLabel : value
+        );
       } else {
-        newL = logic.value === oldLabel ? newLabel : logic.value;
+        newL = logic.value === oldLabel[selectedLanguageCode] ? newLabel : logic.value;
       }
       newLogic.push({ ...logic, value: newL });
     });
@@ -80,19 +100,15 @@ export default function MultipleChoiceMultiForm({
   const findDuplicateLabel = () => {
     for (let i = 0; i < question.choices.length; i++) {
       for (let j = i + 1; j < question.choices.length; j++) {
-        if (question.choices[i].label.trim() === question.choices[j].label.trim()) {
-          return question.choices[i].label.trim(); // Return the duplicate label
+        if (
+          getLocalizedValue(question.choices[i].label, selectedLanguageCode).trim() ===
+          getLocalizedValue(question.choices[j].label, selectedLanguageCode).trim()
+        ) {
+          return getLocalizedValue(question.choices[i].label, selectedLanguageCode).trim(); // Return the duplicate label
         }
       }
     }
     return null;
-  };
-
-  const findEmptyLabel = () => {
-    for (let i = 0; i < question.choices.length; i++) {
-      if (question.choices[i].label.trim() === "") return true;
-    }
-    return false;
   };
 
   const addChoice = (choiceIdx?: number) => {
@@ -102,7 +118,10 @@ export default function MultipleChoiceMultiForm({
     if (otherChoice) {
       newChoices = newChoices.filter((choice) => choice.id !== "other");
     }
-    const newChoice = { id: createId(), label: "" };
+    const newChoice = {
+      id: createId(),
+      label: createI18nString("", workflowLanguageCodes),
+    };
     if (choiceIdx !== undefined) {
       newChoices.splice(choiceIdx + 1, 0, newChoice);
     } else {
@@ -117,11 +136,14 @@ export default function MultipleChoiceMultiForm({
   const addOther = () => {
     if (question.choices.filter((c) => c.id === "other").length === 0) {
       const newChoices = !question.choices ? [] : question.choices.filter((c) => c.id !== "other");
-      newChoices.push({ id: "other", label: "Other" });
+      newChoices.push({
+        id: "other",
+        label: createI18nString("Other", workflowLanguageCodes),
+      });
       updateQuestion(questionIdx, {
         choices: newChoices,
         ...(question.shuffleOption === shuffleOptionsTypes.all.id && {
-          shuffleOption: shuffleOptionsTypes.exceptLast.id,
+          shuffleOption: shuffleOptionsTypes.exceptLast.id as TShuffleOption,
         }),
       });
     }
@@ -130,9 +152,9 @@ export default function MultipleChoiceMultiForm({
   const deleteChoice = (choiceIdx: number) => {
     const newChoices = !question.choices ? [] : question.choices.filter((_, idx) => idx !== choiceIdx);
 
-    const choiceValue = question.choices[choiceIdx].label;
+    const choiceValue = question.choices[choiceIdx].label[selectedLanguageCode];
     if (isInvalidValue === choiceValue) {
-      setIsInvalidValue(null);
+      setisInvalidValue(null);
     }
     let newLogic: any[] = [];
     question.logic?.forEach((logic) => {
@@ -161,42 +183,57 @@ export default function MultipleChoiceMultiForm({
     }
   }, [isNew]);
 
-  const environmentId = localWorkflow.environmentId;
-
   return (
     <form>
       <QuestionFormInput
-        environmentId={environmentId}
-        isInValid={isInValid}
-        ref={questionRef}
-        question={question}
+        id="headline"
+        value={question.headline}
+        localWorkflow={localWorkflow}
         questionIdx={questionIdx}
+        isInvalid={isInvalid}
         updateQuestion={updateQuestion}
+        selectedLanguageCode={selectedLanguageCode}
+        setSelectedLanguageCode={setSelectedLanguageCode}
       />
 
-      <div className="mt-3">
+      <div>
         {showSubheader && (
-          <>
-            <Label htmlFor="subheader">Description</Label>
-            <div className="mt-2 inline-flex w-full items-center">
-              <Input
+          <div className="inline-flex w-full items-center">
+            <div className="w-full">
+              <QuestionFormInput
                 id="subheader"
-                name="subheader"
                 value={question.subheader}
-                onChange={(e) => updateQuestion(questionIdx, { subheader: e.target.value })}
-              />
-              <TrashIcon
-                className="ml-2 h-4 w-4 cursor-pointer text-slate-400 hover:text-slate-500"
-                onClick={() => {
-                  setShowSubheader(false);
-                  updateQuestion(questionIdx, { subheader: "" });
-                }}
+                localWorkflow={localWorkflow}
+                questionIdx={questionIdx}
+                isInvalid={isInvalid}
+                updateQuestion={updateQuestion}
+                selectedLanguageCode={selectedLanguageCode}
+                setSelectedLanguageCode={setSelectedLanguageCode}
               />
             </div>
-          </>
+
+            <TrashIcon
+              className="ml-2 mt-10 h-4 w-4 cursor-pointer text-slate-400 hover:text-slate-500"
+              onClick={() => {
+                setShowSubheader(false);
+                updateQuestion(questionIdx, { subheader: undefined });
+              }}
+            />
+          </div>
         )}
         {!showSubheader && (
-          <Button size="sm" variant="minimal" type="button" onClick={() => setShowSubheader(true)}>
+          <Button
+            size="sm"
+            variant="minimal"
+            className="mt-3"
+            type="button"
+            onClick={() => {
+              updateQuestion(questionIdx, {
+                subheader: createI18nString("", workflowLanguageCodes),
+              });
+              setShowSubheader(true);
+            }}>
+            {" "}
             <PlusIcon className="mr-1 h-4 w-4" />
             Add Description
           </Button>
@@ -205,33 +242,58 @@ export default function MultipleChoiceMultiForm({
 
       <div className="mt-3">
         <Label htmlFor="choices">Options</Label>
-        <div className="mt-2 space-y-2" id="choices">
+        <div className="mt-2 -space-y-2" id="choices">
           {question.choices &&
             question.choices.map((choice, choiceIdx) => (
               <div key={choiceIdx} className="inline-flex w-full items-center">
-                <Input
-                  ref={choiceIdx === question.choices.length - 1 ? lastChoiceRef : null}
-                  id={choice.id}
-                  name={choice.id}
-                  value={choice.label}
-                  className={cn(choice.id === "other" && "border-dashed")}
-                  placeholder={choice.id === "other" ? "Other" : `Option ${choiceIdx + 1}`}
-                  onChange={(e) => updateChoice(choiceIdx, { label: e.target.value })}
-                  onBlur={() => {
-                    const duplicateLabel = findDuplicateLabel();
-                    if (duplicateLabel) {
-                      setIsInvalidValue(duplicateLabel);
-                    } else if (findEmptyLabel()) {
-                      setIsInvalidValue("");
-                    } else {
-                      setIsInvalidValue(null);
+                <div className="flex w-full space-x-2">
+                  <QuestionFormInput
+                    key={choice.id}
+                    id={`choice-${choiceIdx}`}
+                    localWorkflow={localWorkflow}
+                    placeholder={choice.id === "other" ? "Other" : `Option ${choiceIdx + 1}`}
+                    questionIdx={questionIdx}
+                    value={choice.label}
+                    onBlur={() => {
+                      const duplicateLabel = findDuplicateLabel();
+                      if (duplicateLabel) {
+                        toast.error("Duplicate choices");
+                        setisInvalidValue(duplicateLabel);
+                      } else {
+                        setisInvalidValue(null);
+                      }
+                    }}
+                    updateChoice={updateChoice}
+                    selectedLanguageCode={selectedLanguageCode}
+                    setSelectedLanguageCode={setSelectedLanguageCode}
+                    isInvalid={
+                      isInvalid &&
+                      !isLabelValidForAllLanguages(question.choices[choiceIdx].label, workflowLanguageCodes)
                     }
-                  }}
-                  isInvalid={
-                    (isInvalidValue === "" && choice.label.trim() === "") ||
-                    (isInvalidValue !== null && choice.label.trim() === isInvalidValue.trim())
-                  }
-                />
+                    className={`${choice.id === "other" ? "border border-dashed" : ""}`}
+                  />
+                  {choice.id === "other" && (
+                    <QuestionFormInput
+                      id="otherOptionPlaceholder"
+                      localWorkflow={localWorkflow}
+                      placeholder={"Please specify"}
+                      questionIdx={questionIdx}
+                      value={
+                        question.otherOptionPlaceholder
+                          ? question.otherOptionPlaceholder
+                          : createI18nString("Please specify", workflowLanguageCodes)
+                      }
+                      updateQuestion={updateQuestion}
+                      selectedLanguageCode={selectedLanguageCode}
+                      setSelectedLanguageCode={setSelectedLanguageCode}
+                      isInvalid={
+                        isInvalid &&
+                        !isLabelValidForAllLanguages(question.choices[choiceIdx].label, workflowLanguageCodes)
+                      }
+                      className="border border-dashed"
+                    />
+                  )}
+                </div>
                 {question.choices && question.choices.length > 2 && (
                   <TrashIcon
                     className="ml-2 h-4 w-4 cursor-pointer text-slate-400 hover:text-slate-500"
@@ -259,7 +321,8 @@ export default function MultipleChoiceMultiForm({
               variant="minimal"
               type="button"
               onClick={() => {
-                updateQuestion(questionIdx, { type: "multipleChoiceSingle" });
+                // @ts-expect-error
+                updateQuestion(questionIdx, { type: TWorkflowQuestionType.MultipleChoiceSingle });
               }}>
               Convert to Single Select
             </Button>
@@ -268,7 +331,7 @@ export default function MultipleChoiceMultiForm({
               <Select
                 defaultValue={question.shuffleOption}
                 value={question.shuffleOption}
-                onValueChange={(e) => {
+                onValueChange={(e: TShuffleOption) => {
                   updateQuestion(questionIdx, { shuffleOption: e });
                 }}>
                 <SelectTrigger className="w-fit space-x-2 overflow-hidden border-0 font-semibold text-slate-600">
@@ -294,4 +357,4 @@ export default function MultipleChoiceMultiForm({
       </div>
     </form>
   );
-}
+};

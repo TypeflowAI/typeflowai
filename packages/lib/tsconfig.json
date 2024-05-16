@@ -1,5 +1,18 @@
 {
-  "extends": "@typeflowai/tsconfig/js-library.json",
+  "extends": "@typeflowai/tsconfig/nextjs.json",
   "include": ["."],
-  "exclude": ["dist", "build", "node_modules"]
+  "exclude": ["dist", "build", "node_modules", "../../packages/types/workflows.d.ts"],
+  "compilerOptions": {
+    "downlevelIteration": true,
+    "baseUrl": ".",
+    "paths": {
+      "@prisma/client/*": ["@typeflowai/database/client/*"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true
+  }
 }

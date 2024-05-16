@@ -1,85 +1,75 @@
 "use client";
 
-import QuestionFormInput from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/QuestionFormInput";
-import { useState } from "react";
-
-import { md } from "@typeflowai/lib/markdownIt";
+// import { useState } from "react";
+// import { LocalizedEditor } from "@typeflowai/ee/multiLanguage/components/LocalizedEditor";
 import { TWorkflow, TWorkflowConsentQuestion } from "@typeflowai/types/workflows";
-import { Editor } from "@typeflowai/ui/Editor";
-import { Input } from "@typeflowai/ui/Input";
 import { Label } from "@typeflowai/ui/Label";
+import { QuestionFormInput } from "@typeflowai/ui/QuestionFormInput";
 
 interface ConsentQuestionFormProps {
   localWorkflow: TWorkflow;
   question: TWorkflowConsentQuestion;
   questionIdx: number;
-  updateQuestion: (questionIdx: number, updatedAttributes: any) => void;
-  isInValid: boolean;
+  updateQuestion: (questionIdx: number, updatedAttributes: Partial<TWorkflowConsentQuestion>) => void;
+  selectedLanguageCode: string;
+  setSelectedLanguageCode: (languageCode: string) => void;
+  isInvalid: boolean;
 }
 
-export default function ConsentQuestionForm({
+export const ConsentQuestionForm = ({
   question,
   questionIdx,
   updateQuestion,
-  isInValid,
+  isInvalid,
   localWorkflow,
-}: ConsentQuestionFormProps): JSX.Element {
-  const [firstRender, setFirstRender] = useState(true);
-  const environmentId = localWorkflow.environmentId;
+  selectedLanguageCode,
+  setSelectedLanguageCode,
+}: ConsentQuestionFormProps): JSX.Element => {
+  // const [firstRender, setFirstRender] = useState(true);
 
   return (
     <form>
       <QuestionFormInput
-        environmentId={environmentId}
-        isInValid={isInValid}
-        question={question}
+        id="headline"
+        value={question.headline}
+        localWorkflow={localWorkflow}
         questionIdx={questionIdx}
+        isInvalid={isInvalid}
         updateQuestion={updateQuestion}
+        selectedLanguageCode={selectedLanguageCode}
+        setSelectedLanguageCode={setSelectedLanguageCode}
       />
 
       <div className="mt-3">
         <Label htmlFor="subheader">Description</Label>
         <div className="mt-2">
-          <Editor
-            getText={() =>
-              md.render(
-                question.html || "We would love to talk to you and learn more about how you use our product."
-              )
-            }
-            setText={(value: string) => {
-              updateQuestion(questionIdx, { html: value });
-            }}
-            excludedToolbarItems={["blockType"]}
-            disableLists
+          {/* <LocalizedEditor
+            id="subheader"
+            value={question.html}
+            localWorkflow={localWorkflow}
+            isInvalid={isInvalid}
+            updateQuestion={updateQuestion}
+            selectedLanguageCode={selectedLanguageCode}
+            setSelectedLanguageCode={setSelectedLanguageCode}
             firstRender={firstRender}
             setFirstRender={setFirstRender}
-          />
+            questionIdx={questionIdx}
+          /> */}
         </div>
       </div>
 
-      <div className="mt-3">
-        <Label htmlFor="label">Checkbox Label</Label>
-        <Input
-          id="label"
-          name="label"
-          className="mt-2"
-          value={question.label}
-          placeholder="I agree to the terms and conditions"
-          onChange={(e) => updateQuestion(questionIdx, { label: e.target.value })}
-          isInvalid={isInValid && question.label.trim() === ""}
-        />
-      </div>
-      {/* <div className="mt-3">
-        <Label htmlFor="buttonLabel">Button Label</Label>
-        <Input
-          id="buttonLabel"
-          name="buttonLabel"
-          className="mt-2"
-          value={question.buttonLabel}
-          placeholder={lastQuestion ? "Finish" : "Next"}
-          onChange={(e) => updateQuestion(questionIdx, { buttonLabel: e.target.value })}
-        />
-      </div> */}
+      <QuestionFormInput
+        id="label"
+        label="Checkbox Label"
+        placeholder="I agree to the terms and conditions"
+        value={question.label}
+        localWorkflow={localWorkflow}
+        questionIdx={questionIdx}
+        isInvalid={isInvalid}
+        updateQuestion={updateQuestion}
+        selectedLanguageCode={selectedLanguageCode}
+        setSelectedLanguageCode={setSelectedLanguageCode}
+      />
     </form>
   );
-}
+};

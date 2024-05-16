@@ -17,7 +17,6 @@ export async function createOrUpdateIntegrationAction(
 
 export async function deleteIntegrationAction(integrationId: string) {
   const session = await getServerSession(authOptions);
-
   if (!session) throw new AuthorizationError("Not authorized");
 
   const isAuthorized = await canUserAccessIntegration(session.user.id, integrationId);

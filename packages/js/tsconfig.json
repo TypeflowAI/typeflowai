@@ -2,6 +2,8 @@
   "extends": "@typeflowai/tsconfig/js-library.json",
   "include": ["src", "package.json"],
   "compilerOptions": {
+    "module": "ESNext",
+    "declaration": true,
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,

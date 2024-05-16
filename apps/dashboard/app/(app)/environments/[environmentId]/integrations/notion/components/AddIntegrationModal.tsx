@@ -6,13 +6,15 @@ import {
 } from "@/app/(app)/environments/[environmentId]/integrations/notion/constants";
 import { questionTypes } from "@/app/lib/questions";
 import NotionLogo from "@/images/notion.png";
-import { ArrowPathIcon, ChevronDownIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/solid";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { PlusIcon, XIcon } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
+import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
+import { structuredClone } from "@typeflowai/lib/pollyfills/structuredClone";
+import { checkForRecallInHeadline } from "@typeflowai/lib/utils/recall";
 import { TIntegrationInput } from "@typeflowai/types/integration";
 import {
   TIntegrationNotion,
@@ -21,6 +23,7 @@ import {
 } from "@typeflowai/types/integration/notion";
 import { TWorkflow, TWorkflowQuestionType } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
+import { DropdownSelector } from "@typeflowai/ui/DropdownSelector";
 import { Label } from "@typeflowai/ui/Label";
 import { Modal } from "@typeflowai/ui/Modal";
 
@@ -61,7 +64,7 @@ export default function AddIntegrationModal({
       question: { id: "", name: "", type: "" },
     },
   ]);
-  const [isDeleting, setIsDeleting] = useState<any>(null);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [isLinkingDatabase, setIsLinkingDatabase] = useState(false);
   const integrationData = {
     databaseId: "",
@@ -105,12 +108,13 @@ export default function AddIntegrationModal({
   }, [selectedDatabase?.id]);
 
   const questionItems = useMemo(() => {
-    const questions =
-      selectedWorkflow?.questions.map((q) => ({
-        id: q.id,
-        name: q.headline,
-        type: q.type,
-      })) || [];
+    const questions = selectedWorkflow
+      ? checkForRecallInHeadline(selectedWorkflow, "default")?.questions.map((q) => ({
+          id: q.id,
+          name: getLocalizedValue(q.headline, "default"),
+          type: q.type,
+        }))
+      : [];
 
     const hiddenFields = selectedWorkflow?.hiddenFields.enabled
       ? selectedWorkflow?.hiddenFields.fieldIds?.map((fId) => ({
@@ -224,7 +228,7 @@ export default function AddIntegrationModal({
     return questionItems.filter((q) => !selectedQuestionIds.includes(q.id));
   };
 
-  const createCopy = (item) => JSON.parse(JSON.stringify(item));
+  const createCopy = (item) => structuredClone(item);
 
   const MappingRow = ({ idx }: { idx: number }) => {
     const filteredQuestionItems = getFilteredQuestionItems(idx);
@@ -392,7 +396,7 @@ export default function AddIntegrationModal({
               idx === mapping.length - 1 ? "visible" : "invisible"
             }`}
             onClick={addRow}>
-            <PlusIcon className="h-5 w-5 font-bold text-gray-500" />
+            <PlusIcon className="h-5 w-5 font-bold text-slate-500" />
           </button>
           <button
             type="button"
@@ -400,7 +404,7 @@ export default function AddIntegrationModal({
               mapping.length > 1 ? "visible" : "invisible"
             }`}
             onClick={deleteRow}>
-            <XMarkIcon className="h-5 w-5 text-red-500" />
+            <XIcon className="h-5 w-5 text-red-500" />
           </button>
         </div>
       </div>
@@ -514,76 +518,3 @@ export default function AddIntegrationModal({
     </Modal>
   );
 }
-
-interface DropdownSelectorProps {
-  label?: string;
-  items: Array<any>;
-  selectedItem: any;
-  setSelectedItem: React.Dispatch<React.SetStateAction<any>>;
-  disabled: boolean;
-  placeholder?: string;
-  refetch?: () => void;
-}
-
-const DropdownSelector = ({
-  label,
-  items,
-  selectedItem,
-  setSelectedItem,
-  disabled,
-  placeholder,
-  refetch,
-}: DropdownSelectorProps) => {
-  return (
-    <div className="col-span-1">
-      {label && <Label htmlFor={label}>{label}</Label>}
-      <div className="mt-1 flex items-center gap-3">
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger asChild>
-            <button
-              disabled={disabled ? disabled : false}
-              type="button"
-              className="flex h-10 w-full rounded-md border border-slate-300 bg-transparent px-3 py-2 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50">
-              <span className="flex w-4/5 flex-1">
-                <span className="w-full truncate text-left">
-                  {selectedItem ? selectedItem.name || placeholder || label : `${placeholder || label}`}
-                </span>
-              </span>
-              <span className="flex h-full items-center border-l pl-3">
-                <ChevronDownIcon className="h-4 w-4 text-gray-500" />
-              </span>
-            </button>
-          </DropdownMenu.Trigger>
-
-          {!disabled && (
-            <DropdownMenu.Portal>
-              <DropdownMenu.Content
-                className="z-50 max-h-64 min-w-[220px] overflow-auto rounded-md bg-white text-sm text-slate-800 shadow-md"
-                align="start">
-                {items &&
-                  items.map((item) => (
-                    <DropdownMenu.Item
-                      key={item.id}
-                      className="flex cursor-pointer items-center p-3 hover:bg-gray-100 hover:outline-none data-[disabled]:cursor-default data-[disabled]:opacity-50"
-                      onSelect={() => setSelectedItem(item)}>
-                      {item.name}
-                    </DropdownMenu.Item>
-                  ))}
-              </DropdownMenu.Content>
-            </DropdownMenu.Portal>
-          )}
-        </DropdownMenu.Root>
-        {refetch && (
-          <button
-            type="button"
-            className="rounded-md p-1 hover:bg-slate-300"
-            onClick={() => {
-              refetch();
-            }}>
-            <ArrowPathIcon className="h-5 w-5 font-bold text-gray-500" />
-          </button>
-        )}
-      </div>
-    </div>
-  );
-};

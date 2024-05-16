@@ -14,7 +14,6 @@ export const createWebhookAction = async (
   webhookInput: TWebhookInput
 ): Promise<TWebhook> => {
   const session = await getServerSession(authOptions);
-
   if (!session) throw new AuthorizationError("Not authorized");
 
   const isAuthorized = await hasUserEnvironmentAccess(session.user.id, environmentId);
@@ -25,7 +24,6 @@ export const createWebhookAction = async (
 
 export const deleteWebhookAction = async (id: string): Promise<TWebhook> => {
   const session = await getServerSession(authOptions);
-
   if (!session) throw new AuthorizationError("Not authorized");
 
   const isAuthorized = await canUserAccessWebhook(session.user.id, id);
@@ -40,7 +38,6 @@ export const updateWebhookAction = async (
   webhookInput: Partial<TWebhookInput>
 ): Promise<TWebhook> => {
   const session = await getServerSession(authOptions);
-
   if (!session) throw new AuthorizationError("Not authorized");
 
   const isAuthorized = await canUserAccessWebhook(session.user.id, webhookId);

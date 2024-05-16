@@ -1,10 +1,10 @@
 import { useState } from "react";
 
 import { cn } from "@typeflowai/lib/cn";
-import { TWorkflowMultipleChoiceSingleQuestion } from "@typeflowai/types/workflows";
 
 import Headline from "./Headline";
 import Subheader from "./Subheader";
+import { TWorkflowMultipleChoiceSingleQuestion } from "./types";
 
 interface MultipleChoiceSingleProps {
   question: TWorkflowMultipleChoiceSingleQuestion;
@@ -20,6 +20,7 @@ export default function MultipleChoiceSingleQuestion({
   brandColor,
 }: MultipleChoiceSingleProps) {
   const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
+
   return (
     <form
       onSubmit={(e) => {

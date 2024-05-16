@@ -1,10 +1,10 @@
 import { useState } from "react";
 
 import { cn } from "@typeflowai/lib/cn";
-import { TWorkflowRatingQuestion } from "@typeflowai/types/workflows";
 
 import Headline from "./Headline";
 import Subheader from "./Subheader";
+import { TWorkflowRatingQuestion } from "./types";
 
 interface RatingQuestionProps {
   question: TWorkflowRatingQuestion;
@@ -56,7 +56,7 @@ export default function RatingQuestion({
                 className={cn(
                   selectedChoice === number
                     ? "z-10 border-slate-400 bg-slate-50"
-                    : "bg-white hover:bg-gray-100",
+                    : "bg-white hover:bg-slate-100",
                   "relative h-10 flex-1 cursor-pointer border border-slate-100 text-center text-sm leading-10 text-slate-800 first:rounded-l-md last:rounded-r-md  focus:outline-none"
                 )}>
                 <input

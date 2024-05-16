@@ -11,7 +11,6 @@ const scope = `data.records:read data.records:write schema.bases:read schema.bas
 
 export async function GET(req: NextRequest) {
   const environmentId = req.headers.get("environmentId");
-
   const session = await getServerSession(authOptions);
 
   if (!environmentId) {
@@ -31,11 +30,7 @@ export async function GET(req: NextRequest) {
   const redirect_uri = WEBAPP_URL + "/api/v1/integrations/airtable/callback";
   if (!client_id) return responses.internalServerErrorResponse("Airtable client id is missing");
   if (!redirect_uri) return responses.internalServerErrorResponse("Airtable redirect url is missing");
-  const codeVerifier = Buffer.from(environmentId + session.user.id + environmentId)
-    .toString("base64")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
+  const codeVerifier = Buffer.from(environmentId + session.user.id + environmentId).toString("base64");
 
   const codeChallengeMethod = "S256";
   const codeChallenge = crypto

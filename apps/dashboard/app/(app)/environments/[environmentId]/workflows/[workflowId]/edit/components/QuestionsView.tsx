@@ -1,11 +1,20 @@
 "use client";
 
 import HiddenFieldsCard from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/HiddenFieldsCard";
+import {
+  isCardValid,
+  validateQuestion,
+  validateWorkflowQuestionsInBatch,
+} from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/lib/validation";
 import { createId } from "@paralleldrive/cuid2";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import toast from "react-hot-toast";
 
+// import { MultiLanguageCard } from "@typeflowai/ee/multiLanguage/components/MultiLanguageCard";
+import { extractLanguageCodes, getLocalizedValue, translateQuestion } from "@typeflowai/lib/i18n/utils";
+import { structuredClone } from "@typeflowai/lib/pollyfills/structuredClone";
+import { checkForEmptyFallBackValue, extractRecallInfo } from "@typeflowai/lib/utils/recall";
 import { TProduct } from "@typeflowai/types/product";
 import { TWorkflow, TWorkflowQuestion } from "@typeflowai/types/workflows";
 import { capturePosthogEvent } from "@typeflowai/ui/PostHogClient";
@@ -13,10 +22,9 @@ import { capturePosthogEvent } from "@typeflowai/ui/PostHogClient";
 import AddQuestionButton from "./AddQuestionButton";
 import EditThankYouCard from "./EditThankYouCard";
 import EditWelcomeCard from "./EditWelcomeCard";
-import GPTPromptCard from "./GPTPromptCard";
+import PromptCard from "./PromptCard";
 import QuestionCard from "./QuestionCard";
 import { StrictModeDroppable } from "./StrictModeDroppable";
-import { validateQuestion } from "./Validation";
 
 interface QuestionsViewProps {
   localWorkflow: TWorkflow;
@@ -24,12 +32,16 @@ interface QuestionsViewProps {
   activeQuestionId: string | null;
   setActiveQuestionId: (questionId: string | null) => void;
   product: TProduct;
-  invalidQuestions: String[] | null;
-  setInvalidQuestions: (invalidQuestions: String[] | null) => void;
+  invalidQuestions: string[] | null;
+  setInvalidQuestions: (invalidQuestions: string[] | null) => void;
+  selectedLanguageCode: string;
+  setSelectedLanguageCode: (languageCode: string) => void;
+  isMultiLanguageAllowed?: boolean;
+  isTypeflowAICloud: boolean;
   isEngineLimited: boolean;
 }
 
-export default function QuestionsView({
+export const QuestionsView = ({
   activeQuestionId,
   setActiveQuestionId,
   localWorkflow,
@@ -37,23 +49,32 @@ export default function QuestionsView({
   product,
   invalidQuestions,
   setInvalidQuestions,
+  setSelectedLanguageCode,
+  selectedLanguageCode,
+  // isMultiLanguageAllowed,
+  // isTypeflowAICloud,
   isEngineLimited,
-}: QuestionsViewProps) {
+}: QuestionsViewProps) => {
   const internalQuestionIdMap = useMemo(() => {
     return localWorkflow.questions.reduce((acc, question) => {
       acc[question.id] = createId();
       return acc;
     }, {});
   }, [localWorkflow.questions]);
-
+  const workflowLanguages = localWorkflow.languages;
   const [backButtonLabel, setbackButtonLabel] = useState(null);
-
   const handleQuestionLogicChange = (
     workflow: TWorkflow,
     compareId: string,
     updatedId: string
   ): TWorkflow => {
     workflow.questions.forEach((question) => {
+      if (question.headline[selectedLanguageCode].includes(`recall:${compareId}`)) {
+        question.headline[selectedLanguageCode] = question.headline[selectedLanguageCode].replaceAll(
+          `recall:${compareId}`,
+          `recall:${updatedId}`
+        );
+      }
       if (!question.logic) return;
       question.logic.forEach((rule) => {
         if (rule.destination === compareId) {
@@ -65,13 +86,14 @@ export default function QuestionsView({
   };
 
   // function to validate individual questions
-  const validateWorkflow = (question: TWorkflowQuestion) => {
+  const validateWorkflowQuestion = (question: TWorkflowQuestion) => {
     // prevent this function to execute further if user hasnt still tried to save the workflow
     if (invalidQuestions === null) {
       return;
     }
-    let temp = JSON.parse(JSON.stringify(invalidQuestions));
-    if (validateQuestion(question)) {
+    const isFirstQuestion = question.id === localWorkflow.questions[0].id;
+    let temp = structuredClone(invalidQuestions);
+    if (validateQuestion(question, workflowLanguages, isFirstQuestion)) {
       temp = invalidQuestions.filter((id) => id !== question.id);
       setInvalidQuestions(temp);
     } else if (!invalidQuestions.includes(question.id)) {
@@ -82,7 +104,6 @@ export default function QuestionsView({
 
   const updateQuestion = (questionIdx: number, updatedAttributes: any) => {
     let updatedWorkflow = { ...localWorkflow };
-
     if ("id" in updatedAttributes) {
       // if the workflow whose id is to be changed is linked to logic of any other workflow then changing it
       const initialQuestionId = updatedWorkflow.questions[questionIdx].id;
@@ -99,7 +120,6 @@ export default function QuestionsView({
       delete internalQuestionIdMap[localWorkflow.questions[questionIdx].id];
       setActiveQuestionId(updatedAttributes.id);
     }
-
     updatedWorkflow.questions[questionIdx] = {
       ...updatedWorkflow.questions[questionIdx],
       ...updatedAttributes,
@@ -112,7 +132,7 @@ export default function QuestionsView({
       setbackButtonLabel(updatedAttributes.backButtonLabel);
     }
     setLocalWorkflow(updatedWorkflow);
-    validateWorkflow(updatedWorkflow.questions[questionIdx]);
+    validateWorkflowQuestion(updatedWorkflow.questions[questionIdx]);
   };
 
   const deleteQuestionMentionFromPrompt = (questionId) => {
@@ -130,8 +150,20 @@ export default function QuestionsView({
     const questionId = localWorkflow.questions[questionIdx].id;
     const activeQuestionIdTemp = activeQuestionId ?? localWorkflow.questions[0].id;
     let updatedWorkflow: TWorkflow = { ...localWorkflow };
-    updatedWorkflow.questions.splice(questionIdx, 1);
 
+    // check if we are recalling from this question
+    updatedWorkflow.questions.forEach((question) => {
+      if (question.headline[selectedLanguageCode].includes(`recall:${questionId}`)) {
+        const recallInfo = extractRecallInfo(getLocalizedValue(question.headline, selectedLanguageCode));
+        if (recallInfo) {
+          question.headline[selectedLanguageCode] = question.headline[selectedLanguageCode].replace(
+            recallInfo,
+            ""
+          );
+        }
+      }
+    });
+    updatedWorkflow.questions.splice(questionIdx, 1);
     updatedWorkflow = handleQuestionLogicChange(updatedWorkflow, questionId, "end");
 
     deleteQuestionMentionFromPrompt(questionId);
@@ -149,7 +181,7 @@ export default function QuestionsView({
   };
 
   const duplicateQuestion = (questionIdx: number) => {
-    const questionToDuplicate = JSON.parse(JSON.stringify(localWorkflow.questions[questionIdx]));
+    const questionToDuplicate = structuredClone(localWorkflow.questions[questionIdx]);
 
     const newQuestionId = createId();
 
@@ -175,8 +207,9 @@ export default function QuestionsView({
     if (backButtonLabel) {
       question.backButtonLabel = backButtonLabel;
     }
-
-    updatedWorkflow.questions.push({ ...question, isDraft: true });
+    const languageSymbols = extractLanguageCodes(localWorkflow.languages);
+    const translatedQuestion = translateQuestion(question, languageSymbols);
+    updatedWorkflow.questions.push({ ...translatedQuestion, isDraft: true });
 
     capturePosthogEvent("QuestionAdded2Workflow", {
       type: capitalizeFirstLetter(question.type),
@@ -208,6 +241,88 @@ export default function QuestionsView({
     setLocalWorkflow(updatedWorkflow);
   };
 
+  useEffect(() => {
+    if (invalidQuestions === null) return;
+
+    const updateInvalidQuestions = (card, cardId, currentInvalidQuestions) => {
+      if (card.enabled && !isCardValid(card, cardId, workflowLanguages)) {
+        return currentInvalidQuestions.includes(cardId)
+          ? currentInvalidQuestions
+          : [...currentInvalidQuestions, cardId];
+      }
+      return currentInvalidQuestions.filter((id) => id !== cardId);
+    };
+
+    const updatedQuestionsStart = updateInvalidQuestions(
+      localWorkflow.welcomeCard,
+      "start",
+      invalidQuestions
+    );
+    const updatedQuestionsEnd = updateInvalidQuestions(
+      localWorkflow.thankYouCard,
+      "end",
+      updatedQuestionsStart
+    );
+
+    setInvalidQuestions(updatedQuestionsEnd);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [localWorkflow.welcomeCard, localWorkflow.thankYouCard]);
+
+  //useEffect to validate workflow when changes are made to languages
+  useEffect(() => {
+    if (!invalidQuestions) return;
+    let updatedInvalidQuestions: string[] = invalidQuestions;
+    // Validate each question
+    localWorkflow.questions.forEach((question, index) => {
+      updatedInvalidQuestions = validateWorkflowQuestionsInBatch(
+        question,
+        updatedInvalidQuestions,
+        workflowLanguages,
+        index === 0
+      );
+    });
+
+    // Check welcome card
+    if (
+      localWorkflow.welcomeCard.enabled &&
+      !isCardValid(localWorkflow.welcomeCard, "start", workflowLanguages)
+    ) {
+      if (!updatedInvalidQuestions.includes("start")) {
+        updatedInvalidQuestions.push("start");
+      }
+    } else {
+      updatedInvalidQuestions = updatedInvalidQuestions.filter((questionId) => questionId !== "start");
+    }
+
+    // Check thank you card
+    if (
+      localWorkflow.thankYouCard.enabled &&
+      !isCardValid(localWorkflow.thankYouCard, "end", workflowLanguages)
+    ) {
+      if (!updatedInvalidQuestions.includes("end")) {
+        updatedInvalidQuestions.push("end");
+      }
+    } else {
+      updatedInvalidQuestions = updatedInvalidQuestions.filter((questionId) => questionId !== "end");
+    }
+
+    if (JSON.stringify(updatedInvalidQuestions) !== JSON.stringify(invalidQuestions)) {
+      setInvalidQuestions(updatedInvalidQuestions);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [localWorkflow.languages, localWorkflow.questions]);
+
+  useEffect(() => {
+    const questionWithEmptyFallback = checkForEmptyFallBackValue(localWorkflow, selectedLanguageCode);
+    if (questionWithEmptyFallback) {
+      setActiveQuestionId(questionWithEmptyFallback.id);
+      if (activeQuestionId === questionWithEmptyFallback.id) {
+        toast.error("Fallback missing");
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeQuestionId, setActiveQuestionId]);
+
   const isPromptVisible = () => {
     return localWorkflow.prompt.enabled && localWorkflow.prompt.isVisible;
   };
@@ -216,20 +331,23 @@ export default function QuestionsView({
   };
 
   return (
-    <div className="mt-12 px-5 py-4">
+    <div className="mt-16 px-5 py-4">
       <div className="mb-5 flex flex-col gap-5">
         <EditWelcomeCard
           localWorkflow={localWorkflow}
           setLocalWorkflow={setLocalWorkflow}
           setActiveQuestionId={setActiveQuestionId}
           activeQuestionId={activeQuestionId}
+          isInvalid={invalidQuestions ? invalidQuestions.includes("start") : false}
+          setSelectedLanguageCode={setSelectedLanguageCode}
+          selectedLanguageCode={selectedLanguageCode}
         />
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
         <div className="mb-5 grid grid-cols-1 gap-5 ">
           <StrictModeDroppable droppableId="questionsList">
             {(provided) => (
-              <div className="grid gap-5" ref={provided.innerRef} {...provided.droppableProps}>
+              <div className="grid w-full gap-5" ref={provided.innerRef} {...provided.droppableProps}>
                 {localWorkflow.questions.map((question, questionIdx) => (
                   // display a question form
                   <QuestionCard
@@ -241,12 +359,14 @@ export default function QuestionsView({
                     moveQuestion={moveQuestion}
                     updateQuestion={updateQuestion}
                     duplicateQuestion={duplicateQuestion}
+                    selectedLanguageCode={selectedLanguageCode}
+                    setSelectedLanguageCode={setSelectedLanguageCode}
                     deleteQuestion={deleteQuestion}
                     activeQuestionId={activeQuestionId}
                     setActiveQuestionId={setActiveQuestionId}
                     lastQuestion={questionIdx === localWorkflow.questions.length - 1}
                     isPromptVisible={isPromptVisible()}
-                    isInValid={invalidQuestions ? invalidQuestions.includes(question.id) : false}
+                    isInvalid={invalidQuestions ? invalidQuestions.includes(question.id) : false}
                   />
                 ))}
                 {provided.placeholder}
@@ -257,7 +377,7 @@ export default function QuestionsView({
       </DragDropContext>
       <AddQuestionButton addQuestion={addQuestion} product={product} />
       <div className="mt-5 flex flex-col gap-5">
-        <GPTPromptCard
+        <PromptCard
           localWorkflow={localWorkflow}
           setLocalWorkflow={setLocalWorkflow}
           prompt={localWorkflow.prompt}
@@ -272,6 +392,9 @@ export default function QuestionsView({
           setLocalWorkflow={setLocalWorkflow}
           setActiveQuestionId={setActiveQuestionId}
           activeQuestionId={activeQuestionId}
+          isInvalid={invalidQuestions ? invalidQuestions.includes("end") : false}
+          setSelectedLanguageCode={setSelectedLanguageCode}
+          selectedLanguageCode={selectedLanguageCode}
         />
 
         {localWorkflow.type === "link" ? (
@@ -282,7 +405,18 @@ export default function QuestionsView({
             activeQuestionId={activeQuestionId}
           />
         ) : null}
+
+        {/* <MultiLanguageCard
+          localWorkflow={localWorkflow}
+          product={product}
+          setLocalWorkflow={setLocalWorkflow}
+          setActiveQuestionId={setActiveQuestionId}
+          activeQuestionId={activeQuestionId}
+          isMultiLanguageAllowed={isMultiLanguageAllowed}
+          isTypeflowAICloud={isTypeflowAICloud}
+          setSelectedLanguageCode={setSelectedLanguageCode}
+        /> */}
       </div>
     </div>
   );
-}
+};

@@ -40,11 +40,6 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: "/roadmap",
-        destination: "https://github.com/orgs/typeflowai/projects/1",
-        permanent: true,
-      },
-      {
         source: "/github",
         destination: "https://github.com/TypeflowAI/typeflowai",
         permanent: true,
@@ -57,66 +52,6 @@ const nextConfig = {
       {
         source: "/docs",
         destination: "/docs/introduction/what-is-typeflowai",
-        permanent: true,
-      },
-      {
-        source: "/docs/getting-started/nextjs",
-        destination: "/docs/getting-started/framework-guides#next-js",
-        permanent: true,
-      },
-      {
-        source: "/docs/typeflowai-hq/self-hosting",
-        destination: "/docs",
-        permanent: true,
-      },
-      {
-        source: "/docs/react-form-library/getting-started",
-        destination: "/docs",
-        permanent: true,
-      },
-      {
-        source: "/docs/react-form-library/work-with-components",
-        destination: "/docs",
-        permanent: true,
-      },
-      {
-        source: "/docs/react-form-library/introduction",
-        destination: "/docs",
-        permanent: true,
-      },
-      {
-        source: "/docs/typeflowai-hq/schema",
-        destination: "/docs",
-        permanent: true,
-      },
-      {
-        source: "/docs/events/why",
-        destination: "/docs/actions/why",
-        permanent: true,
-      },
-      {
-        source: "/docs/events/code",
-        destination: "/docs/actions/code",
-        permanent: true,
-      },
-      {
-        source: "/docs/events/code",
-        destination: "/docs/actions/code",
-        permanent: true,
-      },
-      {
-        source: "/pmf",
-        destination: "/",
-        permanent: true,
-      },
-      {
-        source: "/cla",
-        destination: "https://dashboard.typeflowai.com/s/clutm6fyu00004otebb9tnxh5",
-        permanent: true,
-      },
-      {
-        source: "/docs/contributing/gitpod",
-        destination: "/docs/contributing/setup#gitpod",
         permanent: true,
       },
     ];

@@ -1,21 +1,25 @@
 "use client";
 
-import Loading from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/loading";
-import React from "react";
-import { useEffect, useState } from "react";
+import { refetchProduct } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/actions";
+import { LoadingSkeleton } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/LoadingSkeleton";
+import { QuestionsAudienceTabs } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/QuestionsStylingSettingsTabs";
+import { QuestionsView } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/QuestionsView";
+import { SettingsView } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/SettingsView";
+import { StylingView } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/StylingView";
+import { WorkflowMenuBar } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/WorkflowMenuBar";
+import { PreviewWorkflow } from "@/app/(app)/environments/[environmentId]/workflows/components/PreviewWorkflow";
+import { useCallback, useEffect, useRef, useState } from "react";
 
+import { extractLanguageCodes, getEnabledLanguages } from "@typeflowai/lib/i18n/utils";
+import { structuredClone } from "@typeflowai/lib/pollyfills/structuredClone";
+import { useDocumentVisibility } from "@typeflowai/lib/useDocumentVisibility";
 import { TActionClass } from "@typeflowai/types/actionClasses";
 import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TMembershipRole } from "@typeflowai/types/memberships";
 import { TProduct } from "@typeflowai/types/product";
-import { TWorkflow } from "@typeflowai/types/workflows";
-
-import PreviewWorkflow from "../../../components/PreviewWorkflow";
-import QuestionsAudienceTabs from "./QuestionsSettingsTabs";
-import QuestionsView from "./QuestionsView";
-import SettingsView from "./SettingsView";
-import WorkflowMenuBar from "./WorkflowMenuBar";
+import { TSegment } from "@typeflowai/types/segment";
+import { TWorkflow, TWorkflowEditorTabs, TWorkflowStyling } from "@typeflowai/types/workflows";
 
 interface WorkflowEditorProps {
   workflow: TWorkflow;
@@ -24,9 +28,14 @@ interface WorkflowEditorProps {
   webAppUrl: string;
   actionClasses: TActionClass[];
   attributeClasses: TAttributeClass[];
+  segments: TSegment[];
   responseCount: number;
   membershipRole?: TMembershipRole;
-  colours: string[];
+  colors: string[];
+  isUserTargetingAllowed?: boolean;
+  isMultiLanguageAllowed?: boolean;
+  isTypeflowAICloud: boolean;
+  isUnsplashConfigured: boolean;
   isEngineLimited: boolean;
 }
 
@@ -37,38 +46,87 @@ export default function WorkflowEditor({
   webAppUrl,
   actionClasses,
   attributeClasses,
+  segments,
   responseCount,
   membershipRole,
-  colours,
+  colors,
+  isMultiLanguageAllowed,
+  isUserTargetingAllowed = false,
+  isTypeflowAICloud,
+  isUnsplashConfigured,
   isEngineLimited,
 }: WorkflowEditorProps): JSX.Element {
-  const [activeView, setActiveView] = useState<"questions" | "settings">("questions");
+  const [activeView, setActiveView] = useState<TWorkflowEditorTabs>("questions");
   const [activeQuestionId, setActiveQuestionId] = useState<string | null>(null);
-  const [localWorkflow, setLocalWorkflow] = useState<TWorkflow | null>();
-  const [invalidQuestions, setInvalidQuestions] = useState<String[] | null>(null);
+  const [localWorkflow, setLocalWorkflow] = useState<TWorkflow | null>(() => structuredClone(workflow));
+  const [invalidQuestions, setInvalidQuestions] = useState<string[] | null>(null);
+  const [selectedLanguageCode, setSelectedLanguageCode] = useState<string>("default");
+  const workflowEditorRef = useRef(null);
+  const [localProduct, setLocalProduct] = useState<TProduct>(product);
+
+  const [styling, setStyling] = useState(localWorkflow?.styling);
+  const [localStylingChanges, setLocalStylingChanges] = useState<TWorkflowStyling | null>(null);
+
+  const fetchLatestProduct = useCallback(async () => {
+    const latestProduct = await refetchProduct(localProduct.id);
+    if (latestProduct) {
+      setLocalProduct(latestProduct);
+    }
+  }, [localProduct.id]);
+
+  useDocumentVisibility(fetchLatestProduct);
 
   useEffect(() => {
     if (workflow) {
       if (localWorkflow) return;
-      setLocalWorkflow(JSON.parse(JSON.stringify(workflow)));
+
+      const workflowClone = structuredClone(workflow);
+      setLocalWorkflow(workflowClone);
 
       if (workflow.questions.length > 0) {
         setActiveQuestionId(workflow.questions[0].id);
       }
     }
-  }, [workflow, localWorkflow]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [workflow]);
+
+  useEffect(() => {
+    const listener = () => {
+      if (document.visibilityState === "visible") {
+        const fetchLatestProduct = async () => {
+          const latestProduct = await refetchProduct(localProduct.id);
+          if (latestProduct) {
+            setLocalProduct(latestProduct);
+          }
+        };
+        fetchLatestProduct();
+      }
+    };
+    document.addEventListener("visibilitychange", listener);
+    return () => {
+      document.removeEventListener("visibilitychange", listener);
+    };
+  }, [localProduct.id]);
 
   // when the workflow type changes, we need to reset the active question id to the first question
   useEffect(() => {
     if (localWorkflow?.questions?.length && localWorkflow.questions.length > 0) {
       setActiveQuestionId(localWorkflow.questions[0].id);
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [localWorkflow?.type]);
+  }, [localWorkflow?.type, workflow?.questions]);
+
+  useEffect(() => {
+    if (!localWorkflow?.languages) return;
+    const enabledLanguageCodes = extractLanguageCodes(getEnabledLanguages(localWorkflow.languages ?? []));
+    if (!enabledLanguageCodes.includes(selectedLanguageCode)) {
+      setSelectedLanguageCode("default");
+    }
+  }, [localWorkflow?.languages, selectedLanguageCode]);
 
   if (!localWorkflow) {
-    return <Loading />;
+    return <LoadingSkeleton />;
   }
 
   return (
@@ -82,45 +140,78 @@ export default function WorkflowEditor({
           activeId={activeView}
           setActiveId={setActiveView}
           setInvalidQuestions={setInvalidQuestions}
-          product={product}
+          product={localProduct}
           responseCount={responseCount}
+          selectedLanguageCode={selectedLanguageCode}
+          setSelectedLanguageCode={setSelectedLanguageCode}
         />
         <div className="relative z-0 flex flex-1 overflow-hidden">
-          <main className="relative z-0 flex-1 overflow-y-auto focus:outline-none">
-            <QuestionsAudienceTabs activeId={activeView} setActiveId={setActiveView} />
-            {activeView === "questions" ? (
+          <main className="relative z-0 flex-1 overflow-y-auto focus:outline-none" ref={workflowEditorRef}>
+            <QuestionsAudienceTabs
+              activeId={activeView}
+              setActiveId={setActiveView}
+              isStylingTabVisible={!!product.styling.allowStyleOverwrite}
+            />
+
+            {activeView === "questions" && (
               <QuestionsView
                 localWorkflow={localWorkflow}
                 setLocalWorkflow={setLocalWorkflow}
                 activeQuestionId={activeQuestionId}
                 setActiveQuestionId={setActiveQuestionId}
-                product={product}
+                product={localProduct}
                 invalidQuestions={invalidQuestions}
                 setInvalidQuestions={setInvalidQuestions}
                 isEngineLimited={isEngineLimited}
+                selectedLanguageCode={selectedLanguageCode ? selectedLanguageCode : "default"}
+                setSelectedLanguageCode={setSelectedLanguageCode}
+                isMultiLanguageAllowed={isMultiLanguageAllowed}
+                isTypeflowAICloud={isTypeflowAICloud}
               />
-            ) : (
+            )}
+
+            {activeView === "styling" && product.styling.allowStyleOverwrite && (
+              <StylingView
+                colors={colors}
+                environment={environment}
+                localWorkflow={localWorkflow}
+                setLocalWorkflow={setLocalWorkflow}
+                product={localProduct}
+                styling={styling ?? null}
+                setStyling={setStyling}
+                localStylingChanges={localStylingChanges}
+                setLocalStylingChanges={setLocalStylingChanges}
+                isUnsplashConfigured={isUnsplashConfigured}
+              />
+            )}
+
+            {activeView === "settings" && (
               <SettingsView
                 environment={environment}
                 localWorkflow={localWorkflow}
                 setLocalWorkflow={setLocalWorkflow}
                 actionClasses={actionClasses}
                 attributeClasses={attributeClasses}
+                segments={segments}
                 responseCount={responseCount}
                 membershipRole={membershipRole}
-                colours={colours}
+                isUserTargetingAllowed={isUserTargetingAllowed}
+                isTypeflowAICloud={isTypeflowAICloud}
               />
             )}
           </main>
-          <aside className="group hidden flex-1 flex-shrink-0 items-center justify-center overflow-hidden border-l border-slate-100 bg-slate-50 py-6  md:flex md:flex-col">
+
+          <aside className="group hidden flex-1 flex-shrink-0 items-center justify-center overflow-hidden border-l border-slate-100 bg-slate-50 py-6 md:flex md:flex-col">
             <PreviewWorkflow
               workflow={localWorkflow}
               webAppUrl={webAppUrl}
-              setActiveQuestionId={setActiveQuestionId}
-              activeQuestionId={activeQuestionId}
-              product={product}
+              questionId={activeQuestionId}
+              product={localProduct}
               environment={environment}
-              previewType={localWorkflow.type === "web" ? "modal" : "fullwidth"}
+              previewType={
+                localWorkflow.type === "app" || localWorkflow.type === "website" ? "modal" : "fullwidth"
+              }
+              languageCode={selectedLanguageCode}
               onFileUpload={async (file) => file.name}
             />
           </aside>

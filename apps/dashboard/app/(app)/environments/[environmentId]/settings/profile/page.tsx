@@ -1,7 +1,8 @@
-// import AccountSecurity from "@/app/(app)/environments/[environmentId]/settings/profile/components/AccountSecurity";
+import AccountSecurity from "@/app/(app)/environments/[environmentId]/settings/profile/components/AccountSecurity";
 import { getServerSession } from "next-auth";
 
 import { authOptions } from "@typeflowai/lib/authOptions";
+import { IS_TYPEFLOWAI_CLOUD } from "@typeflowai/lib/constants";
 import { getUser } from "@typeflowai/lib/user/service";
 import { SettingsId } from "@typeflowai/ui/SettingsId";
 
@@ -15,6 +16,9 @@ export default async function ProfileSettingsPage({ params }: { params: { enviro
   const { environmentId } = params;
 
   const session = await getServerSession(authOptions);
+  if (!session) {
+    throw new Error("Session not found");
+  }
 
   const user = session && session.user ? await getUser(session.user.id) : null;
 
@@ -29,17 +33,16 @@ export default async function ProfileSettingsPage({ params }: { params: { enviro
           <SettingsCard title="Avatar" description="Assist your team in identifying you on TypeflowAI.">
             <EditAvatar session={session} environmentId={environmentId} />
           </SettingsCard>
-          {/* //TODO: Pending review for implement 2FA */}
-          {/* {user.identityProvider === "email" && (
+          {user.identityProvider === "email" && (
             <SettingsCard title="Security" description="Manage your password and other security settings.">
               <AccountSecurity user={user} />
             </SettingsCard>
-          )} */}
+          )}
 
           <SettingsCard
             title="Delete account"
             description="Delete your account with all of your personal information and data.">
-            <DeleteAccount session={session} />
+            <DeleteAccount session={session} IS_TYPEFLOWAI_CLOUD={IS_TYPEFLOWAI_CLOUD} />
           </SettingsCard>
           <SettingsId title="Profile" id={user.id}></SettingsId>
         </div>

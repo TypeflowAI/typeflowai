@@ -1,12 +1,9 @@
 import { responses } from "@/app/lib/api/response";
 import { transformErrorToDetails } from "@/app/lib/api/validator";
-import { NextResponse } from "next/server";
 
 import { createDisplay } from "@typeflowai/lib/display/service";
-import { capturePosthogEvent } from "@typeflowai/lib/posthogServer";
-import { getTeamDetails } from "@typeflowai/lib/teamDetail/service";
-import { getWorkflow } from "@typeflowai/lib/workflow/service";
-import { TDisplay, ZDisplayCreateInput } from "@typeflowai/types/displays";
+import { capturePosthogEnvironmentEvent } from "@typeflowai/lib/posthogServer";
+import { ZDisplayCreateInput } from "@typeflowai/types/displays";
 import { InvalidInputError } from "@typeflowai/types/errors";
 
 interface Context {
@@ -15,11 +12,11 @@ interface Context {
   };
 }
 
-export async function OPTIONS(): Promise<NextResponse> {
+export async function OPTIONS(): Promise<Response> {
   return responses.successResponse({}, true);
 }
 
-export async function POST(request: Request, context: Context): Promise<NextResponse> {
+export async function POST(request: Request, context: Context): Promise<Response> {
   const jsonInput = await request.json();
   const inputValidation = ZDisplayCreateInput.safeParse({
     ...jsonInput,
@@ -34,13 +31,12 @@ export async function POST(request: Request, context: Context): Promise<NextResp
     );
   }
 
-  // find teamId & teamOwnerId from environmentId
-  const teamDetails = await getTeamDetails(inputValidation.data.environmentId);
-  let response: TDisplay;
+  let response = {};
 
   // create display
   try {
-    response = await createDisplay(inputValidation.data);
+    const { id } = await createDisplay(inputValidation.data);
+    response = { id };
   } catch (error) {
     if (error instanceof InvalidInputError) {
       return responses.badRequestResponse(error.message);
@@ -50,16 +46,7 @@ export async function POST(request: Request, context: Context): Promise<NextResp
     }
   }
 
-  const workflow = await getWorkflow(response.workflowId);
-
-  if (teamDetails?.teamOwnerId) {
-    await capturePosthogEvent(teamDetails.teamOwnerId, "DisplayCreated", teamDetails.teamId, {
-      workflowId: response.workflowId,
-      workflowType: workflow?.type,
-    });
-  } else {
-    console.warn("Posthog capture not possible. No team owner found");
-  }
+  await capturePosthogEnvironmentEvent(inputValidation.data.environmentId, "DisplayCreated");
 
   return responses.successResponse(response, true);
 }

@@ -1,9 +1,7 @@
 "use client";
 
 import { replacePresetPlaceholders } from "@/app/lib/templates";
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
-import { SparklesIcon } from "@heroicons/react/24/solid";
-import { SplitIcon } from "lucide-react";
+import { PlusCircleIcon, SparklesIcon, SplitIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -23,7 +21,7 @@ import { createWorkflowAction } from "../actions";
 import { adjustEngineForTemplate, adjustPromptForTemplate } from "./lib";
 import { customWorkflow, templates, testTemplate } from "./templates";
 
-type TemplateList = {
+interface TemplateList {
   environmentId: string;
   user: TUser;
   onTemplateClick: (template: TTemplate) => void;
@@ -31,11 +29,12 @@ type TemplateList = {
   product: TProduct;
   templateSearch?: string;
   isEngineLimited: boolean;
-};
+}
 
 const ALL_CATEGORY_NAME = "All";
 const RECOMMENDED_CATEGORY_NAME = "For you";
-export default function TemplateList({
+
+export const TemplateList = ({
   environmentId,
   user,
   onTemplateClick,
@@ -43,7 +42,7 @@ export default function TemplateList({
   environment,
   templateSearch,
   isEngineLimited,
-}: TemplateList) {
+}: TemplateList) => {
   const router = useRouter();
   const [activeTemplate, setActiveTemplate] = useState<TTemplate | null>(null);
   const [loading, setLoading] = useState(false);
@@ -76,13 +75,12 @@ export default function TemplateList({
     setLoading(true);
     const engineTemplateAdjusted = adjustEngineForTemplate(activeTemplate, isEngineLimited);
     const adjustedTemplate = adjustPromptForTemplate(engineTemplateAdjusted);
-    const workflowType = environment?.widgetSetupCompleted ? "web" : "link";
-    const autoComplete = workflowType === "web" ? 50 : null;
-    const augmentedTemplate = {
+    const workflowType = environment?.widgetSetupCompleted ? "app" : "link";
+    const augmentedTemplate: TWorkflowInput = {
       ...adjustedTemplate.preset,
       type: workflowType,
-      autoComplete,
-    } as TWorkflowInput;
+      createdBy: user.id,
+    };
     const workflow = await createWorkflowAction(environmentId, augmentedTemplate);
     capturePosthogEvent("WorkflowCreated", { isTemplate: isTemplate, template: activeTemplate.name });
     router.push(`/environments/${environmentId}/workflows/${workflow.id}/edit`);
@@ -188,7 +186,7 @@ export default function TemplateList({
           ? [...filteredAndSortedTemplates, testTemplate]
           : filteredAndSortedTemplates
         ).map((template: TTemplate) => (
-          <button
+          <div
             onClick={() => {
               const newTemplate = replacePresetPlaceholders(template, product);
               onTemplateClick(newTemplate);
@@ -283,9 +281,9 @@ export default function TemplateList({
                 </Button>
               </div>
             )}
-          </button>
+          </div>
         ))}
       </div>
     </main>
   );
-}
+};

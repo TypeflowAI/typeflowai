@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
 import { cn } from "@typeflowai/lib/cn";
-import { TTemplate } from "@typeflowai/types/templates";
 
 import { templates } from "./templates";
+import { TTemplate } from "./types";
 
 type TemplateList = {
   onTemplateClick: (template: TTemplate) => void;
@@ -53,12 +53,11 @@ export default function TemplateList({ onTemplateClick, activeTemplate }: Templa
         {templates
           .filter((template) => selectedFilter === ALL_CATEGORY_NAME || template.category === selectedFilter)
           .map((template: TTemplate) => (
-            <button
-              type="button"
+            <div
+              key={template.name}
               onClick={() => {
                 onTemplateClick(template); // Pass the 'template' object instead of 'activeTemplate'
               }}
-              key={template.name}
               className={cn(
                 activeTemplate?.name === template.name && "ring-brand ring-2",
                 "duration-120  group  relative rounded-lg bg-white p-6 shadow transition-all duration-150 hover:scale-105"
@@ -69,7 +68,7 @@ export default function TemplateList({ onTemplateClick, activeTemplate }: Templa
               <template.icon className="h-8 w-8" />
               <h3 className="text-md mb-1 mt-3 text-left font-bold text-slate-700">{template.name}</h3>
               <p className="text-left text-xs text-slate-600">{template.description}</p>
-            </button>
+            </div>
           ))}
       </div>
     </main>

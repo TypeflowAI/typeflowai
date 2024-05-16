@@ -1,7 +1,6 @@
-import { TWorkflowCTAQuestion } from "@typeflowai/types/workflows";
-
 import Headline from "./Headline";
 import HtmlBody from "./HtmlBody";
+import { TWorkflowCTAQuestion } from "./types";
 
 interface CTAQuestionProps {
   question: TWorkflowCTAQuestion;

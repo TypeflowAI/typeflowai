@@ -1,4 +1,4 @@
-import { CheckIcon } from "@heroicons/react/24/outline";
+import { CheckIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 import { Button } from "../Button";

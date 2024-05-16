@@ -1,6 +1,6 @@
 "use client";
 
-import TemplateList from "@/app/(app)/environments/[environmentId]/workflows/templates/TemplateList";
+import { TemplateList } from "@/app/(app)/environments/[environmentId]/workflows/templates/TemplateList";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
@@ -37,13 +37,12 @@ export default function WorkflowStarter({
     setIsCreateWorkflowLoading(true);
     const engineTemplateAdjusted = adjustEngineForTemplate(template, isEngineLimited);
     const adjustedTemplate = adjustPromptForTemplate(engineTemplateAdjusted);
-    const workflowType = environment?.widgetSetupCompleted ? "web" : "link";
-    const autoComplete = workflowType === "web" ? 50 : null;
-    const augmentedTemplate = {
+    const workflowType = environment?.widgetSetupCompleted ? "app" : "link";
+    const augmentedTemplate: TWorkflowInput = {
       ...adjustedTemplate.preset,
       type: workflowType,
-      autoComplete,
-    } as TWorkflowInput;
+      createdBy: user.id,
+    };
     const isTemplate = template.name === customWorkflow.name ? false : true;
     try {
       const workflow = await createWorkflowAction(environmentId, augmentedTemplate);

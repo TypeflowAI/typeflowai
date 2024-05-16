@@ -1,7 +1,8 @@
 import JsLogo from "@/images/jslogo.png";
-// import MakeLogo from "@/images/make-small.png";
-// import n8nLogo from "@/images/n8n.png";
+import MakeLogo from "@/images/make-small.png";
+import n8nLogo from "@/images/n8n.png";
 import notionLogo from "@/images/notion.png";
+import SlackLogo from "@/images/slacklogo.png";
 import WebhookLogo from "@/images/webhook.png";
 import ZapierLogo from "@/images/zapier-small.png";
 import { getServerSession } from "next-auth";
@@ -31,8 +32,8 @@ export default async function IntegrationsPage({ params }) {
     session,
     userWebhookCount,
     zapierWebhookCount,
-    // makeWebhookCount,
-    // n8nwebhookCount,
+    makeWebhookCount,
+    n8nwebhookCount,
   ] = await Promise.all([
     getEnvironment(environmentId),
     getIntegrations(environmentId),
@@ -40,8 +41,8 @@ export default async function IntegrationsPage({ params }) {
     getServerSession(authOptions),
     getWebhookCountBySource(environmentId, "user"),
     getWebhookCountBySource(environmentId, "zapier"),
-    // getWebhookCountBySource(environmentId, "make"),
-    // getWebhookCountBySource(environmentId, "n8n"),
+    getWebhookCountBySource(environmentId, "make"),
+    getWebhookCountBySource(environmentId, "n8n"),
   ]);
 
   const isIntegrationConnected = (type: TIntegrationType) =>
@@ -60,7 +61,8 @@ export default async function IntegrationsPage({ params }) {
   const isGoogleSheetsIntegrationConnected = isIntegrationConnected("googleSheets");
   const isNotionIntegrationConnected = isIntegrationConnected("notion");
   const isAirtableIntegrationConnected = isIntegrationConnected("airtable");
-  // const isN8nIntegrationConnected = isIntegrationConnected("n8n");
+  const isN8nIntegrationConnected = isIntegrationConnected("n8n");
+  const isSlackIntegrationConnected = isIntegrationConnected("slack");
 
   const integrationCards = [
     {
@@ -135,42 +137,55 @@ export default async function IntegrationsPage({ params }) {
       connected: isAirtableIntegrationConnected,
       statusText: isAirtableIntegrationConnected ? "Connected" : "Not Connected",
     },
-    // {
-    //   docsHref: "https://typeflowai.com/docs/integrations/n8n",
-    //   connectText: `${isN8nIntegrationConnected ? "Manage" : "Connect"}`,
-    //   docsText: "Docs",
-    //   docsNewTab: true,
-    //   connectHref: "https://n8n.io",
-    //   connectNewTab: true,
-    //   label: "n8n",
-    //   description: "Integrate TypeflowAI with 350+ apps via n8n",
-    //   icon: <Image src={n8nLogo} alt="n8n Logo" />,
-    //   connected: n8nwebhookCount > 0,
-    //   statusText:
-    //     n8nwebhookCount === 1
-    //       ? "1 integration"
-    //       : n8nwebhookCount === 0
-    //         ? "Not Connected"
-    //         : `${n8nwebhookCount} integrations`,
-    // },
-    // {
-    //   docsHref: "https://typeflowai.com/docs/integrations/make",
-    //   docsText: "Docs",
-    //   docsNewTab: true,
-    //   connectHref: "https://www.make.com/en/integrations/typeflowai",
-    //   connectText: "Connect",
-    //   connectNewTab: true,
-    //   label: "Make.com",
-    //   description: "Integrate TypeflowAI with 1000+ apps via Make",
-    //   icon: <Image src={MakeLogo} alt="Make Logo" />,
-    //   connected: makeWebhookCount > 0,
-    //   statusText:
-    //     makeWebhookCount === 1
-    //       ? "1 integration"
-    //       : makeWebhookCount === 0
-    //         ? "Not Connected"
-    //         : `${makeWebhookCount} integration`,
-    // },
+    {
+      connectHref: `/environments/${params.environmentId}/integrations/slack`,
+      connectText: `${isSlackIntegrationConnected ? "Manage" : "Connect"}`,
+      connectNewTab: false,
+      docsHref: "https://typeflowai.com/docs/integrations/slack",
+      docsText: "Docs",
+      docsNewTab: true,
+      label: "Slack",
+      description: "Instantly Connect your Slack Workspace with TypeflowAI",
+      icon: <Image src={SlackLogo} alt="Slack Logo" />,
+      connected: isSlackIntegrationConnected,
+      statusText: isSlackIntegrationConnected ? "Connected" : "Not Connected",
+    },
+    {
+      docsHref: "https://typeflowai.com/docs/integrations/n8n",
+      connectText: `${isN8nIntegrationConnected ? "Manage" : "Connect"}`,
+      docsText: "Docs",
+      docsNewTab: true,
+      connectHref: "https://n8n.io",
+      connectNewTab: true,
+      label: "n8n",
+      description: "Integrate TypeflowAI with 350+ apps via n8n",
+      icon: <Image src={n8nLogo} alt="n8n Logo" />,
+      connected: n8nwebhookCount > 0,
+      statusText:
+        n8nwebhookCount === 1
+          ? "1 integration"
+          : n8nwebhookCount === 0
+            ? "Not Connected"
+            : `${n8nwebhookCount} integrations`,
+    },
+    {
+      docsHref: "https://typeflowai.com/docs/integrations/make",
+      docsText: "Docs",
+      docsNewTab: true,
+      connectHref: "https://www.make.com/en/integrations/typeflowai",
+      connectText: "Connect",
+      connectNewTab: true,
+      label: "Make.com",
+      description: "Integrate TypeflowAI with 1000+ apps via Make",
+      icon: <Image src={MakeLogo} alt="Make Logo" />,
+      connected: makeWebhookCount > 0,
+      statusText:
+        makeWebhookCount === 1
+          ? "1 integration"
+          : makeWebhookCount === 0
+            ? "Not Connected"
+            : `${makeWebhookCount} integration`,
+    },
     {
       connectHref: `/environments/${params.environmentId}/integrations/notion`,
       connectText: `${isNotionIntegrationConnected ? "Manage" : "Connect"}`,

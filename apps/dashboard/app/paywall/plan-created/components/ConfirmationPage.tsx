@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { Button } from "@typeflowai/ui/Button";
 import { Confetti } from "@typeflowai/ui/Confetti";
-import ContentWrapper from "@typeflowai/ui/ContentWrapper";
+import { ContentWrapper } from "@typeflowai/ui/ContentWrapper";
 import { Logo } from "@typeflowai/ui/Logo";
 
 interface ConfirmationPageProps {

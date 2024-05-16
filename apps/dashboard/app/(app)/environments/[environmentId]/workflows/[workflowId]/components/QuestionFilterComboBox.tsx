@@ -1,12 +1,14 @@
 "use client";
 
+import { OptionsType } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/components/QuestionsComboBox";
 import clsx from "clsx";
 import { ChevronDown, ChevronUp, X } from "lucide-react";
 import * as React from "react";
 
-import useClickOutside from "@typeflowai/lib/useClickOutside";
+import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
+import { useClickOutside } from "@typeflowai/lib/utils/hooks/useClickOutside";
 import { TWorkflowQuestionType } from "@typeflowai/types/workflows";
-import { Command, CommandEmpty, CommandGroup, CommandItem } from "@typeflowai/ui/Command";
+import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@typeflowai/ui/Command";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,7 +23,13 @@ type QuestionFilterComboBoxProps = {
   filterComboBoxValue: string | string[] | undefined;
   onChangeFilterValue: (o: string) => void;
   onChangeFilterComboBoxValue: (o: string | string[]) => void;
-  type: TWorkflowQuestionType | "Attributes" | "Tags" | undefined;
+  type:
+    | OptionsType.OTHERS
+    | TWorkflowQuestionType
+    | OptionsType.ATTRIBUTES
+    | OptionsType.TAGS
+    | OptionsType.META
+    | undefined;
   handleRemoveMultiSelect: (value: string[]) => void;
   disabled?: boolean;
 };
@@ -40,15 +48,23 @@ const QuestionFilterComboBox = ({
   const [open, setOpen] = React.useState(false);
   const [openFilterValue, setOpenFilterValue] = React.useState<boolean>(false);
   const commandRef = React.useRef(null);
+  const defaultLanguageCode = "default";
   useClickOutside(commandRef, () => setOpen(false));
 
   // multiple when question type is multi selection
   const isMultiple =
-    type === TWorkflowQuestionType.MultipleChoiceMulti || type === TWorkflowQuestionType.MultipleChoiceSingle;
+    type === TWorkflowQuestionType.MultipleChoiceMulti ||
+    type === TWorkflowQuestionType.MultipleChoiceSingle ||
+    type === TWorkflowQuestionType.PictureSelection;
 
   // when question type is multi selection so we remove the option from the options which has been already selected
   const options = isMultiple
-    ? filterComboBoxOptions?.filter((o) => !filterComboBoxValue?.includes(o))
+    ? filterComboBoxOptions?.filter(
+        (o) =>
+          !filterComboBoxValue?.includes(
+            typeof o === "object" ? getLocalizedValue(o, defaultLanguageCode) : o
+          )
+      )
     : filterComboBoxOptions;
 
   // disable the combo box for selection of value when question type is nps or rating and selected value is submitted or skipped
@@ -95,7 +111,7 @@ const QuestionFilterComboBox = ({
             {filterOptions?.map((o, index) => (
               <DropdownMenuItem
                 key={`${o}-${index}`}
-                className="px-0.5 py-1"
+                className="px-0.5 py-1 dark:bg-slate-700 dark:text-slate-300 dark:ring-slate-700"
                 onClick={() => onChangeFilterValue(o)}>
                 {o}
               </DropdownMenuItem>
@@ -118,6 +134,7 @@ const QuestionFilterComboBox = ({
                 {typeof filterComboBoxValue !== "string" &&
                   filterComboBoxValue?.map((o) => (
                     <button
+                      type="button"
                       onClick={() => handleRemoveMultiSelect(filterComboBoxValue.filter((i) => i !== o))}
                       className="w-30 flex items-center whitespace-nowrap bg-slate-100 px-2 text-slate-600">
                       {o}
@@ -140,23 +157,32 @@ const QuestionFilterComboBox = ({
         <div className="relative mt-2 h-full">
           {open && (
             <div className="animate-in bg-popover absolute top-0 z-10 max-h-52 w-full overflow-auto rounded-md bg-white outline-none">
-              <CommandEmpty>No result found.</CommandEmpty>
-              <CommandGroup>
-                {options?.map((o) => (
-                  <CommandItem
-                    onSelect={() => {
-                      !isMultiple
-                        ? onChangeFilterComboBoxValue(o)
-                        : onChangeFilterComboBoxValue(
-                            Array.isArray(filterComboBoxValue) ? [...filterComboBoxValue, o] : [o]
-                          );
-                      !isMultiple && setOpen(false);
-                    }}
-                    className="cursor-pointer">
-                    {o}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
+              <CommandList>
+                <CommandEmpty>No result found.</CommandEmpty>
+                <CommandGroup>
+                  {options?.map((o) => (
+                    <CommandItem
+                      onSelect={() => {
+                        !isMultiple
+                          ? onChangeFilterComboBoxValue(
+                              typeof o === "object" ? getLocalizedValue(o, defaultLanguageCode) : o
+                            )
+                          : onChangeFilterComboBoxValue(
+                              Array.isArray(filterComboBoxValue)
+                                ? [
+                                    ...filterComboBoxValue,
+                                    typeof o === "object" ? getLocalizedValue(o, defaultLanguageCode) : o,
+                                  ]
+                                : [typeof o === "object" ? getLocalizedValue(o, defaultLanguageCode) : o]
+                            );
+                        !isMultiple && setOpen(false);
+                      }}
+                      className="cursor-pointer">
+                      {typeof o === "object" ? getLocalizedValue(o, defaultLanguageCode) : o}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
             </div>
           )}
         </div>

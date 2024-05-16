@@ -8,17 +8,17 @@ import DynamicAILeadMagnet from "@/components/solutions/DynamicAILeadMagnet";
 import Hero from "@/components/solutions/Hero";
 import ThreeColumnFeatures from "@/components/solutions/ThreeColumnFeatures";
 import CTA from "@/images/ctas/cta2.svg";
-import {
-  ArrowTrendingUpIcon,
-  CalculatorIcon,
-  FlagIcon,
-  LightBulbIcon,
-  PresentationChartBarIcon,
-  Squares2X2Icon,
-  TagIcon,
-  UsersIcon,
-} from "@heroicons/react/24/outline";
 import { SiLinkedin } from "@icons-pack/react-simple-icons";
+import {
+  CalculatorIcon,
+  FileBarChartIcon,
+  FlagIcon,
+  Grid2X2Icon,
+  LightbulbIcon,
+  TagIcon,
+  TrendingUpIcon,
+  UsersIcon,
+} from "lucide-react";
 
 const brandingFeatures = [
   {
@@ -45,19 +45,19 @@ const strategyFeatures = [
     id: "business-model-ideas-generator",
     name: "Business Model Ideas Generator",
     description: "Generate low-investment, digital business ideas with a business model canvas.",
-    icon: LightBulbIcon,
+    icon: LightbulbIcon,
   },
   {
     id: "unique-sales-proposal-generator",
     name: "Unique Sales Proposal Generator ",
     description: "Generate a unique value proposition for businesses based on expert methods.",
-    icon: PresentationChartBarIcon,
+    icon: FileBarChartIcon,
   },
   {
     id: "swot-analysis",
     name: "SWOT Analysis",
     description: "Conduct a SWOT analysis of a business based on its products, services and market. ",
-    icon: Squares2X2Icon,
+    icon: Grid2X2Icon,
   },
 ];
 
@@ -72,7 +72,7 @@ const goalsFeatures = [
     id: "business-intelligence-assessments",
     name: "Business intelligence Assessments",
     description: "Identify KPIs to determine business objectives.",
-    icon: ArrowTrendingUpIcon,
+    icon: TrendingUpIcon,
   },
   {
     id: "roi-calculator",

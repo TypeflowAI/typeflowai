@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-import { StripePriceLookupKeys, StripeProductNames } from "@typeflowai/ee/billing/lib/constants";
+import { StripePriceLookupKeys, StripeProductNames } from "@typeflowai/ee/stripe/lib/constants";
 import { TTeam } from "@typeflowai/types/teams";
 import { Logo } from "@typeflowai/ui/Logo";
 import { PlanSelector } from "@typeflowai/ui/PlanSelector";

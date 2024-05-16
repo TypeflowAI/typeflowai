@@ -1,13 +1,15 @@
 import "server-only";
 
-import { unstable_cache } from "next/cache";
+import { Prisma } from "@prisma/client";
 
 import { prisma } from "@typeflowai/database";
 import { ZId } from "@typeflowai/types/environment";
+import { DatabaseError } from "@typeflowai/types/errors";
 import { TTagsCount, TTagsOnResponses } from "@typeflowai/types/tags";
 
-import { SERVICES_REVALIDATION_INTERVAL } from "../constants";
+import { cache } from "../cache";
 import { responseCache } from "../response/cache";
+import { getResponse } from "../response/service";
 import { validateInputs } from "../utils/validate";
 import { tagOnResponseCache } from "./cache";
 
@@ -21,6 +23,7 @@ const selectTagsOnResponse = {
 
 export const addTagToRespone = async (responseId: string, tagId: string): Promise<TTagsOnResponses> => {
   try {
+    const response = await getResponse(responseId);
     const tagOnResponse = await prisma.tagsOnResponses.create({
       data: {
         responseId,
@@ -31,6 +34,8 @@ export const addTagToRespone = async (responseId: string, tagId: string): Promis
 
     responseCache.revalidate({
       id: responseId,
+      workflowId: response?.workflowId,
+      personId: response?.person?.id,
     });
 
     tagOnResponseCache.revalidate({
@@ -44,12 +49,17 @@ export const addTagToRespone = async (responseId: string, tagId: string): Promis
       tagId,
     };
   } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      throw new DatabaseError(error.message);
+    }
+
     throw error;
   }
 };
 
 export const deleteTagOnResponse = async (responseId: string, tagId: string): Promise<TTagsOnResponses> => {
   try {
+    const response = await getResponse(responseId);
     const deletedTag = await prisma.tagsOnResponses.delete({
       where: {
         responseId_tagId: {
@@ -62,6 +72,8 @@ export const deleteTagOnResponse = async (responseId: string, tagId: string): Pr
 
     responseCache.revalidate({
       id: responseId,
+      workflowId: response?.workflowId,
+      personId: response?.person?.id,
     });
 
     tagOnResponseCache.revalidate({
@@ -75,12 +87,15 @@ export const deleteTagOnResponse = async (responseId: string, tagId: string): Pr
       responseId,
     };
   } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      throw new DatabaseError(error.message);
+    }
     throw error;
   }
 };
 
 export const getTagsOnResponsesCount = async (environmentId: string): Promise<TTagsCount> =>
-  unstable_cache(
+  cache(
     async () => {
       validateInputs([environmentId, ZId]);
 
@@ -103,12 +118,14 @@ export const getTagsOnResponsesCount = async (environmentId: string): Promise<TT
 
         return tagsCount.map((tagCount) => ({ tagId: tagCount.tagId, count: tagCount._count._all }));
       } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+          throw new DatabaseError(error.message);
+        }
         throw error;
       }
     },
     [`getTagsOnResponsesCount-${environmentId}`],
     {
       tags: [tagOnResponseCache.tag.byEnvironmentId(environmentId)],
-      revalidate: SERVICES_REVALIDATION_INTERVAL,
     }
   )();

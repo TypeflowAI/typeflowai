@@ -1,6 +1,4 @@
-"use client";
-
-import { CheckCircleIcon, GlobeEuropeAfricaIcon } from "@heroicons/react/24/solid";
+import { AlertCircleIcon, CheckCircle2Icon } from "lucide-react";
 import { Clipboard } from "lucide-react";
 import { toast } from "react-hot-toast";
 
@@ -15,14 +13,14 @@ interface ShareEmbedWorkflowProps {
   showPublishModal: boolean;
   workflowUrl: string;
 }
-export default function ShareWorkflowResults({
+export const ShareWorkflowResults = ({
   open,
   setOpen,
   handlePublish,
   handleUnpublish,
   showPublishModal,
   workflowUrl,
-}: ShareEmbedWorkflowProps) {
+}: ShareEmbedWorkflowProps) => {
   return (
     <Dialog
       open={open}
@@ -30,42 +28,36 @@ export default function ShareWorkflowResults({
         setOpen(open);
       }}>
       {showPublishModal && workflowUrl ? (
-        <DialogContent className="bottom-0 flex h-[95%] w-full cursor-pointer flex-col gap-0 overflow-hidden rounded-2xl bg-white p-0 sm:max-w-none lg:bottom-auto lg:h-auto lg:w-[40%]">
-          <div className="no-scrollbar mt-4 flex grow flex-col items-center justify-center overflow-x-hidden overflow-y-scroll">
-            <CheckCircleIcon className="mt-4 h-20 w-20 text-slate-300" />
-            <div className="mt-6 px-4 py-3 text-lg font-medium text-slate-600 lg:px-6 lg:py-3">
-              Your workflow results are public on the web.
-            </div>
-            <div className="text-md px-4  py-3 text-slate-500 lg:px-6 lg:py-0">
-              Your workflow results are shared with anyone who has the link.
-            </div>
-            <div className="text-md mb-6 px-4 py-3 text-slate-500 lg:px-6 lg:py-0">
-              The results will not be indexed by search engines.
+        <DialogContent className="flex flex-col rounded-2xl bg-white px-12 py-6">
+          <div className="flex flex-col items-center gap-y-6 text-center">
+            <CheckCircle2Icon className="h-20 w-20 text-slate-300" />
+            <div>
+              <p className="text-lg font-medium text-slate-600">Your workflow results are public!</p>
+              <p className="text-balanced mt-2 text-sm text-slate-500">
+                Your workflow results are shared with anyone who has the link. The results will not be indexed
+                by search engines.
+              </p>
             </div>
 
             <div className="flex gap-2">
-              <div className="relative grow overflow-auto rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-800">
-                <span
-                  style={{
-                    wordBreak: "break-all",
-                  }}>
-                  {workflowUrl}
-                </span>
+              <div className="whitespace-nowrap rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-800">
+                <span>{workflowUrl}</span>
               </div>
               <Button
                 variant="secondary"
                 size="sm"
                 title="Copy workflow link to clipboard"
                 aria-label="Copy workflow link to clipboard"
+                className="hover:cursor-pointer"
                 onClick={() => {
                   navigator.clipboard.writeText(workflowUrl);
-                  toast.success("URL copied to clipboard!");
+                  toast.success("Link copied to clipboard!");
                 }}>
                 <Clipboard />
               </Button>
             </div>
 
-            <div className="my-6 flex gap-2">
+            <div className="flex gap-2">
               <Button
                 type="submit"
                 variant="secondary"
@@ -75,34 +67,34 @@ export default function ShareWorkflowResults({
               </Button>
 
               <Button variant="darkCTA" className=" text-center" href={workflowUrl} target="_blank">
-                View Site
+                View site
               </Button>
             </div>
           </div>
         </DialogContent>
       ) : (
-        <DialogContent className="bottom-0 flex h-[95%] w-full flex-col gap-0 overflow-hidden rounded-2xl bg-white p-0 sm:max-w-none lg:bottom-auto lg:h-auto lg:w-[40%]">
-          <div className="no-scrollbar mt-4 flex grow flex-col items-center justify-center overflow-x-hidden overflow-y-scroll">
-            <GlobeEuropeAfricaIcon className="mt-4 h-20 w-20 text-slate-300" />
-            <div className=" mt-6 px-4 py-3 text-lg font-medium text-slate-600 lg:px-6 lg:py-3">
-              Publish Results to web
-            </div>
-            <div className="text-md px-4 py-3 text-slate-500 lg:px-6 lg:py-0">
-              Your workflow results are shared with anyone who has the link.
-            </div>
-            <div className=" text-md px-4 py-3 text-slate-500  lg:px-6 lg:py-0">
-              The results will not be indexed by search engines.
+        <DialogContent className="flex flex-col rounded-2xl bg-white p-8">
+          <div className="flex flex-col items-center gap-y-6 text-center">
+            <AlertCircleIcon className="h-20 w-20 text-slate-300" />
+            <div>
+              <p className="text-lg font-medium text-slate-600">
+                You are about to release these workflow results to the public.
+              </p>
+              <p className="text-balanced mt-2 text-sm text-slate-500">
+                Your workflow results will be public. Anyone outside your team can access them if they have
+                the link.
+              </p>
             </div>
             <Button
               type="submit"
               variant="darkCTA"
-              className="my-8  h-full text-center"
+              className="h-full text-center"
               onClick={() => handlePublish()}>
-              Publish to web
+              Publish to public web
             </Button>
           </div>
         </DialogContent>
       )}
     </Dialog>
   );
-}
+};

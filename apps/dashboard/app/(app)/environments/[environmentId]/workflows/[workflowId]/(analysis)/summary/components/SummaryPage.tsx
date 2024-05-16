@@ -1,66 +1,128 @@
 "use client";
 
 import { useResponseFilter } from "@/app/(app)/environments/[environmentId]/components/ResponseFilterContext";
-import WorkflowResultsTabs from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/components/WorkflowResultsTabs";
-import SummaryDropOffs from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/SummaryDropOffs";
-import SummaryList from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/SummaryList";
-import SummaryMetadata from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/SummaryMetadata";
-import CustomFilter from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/components/CustomFilter";
-import SummaryHeader from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/components/SummaryHeader";
-import { getFilterResponses } from "@/app/lib/workflows/workflows";
-import { useSearchParams } from "next/navigation";
+import {
+  getResponseCountAction,
+  getWorkflowSummaryAction,
+} from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/actions";
+import { WorkflowResultsTabs } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/components/WorkflowResultsTabs";
+import { SummaryDropOffs } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/SummaryDropOffs";
+import { CustomFilter } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/components/CustomFilter";
+import { ResultsShareButton } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/components/ResultsShareButton";
+import { SummaryHeader } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/components/SummaryHeader";
+import { getFormattedFilters } from "@/app/lib/workflows/workflows";
+import {
+  getResponseCountByWorkflowSharingKeyAction,
+  getSummaryByWorkflowSharingKeyAction,
+} from "@/app/share/[sharingKey]/action";
+import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
+import { checkForRecallInHeadline } from "@typeflowai/lib/utils/recall";
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TMembershipRole } from "@typeflowai/types/memberships";
 import { TProduct } from "@typeflowai/types/product";
-import { TResponse } from "@typeflowai/types/responses";
-import { TTag } from "@typeflowai/types/tags";
 import { TUser } from "@typeflowai/types/user";
+import { TWorkflowSummary } from "@typeflowai/types/workflows";
 import { TWorkflow } from "@typeflowai/types/workflows";
-import ContentWrapper from "@typeflowai/ui/ContentWrapper";
+import { ContentWrapper } from "@typeflowai/ui/ContentWrapper";
+
+import { SummaryList } from "./SummaryList";
+import { SummaryMetadata } from "./SummaryMetadata";
+
+const initialWorkflowSummary: TWorkflowSummary = {
+  meta: {
+    completedPercentage: 0,
+    completedResponses: 0,
+    displayCount: 0,
+    dropOffPercentage: 0,
+    dropOffCount: 0,
+    startsPercentage: 0,
+    totalResponses: 0,
+    ttcAverage: 0,
+  },
+  dropOff: [],
+  summary: [],
+};
 
 interface SummaryPageProps {
   environment: TEnvironment;
   workflow: TWorkflow;
   workflowId: string;
-  responses: TResponse[];
   webAppUrl: string;
   product: TProduct;
-  user: TUser;
-  environmentTags: TTag[];
-  displayCount: number;
-  responsesPerPage: number;
+  user?: TUser;
   membershipRole?: TMembershipRole;
+  totalResponseCount: number;
 }
 
 const SummaryPage = ({
   environment,
   workflow,
   workflowId,
-  responses,
-  webAppUrl,
   product,
+  webAppUrl,
   user,
-  environmentTags,
-  displayCount,
-  responsesPerPage,
   membershipRole,
+  totalResponseCount,
 }: SummaryPageProps) => {
-  const { selectedFilter, dateRange, resetState } = useResponseFilter();
+  const params = useParams();
+  const sharingKey = params.sharingKey as string;
+  const isSharingPage = !!sharingKey;
+
+  const [responseCount, setResponseCount] = useState<number | null>(null);
+  const [workflowSummary, setWorkflowSummary] = useState<TWorkflowSummary>(initialWorkflowSummary);
   const [showDropOffs, setShowDropOffs] = useState<boolean>(false);
+  const [isFetchingSummary, setFetchingSummary] = useState<boolean>(true);
+
+  const { selectedFilter, dateRange, resetState } = useResponseFilter();
+
+  const filters = useMemo(
+    () => getFormattedFilters(workflow, selectedFilter, dateRange),
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [selectedFilter, dateRange]
+  );
+
+  useEffect(() => {
+    const handleInitialData = async () => {
+      try {
+        setFetchingSummary(true);
+        let updatedResponseCount;
+        if (isSharingPage) {
+          updatedResponseCount = await getResponseCountByWorkflowSharingKeyAction(sharingKey, filters);
+        } else {
+          updatedResponseCount = await getResponseCountAction(workflowId, filters);
+        }
+        setResponseCount(updatedResponseCount);
+
+        let updatedWorkflowSummary;
+        if (isSharingPage) {
+          updatedWorkflowSummary = await getSummaryByWorkflowSharingKeyAction(sharingKey, filters);
+        } else {
+          updatedWorkflowSummary = await getWorkflowSummaryAction(workflowId, filters);
+        }
+
+        setWorkflowSummary(updatedWorkflowSummary);
+      } finally {
+        setFetchingSummary(false);
+      }
+    };
+
+    handleInitialData();
+  }, [filters, isSharingPage, sharingKey, workflowId]);
+
   const searchParams = useSearchParams();
+
+  workflow = useMemo(() => {
+    return checkForRecallInHeadline(workflow, "default");
+  }, [workflow]);
 
   useEffect(() => {
     if (!searchParams?.get("referer")) {
       resetState();
     }
   }, [searchParams, resetState]);
-
-  // get the filtered array when the selected filter value changes
-  const filterResponses: TResponse[] = useMemo(() => {
-    return getFilterResponses(responses, selectedFilter, workflow, dateRange);
-  }, [selectedFilter, responses, workflow, dateRange]);
 
   return (
     <ContentWrapper>
@@ -73,28 +135,30 @@ const SummaryPage = ({
         user={user}
         membershipRole={membershipRole}
       />
-      <CustomFilter
-        environmentTags={environmentTags}
-        responses={filterResponses}
-        workflow={workflow}
-        totalResponses={responses}
+      <div className="flex gap-1.5">
+        <CustomFilter workflow={workflow} />
+        {!isSharingPage && <ResultsShareButton workflow={workflow} webAppUrl={webAppUrl} user={user} />}
+      </div>
+      <WorkflowResultsTabs
+        activeId="summary"
+        environmentId={environment.id}
+        workflowId={workflowId}
+        responseCount={responseCount}
       />
-      <WorkflowResultsTabs activeId="summary" environmentId={environment.id} workflowId={workflowId} />
       <SummaryMetadata
-        responses={filterResponses}
         workflow={workflow}
-        displayCount={displayCount}
+        workflowSummary={workflowSummary.meta}
         showDropOffs={showDropOffs}
         setShowDropOffs={setShowDropOffs}
       />
-      {showDropOffs && (
-        <SummaryDropOffs workflow={workflow} responses={responses} displayCount={displayCount} />
-      )}
+      {showDropOffs && <SummaryDropOffs dropOff={workflowSummary.dropOff} />}
       <SummaryList
-        responses={filterResponses}
+        summary={workflowSummary.summary}
+        responseCount={responseCount}
         workflow={workflow}
         environment={environment}
-        responsesPerPage={responsesPerPage}
+        fetchingSummary={isFetchingSummary}
+        totalResponseCount={totalResponseCount}
       />
     </ContentWrapper>
   );

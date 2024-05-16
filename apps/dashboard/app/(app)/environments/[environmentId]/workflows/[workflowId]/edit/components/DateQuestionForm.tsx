@@ -1,22 +1,22 @@
-import { PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { PlusIcon, TrashIcon } from "lucide-react";
 import { useState } from "react";
 
+import { createI18nString, extractLanguageCodes } from "@typeflowai/lib/i18n/utils";
 import { TWorkflow, TWorkflowDateQuestion } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
-import { Input } from "@typeflowai/ui/Input";
 import { Label } from "@typeflowai/ui/Label";
+import { QuestionFormInput } from "@typeflowai/ui/QuestionFormInput";
 import { OptionsSwitcher } from "@typeflowai/ui/QuestionTypeSelector";
-
-import QuestionFormInput from "./QuestionFormInput";
 
 interface IDateQuestionFormProps {
   localWorkflow: TWorkflow;
   question: TWorkflowDateQuestion;
   questionIdx: number;
-  updateQuestion: (questionIdx: number, updatedAttributes: any) => void;
+  updateQuestion: (questionIdx: number, updatedAttributes: Partial<TWorkflowDateQuestion>) => void;
   lastQuestion: boolean;
-  isPromptVisible: boolean;
-  isInValid: boolean;
+  selectedLanguageCode: string;
+  setSelectedLanguageCode: (language: string) => void;
+  isInvalid: boolean;
 }
 
 const dateOptions = [
@@ -34,48 +34,69 @@ const dateOptions = [
   },
 ];
 
-export default function DateQuestionForm({
+export const DateQuestionForm = ({
   question,
   questionIdx,
   updateQuestion,
-  isInValid,
+  isInvalid,
   localWorkflow,
-}: IDateQuestionFormProps): JSX.Element {
+  selectedLanguageCode,
+  setSelectedLanguageCode,
+}: IDateQuestionFormProps): JSX.Element => {
   const [showSubheader, setShowSubheader] = useState(!!question.subheader);
+  const workflowLanguageCodes = extractLanguageCodes(localWorkflow.languages);
 
   return (
     <form>
       <QuestionFormInput
-        environmentId={localWorkflow.environmentId}
-        isInValid={isInValid}
-        question={question}
+        id="headline"
+        value={question.headline}
+        localWorkflow={localWorkflow}
         questionIdx={questionIdx}
+        isInvalid={isInvalid}
         updateQuestion={updateQuestion}
+        selectedLanguageCode={selectedLanguageCode}
+        setSelectedLanguageCode={setSelectedLanguageCode}
       />
-      <div className="mt-3">
+      <div>
         {showSubheader && (
-          <>
-            <Label htmlFor="subheader">Description</Label>
-            <div className="mt-2 inline-flex w-full items-center">
-              <Input
+          <div className="mt-2 inline-flex w-full items-center">
+            <div className="w-full">
+              <QuestionFormInput
                 id="subheader"
-                name="subheader"
                 value={question.subheader}
-                onChange={(e) => updateQuestion(questionIdx, { subheader: e.target.value })}
-              />
-              <TrashIcon
-                className="ml-2 h-4 w-4 cursor-pointer text-slate-400 hover:text-slate-500"
-                onClick={() => {
-                  setShowSubheader(false);
-                  updateQuestion(questionIdx, { subheader: "" });
-                }}
+                localWorkflow={localWorkflow}
+                questionIdx={questionIdx}
+                isInvalid={isInvalid}
+                updateQuestion={updateQuestion}
+                selectedLanguageCode={selectedLanguageCode}
+                setSelectedLanguageCode={setSelectedLanguageCode}
               />
             </div>
-          </>
+
+            <TrashIcon
+              className="ml-2 mt-10 h-4 w-4 cursor-pointer text-slate-400 hover:text-slate-500"
+              onClick={() => {
+                setShowSubheader(false);
+                updateQuestion(questionIdx, { subheader: undefined });
+              }}
+            />
+          </div>
         )}
 
         {!showSubheader && (
-          <Button size="sm" variant="minimal" type="button" onClick={() => setShowSubheader(true)}>
+          <Button
+            size="sm"
+            className="mt-3"
+            variant="minimal"
+            type="button"
+            onClick={() => {
+              updateQuestion(questionIdx, {
+                subheader: createI18nString("", workflowLanguageCodes),
+              });
+              setShowSubheader(true);
+            }}>
+            {" "}
             <PlusIcon className="mr-1 h-4 w-4" />
             Add Description
           </Button>
@@ -88,10 +109,12 @@ export default function DateQuestionForm({
           <OptionsSwitcher
             options={dateOptions}
             currentOption={question.format}
-            handleTypeChange={(value) => updateQuestion(questionIdx, { format: value })}
+            handleTypeChange={(value: "M-d-y" | "d-M-y" | "y-M-d") =>
+              updateQuestion(questionIdx, { format: value })
+            }
           />
         </div>
       </div>
     </form>
   );
-}
+};

@@ -1,7 +1,5 @@
-import { NextResponse } from "next/server";
-
 import { prisma } from "@typeflowai/database";
-import { sendForgotPasswordEmail } from "@typeflowai/lib/emails/emails";
+import { sendForgotPasswordEmail } from "@typeflowai/email";
 
 export async function POST(request: Request) {
   const { email } = await request.json();
@@ -14,13 +12,13 @@ export async function POST(request: Request) {
     });
 
     if (!foundUser) {
-      return NextResponse.json({ error: "No user with this email found" }, { status: 409 });
+      return Response.json({ error: "No user with this email found" }, { status: 409 });
     }
 
     await sendForgotPasswordEmail(foundUser);
-    return NextResponse.json({});
+    return Response.json({});
   } catch (e) {
-    return NextResponse.json(
+    return Response.json(
       {
         error: e.message,
         errorCode: e.code,

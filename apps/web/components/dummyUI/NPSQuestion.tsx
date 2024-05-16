@@ -1,10 +1,10 @@
 import { useState } from "react";
 
 import { cn } from "@typeflowai/lib/cn";
-import { TWorkflowNPSQuestion } from "@typeflowai/types/workflows";
 
 import Headline from "./Headline";
 import Subheader from "./Subheader";
+import { TWorkflowNPSQuestion } from "./types";
 
 interface NPSQuestionProps {
   question: TWorkflowNPSQuestion;
@@ -48,7 +48,7 @@ export default function NPSQuestion({ question, onSubmit, lastQuestion, brandCol
                 key={number}
                 className={cn(
                   selectedChoice === number ? "z-10  bg-slate-50" : "",
-                  "relative h-10 flex-1 cursor-pointer border bg-white text-center text-sm leading-10 text-slate-900 first:rounded-l-md last:rounded-r-md  hover:bg-gray-100 focus:outline-none"
+                  "relative h-10 flex-1 cursor-pointer border bg-white text-center text-sm leading-10 text-slate-900 first:rounded-l-md last:rounded-r-md  hover:bg-slate-100 focus:outline-none"
                 )}>
                 <input
                   type="radio"

@@ -1,17 +1,16 @@
 import { responses } from "@/app/lib/api/response";
 import { transformErrorToDetails } from "@/app/lib/api/validator";
 import { sendToPipeline } from "@/app/lib/pipelines";
-import { NextResponse } from "next/server";
+import { headers } from "next/headers";
 import { UAParser } from "ua-parser-js";
 
 import { getPerson } from "@typeflowai/lib/person/service";
-import { capturePosthogEvent } from "@typeflowai/lib/posthogServer";
+import { capturePosthogEnvironmentEvent } from "@typeflowai/lib/posthogServer";
 import { createResponse } from "@typeflowai/lib/response/service";
-import { getTeamDetails } from "@typeflowai/lib/teamDetail/service";
 import { getWorkflow } from "@typeflowai/lib/workflow/service";
 import { ZId } from "@typeflowai/types/environment";
 import { InvalidInputError } from "@typeflowai/types/errors";
-import { TResponse, ZResponseInput } from "@typeflowai/types/responses";
+import { TResponse, TResponseInput, ZResponseInput } from "@typeflowai/types/responses";
 
 interface Context {
   params: {
@@ -19,11 +18,11 @@ interface Context {
   };
 }
 
-export async function OPTIONS(): Promise<NextResponse> {
+export async function OPTIONS(): Promise<Response> {
   return responses.successResponse({}, true);
 }
 
-export async function POST(request: Request, context: Context): Promise<NextResponse> {
+export async function POST(request: Request, context: Context): Promise<Response> {
   const { environmentId } = context.params;
   const environmentIdValidation = ZId.safeParse(environmentId);
 
@@ -37,6 +36,7 @@ export async function POST(request: Request, context: Context): Promise<NextResp
 
   const responseInput = await request.json();
 
+  // legacy workaround for typeflowai-js 1.2.0 & 1.2.1
   if (responseInput.personId && typeof responseInput.personId === "string") {
     const person = await getPerson(responseInput.personId);
     responseInput.userId = person?.userId;
@@ -44,6 +44,11 @@ export async function POST(request: Request, context: Context): Promise<NextResp
   }
 
   const agent = UAParser(request.headers.get("user-agent"));
+  const country =
+    headers().get("CF-IPCountry") ||
+    headers().get("X-Vercel-IP-Country") ||
+    headers().get("CloudFront-Viewer-Country") ||
+    undefined;
   const inputValidation = ZResponseInput.safeParse({ ...responseInput, environmentId });
 
   if (!inputValidation.success) {
@@ -70,11 +75,9 @@ export async function POST(request: Request, context: Context): Promise<NextResp
     );
   }
 
-  const teamDetails = await getTeamDetails(workflow.environmentId);
-
   let response: TResponse;
   try {
-    const meta = {
+    const meta: TResponseInput["meta"] = {
       source: responseInput?.meta?.source,
       url: responseInput?.meta?.url,
       userAgent: {
@@ -82,6 +85,8 @@ export async function POST(request: Request, context: Context): Promise<NextResp
         device: agent?.device.type,
         os: agent?.os.name,
       },
+      country: country,
+      action: responseInput?.meta?.action,
     };
 
     response = await createResponse({
@@ -113,14 +118,10 @@ export async function POST(request: Request, context: Context): Promise<NextResp
     });
   }
 
-  if (teamDetails?.teamOwnerId) {
-    await capturePosthogEvent(teamDetails.teamOwnerId, "ResponseCreated", teamDetails.teamId, {
-      workflowId: response.workflowId,
-      workflowType: workflow.type,
-    });
-  } else {
-    console.warn("Posthog capture not possible. No team owner found");
-  }
+  await capturePosthogEnvironmentEvent(workflow.environmentId, "ResponseCreated", {
+    workflowId: response.workflowId,
+    workflowType: workflow.type,
+  });
 
   return responses.successResponse({ id: response.id }, true);
 }

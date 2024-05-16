@@ -1,24 +1,24 @@
 import { WorkflowInline } from "@/components/general/WorkflowInline";
 import { WorkflowModal } from "@/components/general/WorkflowModal";
 import { addCustomThemeToDom, addStylesToDom } from "@/lib/styles";
-import { WorkflowInlineProps, WorkflowModalProps } from "@/types/props";
 import { h, render } from "preact";
 
-export const renderWorkflowInline = (props: WorkflowInlineProps & { brandColor: string }) => {
-  addStylesToDom();
-  addCustomThemeToDom({ brandColor: props.brandColor });
+import { WorkflowInlineProps, WorkflowModalProps } from "@typeflowai/types/typeflowAIWorkflows";
 
-  const { containerId, ...workflowProps } = props;
-  const element = document.getElementById(containerId);
+export const renderWorkflowInline = (props: WorkflowInlineProps) => {
+  addStylesToDom();
+  addCustomThemeToDom({ styling: props.styling });
+
+  const element = document.getElementById(props.containerId);
   if (!element) {
-    throw new Error(`renderWorkflow: Element with id ${containerId} not found.`);
+    throw new Error(`renderWorkflow: Element with id ${props.containerId} not found.`);
   }
-  render(h(WorkflowInline, workflowProps), element);
+  render(h(WorkflowInline, props), element);
 };
 
-export const renderWorkflowModal = (props: WorkflowModalProps & { brandColor: string }) => {
+export const renderWorkflowModal = (props: WorkflowModalProps) => {
   addStylesToDom();
-  addCustomThemeToDom({ brandColor: props.brandColor });
+  addCustomThemeToDom({ styling: props.styling });
 
   // add container element to DOM
   const element = document.createElement("div");
@@ -26,3 +26,10 @@ export const renderWorkflowModal = (props: WorkflowModalProps & { brandColor: st
   document.body.appendChild(element);
   render(h(WorkflowModal, props), element);
 };
+
+if (typeof window !== "undefined") {
+  window.typeflowAIWorkflows = {
+    renderWorkflowInline,
+    renderWorkflowModal,
+  };
+}

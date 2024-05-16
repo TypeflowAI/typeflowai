@@ -1,4 +1,4 @@
-export default function LoadingSpinner() {
+export const LoadingSpinner = () => {
   return (
     <div className="flex">
       <svg
@@ -14,4 +14,4 @@ export default function LoadingSpinner() {
       </svg>
     </div>
   );
-}
+};

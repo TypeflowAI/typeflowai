@@ -1,16 +1,18 @@
 import { getServerSession } from "next-auth";
 
-import { getIsEngineLimited } from "@typeflowai/ee/lib/service";
+import { getIsPaidSubscription } from "@typeflowai/ee/subscription/lib/service";
+import { getIsEngineLimited } from "@typeflowai/ee/subscription/lib/service";
 import { getActionClasses } from "@typeflowai/lib/actionClass/service";
 import { getAttributeClasses } from "@typeflowai/lib/attributeClass/service";
 import { authOptions } from "@typeflowai/lib/authOptions";
-import { colours } from "@typeflowai/lib/constants";
+import { IS_TYPEFLOWAI_CLOUD, UNSPLASH_ACCESS_KEY, WORKFLOW_BG_COLORS } from "@typeflowai/lib/constants";
 import { WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
 import { getMembershipByUserIdTeamId } from "@typeflowai/lib/membership/service";
 import { getAccessFlags } from "@typeflowai/lib/membership/utils";
 import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
 import { getResponseCountByWorkflowId } from "@typeflowai/lib/response/service";
+import { getSegments } from "@typeflowai/lib/segment/service";
 import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
 import { getWorkflow } from "@typeflowai/lib/workflow/service";
 import { ErrorComponent } from "@typeflowai/ui/ErrorComponent";
@@ -25,17 +27,27 @@ export const generateMetadata = async ({ params }) => {
 };
 
 export default async function WorkflowsEditPage({ params }) {
-  const [workflow, product, environment, actionClasses, attributeClasses, responseCount, team, session] =
-    await Promise.all([
-      getWorkflow(params.workflowId),
-      getProductByEnvironmentId(params.environmentId),
-      getEnvironment(params.environmentId),
-      getActionClasses(params.environmentId),
-      getAttributeClasses(params.environmentId),
-      getResponseCountByWorkflowId(params.workflowId),
-      getTeamByEnvironmentId(params.environmentId),
-      getServerSession(authOptions),
-    ]);
+  const [
+    workflow,
+    product,
+    environment,
+    actionClasses,
+    attributeClasses,
+    responseCount,
+    team,
+    session,
+    segments,
+  ] = await Promise.all([
+    getWorkflow(params.workflowId),
+    getProductByEnvironmentId(params.environmentId),
+    getEnvironment(params.environmentId),
+    getActionClasses(params.environmentId),
+    getAttributeClasses(params.environmentId),
+    getResponseCountByWorkflowId(params.workflowId),
+    getTeamByEnvironmentId(params.environmentId),
+    getServerSession(authOptions),
+    getSegments(params.environmentId),
+  ]);
 
   if (!session) {
     throw new Error("Session not found");
@@ -51,6 +63,9 @@ export default async function WorkflowsEditPage({ params }) {
   ]);
   const { isViewer } = getAccessFlags(currentUserMembership?.role);
   const isWorkflowCreationDeletionDisabled = isViewer;
+
+  const isUserTargetingAllowed = getIsPaidSubscription(team);
+  const isMultiLanguageAllowed = getIsPaidSubscription(team);
 
   if (
     !workflow ||
@@ -73,7 +88,12 @@ export default async function WorkflowsEditPage({ params }) {
       attributeClasses={attributeClasses}
       responseCount={responseCount}
       membershipRole={currentUserMembership?.role}
-      colours={colours}
+      colors={WORKFLOW_BG_COLORS}
+      segments={segments}
+      isUserTargetingAllowed={isUserTargetingAllowed}
+      isMultiLanguageAllowed={isMultiLanguageAllowed}
+      isTypeflowAICloud={IS_TYPEFLOWAI_CLOUD}
+      isUnsplashConfigured={UNSPLASH_ACCESS_KEY ? true : false}
       isEngineLimited={isEngineLimited}
     />
   );

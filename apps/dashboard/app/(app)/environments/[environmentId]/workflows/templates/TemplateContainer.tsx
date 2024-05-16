@@ -1,8 +1,9 @@
 "use client";
 
+import { PreviewWorkflow } from "@/app/(app)/environments/[environmentId]/workflows/components/PreviewWorkflow";
+import { TemplateList } from "@/app/(app)/environments/[environmentId]/workflows/templates/TemplateList";
 import { replacePresetPlaceholders } from "@/app/lib/templates";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import type { TEnvironment } from "@typeflowai/types/environment";
 import type { TProduct } from "@typeflowai/types/product";
@@ -10,8 +11,6 @@ import type { TTemplate } from "@typeflowai/types/templates";
 import { TUser } from "@typeflowai/types/user";
 import { SearchBox } from "@typeflowai/ui/SearchBox";
 
-import PreviewWorkflow from "../components/PreviewWorkflow";
-import TemplateList from "./TemplateList";
 import { minimalWorkflow, templates } from "./templates";
 
 type TemplateContainerWithPreviewProps = {
@@ -79,11 +78,11 @@ export default function TemplateContainerWithPreview({
             <div className="my-6 flex h-[90%] w-full flex-col items-center justify-center">
               <PreviewWorkflow
                 workflow={{ ...minimalWorkflow, ...activeTemplate.preset }}
-                activeQuestionId={activeQuestionId}
+                questionId={activeQuestionId}
                 product={product}
                 environment={environment}
                 webAppUrl={webAppUrl}
-                setActiveQuestionId={setActiveQuestionId}
+                languageCode={"default"}
                 onFileUpload={async (file) => file.name}
               />
             </div>

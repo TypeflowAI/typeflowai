@@ -2,7 +2,7 @@
 
 import { TWorkflowPinValidationResponseError } from "@/app/s/[workflowId]/types";
 
-import { LinkWorkflowEmailData, sendLinkWorkflowToVerifiedEmail } from "@typeflowai/lib/emails/emails";
+import { LinkWorkflowEmailData, sendLinkWorkflowToVerifiedEmail } from "@typeflowai/email";
 import { verifyTokenForLinkWorkflow } from "@typeflowai/lib/jwt";
 import { getWorkflow } from "@typeflowai/lib/workflow/service";
 import { TWorkflow } from "@typeflowai/types/workflows";

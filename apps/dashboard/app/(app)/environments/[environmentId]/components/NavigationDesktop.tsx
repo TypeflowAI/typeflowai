@@ -1,27 +1,28 @@
 "use client";
 
-import { typeflowaiLogout } from "@/app/lib/typeflowai";
+import { typeflowAILogout } from "@/app/lib/typeflowai";
 import Logo from "@/images/logo.svg";
+import clsx from "clsx";
 import {
-  AdjustmentsVerticalIcon,
-  ArrowRightOnRectangleIcon,
-  BoltIcon,
-  ChatBubbleBottomCenterTextIcon,
+  BrushIcon,
   ChevronDownIcon,
-  CodeBracketIcon,
-  Cog6ToothIcon,
+  CodeIcon,
   CreditCardIcon,
-  DocumentCheckIcon,
-  EnvelopeIcon, // FunnelIcon,
+  FileCheckIcon,
   HeartIcon,
+  LanguagesIcon,
   LinkIcon,
-  PaintBrushIcon,
+  LogOutIcon,
+  MailIcon,
+  MessageSquareTextIcon,
   PlusIcon,
-  PuzzlePieceIcon,
+  PuzzleIcon,
+  SettingsIcon,
+  SlidersIcon,
   UserCircleIcon,
   UsersIcon,
-} from "@heroicons/react/24/solid";
-import clsx from "clsx";
+  ZapIcon,
+} from "lucide-react";
 import type { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
@@ -29,7 +30,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
-import typeflowai from "@typeflowai/js";
+import typeflowai from "@typeflowai/js/app";
 import { getAccessFlags } from "@typeflowai/lib/membership/utils";
 import { capitalizeFirstLetter, truncate } from "@typeflowai/lib/strings";
 import { TEnvironment } from "@typeflowai/types/environment";
@@ -70,6 +71,7 @@ interface NavigationProps {
   isTypeflowAICloud: boolean;
   webAppUrl: string;
   membershipRole?: TMembershipRole;
+  isMultiLanguageAllowed: boolean;
 }
 
 export default function NavigationDesktop({
@@ -82,6 +84,7 @@ export default function NavigationDesktop({
   isTypeflowAICloud,
   webAppUrl,
   membershipRole,
+  isMultiLanguageAllowed,
 }: NavigationProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -111,12 +114,20 @@ export default function NavigationDesktop({
     }
   }, [team]);
 
+  const sortedProducts = useMemo(() => {
+    return [...products].sort((a, b) => a.name.localeCompare(b.name));
+  }, [products]);
+
+  const sortedTeams = useMemo(() => {
+    return [...teams].sort((a, b) => a.name.localeCompare(b.name));
+  }, [teams]);
+
   const navigation = useMemo(
     () => [
       {
         name: "Workflows",
         href: `/environments/${environment.id}/workflows`,
-        icon: BoltIcon,
+        icon: ZapIcon,
         current: pathname?.includes("/workflows"),
         hidden: false,
       },
@@ -124,11 +135,10 @@ export default function NavigationDesktop({
       //   name: "People",
       //   href: `/environments/${environment.id}/people`,
       //   icon: UsersIcon,
-      //   current: pathname?.includes("/people"),
-      //   hidden: false,
+      //   current: pathname?.includes("/people") || pathname?.includes("/segments"),
       // },
       // {
-      //   name: "Actions & Attributes",
+      //   name: "Actions",
       //   href: `/environments/${environment.id}/actions`,
       //   icon: FunnelIcon,
       //   current: pathname?.includes("/actions") || pathname?.includes("/attributes"),
@@ -137,14 +147,14 @@ export default function NavigationDesktop({
       {
         name: "Integrations",
         href: `/environments/${environment.id}/integrations`,
-        icon: PuzzlePieceIcon,
+        icon: PuzzleIcon,
         current: pathname?.includes("/integrations"),
         hidden: isViewer,
       },
       {
         name: "Settings",
-        href: `/environments/${environment.id}/settings/profile`,
-        icon: Cog6ToothIcon,
+        href: `/environments/${environment.id}/settings/product`,
+        icon: SettingsIcon,
         current: pathname?.includes("/settings"),
         hidden: false,
       },
@@ -152,21 +162,27 @@ export default function NavigationDesktop({
     [environment.id, pathname, isViewer]
   );
 
-  const dropdownnavigation = [
+  const dropdownNavigation = [
     {
       title: "Workflow",
       links: [
         {
-          icon: AdjustmentsVerticalIcon,
+          icon: SlidersIcon,
           label: "Product Settings",
           href: `/environments/${environment.id}/settings/product`,
           hidden: false,
         },
         {
-          icon: PaintBrushIcon,
+          icon: BrushIcon,
           label: "Look & Feel",
           href: `/environments/${environment.id}/settings/lookandfeel`,
           hidden: isViewer,
+        },
+        {
+          icon: LanguagesIcon,
+          label: "Workflow Languages",
+          href: `/environments/${environment.id}/settings/language`,
+          hidden: !isMultiLanguageAllowed,
         },
       ],
     },
@@ -191,7 +207,7 @@ export default function NavigationDesktop({
       title: "Setup",
       links: [
         {
-          icon: DocumentCheckIcon,
+          icon: FileCheckIcon,
           label: "Setup checklist",
           href: `/environments/${environment.id}/settings/setup`,
           hidden: widgetSetupCompleted,
@@ -205,7 +221,7 @@ export default function NavigationDesktop({
           },
         },
         {
-          icon: CodeBracketIcon,
+          icon: CodeIcon,
           label: "Developer Docs",
           href: "https://typeflowai.com/docs",
           target: "_blank",
@@ -296,18 +312,7 @@ export default function NavigationDesktop({
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild id="userDropdownTrigger">
                           <div tabIndex={0} className="flex cursor-pointer flex-row items-center space-x-5">
-                            {session.user &&
-                              (session.user.imageUrl ? (
-                                <Image
-                                  src={session.user.imageUrl}
-                                  width="40"
-                                  height="40"
-                                  className="ph-no-capture h-10 w-10 rounded-full"
-                                  alt="Profile picture"
-                                />
-                              ) : (
-                                <ProfileAvatar userId={session.user.id} />
-                              ))}
+                            <ProfileAvatar userId={session.user.id} imageUrl={session.user.imageUrl} />
                             <div>
                               <p className="ph-no-capture ph-no-capture -mb-0.5 font-semibold text-white">
                                 {truncate(product!.name, 30)}
@@ -341,13 +346,40 @@ export default function NavigationDesktop({
 
                           <DropdownMenuSeparator />
 
+                          {/* Environment Switch */}
+
+                          <DropdownMenuSub>
+                            <DropdownMenuSubTrigger>
+                              <div>
+                                <p>{capitalizeFirstLetter(environment?.type)}</p>
+                                <p className=" block text-xs text-slate-500">Environment</p>
+                              </div>
+                            </DropdownMenuSubTrigger>
+                            <DropdownMenuPortal>
+                              <DropdownMenuSubContent>
+                                <DropdownMenuRadioGroup
+                                  value={environment?.type}
+                                  onValueChange={(v) =>
+                                    handleEnvironmentChange(v as "production" | "development")
+                                  }>
+                                  <DropdownMenuRadioItem value="production" className="cursor-pointer">
+                                    Production
+                                  </DropdownMenuRadioItem>
+                                  <DropdownMenuRadioItem value="development" className="cursor-pointer">
+                                    Development
+                                  </DropdownMenuRadioItem>
+                                </DropdownMenuRadioGroup>
+                              </DropdownMenuSubContent>
+                            </DropdownMenuPortal>
+                          </DropdownMenuSub>
+
                           {/* Product Switch */}
 
                           <DropdownMenuSub>
                             <DropdownMenuSubTrigger>
                               <div>
                                 <div className="flex items-center space-x-1">
-                                  <p className="">{truncate(product!.name, 20)}</p>
+                                  <p>{truncate(product!.name, 20)}</p>
                                   {!widgetSetupCompleted && (
                                     <TooltipProvider delayDuration={50}>
                                       <Tooltip>
@@ -369,7 +401,7 @@ export default function NavigationDesktop({
                                 <DropdownMenuRadioGroup
                                   value={product!.id}
                                   onValueChange={(v) => handleEnvironmentChangeByProduct(v)}>
-                                  {products.map((product) => (
+                                  {sortedProducts.map((product) => (
                                     <DropdownMenuRadioItem
                                       value={product.id}
                                       className="cursor-pointer break-all"
@@ -404,7 +436,7 @@ export default function NavigationDesktop({
                                 <DropdownMenuRadioGroup
                                   value={currentTeamId}
                                   onValueChange={(teamId) => handleEnvironmentChangeByTeam(teamId)}>
-                                  {teams?.map((team) => (
+                                  {sortedTeams.map((team) => (
                                     <DropdownMenuRadioItem
                                       value={team.id}
                                       className="cursor-pointer"
@@ -422,34 +454,7 @@ export default function NavigationDesktop({
                             </DropdownMenuPortal>
                           </DropdownMenuSub>
 
-                          {/* Environment Switch */}
-
-                          <DropdownMenuSub>
-                            <DropdownMenuSubTrigger>
-                              <div>
-                                <p>{capitalizeFirstLetter(environment?.type)}</p>
-                                <p className=" block text-xs text-slate-500">Environment</p>
-                              </div>
-                            </DropdownMenuSubTrigger>
-                            <DropdownMenuPortal>
-                              <DropdownMenuSubContent>
-                                <DropdownMenuRadioGroup
-                                  value={environment?.type}
-                                  onValueChange={(v) =>
-                                    handleEnvironmentChange(v as "production" | "development")
-                                  }>
-                                  <DropdownMenuRadioItem value="production" className="cursor-pointer">
-                                    Production
-                                  </DropdownMenuRadioItem>
-                                  <DropdownMenuRadioItem value="development" className="cursor-pointer">
-                                    Development
-                                  </DropdownMenuRadioItem>
-                                </DropdownMenuRadioGroup>
-                              </DropdownMenuSubContent>
-                            </DropdownMenuPortal>
-                          </DropdownMenuSub>
-
-                          {dropdownnavigation.map((item) => (
+                          {dropdownNavigation.map((item) => (
                             <DropdownMenuGroup key={item.title}>
                               <DropdownMenuSeparator />
                               {item.links.map(
@@ -474,7 +479,7 @@ export default function NavigationDesktop({
                                 <DropdownMenuItem>
                                   <a href="mailto:support@typeflowai.com">
                                     <div className="flex items-center">
-                                      <EnvelopeIcon className="mr-2 h-4 w-4" />
+                                      <MailIcon className="mr-2 h-4 w-4" />
                                       <span>Email us!</span>
                                     </div>
                                   </a>
@@ -485,7 +490,7 @@ export default function NavigationDesktop({
                                       typeflowai.track("Top Menu: Product Feedback");
                                     }}>
                                     <div className="flex items-center">
-                                      <ChatBubbleBottomCenterTextIcon className="mr-2 h-4 w-4" />
+                                      <MessageSquareTextIcon className="mr-2 h-4 w-4" />
                                       <span>Product Feedback</span>
                                     </div>
                                   </button>
@@ -494,11 +499,11 @@ export default function NavigationDesktop({
                             )}
                             <DropdownMenuItem
                               onClick={async () => {
-                                await signOut();
-                                await typeflowaiLogout();
+                                await signOut({ callbackUrl: "/auth/login" });
+                                await typeflowAILogout();
                               }}>
                               <div className="flex h-full w-full items-center">
-                                <ArrowRightOnRectangleIcon className="mr-2 h-4 w-4" />
+                                <LogOutIcon className="mr-2 h-4 w-4" />
                                 Logout
                               </div>
                             </DropdownMenuItem>

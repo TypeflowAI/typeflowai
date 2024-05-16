@@ -8,11 +8,11 @@ export default function DocsSidebar() {
       <Button className="my-2" href="https://typeflowai.com/docs" target="_blank">
         Read Docs
       </Button>
-      {/* <p className="mt-6 font-bold text-slate-700">Need help?</p>
+      <p className="mt-6 font-bold text-slate-700">Need help?</p>
       <p className="text-xs text-slate-500">We&apos;re happy to help.</p>
       <Button className="my-2" variant="secondary" href="https://typeflowai.com/discord" target="_blank">
         Join Discord
-      </Button> */}
+      </Button>
     </div>
   );
 }

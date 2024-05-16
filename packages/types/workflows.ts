@@ -1,14 +1,29 @@
 import { z } from "zod";
 
+import { ZNoCodeConfig } from "./actionClasses";
+import { ZAttributes } from "./attributes";
 import { ZAllowedFileExtension, ZColor, ZPlacement } from "./common";
+import { ZId } from "./environment";
 import { OpenAIModel } from "./openai";
-import { TPerson } from "./people";
+import { ZLanguage } from "./product";
 import { ZPromptAttributes } from "./prompt";
+import { ZSegment } from "./segment";
+import { ZBaseStyling } from "./styling";
+
+export const ZI18nString = z.record(z.string()).refine((obj) => "default" in obj, {
+  message: "Object must have a 'default' key",
+});
+
+export type TI18nString = z.infer<typeof ZI18nString>;
 
 export const ZWorkflowThankYouCard = z.object({
   enabled: z.boolean(),
-  headline: z.optional(z.string()),
-  subheader: z.optional(z.string()),
+  headline: ZI18nString.optional(),
+  subheader: ZI18nString.optional(),
+  buttonLabel: ZI18nString.optional(),
+  buttonLink: z.optional(z.string()),
+  imageUrl: z.string().optional(),
+  videoUrl: z.string().optional(),
 });
 
 export enum TWorkflowQuestionType {
@@ -23,17 +38,24 @@ export enum TWorkflowQuestionType {
   PictureSelection = "pictureSelection",
   Cal = "cal",
   Date = "date",
+  Matrix = "matrix",
+  Address = "address",
 }
 
-export const ZWorkflowWelcomeCard = z.object({
-  enabled: z.boolean(),
-  headline: z.optional(z.string()),
-  html: z.string().optional(),
-  fileUrl: z.string().optional(),
-  buttonLabel: z.string().optional(),
-  timeToFinish: z.boolean().default(true),
-  showResponseCount: z.boolean().default(false),
-});
+export const ZWorkflowWelcomeCard = z
+  .object({
+    enabled: z.boolean(),
+    headline: ZI18nString.optional(),
+    html: ZI18nString.optional(),
+    fileUrl: z.string().optional(),
+    buttonLabel: ZI18nString.optional(),
+    timeToFinish: z.boolean().default(true),
+    showResponseCount: z.boolean().default(false),
+    videoUrl: z.string().optional(),
+  })
+  .refine((schema) => !(schema.enabled && !schema.headline), {
+    message: "Welcome card must have a headline",
+  });
 
 export const ZWorkflowPrompt = z.object({
   enabled: z.boolean(),
@@ -60,21 +82,12 @@ export const ZWorkflowProductOverwrites = z.object({
 
 export type TWorkflowProductOverwrites = z.infer<typeof ZWorkflowProductOverwrites>;
 
-export const ZWorkflowBackgroundBgType = z.enum(["animation", "color", "image"]);
+export const ZWorkflowBackgroundBgType = z.enum(["animation", "color", "upload", "image"]);
 
 export type TWorkflowBackgroundBgType = z.infer<typeof ZWorkflowBackgroundBgType>;
 
-export const ZWorkflowStylingBackground = z.object({
-  bg: z.string().nullish(),
-  bgType: z.enum(["animation", "color", "image"]).nullish(),
-  brightness: z.number().nullish(),
-});
-
-export type TWorkflowStylingBackground = z.infer<typeof ZWorkflowStylingBackground>;
-
-export const ZWorkflowStyling = z.object({
-  background: ZWorkflowStylingBackground.nullish(),
-  hideProgressBar: z.boolean().nullish(),
+export const ZWorkflowStyling = ZBaseStyling.extend({
+  overwriteThemeStyling: z.boolean().nullish(),
 });
 
 export type TWorkflowStyling = z.infer<typeof ZWorkflowStyling>;
@@ -120,7 +133,7 @@ export type TWorkflowClosedMessage = z.infer<typeof ZWorkflowClosedMessage>;
 
 export const ZWorkflowChoice = z.object({
   id: z.string(),
-  label: z.string(),
+  label: ZI18nString,
 });
 
 export const ZWorkflowPictureChoice = z.object({
@@ -146,6 +159,8 @@ export const ZWorkflowLogicCondition = z.enum([
   "uploaded",
   "notUploaded",
   "booked",
+  "isCompletelySubmitted",
+  "isPartiallySubmitted",
 ]);
 
 export type TWorkflowLogicCondition = z.infer<typeof ZWorkflowLogicCondition>;
@@ -166,14 +181,19 @@ export const ZWorkflowOpenTextLogic = ZWorkflowLogicBase.extend({
   value: z.undefined(),
 });
 
+export const ZWorkflowAddressLogic = ZWorkflowLogicBase.extend({
+  condition: z.enum(["submitted", "skipped"]).optional(),
+  value: z.undefined(),
+});
+
 export const ZWorkflowConsentLogic = ZWorkflowLogicBase.extend({
   condition: z.enum(["skipped", "accepted"]).optional(),
   value: z.undefined(),
 });
 
 export const ZWorkflowMultipleChoiceSingleLogic = ZWorkflowLogicBase.extend({
-  condition: z.enum(["submitted", "skipped", "equals", "notEquals"]).optional(),
-  value: z.string().optional(),
+  condition: z.enum(["submitted", "skipped", "equals", "notEquals", "includesOne"]).optional(),
+  value: z.union([z.array(z.string()), z.string()]).optional(),
 });
 
 export const ZWorkflowMultipleChoiceMultiLogic = ZWorkflowLogicBase.extend({
@@ -197,12 +217,12 @@ export const ZWorkflowNPSLogic = ZWorkflowLogicBase.extend({
   value: z.union([z.string(), z.number()]).optional(),
 });
 
-const ZWorkflowCTALogic = ZWorkflowLogicBase.extend({
+export const ZWorkflowCTALogic = ZWorkflowLogicBase.extend({
   condition: z.enum(["clicked", "submitted", "skipped"]).optional(),
   value: z.undefined(),
 });
 
-const ZWorkflowRatingLogic = ZWorkflowLogicBase.extend({
+export const ZWorkflowRatingLogic = ZWorkflowLogicBase.extend({
   condition: z
     .enum([
       "equals",
@@ -218,13 +238,18 @@ const ZWorkflowRatingLogic = ZWorkflowLogicBase.extend({
   value: z.union([z.string(), z.number()]).optional(),
 });
 
-const ZWorkflowPictureSelectionLogic = ZWorkflowLogicBase.extend({
+export const ZWorkflowPictureSelectionLogic = ZWorkflowLogicBase.extend({
   condition: z.enum(["submitted", "skipped"]).optional(),
   value: z.undefined(),
 });
 
-const ZWorkflowCalLogic = ZWorkflowLogicBase.extend({
+export const ZWorkflowCalLogic = ZWorkflowLogicBase.extend({
   condition: z.enum(["booked", "skipped"]).optional(),
+  value: z.undefined(),
+});
+
+const ZWorkflowMatrixLogic = ZWorkflowLogicBase.extend({
+  condition: z.enum(["isCompletelySubmitted", "isPartiallySubmitted", "skipped"]).optional(),
   value: z.undefined(),
 });
 
@@ -239,19 +264,22 @@ export const ZWorkflowLogic = z.union([
   ZWorkflowPictureSelectionLogic,
   ZWorkflowFileUploadLogic,
   ZWorkflowCalLogic,
+  ZWorkflowMatrixLogic,
+  ZWorkflowAddressLogic,
 ]);
 
 export type TWorkflowLogic = z.infer<typeof ZWorkflowLogic>;
 
-const ZWorkflowQuestionBase = z.object({
+export const ZWorkflowQuestionBase = z.object({
   id: z.string(),
   type: z.string(),
-  headline: z.string(),
-  subheader: z.string().optional(),
+  headline: ZI18nString,
+  subheader: ZI18nString.optional(),
   imageUrl: z.string().optional(),
+  videoUrl: z.string().optional(),
   required: z.boolean(),
-  buttonLabel: z.string().optional(),
-  backButtonLabel: z.string().optional(),
+  buttonLabel: ZI18nString.optional(),
+  backButtonLabel: ZI18nString.optional(),
   scale: z.enum(["number", "smiley", "star"]).optional(),
   range: z.union([z.literal(5), z.literal(3), z.literal(4), z.literal(7), z.literal(10)]).optional(),
   logic: z.array(ZWorkflowLogic).optional(),
@@ -263,7 +291,7 @@ export type TWorkflowOpenTextQuestionInputType = z.infer<typeof ZWorkflowOpenTex
 
 export const ZWorkflowOpenTextQuestion = ZWorkflowQuestionBase.extend({
   type: z.literal(TWorkflowQuestionType.OpenText),
-  placeholder: z.string().optional(),
+  placeholder: ZI18nString.optional(),
   longAnswer: z.boolean().optional(),
   logic: z.array(ZWorkflowOpenTextLogic).optional(),
   inputType: ZWorkflowOpenTextQuestionInputType.optional().default("text"),
@@ -273,9 +301,8 @@ export type TWorkflowOpenTextQuestion = z.infer<typeof ZWorkflowOpenTextQuestion
 
 export const ZWorkflowConsentQuestion = ZWorkflowQuestionBase.extend({
   type: z.literal(TWorkflowQuestionType.Consent),
-  html: z.string().optional(),
-  label: z.string(),
-  dismissButtonLabel: z.string().optional(),
+  html: ZI18nString.optional(),
+  label: ZI18nString,
   placeholder: z.string().optional(),
   logic: z.array(ZWorkflowConsentLogic).optional(),
 });
@@ -287,23 +314,29 @@ export const ZWorkflowMultipleChoiceSingleQuestion = ZWorkflowQuestionBase.exten
   choices: z.array(ZWorkflowChoice),
   logic: z.array(ZWorkflowMultipleChoiceSingleLogic).optional(),
   shuffleOption: z.enum(["none", "all", "exceptLast"]).optional(),
+  otherOptionPlaceholder: ZI18nString.optional(),
 });
 
 export type TWorkflowMultipleChoiceSingleQuestion = z.infer<typeof ZWorkflowMultipleChoiceSingleQuestion>;
+
+export const ZShuffleOption = z.enum(["none", "all", "exceptLast"]);
+
+export type TShuffleOption = z.infer<typeof ZShuffleOption>;
 
 export const ZWorkflowMultipleChoiceMultiQuestion = ZWorkflowQuestionBase.extend({
   type: z.literal(TWorkflowQuestionType.MultipleChoiceMulti),
   choices: z.array(ZWorkflowChoice),
   logic: z.array(ZWorkflowMultipleChoiceMultiLogic).optional(),
   shuffleOption: z.enum(["none", "all", "exceptLast"]).optional(),
+  otherOptionPlaceholder: ZI18nString.optional(),
 });
 
 export type TWorkflowMultipleChoiceMultiQuestion = z.infer<typeof ZWorkflowMultipleChoiceMultiQuestion>;
 
 export const ZWorkflowNPSQuestion = ZWorkflowQuestionBase.extend({
   type: z.literal(TWorkflowQuestionType.NPS),
-  lowerLabel: z.string(),
-  upperLabel: z.string(),
+  lowerLabel: ZI18nString,
+  upperLabel: ZI18nString,
   logic: z.array(ZWorkflowNPSLogic).optional(),
 });
 
@@ -311,38 +344,27 @@ export type TWorkflowNPSQuestion = z.infer<typeof ZWorkflowNPSQuestion>;
 
 export const ZWorkflowCTAQuestion = ZWorkflowQuestionBase.extend({
   type: z.literal(TWorkflowQuestionType.CTA),
-  html: z.string().optional(),
+  html: ZI18nString.optional(),
   buttonUrl: z.string().optional(),
   buttonExternal: z.boolean(),
-  dismissButtonLabel: z.string().optional(),
+  dismissButtonLabel: ZI18nString.optional(),
   logic: z.array(ZWorkflowCTALogic).optional(),
 });
 
 export type TWorkflowCTAQuestion = z.infer<typeof ZWorkflowCTAQuestion>;
 
-// export const ZWorkflowWelcomeQuestion = ZWorkflowQuestionBase.extend({
-//   type: z.literal(TWorkflowQuestionType.Welcome),
-//   html: z.string().optional(),
-//   fileUrl: z.string().optional(),
-//   buttonUrl: z.string().optional(),
-//   timeToFinish: z.boolean().default(false),
-//   logic: z.array(ZWorkflowCTALogic).optional(),
-// });
-
-// export type TWorkflowWelcomeQuestion = z.infer<typeof ZWorkflowWelcomeQuestion>;
-
 export const ZWorkflowRatingQuestion = ZWorkflowQuestionBase.extend({
   type: z.literal(TWorkflowQuestionType.Rating),
   scale: z.enum(["number", "smiley", "star"]),
   range: z.union([z.literal(5), z.literal(3), z.literal(4), z.literal(7), z.literal(10)]),
-  lowerLabel: z.string(),
-  upperLabel: z.string(),
+  lowerLabel: ZI18nString,
+  upperLabel: ZI18nString,
   logic: z.array(ZWorkflowRatingLogic).optional(),
 });
 
 export const ZWorkflowDateQuestion = ZWorkflowQuestionBase.extend({
   type: z.literal(TWorkflowQuestionType.Date),
-  html: z.string().optional(),
+  html: ZI18nString.optional(),
   format: z.enum(["M-d-y", "d-M-y", "y-M-d"]),
 });
 
@@ -377,6 +399,26 @@ export const ZWorkflowCalQuestion = ZWorkflowQuestionBase.extend({
 
 export type TWorkflowCalQuestion = z.infer<typeof ZWorkflowCalQuestion>;
 
+export const ZWorkflowMatrixQuestion = ZWorkflowQuestionBase.extend({
+  type: z.literal(TWorkflowQuestionType.Matrix),
+  rows: z.array(ZI18nString),
+  columns: z.array(ZI18nString),
+  logic: z.array(ZWorkflowMatrixLogic).optional(),
+});
+
+export type TWorkflowMatrixQuestion = z.infer<typeof ZWorkflowMatrixQuestion>;
+
+export const ZWorkflowAddressQuestion = ZWorkflowQuestionBase.extend({
+  type: z.literal(TWorkflowQuestionType.Address),
+  isAddressLine1Required: z.boolean().default(false),
+  isAddressLine2Required: z.boolean().default(false),
+  isCityRequired: z.boolean().default(false),
+  isStateRequired: z.boolean().default(false),
+  isZipRequired: z.boolean().default(false),
+  isCountryRequired: z.boolean().default(false),
+});
+export type TWorkflowAddressQuestion = z.infer<typeof ZWorkflowAddressQuestion>;
+
 export const ZWorkflowQuestion = z.union([
   ZWorkflowOpenTextQuestion,
   ZWorkflowConsentQuestion,
@@ -389,7 +431,17 @@ export const ZWorkflowQuestion = z.union([
   ZWorkflowDateQuestion,
   ZWorkflowFileUploadQuestion,
   ZWorkflowCalQuestion,
+  ZWorkflowMatrixQuestion,
+  ZWorkflowAddressQuestion,
 ]);
+
+export const ZWorkflowLanguage = z.object({
+  language: ZLanguage,
+  default: z.boolean(),
+  enabled: z.boolean(),
+});
+
+export type TWorkflowLanguage = z.infer<typeof ZWorkflowLanguage>;
 
 export type TWorkflowQuestion = z.infer<typeof ZWorkflowQuestion>;
 
@@ -397,25 +449,45 @@ export const ZWorkflowQuestions = z.array(ZWorkflowQuestion);
 
 export type TWorkflowQuestions = z.infer<typeof ZWorkflowQuestions>;
 
-export const ZWorkflowAttributeFilter = z.object({
-  attributeClassId: z.string().cuid2(),
-  condition: z.enum(["equals", "notEquals"]),
-  value: z.string(),
-});
+export const ZWorkflowQuestionsObject = z.object({ questions: ZWorkflowQuestions });
 
-export type TWorkflowAttributeFilter = z.infer<typeof ZWorkflowAttributeFilter>;
+export type TWorkflowQuestionsObject = z.infer<typeof ZWorkflowQuestionsObject>;
 
-const ZWorkflowDisplayOption = z.enum(["displayOnce", "displayMultiple", "respondMultiple"]);
+export const ZWorkflowDisplayOption = z.enum(["displayOnce", "displayMultiple", "respondMultiple"]);
 
 export type TWorkflowDisplayOption = z.infer<typeof ZWorkflowDisplayOption>;
 
-const ZWorkflowType = z.enum(["web", "email", "link", "mobile"]);
+export const ZWorkflowType = z.enum(["link", "app", "website"]);
 
 export type TWorkflowType = z.infer<typeof ZWorkflowType>;
 
-const ZWorkflowStatus = z.enum(["draft", "inProgress", "paused", "completed"]);
+export const ZWorkflowStatus = z.enum(["draft", "scheduled", "inProgress", "paused", "completed"]);
 
 export type TWorkflowStatus = z.infer<typeof ZWorkflowStatus>;
+
+export const ZWorkflowInlineTriggers = z.object({
+  codeConfig: z.object({ identifier: z.string() }).optional(),
+  noCodeConfig: ZNoCodeConfig.omit({ type: true }).optional(),
+});
+
+export type TWorkflowInlineTriggers = z.infer<typeof ZWorkflowInlineTriggers>;
+
+export const workflowHasBothTriggers = (workflow: TWorkflow) => {
+  // if the triggers array has a single empty string, it means the workflow has no triggers
+  if (workflow.triggers?.[0] === "") {
+    return false;
+  }
+
+  const hasTriggers = workflow.triggers?.length > 0;
+  const hasInlineTriggers = !!workflow.inlineTriggers?.codeConfig || !!workflow.inlineTriggers?.noCodeConfig;
+
+  // Workflow cannot have both triggers and inlineTriggers
+  if (hasTriggers && hasInlineTriggers) {
+    return true;
+  }
+
+  return false;
+};
 
 export const ZWorkflow = z.object({
   id: z.string().cuid2(),
@@ -425,11 +497,12 @@ export const ZWorkflow = z.object({
   name: z.string(),
   type: ZWorkflowType,
   environmentId: z.string(),
+  createdBy: z.string().nullable(),
   status: ZWorkflowStatus,
-  attributeFilters: z.array(ZWorkflowAttributeFilter),
   displayOption: ZWorkflowDisplayOption,
   autoClose: z.number().nullable(),
   triggers: z.array(z.string()),
+  inlineTriggers: ZWorkflowInlineTriggers.nullable(),
   icon: z.string().nullable().optional(),
   redirectUrl: z.string().url().nullable(),
   recontactDays: z.number().nullable(),
@@ -440,69 +513,429 @@ export const ZWorkflow = z.object({
   hiddenFields: ZWorkflowHiddenFields,
   delay: z.number(),
   autoComplete: z.number().nullable(),
+  runOnDate: z.date().nullable(),
   closeOnDate: z.date().nullable(),
   productOverwrites: ZWorkflowProductOverwrites.nullable(),
   styling: ZWorkflowStyling.nullable(),
   workflowClosedMessage: ZWorkflowClosedMessage.nullable(),
+  segment: ZSegment.nullable(),
   singleUse: ZWorkflowSingleUse.nullable(),
   verifyEmail: ZWorkflowVerifyEmail.nullable(),
-  pin: z.string().nullable().optional(),
+  pin: z.string().nullish(),
   resultShareKey: z.string().nullable(),
+  displayPercentage: z.number().min(1).max(100).nullable(),
+  languages: z.array(ZWorkflowLanguage),
 });
 
-export const ZWorkflowInput = z.object({
-  name: z.string(),
-  type: ZWorkflowType.optional(),
-  status: ZWorkflowStatus.optional(),
-  displayOption: ZWorkflowDisplayOption.optional(),
-  autoClose: z.number().optional(),
-  icon: z.string().nullable().optional(),
-  redirectUrl: z.string().url().optional(),
-  recontactDays: z.number().optional(),
-  welcomeCard: ZWorkflowWelcomeCard.optional(),
-  questions: ZWorkflowQuestions.optional(),
-  prompt: ZWorkflowPrompt.optional(),
-  thankYouCard: ZWorkflowThankYouCard.optional(),
-  hiddenFields: ZWorkflowHiddenFields,
-  delay: z.number().optional(),
-  autoComplete: z.number().optional(),
-  closeOnDate: z.date().optional(),
-  workflowClosedMessage: ZWorkflowClosedMessage.optional(),
-  verifyEmail: ZWorkflowVerifyEmail.optional(),
-  attributeFilters: z.array(ZWorkflowAttributeFilter).optional(),
-  triggers: z.array(z.string()).optional(),
+export const ZWorkflowWithRefinements = ZWorkflow.refine((workflow) => !workflowHasBothTriggers(workflow), {
+  message: "Workflow cannot have both triggers and inlineTriggers",
 });
+
+export const ZWorkflowInput = z
+  .object({
+    name: z.string(),
+    type: ZWorkflowType.optional(),
+    createdBy: z.string().cuid().nullish(),
+    status: ZWorkflowStatus.optional(),
+    displayOption: ZWorkflowDisplayOption.optional(),
+    icon: z.string().nullable().optional(),
+    autoClose: z.number().nullish(),
+    redirectUrl: z.string().url().nullish(),
+    recontactDays: z.number().nullish(),
+    welcomeCard: ZWorkflowWelcomeCard.optional(),
+    questions: ZWorkflowQuestions.optional(),
+    prompt: ZWorkflowPrompt.optional(),
+    thankYouCard: ZWorkflowThankYouCard.optional(),
+    hiddenFields: ZWorkflowHiddenFields.optional(),
+    delay: z.number().optional(),
+    autoComplete: z.number().optional(),
+    runOnDate: z.date().nullish(),
+    closeOnDate: z.date().nullish(),
+    styling: ZWorkflowStyling.optional(),
+    workflowClosedMessage: ZWorkflowClosedMessage.nullish(),
+    singleUse: ZWorkflowSingleUse.nullish(),
+    verifyEmail: ZWorkflowVerifyEmail.optional(),
+    pin: z.string().nullish(),
+    resultShareKey: z.string().nullish(),
+    displayPercentage: z.number().min(1).max(100).nullish(),
+    triggers: z.array(z.string()).optional(),
+    inlineTriggers: ZWorkflowInlineTriggers.optional(),
+  })
+  .refine(
+    (workflow) => {
+      // if the triggers array has a single empty string, it means the workflow has no triggers
+      if (workflow.triggers?.[0] === "") {
+        return true;
+      }
+
+      const hasTriggers = !!workflow.triggers?.length;
+      const hasInlineTriggers =
+        !!workflow.inlineTriggers?.codeConfig || !!workflow.inlineTriggers?.noCodeConfig;
+
+      // Workflow cannot have both triggers and inlineTriggers
+      if (hasTriggers && hasInlineTriggers) {
+        return false;
+      }
+
+      return true;
+    },
+    { message: "Workflow cannot have both triggers and inlineTriggers" }
+  );
 
 export type TWorkflow = z.infer<typeof ZWorkflow>;
+
 export type TWorkflowDates = {
   createdAt: TWorkflow["createdAt"];
   updatedAt: TWorkflow["updatedAt"];
+  runOnDate: TWorkflow["runOnDate"];
   closeOnDate: TWorkflow["closeOnDate"];
 };
+
 export type TWorkflowInput = z.infer<typeof ZWorkflowInput>;
 
-export const ZWorkflowTWorkflowQuestionType = z.union([
-  z.literal("fileUpload"),
-  z.literal("openText"),
-  z.literal("multipleChoiceSingle"),
-  z.literal("multipleChoiceMulti"),
-  z.literal("nps"),
-  z.literal("cta"),
-  z.literal("rating"),
-  z.literal("consent"),
-  z.literal("pictureSelection"),
-  z.literal("cal"),
-  z.literal("date"),
+export type TWorkflowEditorTabs = "questions" | "settings" | "styling";
+
+export const ZWorkflowQuestionSummaryOpenText = z.object({
+  type: z.literal("openText"),
+  question: ZWorkflowOpenTextQuestion,
+  responseCount: z.number(),
+  samples: z.array(
+    z.object({
+      id: z.string(),
+      updatedAt: z.date(),
+      value: z.string(),
+      person: z
+        .object({
+          id: ZId,
+          userId: z.string(),
+        })
+        .nullable(),
+      personAttributes: ZAttributes.nullable(),
+    })
+  ),
+});
+
+export type TWorkflowQuestionSummaryOpenText = z.infer<typeof ZWorkflowQuestionSummaryOpenText>;
+
+export const ZWorkflowQuestionSummaryMultipleChoice = z.object({
+  type: z.union([z.literal("multipleChoiceMulti"), z.literal("multipleChoiceSingle")]),
+  question: z.union([ZWorkflowMultipleChoiceSingleQuestion, ZWorkflowMultipleChoiceMultiQuestion]),
+  responseCount: z.number(),
+  choices: z.array(
+    z.object({
+      value: z.string(),
+      count: z.number(),
+      percentage: z.number(),
+      others: z
+        .array(
+          z.object({
+            value: z.string(),
+            person: z
+              .object({
+                id: ZId,
+                userId: z.string(),
+              })
+              .nullable(),
+            personAttributes: ZAttributes.nullable(),
+          })
+        )
+        .optional(),
+    })
+  ),
+});
+
+export type TWorkflowQuestionSummaryMultipleChoice = z.infer<typeof ZWorkflowQuestionSummaryMultipleChoice>;
+
+export const ZWorkflowQuestionSummaryPictureSelection = z.object({
+  type: z.literal("pictureSelection"),
+  question: ZWorkflowPictureSelectionQuestion,
+  responseCount: z.number(),
+  choices: z.array(
+    z.object({
+      id: z.string(),
+      imageUrl: z.string(),
+      count: z.number(),
+      percentage: z.number(),
+    })
+  ),
+});
+
+export type TWorkflowQuestionSummaryPictureSelection = z.infer<
+  typeof ZWorkflowQuestionSummaryPictureSelection
+>;
+
+export const ZWorkflowQuestionSummaryRating = z.object({
+  type: z.literal("rating"),
+  question: ZWorkflowRatingQuestion,
+  responseCount: z.number(),
+  average: z.number(),
+  choices: z.array(
+    z.object({
+      rating: z.number(),
+      count: z.number(),
+      percentage: z.number(),
+    })
+  ),
+  dismissed: z.object({
+    count: z.number(),
+    percentage: z.number(),
+  }),
+});
+
+export type TWorkflowQuestionSummaryRating = z.infer<typeof ZWorkflowQuestionSummaryRating>;
+
+export const ZWorkflowQuestionSummaryNps = z.object({
+  type: z.literal("nps"),
+  question: ZWorkflowNPSQuestion,
+  responseCount: z.number(),
+  total: z.number(),
+  score: z.number(),
+  promoters: z.object({
+    count: z.number(),
+    percentage: z.number(),
+  }),
+  passives: z.object({
+    count: z.number(),
+    percentage: z.number(),
+  }),
+  detractors: z.object({
+    count: z.number(),
+    percentage: z.number(),
+  }),
+  dismissed: z.object({
+    count: z.number(),
+    percentage: z.number(),
+  }),
+});
+
+export type TWorkflowQuestionSummaryNps = z.infer<typeof ZWorkflowQuestionSummaryNps>;
+
+export const ZWorkflowQuestionSummaryCta = z.object({
+  type: z.literal("cta"),
+  question: ZWorkflowCTAQuestion,
+  impressionCount: z.number(),
+  clickCount: z.number(),
+  skipCount: z.number(),
+  responseCount: z.number(),
+  ctr: z.object({
+    count: z.number(),
+    percentage: z.number(),
+  }),
+});
+
+export type TWorkflowQuestionSummaryCta = z.infer<typeof ZWorkflowQuestionSummaryCta>;
+
+export const ZWorkflowQuestionSummaryConsent = z.object({
+  type: z.literal("consent"),
+  question: ZWorkflowConsentQuestion,
+  responseCount: z.number(),
+  accepted: z.object({
+    count: z.number(),
+    percentage: z.number(),
+  }),
+  dismissed: z.object({
+    count: z.number(),
+    percentage: z.number(),
+  }),
+});
+
+export type TWorkflowQuestionSummaryConsent = z.infer<typeof ZWorkflowQuestionSummaryConsent>;
+
+export const ZWorkflowQuestionSummaryDate = z.object({
+  type: z.literal("date"),
+  question: ZWorkflowDateQuestion,
+  responseCount: z.number(),
+  samples: z.array(
+    z.object({
+      id: z.string(),
+      updatedAt: z.date(),
+      value: z.string(),
+      person: z
+        .object({
+          id: ZId,
+          userId: z.string(),
+        })
+        .nullable(),
+      personAttributes: ZAttributes.nullable(),
+    })
+  ),
+});
+
+export type TWorkflowQuestionSummaryDate = z.infer<typeof ZWorkflowQuestionSummaryDate>;
+
+export const ZWorkflowQuestionSummaryFileUpload = z.object({
+  type: z.literal("fileUpload"),
+  question: ZWorkflowFileUploadQuestion,
+  responseCount: z.number(),
+  files: z.array(
+    z.object({
+      id: z.string(),
+      updatedAt: z.date(),
+      value: z.array(z.string()),
+      person: z
+        .object({
+          id: ZId,
+          userId: z.string(),
+        })
+        .nullable(),
+      personAttributes: ZAttributes.nullable(),
+    })
+  ),
+});
+
+export type TWorkflowQuestionSummaryFileUpload = z.infer<typeof ZWorkflowQuestionSummaryFileUpload>;
+
+export const ZWorkflowQuestionSummaryCal = z.object({
+  type: z.literal("cal"),
+  question: ZWorkflowCalQuestion,
+  responseCount: z.number(),
+  booked: z.object({
+    count: z.number(),
+    percentage: z.number(),
+  }),
+  skipped: z.object({
+    count: z.number(),
+    percentage: z.number(),
+  }),
+});
+
+export type TWorkflowQuestionSummaryCal = z.infer<typeof ZWorkflowQuestionSummaryCal>;
+
+export const ZWorkflowQuestionSummaryMatrix = z.object({
+  type: z.literal("matrix"),
+  question: ZWorkflowMatrixQuestion,
+  responseCount: z.number(),
+  data: z.array(
+    z.object({
+      rowLabel: z.string(),
+      columnPercentages: z.record(z.string(), z.number()),
+      totalResponsesForRow: z.number(),
+    })
+  ),
+});
+
+export type TWorkflowQuestionSummaryMatrix = z.infer<typeof ZWorkflowQuestionSummaryMatrix>;
+
+export const ZWorkflowQuestionSummaryHiddenFields = z.object({
+  type: z.literal("hiddenField"),
+  id: z.string(),
+  responseCount: z.number(),
+  samples: z.array(
+    z.object({
+      updatedAt: z.date(),
+      value: z.string(),
+      person: z
+        .object({
+          id: ZId,
+          userId: z.string(),
+        })
+        .nullable(),
+      personAttributes: ZAttributes.nullable(),
+    })
+  ),
+});
+
+export type TWorkflowQuestionSummaryHiddenFields = z.infer<typeof ZWorkflowQuestionSummaryHiddenFields>;
+
+export const ZWorkflowQuestionSummaryAddress = z.object({
+  type: z.literal("address"),
+  question: ZWorkflowAddressQuestion,
+  responseCount: z.number(),
+  samples: z.array(
+    z.object({
+      id: z.string(),
+      updatedAt: z.date(),
+      value: z.array(z.string()),
+      person: z
+        .object({
+          id: ZId,
+          userId: z.string(),
+        })
+        .nullable(),
+      personAttributes: ZAttributes.nullable(),
+    })
+  ),
+});
+
+export type TWorkflowQuestionSummaryAddress = z.infer<typeof ZWorkflowQuestionSummaryAddress>;
+
+export const ZWorkflowQuestionSummary = z.union([
+  ZWorkflowQuestionSummaryOpenText,
+  ZWorkflowQuestionSummaryMultipleChoice,
+  ZWorkflowQuestionSummaryPictureSelection,
+  ZWorkflowQuestionSummaryRating,
+  ZWorkflowQuestionSummaryNps,
+  ZWorkflowQuestionSummaryCta,
+  ZWorkflowQuestionSummaryConsent,
+  ZWorkflowQuestionSummaryDate,
+  ZWorkflowQuestionSummaryFileUpload,
+  ZWorkflowQuestionSummaryCal,
+  ZWorkflowQuestionSummaryMatrix,
+  ZWorkflowQuestionSummaryAddress,
 ]);
 
-export type TWorkflowTWorkflowQuestionType = z.infer<typeof ZWorkflowTWorkflowQuestionType>;
+export type TWorkflowQuestionSummary = z.infer<typeof ZWorkflowQuestionSummary>;
 
-export interface TWorkflowQuestionSummary<T> {
-  question: T;
-  responses: {
-    id: string;
-    value: string | number | string[];
-    updatedAt: Date;
-    person: TPerson | null;
-  }[];
-}
+export const ZWorkflowSummary = z.object({
+  meta: z.object({
+    displayCount: z.number(),
+    totalResponses: z.number(),
+    startsPercentage: z.number(),
+    completedResponses: z.number(),
+    completedPercentage: z.number(),
+    dropOffCount: z.number(),
+    dropOffPercentage: z.number(),
+    ttcAverage: z.number(),
+  }),
+  dropOff: z.array(
+    z.object({
+      questionId: z.string().cuid2(),
+      headline: z.string(),
+      ttc: z.number(),
+      impressions: z.number(),
+      dropOffCount: z.number(),
+      dropOffPercentage: z.number(),
+    })
+  ),
+  summary: z.array(z.union([ZWorkflowQuestionSummary, ZWorkflowQuestionSummaryHiddenFields])),
+});
+
+export const ZWorkflowFilterCriteria = z.object({
+  name: z.string().optional(),
+  status: z.array(ZWorkflowStatus).optional(),
+  type: z.array(ZWorkflowType).optional(),
+  createdBy: z
+    .object({
+      userId: z.string(),
+      value: z.array(z.enum(["you", "others"])),
+    })
+    .optional(),
+  sortBy: z.enum(["createdAt", "updatedAt", "name"]).optional(),
+});
+
+export type TWorkflowFilterCriteria = z.infer<typeof ZWorkflowFilterCriteria>;
+
+const ZWorkflowFilters = z.object({
+  name: z.string(),
+  createdBy: z.array(z.enum(["you", "others"])),
+  status: z.array(ZWorkflowStatus),
+  type: z.array(ZWorkflowType),
+  sortBy: z.enum(["createdAt", "updatedAt", "name"]),
+});
+
+export type TWorkflowFilters = z.infer<typeof ZWorkflowFilters>;
+
+const ZFilterOption = z.object({
+  label: z.string(),
+  value: z.string(),
+});
+
+export type TFilterOption = z.infer<typeof ZFilterOption>;
+
+const ZSortOption = z.object({
+  label: z.string(),
+  value: z.enum(["createdAt", "updatedAt", "name"]),
+});
+
+export type TSortOption = z.infer<typeof ZSortOption>;
+export type TWorkflowSummary = z.infer<typeof ZWorkflowSummary>;

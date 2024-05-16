@@ -17,9 +17,7 @@ import { TUser } from "@typeflowai/types/user";
 
 export const transferOwnershipAction = async (teamId: string, newOwnerId: string) => {
   const session = await getServerSession(authOptions);
-
   const user = session?.user as TUser;
-
   if (!session) {
     throw new AuthenticationError("Not authenticated");
   }
@@ -52,7 +50,6 @@ export const transferOwnershipAction = async (teamId: string, newOwnerId: string
 
 export const updateInviteAction = async (inviteId: string, teamId: string, data: TInviteUpdateInput) => {
   const session = await getServerSession(authOptions);
-
   const user = session?.user as TUser;
 
   if (!user) {
@@ -78,7 +75,6 @@ export const updateMembershipAction = async (
   data: TMembershipUpdateInput
 ) => {
   const session = await getServerSession(authOptions);
-
   const user = session?.user as TUser;
 
   if (!user) {

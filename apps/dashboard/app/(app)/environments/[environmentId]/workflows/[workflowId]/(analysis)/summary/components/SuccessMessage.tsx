@@ -5,43 +5,36 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 import { TEnvironment } from "@typeflowai/types/environment";
-import { TProduct } from "@typeflowai/types/product";
 import { TUser } from "@typeflowai/types/user";
 import { TWorkflow } from "@typeflowai/types/workflows";
 import { Confetti } from "@typeflowai/ui/Confetti";
 
-import ShareEmbedWorkflow from "./ShareEmbedWorkflow";
+import { ShareEmbedWorkflow } from "./ShareEmbedWorkflow";
 
 interface SummaryMetadataProps {
   environment: TEnvironment;
   workflow: TWorkflow;
   webAppUrl: string;
-  product: TProduct;
   user: TUser;
-  singleUseIds?: string[];
 }
 
-export default function SuccessMessage({
-  environment,
-  workflow,
-  webAppUrl,
-  product,
-  user,
-}: SummaryMetadataProps) {
+export const SuccessMessage = ({ environment, workflow, webAppUrl, user }: SummaryMetadataProps) => {
   const searchParams = useSearchParams();
   const [showLinkModal, setShowLinkModal] = useState(false);
   const [confetti, setConfetti] = useState(false);
+
+  const isAppWorkflow = workflow.type === "app" || workflow.type === "website";
 
   useEffect(() => {
     const newWorkflowParam = searchParams?.get("success");
     if (newWorkflowParam && workflow && environment) {
       setConfetti(true);
       toast.success(
-        workflow.type === "web" && !environment.widgetSetupCompleted
+        isAppWorkflow && !environment.widgetSetupCompleted
           ? "Almost there! Install widget to start receiving responses."
           : "Congrats! Your workflow is live.",
         {
-          icon: workflow.type === "web" && !environment.widgetSetupCompleted ? "🤏" : "🎉",
+          icon: isAppWorkflow && !environment.widgetSetupCompleted ? "🤏" : "🎉",
           duration: 5000,
           position: "bottom-right",
         }
@@ -54,7 +47,7 @@ export default function SuccessMessage({
       url.searchParams.delete("success");
       window.history.replaceState({}, "", url.toString());
     }
-  }, [environment, searchParams, workflow]);
+  }, [environment, isAppWorkflow, searchParams, workflow]);
 
   return (
     <>
@@ -63,10 +56,9 @@ export default function SuccessMessage({
         open={showLinkModal}
         setOpen={setShowLinkModal}
         webAppUrl={webAppUrl}
-        product={product}
         user={user}
       />
       {confetti && <Confetti />}
     </>
   );
-}
+};

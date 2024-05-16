@@ -1,6 +1,7 @@
 "use client";
 
 import { Logo } from "@/components/shared/Logo";
+import { Search } from "@/components/shared/Search";
 import clsx from "clsx";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
@@ -8,7 +9,6 @@ import { forwardRef } from "react";
 
 import { Button } from "./Button";
 import { MobileNavigation, useIsInsideMobileNavigation, useMobileNavigationStore } from "./MobileNavigation";
-import { MobileSearch, Search } from "./Search";
 
 function TopLevelNavItem({ href, children }: { href: string; children: React.ReactNode }) {
   return (
@@ -52,7 +52,9 @@ export const Header = forwardRef<React.ElementRef<"div">, { className?: string }
           (isInsideMobileNavigation || !mobileNavIsOpen) && "bg-slate-900/7.5"
         )}
       />
-      <Search />
+      <div className="hidden md:block">
+        <Search />
+      </div>
       <div className="flex items-center gap-5 lg:hidden">
         <MobileNavigation />
         <Link href="/" aria-label="Home">
@@ -70,7 +72,9 @@ export const Header = forwardRef<React.ElementRef<"div">, { className?: string }
         </nav>
         <div className="hidden md:block md:h-5 md:w-px md:bg-slate-900/10" />
         <div className="flex gap-4">
-          <MobileSearch />
+          <div className="block md:hidden">
+            <Search />
+          </div>
         </div>
         <div className="hidden min-[416px]:contents">
           <Button href="https://dashboard.typeflowai.com/auth/signup" target="_blank" className="w-max">

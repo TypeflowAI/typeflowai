@@ -1,39 +1,32 @@
-import { WorkflowBaseProps } from "@/types/props";
+import { useEffect, useState } from "preact/hooks";
+
+import { WorkflowInlineProps } from "@typeflowai/types/typeflowAIWorkflows";
 
 import { Workflow } from "./Workflow";
 
-export function WorkflowInline({
-  workflow,
-  webAppUrl,
-  isBrandingEnabled,
-  activeQuestionId,
-  onDisplay = () => {},
-  onActiveQuestionChange = () => {},
-  onResponse = () => {},
-  onClose = () => {},
-  prefillResponseData,
-  isRedirectDisabled = false,
-  onFileUpload,
-  responseCount,
-  isPreview,
-}: WorkflowBaseProps) {
+export function WorkflowInline(props: WorkflowInlineProps) {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // Assuming 768px as a breakpoint for mobile
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div id="fbjs" className="typeflowai-form h-full w-full">
-      <Workflow
-        workflow={workflow}
-        webAppUrl={webAppUrl}
-        isBrandingEnabled={isBrandingEnabled}
-        activeQuestionId={activeQuestionId}
-        onDisplay={onDisplay}
-        onActiveQuestionChange={onActiveQuestionChange}
-        onResponse={onResponse}
-        onClose={onClose}
-        prefillResponseData={prefillResponseData}
-        isRedirectDisabled={isRedirectDisabled}
-        onFileUpload={onFileUpload}
-        responseCount={responseCount}
-        isPreview={isPreview}
-      />
+      {isMobile ? (
+        <div className="flex h-screen w-full flex-col justify-end overflow-hidden">
+          <div className="overflow-auto pt-[11vh]">
+            <Workflow {...props} />
+          </div>
+        </div>
+      ) : (
+        <Workflow {...props} />
+      )}
     </div>
   );
 }

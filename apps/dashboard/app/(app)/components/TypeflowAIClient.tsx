@@ -1,18 +1,22 @@
 "use client";
 
-import { typeflowaiEnabled } from "@/app/lib/typeflowai";
+import { typeflowAIEnabled } from "@/app/lib/typeflowai";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
-import typeflowai from "@typeflowai/js";
-import { env } from "@typeflowai/lib/env.mjs";
+import typeflowai from "@typeflowai/js/app";
+import { env } from "@typeflowai/lib/env";
 
 type UsageAttributesUpdaterProps = {
   numWorkflows: number;
 };
 
 export default function TypeflowAIClient({ session }) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   useEffect(() => {
-    if (typeflowaiEnabled && session?.user && typeflowai) {
+    if (typeflowAIEnabled && session?.user && typeflowai) {
       typeflowai.init({
         environmentId: env.NEXT_PUBLIC_TYPEFLOWAI_ENVIRONMENT_ID || "",
         apiHost: env.NEXT_PUBLIC_TYPEFLOWAI_API_HOST || "",
@@ -21,11 +25,17 @@ export default function TypeflowAIClient({ session }) {
       typeflowai.setEmail(session.user.email);
     }
   }, [session]);
+
+  useEffect(() => {
+    if (typeflowAIEnabled && typeflowai) {
+      typeflowai?.registerRouteChange();
+    }
+  }, [pathname, searchParams]);
   return null;
 }
 
 const updateUsageAttributes = (numWorkflows) => {
-  if (!typeflowaiEnabled) return;
+  if (!typeflowAIEnabled) return;
 
   if (numWorkflows >= 3) {
     typeflowai.setAttribute("HasThreeWorkflows", "true");

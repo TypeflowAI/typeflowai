@@ -1,5 +1,9 @@
-import { TPerson } from "@typeflowai/types/people";
+import { TAttributes } from "@typeflowai/types/attributes";
+import { TResponsePerson } from "@typeflowai/types/responses";
 
-export const getPersonIdentifier = (person: TPerson): string | number | null => {
-  return person?.userId || person?.attributes?.userId || person?.attributes?.email || person?.id || null;
+export const getPersonIdentifier = (
+  person: TResponsePerson | null,
+  personAttributes: TAttributes | null
+): string => {
+  return personAttributes?.email || person?.userId || "";
 };

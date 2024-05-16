@@ -1,15 +1,14 @@
 import "server-only";
 
 import { Prisma } from "@prisma/client";
-import { unstable_cache } from "next/cache";
 
 import { prisma } from "@typeflowai/database";
 import { ZOptionalNumber } from "@typeflowai/types/common";
 import {
   TDisplay,
   TDisplayCreateInput,
+  TDisplayFilters,
   TDisplayUpdateInput,
-  ZDisplay,
   ZDisplayCreateInput,
   ZDisplayUpdateInput,
 } from "@typeflowai/types/displays";
@@ -17,28 +16,29 @@ import { ZId } from "@typeflowai/types/environment";
 import { DatabaseError, ResourceNotFoundError } from "@typeflowai/types/errors";
 import { TPerson } from "@typeflowai/types/people";
 
-import { ITEMS_PER_PAGE, SERVICES_REVALIDATION_INTERVAL } from "../constants";
+import { cache } from "../cache";
+import { ITEMS_PER_PAGE } from "../constants";
 import { createPerson, getPersonByUserId } from "../person/service";
-import { formatDateFields } from "../utils/datetime";
 import { validateInputs } from "../utils/validate";
 import { displayCache } from "./cache";
 
-const selectDisplay = {
+export const selectDisplay = {
   id: true,
   createdAt: true,
   updatedAt: true,
   workflowId: true,
   responseId: true,
   personId: true,
+  status: true,
 };
 
-export const getDisplay = async (displayId: string): Promise<TDisplay | null> => {
-  const display = await unstable_cache(
+export const getDisplay = (displayId: string): Promise<TDisplay | null> =>
+  cache(
     async () => {
       validateInputs([displayId, ZId]);
 
       try {
-        const display = await prisma.response.findUnique({
+        const display = await prisma.display.findUnique({
           where: {
             id: displayId,
           },
@@ -57,11 +57,8 @@ export const getDisplay = async (displayId: string): Promise<TDisplay | null> =>
     [`getDisplay-${displayId}`],
     {
       tags: [displayCache.tag.byId(displayId)],
-      revalidate: SERVICES_REVALIDATION_INTERVAL,
     }
   )();
-  return display ? formatDateFields(display, ZDisplay) : null;
-};
 
 export const updateDisplay = async (
   displayId: string,
@@ -118,7 +115,6 @@ export const createDisplay = async (displayInput: TDisplayCreateInput): Promise<
   validateInputs([displayInput, ZDisplayCreateInput]);
 
   const { environmentId, userId, workflowId } = displayInput;
-
   try {
     let person;
     if (userId) {
@@ -145,6 +141,40 @@ export const createDisplay = async (displayInput: TDisplayCreateInput): Promise<
       },
       select: selectDisplay,
     });
+    displayCache.revalidate({
+      id: display.id,
+      personId: display.personId,
+      workflowId: display.workflowId,
+    });
+    return display;
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      throw new DatabaseError(error.message);
+    }
+
+    throw error;
+  }
+};
+
+export const markDisplayRespondedLegacy = async (displayId: string): Promise<TDisplay> => {
+  validateInputs([displayId, ZId]);
+
+  try {
+    if (!displayId) throw new Error("Display ID is required");
+
+    const display = await prisma.display.update({
+      where: {
+        id: displayId,
+      },
+      data: {
+        status: "responded",
+      },
+      select: selectDisplay,
+    });
+
+    if (!display) {
+      throw new ResourceNotFoundError("Display", displayId);
+    }
 
     displayCache.revalidate({
       id: display.id,
@@ -162,8 +192,8 @@ export const createDisplay = async (displayInput: TDisplayCreateInput): Promise<
   }
 };
 
-export const getDisplaysByPersonId = async (personId: string, page?: number): Promise<TDisplay[]> => {
-  const displays = await unstable_cache(
+export const getDisplaysByPersonId = (personId: string, page?: number): Promise<TDisplay[]> =>
+  cache(
     async () => {
       validateInputs([personId, ZId], [page, ZOptionalNumber]);
 
@@ -192,11 +222,8 @@ export const getDisplaysByPersonId = async (personId: string, page?: number): Pr
     [`getDisplaysByPersonId-${personId}-${page}`],
     {
       tags: [displayCache.tag.byPersonId(personId)],
-      revalidate: SERVICES_REVALIDATION_INTERVAL,
     }
   )();
-  return displays.map((display) => formatDateFields(display, ZDisplay));
-};
 
 export const deleteDisplayByResponseId = async (
   responseId: string,
@@ -217,7 +244,6 @@ export const deleteDisplayByResponseId = async (
       personId: display.personId,
       workflowId,
     });
-
     return display;
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -227,8 +253,8 @@ export const deleteDisplayByResponseId = async (
   }
 };
 
-export const getDisplayCountByWorkflowId = async (workflowId: string): Promise<number> =>
-  unstable_cache(
+export const getDisplayCountByWorkflowId = (workflowId: string, filters?: TDisplayFilters): Promise<number> =>
+  cache(
     async () => {
       validateInputs([workflowId, ZId]);
 
@@ -236,16 +262,25 @@ export const getDisplayCountByWorkflowId = async (workflowId: string): Promise<n
         const displayCount = await prisma.display.count({
           where: {
             workflowId: workflowId,
+            ...(filters &&
+              filters.createdAt && {
+                createdAt: {
+                  gte: filters.createdAt.min,
+                  lte: filters.createdAt.max,
+                },
+              }),
           },
         });
         return displayCount;
       } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+          throw new DatabaseError(error.message);
+        }
         throw error;
       }
     },
-    [`getDisplayCountByWorkflowId-${workflowId}`],
+    [`getDisplayCountByWorkflowId-${workflowId}-${JSON.stringify(filters)}`],
     {
       tags: [displayCache.tag.byWorkflowId(workflowId)],
-      revalidate: SERVICES_REVALIDATION_INTERVAL,
     }
   )();

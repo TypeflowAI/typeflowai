@@ -1,5 +1,5 @@
 import { responses } from "@/app/lib/api/response";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
 import { getWorkflow } from "@typeflowai/lib/workflow/service";
@@ -12,7 +12,7 @@ interface Context {
   };
 }
 
-export async function OPTIONS(): Promise<NextResponse> {
+export async function OPTIONS(): Promise<Response> {
   return responses.successResponse({}, true);
 }
 
@@ -22,7 +22,7 @@ export async function OPTIONS(): Promise<NextResponse> {
 // use this to let users upload files to a workflow for example
 // this api endpoint will return a signed url for uploading the file to s3 and another url for uploading file to the local storage
 
-export async function POST(req: NextRequest, context: Context): Promise<NextResponse> {
+export async function POST(req: NextRequest, context: Context): Promise<Response> {
   const environmentId = context.params.environmentId;
 
   const { fileName, fileType, workflowId } = await req.json();
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest, context: Context): Promise<NextResp
     return responses.notFoundResponse("TeamByEnvironmentId", environmentId);
   }
 
-  const plan = ["active", "canceled"].includes(team.billing.subscriptionStatus) ? "paid" : "free";
+  const plan = ["active", "canceled"].includes(team.billing.subscriptionStatus) ? "pro" : "free";
 
   return await uploadPrivateFile(fileName, environmentId, fileType, plan);
 }

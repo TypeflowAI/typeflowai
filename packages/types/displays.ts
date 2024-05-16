@@ -7,7 +7,7 @@ export const ZDisplay = z.object({
   personId: z.string().cuid().nullable(),
   workflowId: z.string().cuid(),
   responseId: z.string().cuid().nullable(),
-  status: z.enum(["seen", "responded"]).optional(),
+  status: z.enum(["seen", "responded"]).nullable(),
 });
 
 export type TDisplay = z.infer<typeof ZDisplay>;
@@ -34,3 +34,14 @@ export const ZDisplaysWithWorkflowName = ZDisplay.extend({
 });
 
 export type TDisplaysWithWorkflowName = z.infer<typeof ZDisplaysWithWorkflowName>;
+
+export const ZDisplayFilters = z.object({
+  createdAt: z
+    .object({
+      min: z.date().optional(),
+      max: z.date().optional(),
+    })
+    .optional(),
+});
+
+export type TDisplayFilters = z.infer<typeof ZDisplayFilters>;

@@ -9,16 +9,16 @@ import Hero from "@/components/solutions/Hero";
 import ThreeColumnFeatures from "@/components/solutions/ThreeColumnFeatures";
 import CTA from "@/images/ctas/cta2.svg";
 import {
-  ArrowUturnLeftIcon,
-  ChatBubbleLeftRightIcon,
-  ComputerDesktopIcon,
   CreditCardIcon,
-  DocumentCheckIcon,
-  DocumentTextIcon,
+  FileCheckIcon,
+  FileTextIcon,
+  IterationCcwIcon,
+  LaptopIcon,
+  MessageSquareTextIcon,
+  PocketKnifeIcon,
   UserPlusIcon,
-  VideoCameraIcon,
-  WrenchScrewdriverIcon,
-} from "@heroicons/react/24/outline";
+  VideoIcon,
+} from "lucide-react";
 
 const emailSupportFeatures = [
   {
@@ -31,13 +31,13 @@ const emailSupportFeatures = [
     id: "return-requests",
     name: "Return Requests",
     description: "Manage return requests efficiently, offering accurate responses and guidance.",
-    icon: ArrowUturnLeftIcon,
+    icon: IterationCcwIcon,
   },
   {
     id: "order-confirmations",
     name: "Order confirmations",
     description: "Generate personalized order confirmations swiftly and efficiently.",
-    icon: DocumentCheckIcon,
+    icon: FileCheckIcon,
   },
 ];
 const chatSupportFeatures = [
@@ -52,13 +52,13 @@ const chatSupportFeatures = [
     name: "Technical Support Chatbot",
     description:
       "Generate technical responses efficiently, enhancing customer service and reducing response times.",
-    icon: WrenchScrewdriverIcon,
+    icon: PocketKnifeIcon,
   },
   {
     id: "faq-chatbot",
     name: "FAQ Chatbot",
     description: "Design a chatbot for FAQ support, enhancing customer assistance and engagement.",
-    icon: ChatBubbleLeftRightIcon,
+    icon: MessageSquareTextIcon,
   },
 ];
 
@@ -67,19 +67,19 @@ const productInformationFeatures = [
     id: "product-usage-instructions",
     name: "Product Usage Instructions",
     description: "Create your detailed product usage instructions easily.",
-    icon: DocumentTextIcon,
+    icon: FileTextIcon,
   },
   {
     id: "product-faqs-generator",
     name: "Product Faqs Generator",
     description: "Generate user-centric product FAQs to answer customer's queries.",
-    icon: ComputerDesktopIcon,
+    icon: LaptopIcon,
   },
   {
     id: "product-tutorial-videos",
     name: "Product Tutorial Videos",
     description: "Generate structured product tutorial videos with clear instructions.",
-    icon: VideoCameraIcon,
+    icon: VideoIcon,
   },
 ];
 

@@ -12,13 +12,13 @@ interface AdvancedSettingsProps {
   updateQuestion: (questionIdx: number, updatedAttributes: any) => void;
 }
 
-export default function AdvancedSettings({
+export const AdvancedSettings = ({
   question,
   questionIdx,
   localWorkflow,
   setLocalWorkflow,
   updateQuestion,
-}: AdvancedSettingsProps) {
+}: AdvancedSettingsProps) => {
   return (
     <div>
       <div className="mb-4">
@@ -39,4 +39,4 @@ export default function AdvancedSettings({
       />
     </div>
   );
-}
+};

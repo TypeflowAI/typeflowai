@@ -1,7 +1,6 @@
 import { responses } from "@/app/lib/api/response";
 import { transformErrorToDetails } from "@/app/lib/api/validator";
 import { sendToPipeline } from "@/app/lib/pipelines";
-import { NextResponse } from "next/server";
 
 import { getPerson } from "@typeflowai/lib/person/service";
 import { updateResponse } from "@typeflowai/lib/response/service";
@@ -9,14 +8,14 @@ import { getWorkflow } from "@typeflowai/lib/workflow/service";
 import { DatabaseError, InvalidInputError, ResourceNotFoundError } from "@typeflowai/types/errors";
 import { ZResponseUpdateInput } from "@typeflowai/types/responses";
 
-export async function OPTIONS(): Promise<NextResponse> {
+export async function OPTIONS(): Promise<Response> {
   return responses.successResponse({}, true);
 }
 
 export async function PUT(
   request: Request,
   { params }: { params: { responseId: string } }
-): Promise<NextResponse> {
+): Promise<Response> {
   const { responseId } = params;
 
   if (!responseId) {
@@ -25,6 +24,7 @@ export async function PUT(
 
   const responseUpdate = await request.json();
 
+  // legacy workaround for typeflowai-js 1.2.0 & 1.2.1
   if (responseUpdate.personId && typeof responseUpdate.personId === "string") {
     const person = await getPerson(responseUpdate.personId);
     responseUpdate.userId = person?.userId;

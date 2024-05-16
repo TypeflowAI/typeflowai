@@ -1,10 +1,9 @@
 import { useState } from "react";
 
-import { TWorkflow, TWorkflowQuestion } from "@typeflowai/types/workflows";
-
 import Modal from "./Modal";
 import QuestionConditional from "./QuestionConditional";
 import ThankYouCard from "./ThankYouCard";
+import { TWorkflow, TWorkflowQuestion } from "./types";
 
 interface PreviewWorkflowProps {
   localWorkflow?: TWorkflow;
@@ -67,8 +66,8 @@ export default function PreviewWorkflow({
         {activeQuestionId == "thank-you-card" ? (
           <ThankYouCard
             brandColor={brandColor}
-            headline={localWorkflow?.thankYouCard?.headline || ""}
-            subheader={localWorkflow?.thankYouCard?.subheader || ""}
+            headline={localWorkflow?.thankYouCard?.headline!}
+            subheader={localWorkflow?.thankYouCard?.subheader!}
           />
         ) : (
           questions.map(

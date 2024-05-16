@@ -1,5 +1,10 @@
 import { z } from "zod";
 
+import {
+  ZLegacyWorkflowQuestions,
+  ZLegacyWorkflowThankYouCard,
+  ZLegacyWorkflowWelcomeCard,
+} from "./legacyWorkflow";
 import { ZUserObjective } from "./user";
 import {
   ZWorkflowHiddenFields,
@@ -31,3 +36,17 @@ export const ZTemplate = z.object({
 });
 
 export type TTemplate = z.infer<typeof ZTemplate>;
+
+export const ZLegacyTemplate = ZTemplate.extend({
+  preset: z.object({
+    name: z.string(),
+    icon: z.any().optional(),
+    welcomeCard: ZLegacyWorkflowWelcomeCard,
+    questions: ZLegacyWorkflowQuestions,
+    prompt: ZWorkflowPrompt,
+    thankYouCard: ZLegacyWorkflowThankYouCard,
+    hiddenFields: ZWorkflowHiddenFields,
+  }),
+});
+
+export type TLegacyTemplate = z.infer<typeof ZLegacyTemplate>;

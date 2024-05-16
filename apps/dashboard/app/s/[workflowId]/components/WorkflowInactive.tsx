@@ -1,4 +1,4 @@
-import { CheckCircleIcon, PauseCircleIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
+import { CheckCircle2Icon, HelpCircleIcon, PauseCircleIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,13 +11,13 @@ const WorkflowInactive = ({
   status,
   workflowClosedMessage,
 }: {
-  status: "paused" | "completed" | "link invalid";
+  status: "paused" | "completed" | "link invalid" | "scheduled";
   workflowClosedMessage?: TWorkflowClosedMessage | null;
 }) => {
   const icons = {
     paused: <PauseCircleIcon className="h-20 w-20" />,
-    completed: <CheckCircleIcon className="h-20 w-20" />,
-    "link invalid": <QuestionMarkCircleIcon className="h-20 w-20" />,
+    completed: <CheckCircle2Icon className="h-20 w-20" />,
+    "link invalid": <HelpCircleIcon className="h-20 w-20" />,
   };
 
   const descriptions = {
@@ -36,7 +36,7 @@ const WorkflowInactive = ({
             ? workflowClosedMessage.heading
             : `Workflow ${status}.`}
         </h1>
-        <p className="text-lg leading-10 text-gray-500">
+        <p className="text-lg leading-10 text-slate-500">
           {status === "completed" && workflowClosedMessage
             ? workflowClosedMessage.subheading
             : descriptions[status]}

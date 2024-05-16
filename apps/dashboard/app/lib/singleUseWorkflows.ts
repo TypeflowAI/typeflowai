@@ -1,7 +1,7 @@
 import cuid2 from "@paralleldrive/cuid2";
 
+import { ENCRYPTION_KEY, TYPEFLOWAI_ENCRYPTION_KEY } from "@typeflowai/lib/constants";
 import { decryptAES128, symmetricDecrypt, symmetricEncrypt } from "@typeflowai/lib/crypto";
-import { env } from "@typeflowai/lib/env.mjs";
 
 // generate encrypted single use id for the workflow
 export const generateWorkflowSingleUseId = (isEncrypted: boolean): string => {
@@ -10,7 +10,7 @@ export const generateWorkflowSingleUseId = (isEncrypted: boolean): string => {
     return cuid;
   }
 
-  const encryptedCuid = symmetricEncrypt(cuid, env.ENCRYPTION_KEY);
+  const encryptedCuid = symmetricEncrypt(cuid, ENCRYPTION_KEY);
   return encryptedCuid;
 };
 
@@ -20,13 +20,13 @@ export const validateWorkflowSingleUseId = (workflowSingleUseId: string): string
     let decryptedCuid: string | null = null;
 
     if (workflowSingleUseId.length === 64) {
-      if (!env.TYPEFLOWAI_ENCRYPTION_KEY) {
+      if (!TYPEFLOWAI_ENCRYPTION_KEY) {
         throw new Error("TYPEFLOWAI_ENCRYPTION_KEY is not defined");
       }
 
-      decryptedCuid = decryptAES128(env.TYPEFLOWAI_ENCRYPTION_KEY!, workflowSingleUseId);
+      decryptedCuid = decryptAES128(TYPEFLOWAI_ENCRYPTION_KEY!, workflowSingleUseId);
     } else {
-      decryptedCuid = symmetricDecrypt(workflowSingleUseId, env.ENCRYPTION_KEY);
+      decryptedCuid = symmetricDecrypt(workflowSingleUseId, ENCRYPTION_KEY);
     }
 
     if (cuid2.isCuid(decryptedCuid)) {

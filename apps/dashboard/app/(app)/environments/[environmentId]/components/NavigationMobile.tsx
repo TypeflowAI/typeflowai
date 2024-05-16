@@ -17,12 +17,7 @@ import { TProduct } from "@typeflowai/types/product";
 import { TTeam } from "@typeflowai/types/teams";
 import CreateTeamModal from "@typeflowai/ui/CreateTeamModal";
 import { Popover, PopoverContent, PopoverTrigger } from "@typeflowai/ui/Popover";
-import {
-  // CustomersIcon,
-  DashboardIcon, // FilterIcon,
-  FormIcon,
-  SettingsIcon,
-} from "@typeflowai/ui/icons";
+import { DashboardIcon, FormIcon, SettingsIcon } from "@typeflowai/ui/icons";
 
 import AddProductModal from "./AddProductModal";
 import UrlShortenerModal from "./UrlShortenerModal";
@@ -36,6 +31,7 @@ interface NavigationProps {
   isTypeflowAICloud: boolean;
   webAppUrl: string;
   membershipRole?: TMembershipRole;
+  isMultiLanguageAllowed: boolean;
 }
 
 export default function NavigationMobile({
@@ -65,11 +61,10 @@ export default function NavigationMobile({
       //   name: "People",
       //   href: `/environments/${environment.id}/people`,
       //   icon: CustomersIcon,
-      //   current: pathname?.includes("/people"),
-      //   hidden: false,
+      //   current: pathname?.includes("/people") || pathname?.includes("/segments"),
       // },
       // {
-      //   name: "Actions & Attributes",
+      //   name: "Actions",
       //   href: `/environments/${environment.id}/actions`,
       //   icon: FilterIcon,
       //   current: pathname?.includes("/actions") || pathname?.includes("/attributes"),
@@ -84,7 +79,7 @@ export default function NavigationMobile({
       },
       {
         name: "Settings",
-        href: `/environments/${environment.id}/settings/profile`,
+        href: `/environments/${environment.id}/settings/product`,
         icon: SettingsIcon,
         current: pathname?.includes("/settings"),
         hidden: false,

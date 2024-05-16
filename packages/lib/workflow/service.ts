@@ -1,28 +1,54 @@
 import "server-only";
 
 import { Prisma } from "@prisma/client";
-import { unstable_cache } from "next/cache";
 
 import { prisma } from "@typeflowai/database";
+import { TLegacyWorkflow } from "@typeflowai/types/LegacyWorkflow";
 import { TActionClass } from "@typeflowai/types/actionClasses";
 import { ZOptionalNumber } from "@typeflowai/types/common";
 import { ZId } from "@typeflowai/types/environment";
-import { DatabaseError, ResourceNotFoundError } from "@typeflowai/types/errors";
+import { DatabaseError, InvalidInputError, ResourceNotFoundError } from "@typeflowai/types/errors";
 import { TPerson } from "@typeflowai/types/people";
-import { TWorkflow, TWorkflowAttributeFilter, TWorkflowInput, ZWorkflow } from "@typeflowai/types/workflows";
+import { TSegment, ZSegmentFilters } from "@typeflowai/types/segment";
+import {
+  TWorkflow,
+  TWorkflowFilterCriteria,
+  TWorkflowInput,
+  ZWorkflowWithRefinements,
+} from "@typeflowai/types/workflows";
 
+import { getActionsByPersonId } from "../action/service";
 import { getActionClasses } from "../actionClass/service";
-import { getAttributeClasses } from "../attributeClass/service";
-import { ITEMS_PER_PAGE, SERVICES_REVALIDATION_INTERVAL } from "../constants";
+import { attributeCache } from "../attribute/cache";
+import { getAttributes } from "../attribute/service";
+import { cache } from "../cache";
+import { ITEMS_PER_PAGE } from "../constants";
 import { displayCache } from "../display/cache";
 import { getDisplaysByPersonId } from "../display/service";
+import { reverseTranslateWorkflow } from "../i18n/reverseTranslation";
 import { personCache } from "../person/cache";
+import { getPerson } from "../person/service";
+import { structuredClone } from "../pollyfills/structuredClone";
 import { productCache } from "../product/cache";
 import { getProductByEnvironmentId } from "../product/service";
 import { responseCache } from "../response/cache";
-import { diffInDays, formatDateFields } from "../utils/datetime";
+import { segmentCache } from "../segment/cache";
+import { createSegment, deleteSegment, evaluateSegment, getSegment, updateSegment } from "../segment/service";
+import { transformSegmentFiltersToAttributeFilters } from "../segment/utils";
+import { subscribeTeamMembersToWorkflowResponses } from "../team/service";
+import { diffInDays } from "../utils/datetime";
 import { validateInputs } from "../utils/validate";
 import { workflowCache } from "./cache";
+import { anyWorkflowHasFilters, buildOrderByClause, buildWhereClause, transformPrismaWorkflow } from "./util";
+
+interface TriggerUpdate {
+  create?: Array<{ actionClassId: string }>;
+  deleteMany?: {
+    actionClassId: {
+      in: string[];
+    };
+  };
+}
 
 export const selectWorkflow = {
   id: true,
@@ -31,20 +57,21 @@ export const selectWorkflow = {
   name: true,
   type: true,
   environmentId: true,
+  createdBy: true,
   status: true,
   welcomeCard: true,
   questions: true,
-  prompt: true,
   thankYouCard: true,
   hiddenFields: true,
   displayOption: true,
   recontactDays: true,
   autoClose: true,
+  runOnDate: true,
   closeOnDate: true,
   delay: true,
+  displayPercentage: true,
   autoComplete: true,
   verifyEmail: true,
-  icon: true,
   redirectUrl: true,
   productOverwrites: true,
   styling: true,
@@ -52,6 +79,21 @@ export const selectWorkflow = {
   singleUse: true,
   pin: true,
   resultShareKey: true,
+  languages: {
+    select: {
+      default: true,
+      enabled: true,
+      language: {
+        select: {
+          id: true,
+          code: true,
+          alias: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
+    },
+  },
   triggers: {
     select: {
       actionClass: {
@@ -68,12 +110,14 @@ export const selectWorkflow = {
       },
     },
   },
-  attributeFilters: {
-    select: {
-      id: true,
-      attributeClassId: true,
-      condition: true,
-      value: true,
+  inlineTriggers: true,
+  segment: {
+    include: {
+      workflows: {
+        select: {
+          id: true,
+        },
+      },
     },
   },
 };
@@ -82,7 +126,7 @@ const getActionClassIdFromName = (actionClasses: TActionClass[], actionClassName
   return actionClasses.find((actionClass) => actionClass.name === actionClassName)!.id;
 };
 
-const revalidateWorkflowByActionClassId = (
+const revalidateWorkflowByActionClassName = (
   actionClasses: TActionClass[],
   actionClassNames: string[]
 ): void => {
@@ -94,16 +138,51 @@ const revalidateWorkflowByActionClassId = (
   }
 };
 
-const revalidateWorkflowByAttributeClassId = (attributeFilters: TWorkflowAttributeFilter[]): void => {
-  for (const attributeFilter of attributeFilters) {
-    workflowCache.revalidate({
-      attributeClassId: attributeFilter.attributeClassId,
-    });
+const processTriggerUpdates = (
+  triggers: string[],
+  currentWorkflowTriggers: string[],
+  actionClasses: TActionClass[]
+) => {
+  const newTriggers: string[] = [];
+  const removedTriggers: string[] = [];
+
+  // find added triggers
+  for (const trigger of triggers) {
+    if (!trigger || currentWorkflowTriggers.includes(trigger)) {
+      continue;
+    }
+    newTriggers.push(trigger);
   }
+
+  // find removed triggers
+  for (const trigger of currentWorkflowTriggers) {
+    if (!triggers.includes(trigger)) {
+      removedTriggers.push(trigger);
+    }
+  }
+
+  // Construct the triggers update object
+  const triggersUpdate: TriggerUpdate = {};
+
+  if (newTriggers.length > 0) {
+    triggersUpdate.create = newTriggers.map((trigger) => ({
+      actionClassId: getActionClassIdFromName(actionClasses, trigger),
+    }));
+  }
+
+  if (removedTriggers.length > 0) {
+    triggersUpdate.deleteMany = {
+      actionClassId: {
+        in: removedTriggers.map((trigger) => getActionClassIdFromName(actionClasses, trigger)),
+      },
+    };
+  }
+  revalidateWorkflowByActionClassName(actionClasses, [...newTriggers, ...removedTriggers]);
+  return triggersUpdate;
 };
 
-export const getWorkflow = async (workflowId: string): Promise<TWorkflow | null> => {
-  const workflow = await unstable_cache(
+export const getWorkflow = (workflowId: string): Promise<TWorkflow | null> =>
+  cache(
     async () => {
       validateInputs([workflowId, ZId]);
 
@@ -120,7 +199,6 @@ export const getWorkflow = async (workflowId: string): Promise<TWorkflow | null>
           console.error(error);
           throw new DatabaseError(error.message);
         }
-
         throw error;
       }
 
@@ -128,119 +206,30 @@ export const getWorkflow = async (workflowId: string): Promise<TWorkflow | null>
         return null;
       }
 
-      const transformedWorkflow = {
-        ...workflowPrisma,
-        triggers: workflowPrisma.triggers.map((trigger) => trigger.actionClass.name),
-      };
-      return transformedWorkflow;
+      return transformPrismaWorkflow(workflowPrisma);
     },
     [`getWorkflow-${workflowId}`],
     {
       tags: [workflowCache.tag.byId(workflowId)],
-      revalidate: SERVICES_REVALIDATION_INTERVAL,
     }
   )();
 
-  // since the unstable_cache function does not support deserialization of dates, we need to manually deserialize them
-  // https://github.com/vercel/next.js/issues/51613
-  return workflow ? formatDateFields(workflow, ZWorkflow) : null;
-};
-
-export const getWorkflowsByAttributeClassId = async (
-  attributeClassId: string,
-  page?: number
-): Promise<TWorkflow[]> => {
-  const workflows = await unstable_cache(
-    async () => {
-      validateInputs([attributeClassId, ZId], [page, ZOptionalNumber]);
-
-      const workflowsPrisma = await prisma.workflow.findMany({
-        where: {
-          attributeFilters: {
-            some: {
-              attributeClassId,
-            },
-          },
-        },
-        select: selectWorkflow,
-        take: page ? ITEMS_PER_PAGE : undefined,
-        skip: page ? ITEMS_PER_PAGE * (page - 1) : undefined,
-      });
-
-      const workflows: TWorkflow[] = [];
-
-      for (const workflowPrisma of workflowsPrisma) {
-        const transformedWorkflow = {
-          ...workflowPrisma,
-          triggers: workflowPrisma.triggers.map((trigger) => trigger.actionClass.name),
-        };
-        workflows.push(transformedWorkflow);
-      }
-
-      return workflows;
-    },
-    [`getWorkflowsByAttributeClassId-${attributeClassId}-${page}`],
-    {
-      tags: [workflowCache.tag.byAttributeClassId(attributeClassId)],
-      revalidate: SERVICES_REVALIDATION_INTERVAL,
-    }
-  )();
-  return workflows.map((workflow) => formatDateFields(workflow, ZWorkflow));
-};
-
-export const getWorkflowsByActionClassId = async (
-  actionClassId: string,
-  page?: number
-): Promise<TWorkflow[]> => {
-  const workflows = await unstable_cache(
+export const getWorkflowsByActionClassId = (actionClassId: string, page?: number): Promise<TWorkflow[]> =>
+  cache(
     async () => {
       validateInputs([actionClassId, ZId], [page, ZOptionalNumber]);
 
-      const workflowsPrisma = await prisma.workflow.findMany({
-        where: {
-          triggers: {
-            some: {
-              actionClass: {
-                id: actionClassId,
-              },
-            },
-          },
-        },
-        select: selectWorkflow,
-        take: page ? ITEMS_PER_PAGE : undefined,
-        skip: page ? ITEMS_PER_PAGE * (page - 1) : undefined,
-      });
-
-      const workflows: TWorkflow[] = [];
-
-      for (const workflowPrisma of workflowsPrisma) {
-        const transformedWorkflow = {
-          ...workflowPrisma,
-          triggers: workflowPrisma.triggers.map((trigger) => trigger.actionClass.name),
-        };
-        workflows.push(transformedWorkflow);
-      }
-
-      return workflows;
-    },
-    [`getWorkflowsByActionClassId-${actionClassId}-${page}`],
-    {
-      tags: [workflowCache.tag.byActionClassId(actionClassId)],
-      revalidate: SERVICES_REVALIDATION_INTERVAL,
-    }
-  )();
-  return workflows.map((workflow) => formatDateFields(workflow, ZWorkflow));
-};
-
-export const getWorkflows = async (environmentId: string, page?: number): Promise<TWorkflow[]> => {
-  const workflows = await unstable_cache(
-    async () => {
-      validateInputs([environmentId, ZId], [page, ZOptionalNumber]);
       let workflowsPrisma;
       try {
         workflowsPrisma = await prisma.workflow.findMany({
           where: {
-            environmentId,
+            triggers: {
+              some: {
+                actionClass: {
+                  id: actionClassId,
+                },
+              },
+            },
           },
           select: selectWorkflow,
           take: page ? ITEMS_PER_PAGE : undefined,
@@ -258,185 +247,256 @@ export const getWorkflows = async (environmentId: string, page?: number): Promis
       const workflows: TWorkflow[] = [];
 
       for (const workflowPrisma of workflowsPrisma) {
-        const transformedWorkflow = {
-          ...workflowPrisma,
-          triggers: workflowPrisma.triggers.map((trigger) => trigger.actionClass.name),
-        };
+        const transformedWorkflow = transformPrismaWorkflow(workflowPrisma);
+        workflows.push(transformedWorkflow);
+      }
+
+      return workflows;
+    },
+    [`getWorkflowsByActionClassId-${actionClassId}-${page}`],
+    {
+      tags: [workflowCache.tag.byActionClassId(actionClassId)],
+    }
+  )();
+
+export const getWorkflows = (
+  environmentId: string,
+  limit?: number,
+  offset?: number,
+  filterCriteria?: TWorkflowFilterCriteria
+): Promise<TWorkflow[]> =>
+  cache(
+    async () => {
+      validateInputs([environmentId, ZId], [limit, ZOptionalNumber], [offset, ZOptionalNumber]);
+      let workflowsPrisma;
+
+      try {
+        workflowsPrisma = await prisma.workflow.findMany({
+          where: {
+            environmentId,
+            ...buildWhereClause(filterCriteria),
+          },
+          select: selectWorkflow,
+          orderBy: buildOrderByClause(filterCriteria?.sortBy),
+          take: limit ? limit : undefined,
+          skip: offset ? offset : undefined,
+        });
+      } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+          console.error(error);
+          throw new DatabaseError(error.message);
+        }
+
+        throw error;
+      }
+
+      const workflows: TWorkflow[] = [];
+
+      for (const workflowPrisma of workflowsPrisma) {
+        const transformedWorkflow = transformPrismaWorkflow(workflowPrisma);
         workflows.push(transformedWorkflow);
       }
       return workflows;
     },
-    [`getWorkflows-${environmentId}-${page}`],
+    [`getWorkflows-${environmentId}-${limit}-${offset}-${JSON.stringify(filterCriteria)}`],
     {
       tags: [workflowCache.tag.byEnvironmentId(environmentId)],
-      revalidate: SERVICES_REVALIDATION_INTERVAL,
     }
   )();
 
-  // since the unstable_cache function does not support deserialization of dates, we need to manually deserialize them
-  // https://github.com/vercel/next.js/issues/51613
-  return workflows.map((workflow) => formatDateFields(workflow, ZWorkflow));
+export const transformToLegacyWorkflow = async (
+  workflow: TWorkflow,
+  languageCode?: string
+): Promise<TLegacyWorkflow> => {
+  const targetLanguage = languageCode ?? "default";
+  const transformedWorkflow = reverseTranslateWorkflow(workflow, targetLanguage);
+
+  return transformedWorkflow;
 };
 
-export const updateWorkflow = async (updatedWorkflow: TWorkflow): Promise<TWorkflow> => {
-  validateInputs([updatedWorkflow, ZWorkflow]);
-
-  const workflowId = updatedWorkflow.id;
-  let data: any = {};
-
-  const actionClasses = await getActionClasses(updatedWorkflow.environmentId);
-  const currentWorkflow = await getWorkflow(workflowId);
-
-  if (!currentWorkflow) {
-    throw new ResourceNotFoundError("Workflow", workflowId);
-  }
-
-  const { triggers, attributeFilters, environmentId, ...workflowData } = updatedWorkflow;
-
-  if (triggers) {
-    const newTriggers: string[] = [];
-    const removedTriggers: string[] = [];
-
-    // find added triggers
-    for (const trigger of triggers) {
-      if (!trigger) {
-        continue;
-      }
-      if (currentWorkflow.triggers.find((t) => t === trigger)) {
-        continue;
-      } else {
-        newTriggers.push(trigger);
-      }
-    }
-
-    // find removed triggers
-    for (const trigger of currentWorkflow.triggers) {
-      if (triggers.find((t: any) => t === trigger)) {
-        continue;
-      } else {
-        removedTriggers.push(trigger);
-      }
-    }
-    // create new triggers
-    if (newTriggers.length > 0) {
-      data.triggers = {
-        ...(data.triggers || []),
-        create: newTriggers.map((trigger) => ({
-          actionClassId: getActionClassIdFromName(actionClasses, trigger),
-        })),
-      };
-    }
-    // delete removed triggers
-    if (removedTriggers.length > 0) {
-      data.triggers = {
-        ...(data.triggers || []),
-        deleteMany: {
-          actionClassId: {
-            in: removedTriggers.map((trigger) => getActionClassIdFromName(actionClasses, trigger)),
+export const getWorkflowCount = async (environmentId: string): Promise<number> =>
+  cache(
+    async () => {
+      validateInputs([environmentId, ZId]);
+      try {
+        const workflowCount = await prisma.workflow.count({
+          where: {
+            environmentId: environmentId,
           },
-        },
-      };
-    }
-
-    // Revalidation for newly added/removed actionClassId
-    revalidateWorkflowByActionClassId(actionClasses, [...newTriggers, ...removedTriggers]);
-  }
-
-  if (attributeFilters) {
-    const newFilters: TWorkflowAttributeFilter[] = [];
-    const removedFilters: TWorkflowAttributeFilter[] = [];
-
-    // find added attribute filters
-    for (const attributeFilter of attributeFilters) {
-      if (!attributeFilter.attributeClassId || !attributeFilter.condition || !attributeFilter.value) {
-        continue;
-      }
-
-      if (
-        currentWorkflow.attributeFilters.find(
-          (f) =>
-            f.attributeClassId === attributeFilter.attributeClassId &&
-            f.condition === attributeFilter.condition &&
-            f.value === attributeFilter.value
-        )
-      ) {
-        continue;
-      } else {
-        newFilters.push({
-          attributeClassId: attributeFilter.attributeClassId,
-          condition: attributeFilter.condition,
-          value: attributeFilter.value,
         });
+
+        return workflowCount;
+      } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+          console.error(error);
+          throw new DatabaseError(error.message);
+        }
+
+        throw error;
       }
+    },
+    [`getWorkflowCount-${environmentId}`],
+    {
+      tags: [workflowCache.tag.byEnvironmentId(environmentId)],
     }
-    // find removed attribute filters
-    for (const attributeFilter of currentWorkflow.attributeFilters) {
-      if (
-        attributeFilters.find(
-          (f) =>
-            f.attributeClassId === attributeFilter.attributeClassId &&
-            f.condition === attributeFilter.condition &&
-            f.value === attributeFilter.value
-        )
-      ) {
-        continue;
-      } else {
-        removedFilters.push({
-          attributeClassId: attributeFilter.attributeClassId,
-          condition: attributeFilter.condition,
-          value: attributeFilter.value,
-        });
-      }
-    }
+  )();
 
-    // create new attribute filters
-    if (newFilters.length > 0) {
-      data.attributeFilters = {
-        ...(data.attributeFilters || []),
-        create: newFilters.map((attributeFilter) => ({
-          attributeClassId: attributeFilter.attributeClassId,
-          condition: attributeFilter.condition,
-          value: attributeFilter.value,
-        })),
-      };
-    }
-    // delete removed attribute filter
-    if (removedFilters.length > 0) {
-      // delete all attribute filters that match the removed attribute classes
-      await Promise.all(
-        removedFilters.map(async (attributeFilter) => {
-          await prisma.workflowAttributeFilter.deleteMany({
-            where: {
-              attributeClassId: attributeFilter.attributeClassId,
-            },
-          });
-        })
-      );
-    }
-
-    revalidateWorkflowByAttributeClassId([...newFilters, ...removedFilters]);
-  }
-
-  data = {
-    ...workflowData,
-    ...data,
-  };
+export const updateWorkflow = async (updatedWorkflow: TWorkflow): Promise<TWorkflow> => {
+  validateInputs([updatedWorkflow, ZWorkflowWithRefinements]);
 
   try {
+    const workflowId = updatedWorkflow.id;
+    let data: any = {};
+
+    const actionClasses = await getActionClasses(updatedWorkflow.environmentId);
+    const currentWorkflow = await getWorkflow(workflowId);
+
+    if (!currentWorkflow) {
+      throw new ResourceNotFoundError("Workflow", workflowId);
+    }
+
+    const { triggers, environmentId, segment, questions, languages, type, ...workflowData } = updatedWorkflow;
+
+    if (languages) {
+      // Process languages update logic here
+      // Extract currentLanguageIds and updatedLanguageIds
+      const currentLanguageIds = currentWorkflow.languages
+        ? currentWorkflow.languages.map((l) => l.language.id)
+        : [];
+      const updatedLanguageIds =
+        languages.length > 1 ? updatedWorkflow.languages.map((l) => l.language.id) : [];
+      const enabledLangaugeIds = languages.map((language) => {
+        if (language.enabled) return language.language.id;
+      });
+
+      // Determine languages to add and remove
+      const languagesToAdd = updatedLanguageIds.filter((id) => !currentLanguageIds.includes(id));
+      const languagesToRemove = currentLanguageIds.filter((id) => !updatedLanguageIds.includes(id));
+
+      const defaultLanguageId = updatedWorkflow.languages.find((l) => l.default)?.language.id;
+
+      // Prepare data for Prisma update
+      data.languages = {};
+
+      // Update existing languages for default value changes
+      data.languages.updateMany = currentWorkflow.languages.map((workflowLanguage) => ({
+        where: { languageId: workflowLanguage.language.id },
+        data: {
+          default: workflowLanguage.language.id === defaultLanguageId,
+          enabled: enabledLangaugeIds.includes(workflowLanguage.language.id),
+        },
+      }));
+
+      // Add new languages
+      if (languagesToAdd.length > 0) {
+        data.languages.create = languagesToAdd.map((languageId) => ({
+          languageId: languageId,
+          default: languageId === defaultLanguageId,
+          enabled: enabledLangaugeIds.includes(languageId),
+        }));
+      }
+
+      // Remove languages no longer associated with the workflow
+      if (languagesToRemove.length > 0) {
+        data.languages.deleteMany = languagesToRemove.map((languageId) => ({
+          languageId: languageId,
+          enabled: enabledLangaugeIds.includes(languageId),
+        }));
+      }
+    }
+
+    if (triggers) {
+      data.triggers = processTriggerUpdates(triggers, currentWorkflow.triggers, actionClasses);
+    }
+    // if the workflow body has type other than "app" but has a private segment, we delete that segment, and if it has a public segment, we disconnect from to the workflow
+    if (segment) {
+      if (type === "app") {
+        // parse the segment filters:
+        const parsedFilters = ZSegmentFilters.safeParse(segment.filters);
+        if (!parsedFilters.success) {
+          throw new InvalidInputError("Invalid user segment filters");
+        }
+
+        try {
+          await updateSegment(segment.id, segment);
+        } catch (error) {
+          console.error(error);
+          throw new Error("Error updating workflow");
+        }
+      } else {
+        if (segment.isPrivate) {
+          await deleteSegment(segment.id);
+        } else {
+          await prisma.workflow.update({
+            where: {
+              id: workflowId,
+            },
+            data: {
+              segment: {
+                disconnect: true,
+              },
+            },
+          });
+        }
+      }
+
+      segmentCache.revalidate({
+        id: segment.id,
+        environmentId: segment.environmentId,
+      });
+    }
+    data.questions = questions.map((question) => {
+      const { isDraft, ...rest } = question;
+      return rest;
+    });
+
+    workflowData.updatedAt = new Date();
+
+    data = {
+      ...workflowData,
+      ...data,
+      type,
+    };
+
+    // Remove scheduled status when runOnDate is not set
+    if (data.status === "scheduled" && data.runOnDate === null) {
+      data.status = "inProgress";
+    }
+    // Set scheduled status when runOnDate is set and in the future on completed workflows
+    if (
+      (data.status === "completed" || data.status === "paused" || data.status === "inProgress") &&
+      data.runOnDate &&
+      data.runOnDate > new Date()
+    ) {
+      data.status = "scheduled";
+    }
+
     const prismaWorkflow = await prisma.workflow.update({
       where: { id: workflowId },
       data,
+      select: selectWorkflow,
     });
 
+    let workflowSegment: TSegment | null = null;
+    if (prismaWorkflow.segment) {
+      workflowSegment = {
+        ...prismaWorkflow.segment,
+        workflows: prismaWorkflow.segment.workflows.map((workflow) => workflow.id),
+      };
+    }
+
+    // TODO: Fix this, this happens because the workflow type "web" is no longer in the zod types but its required in the schema for migration
+    // @ts-expect-error
     const modifiedWorkflow: TWorkflow = {
       ...prismaWorkflow, // Properties from prismaWorkflow
       triggers: updatedWorkflow.triggers ? updatedWorkflow.triggers : [], // Include triggers from updatedWorkflow
-      attributeFilters: updatedWorkflow.attributeFilters ? updatedWorkflow.attributeFilters : [], // Include attributeFilters from updatedWorkflow
+      segment: workflowSegment,
     };
 
     workflowCache.revalidate({
       id: modifiedWorkflow.id,
       environmentId: modifiedWorkflow.environmentId,
+      segmentId: modifiedWorkflow.segment?.id,
     });
 
     return modifiedWorkflow;
@@ -453,36 +513,66 @@ export const updateWorkflow = async (updatedWorkflow: TWorkflow): Promise<TWorkf
 export async function deleteWorkflow(workflowId: string) {
   validateInputs([workflowId, ZId]);
 
-  const deletedWorkflow = await prisma.workflow.delete({
-    where: {
-      id: workflowId,
-    },
-    select: selectWorkflow,
-  });
-
-  responseCache.revalidate({
-    workflowId,
-    environmentId: deletedWorkflow.environmentId,
-  });
-  workflowCache.revalidate({
-    id: deletedWorkflow.id,
-    environmentId: deletedWorkflow.environmentId,
-  });
-
-  // Revalidate triggers by actionClassId
-  deletedWorkflow.triggers.forEach((trigger) => {
-    workflowCache.revalidate({
-      actionClassId: trigger.actionClass.id,
+  try {
+    const deletedWorkflow = await prisma.workflow.delete({
+      where: {
+        id: workflowId,
+      },
+      select: selectWorkflow,
     });
-  });
-  // Revalidate workflows by attributeClassId
-  deletedWorkflow.attributeFilters.forEach((attributeFilter) => {
-    workflowCache.revalidate({
-      attributeClassId: attributeFilter.attributeClassId,
-    });
-  });
 
-  return deletedWorkflow;
+    if (deletedWorkflow.type === "app") {
+      const deletedSegment = await prisma.segment.delete({
+        where: {
+          title: workflowId,
+          isPrivate: true,
+          environmentId_title: {
+            environmentId: deletedWorkflow.environmentId,
+            title: workflowId,
+          },
+        },
+      });
+
+      if (deletedSegment) {
+        segmentCache.revalidate({
+          id: deletedSegment.id,
+          environmentId: deletedWorkflow.environmentId,
+        });
+      }
+    }
+
+    responseCache.revalidate({
+      workflowId,
+      environmentId: deletedWorkflow.environmentId,
+    });
+    workflowCache.revalidate({
+      id: deletedWorkflow.id,
+      environmentId: deletedWorkflow.environmentId,
+    });
+
+    if (deletedWorkflow.segment?.id) {
+      segmentCache.revalidate({
+        id: deletedWorkflow.segment.id,
+        environmentId: deletedWorkflow.environmentId,
+      });
+    }
+
+    // Revalidate triggers by actionClassId
+    deletedWorkflow.triggers.forEach((trigger) => {
+      workflowCache.revalidate({
+        actionClassId: trigger.actionClass.id,
+      });
+    });
+
+    return deletedWorkflow;
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error(error);
+      throw new DatabaseError(error.message);
+    }
+
+    throw error;
+  }
 }
 
 export const createWorkflow = async (
@@ -491,221 +581,434 @@ export const createWorkflow = async (
 ): Promise<TWorkflow> => {
   validateInputs([environmentId, ZId]);
 
-  if (workflowBody.attributeFilters) {
-    revalidateWorkflowByAttributeClassId(workflowBody.attributeFilters);
-  }
+  try {
+    // if the workflow body has both triggers and inlineTriggers, we throw an error
+    if (workflowBody.triggers && workflowBody.inlineTriggers) {
+      throw new InvalidInputError("Workflow body cannot have both triggers and inlineTriggers");
+    }
 
-  if (workflowBody.triggers) {
-    const actionClasses = await getActionClasses(environmentId);
-    revalidateWorkflowByActionClassId(actionClasses, workflowBody.triggers);
-  }
+    if (workflowBody.triggers) {
+      const actionClasses = await getActionClasses(environmentId);
+      revalidateWorkflowByActionClassName(actionClasses, workflowBody.triggers);
+    }
+    const createdBy = workflowBody.createdBy;
+    delete workflowBody.createdBy;
 
-  // TODO: Create with triggers & attributeFilters
-  delete workflowBody.triggers;
-  delete workflowBody.attributeFilters;
-  const data: Omit<TWorkflowInput, "triggers" | "attributeFilters"> = {
-    ...workflowBody,
-  };
+    const data: Omit<Prisma.WorkflowCreateInput, "environment"> = {
+      ...workflowBody,
+      // TODO: Create with attributeFilters
+      triggers: workflowBody.triggers
+        ? processTriggerUpdates(workflowBody.triggers, [], await getActionClasses(environmentId))
+        : undefined,
+      attributeFilters: undefined,
+    };
 
-  const workflow = await prisma.workflow.create({
-    data: {
-      ...data,
-      environment: {
+    if ((workflowBody.type === "website" || workflowBody.type === "app") && data.thankYouCard) {
+      data.thankYouCard.buttonLabel = undefined;
+      data.thankYouCard.buttonLink = undefined;
+    }
+
+    if (createdBy) {
+      data.creator = {
         connect: {
-          id: environmentId,
+          id: createdBy,
+        },
+      };
+    }
+
+    const workflow = await prisma.workflow.create({
+      data: {
+        ...data,
+        environment: {
+          connect: {
+            id: environmentId,
+          },
         },
       },
-    },
-    select: selectWorkflow,
-  });
+      select: selectWorkflow,
+    });
 
-  const transformedWorkflow = {
-    ...workflow,
-    triggers: workflow.triggers.map((trigger) => trigger.actionClass.name),
-  };
-
-  workflowCache.revalidate({
-    id: workflow.id,
-    environmentId: workflow.environmentId,
-  });
-
-  return transformedWorkflow;
-};
-
-export const duplicateWorkflow = async (environmentId: string, workflowId: string) => {
-  validateInputs([environmentId, ZId], [workflowId, ZId]);
-  const existingWorkflow = await getWorkflow(workflowId);
-
-  if (!existingWorkflow) {
-    throw new ResourceNotFoundError("Workflow", workflowId);
-  }
-
-  const actionClasses = await getActionClasses(environmentId);
-  const newAttributeFilters = existingWorkflow.attributeFilters.map((attributeFilter) => ({
-    attributeClassId: attributeFilter.attributeClassId,
-    condition: attributeFilter.condition,
-    value: attributeFilter.value,
-  }));
-
-  // create new workflow with the data of the existing workflow
-  const newWorkflow = await prisma.workflow.create({
-    data: {
-      ...existingWorkflow,
-      id: undefined, // id is auto-generated
-      environmentId: undefined, // environmentId is set below
-      name: `${existingWorkflow.name} (copy)`,
-      status: "draft",
-      questions: JSON.parse(JSON.stringify(existingWorkflow.questions)),
-      thankYouCard: JSON.parse(JSON.stringify(existingWorkflow.thankYouCard)),
-      triggers: {
-        create: existingWorkflow.triggers.map((trigger) => ({
-          actionClassId: getActionClassIdFromName(actionClasses, trigger),
-        })),
-      },
-      attributeFilters: {
-        create: newAttributeFilters,
-      },
-      environment: {
-        connect: {
-          id: environmentId,
-        },
-      },
-      workflowClosedMessage: existingWorkflow.workflowClosedMessage
-        ? JSON.parse(JSON.stringify(existingWorkflow.workflowClosedMessage))
-        : Prisma.JsonNull,
-      singleUse: existingWorkflow.singleUse
-        ? JSON.parse(JSON.stringify(existingWorkflow.singleUse))
-        : Prisma.JsonNull,
-      productOverwrites: existingWorkflow.productOverwrites
-        ? JSON.parse(JSON.stringify(existingWorkflow.productOverwrites))
-        : Prisma.JsonNull,
-      styling: existingWorkflow.styling
-        ? JSON.parse(JSON.stringify(existingWorkflow.styling))
-        : Prisma.JsonNull,
-      verifyEmail: existingWorkflow.verifyEmail
-        ? JSON.parse(JSON.stringify(existingWorkflow.verifyEmail))
-        : Prisma.JsonNull,
-    },
-  });
-
-  workflowCache.revalidate({
-    id: newWorkflow.id,
-    environmentId: newWorkflow.environmentId,
-  });
-
-  // Revalidate workflows by actionClassId
-  revalidateWorkflowByActionClassId(actionClasses, existingWorkflow.triggers);
-
-  // Revalidate workflows by attributeClassId
-  revalidateWorkflowByAttributeClassId(newAttributeFilters);
-
-  return newWorkflow;
-};
-
-export const getSyncWorkflows = async (environmentId: string, person: TPerson): Promise<TWorkflow[]> => {
-  validateInputs([environmentId, ZId]);
-
-  const workflows = await unstable_cache(
-    async () => {
-      const product = await getProductByEnvironmentId(environmentId);
-
-      if (!product) {
-        throw new Error("Product not found");
-      }
-
-      let workflows = await getWorkflows(environmentId);
-
-      // filtered workflows for running and web
-      workflows = workflows.filter((workflow) => workflow.status === "inProgress" && workflow.type === "web");
-
-      const displays = await getDisplaysByPersonId(person.id);
-
-      // filter workflows that meet the displayOption criteria
-      workflows = workflows.filter((workflow) => {
-        if (workflow.displayOption === "respondMultiple") {
-          return true;
-        } else if (workflow.displayOption === "displayOnce") {
-          return displays.filter((display) => display.workflowId === workflow.id).length === 0;
-        } else if (workflow.displayOption === "displayMultiple") {
-          return (
-            displays.filter((display) => display.workflowId === workflow.id && display.responseId !== null)
-              .length === 0
-          );
-        } else {
-          throw Error("Invalid displayOption");
-        }
+    // if the workflow created is an "app" workflow, we also create a private segment for it.
+    if (workflow.type === "app") {
+      const newSegment = await createSegment({
+        environmentId,
+        workflowId: workflow.id,
+        filters: [],
+        title: workflow.id,
+        isPrivate: true,
       });
 
-      const attributeClasses = await getAttributeClasses(environmentId);
+      await prisma.workflow.update({
+        where: {
+          id: workflow.id,
+        },
+        data: {
+          segment: {
+            connect: {
+              id: newSegment.id,
+            },
+          },
+        },
+      });
 
-      // filter workflows that meet the attributeFilters criteria
-      const potentialWorkflowsWithAttributes = workflows.filter((workflow) => {
-        const attributeFilters = workflow.attributeFilters;
-        if (attributeFilters.length === 0) {
-          return true;
+      segmentCache.revalidate({
+        id: newSegment.id,
+        environmentId: workflow.environmentId,
+      });
+    }
+
+    // TODO: Fix this, this happens because the workflow type "web" is no longer in the zod types but its required in the schema for migration
+    // @ts-expect-error
+    const transformedWorkflow: TWorkflow = {
+      ...workflow,
+      triggers: workflow.triggers.map((trigger) => trigger.actionClass.name),
+      ...(workflow.segment && {
+        segment: {
+          ...workflow.segment,
+          workflows: workflow.segment.workflows.map((workflow) => workflow.id),
+        },
+      }),
+    };
+
+    await subscribeTeamMembersToWorkflowResponses(environmentId, workflow.id);
+
+    workflowCache.revalidate({
+      id: workflow.id,
+      environmentId: workflow.environmentId,
+    });
+
+    return transformedWorkflow;
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error(error);
+      throw new DatabaseError(error.message);
+    }
+
+    throw error;
+  }
+};
+
+export const duplicateWorkflow = async (environmentId: string, workflowId: string, userId: string) => {
+  validateInputs([environmentId, ZId], [workflowId, ZId]);
+
+  try {
+    const existingWorkflow = await getWorkflow(workflowId);
+    const currentDate = new Date();
+    if (!existingWorkflow) {
+      throw new ResourceNotFoundError("Workflow", workflowId);
+    }
+
+    const defaultLanguageId = existingWorkflow.languages.find((l) => l.default)?.language.id;
+
+    const actionClasses = await getActionClasses(environmentId);
+
+    // create new workflow with the data of the existing workflow
+    const newWorkflow = await prisma.workflow.create({
+      data: {
+        ...existingWorkflow,
+        id: undefined, // id is auto-generated
+        environmentId: undefined, // environmentId is set below
+        createdAt: currentDate,
+        updatedAt: currentDate,
+        createdBy: undefined,
+        name: `${existingWorkflow.name} (copy)`,
+        status: "draft",
+        questions: structuredClone(existingWorkflow.questions),
+        thankYouCard: structuredClone(existingWorkflow.thankYouCard),
+        languages: {
+          create: existingWorkflow.languages?.map((workflowLanguage) => ({
+            languageId: workflowLanguage.language.id,
+            default: workflowLanguage.language.id === defaultLanguageId,
+          })),
+        },
+        triggers: {
+          create: existingWorkflow.triggers.map((trigger) => ({
+            actionClassId: getActionClassIdFromName(actionClasses, trigger),
+          })),
+        },
+        inlineTriggers: existingWorkflow.inlineTriggers ?? undefined,
+        environment: {
+          connect: {
+            id: environmentId,
+          },
+        },
+        creator: {
+          connect: {
+            id: userId,
+          },
+        },
+        workflowClosedMessage: existingWorkflow.workflowClosedMessage
+          ? structuredClone(existingWorkflow.workflowClosedMessage)
+          : Prisma.JsonNull,
+        singleUse: existingWorkflow.singleUse ? structuredClone(existingWorkflow.singleUse) : Prisma.JsonNull,
+        productOverwrites: existingWorkflow.productOverwrites
+          ? structuredClone(existingWorkflow.productOverwrites)
+          : Prisma.JsonNull,
+        styling: existingWorkflow.styling ? structuredClone(existingWorkflow.styling) : Prisma.JsonNull,
+        verifyEmail: existingWorkflow.verifyEmail
+          ? structuredClone(existingWorkflow.verifyEmail)
+          : Prisma.JsonNull,
+        // we'll update the segment later
+        segment: undefined,
+      },
+    });
+
+    // if the existing workflow has an inline segment, we copy the filters and create a new inline segment and connect it to the new workflow
+    if (existingWorkflow.segment) {
+      if (existingWorkflow.segment.isPrivate) {
+        const newInlineSegment = await createSegment({
+          environmentId,
+          title: `${newWorkflow.id}`,
+          isPrivate: true,
+          workflowId: newWorkflow.id,
+          filters: existingWorkflow.segment.filters,
+        });
+
+        await prisma.workflow.update({
+          where: {
+            id: newWorkflow.id,
+          },
+          data: {
+            segment: {
+              connect: {
+                id: newInlineSegment.id,
+              },
+            },
+          },
+        });
+
+        segmentCache.revalidate({
+          id: newInlineSegment.id,
+          environmentId: newWorkflow.environmentId,
+        });
+      } else {
+        await prisma.workflow.update({
+          where: {
+            id: newWorkflow.id,
+          },
+          data: {
+            segment: {
+              connect: {
+                id: existingWorkflow.segment.id,
+              },
+            },
+          },
+        });
+
+        segmentCache.revalidate({
+          id: existingWorkflow.segment.id,
+          environmentId: newWorkflow.environmentId,
+        });
+      }
+    }
+
+    workflowCache.revalidate({
+      id: newWorkflow.id,
+      environmentId: newWorkflow.environmentId,
+    });
+
+    // Revalidate workflows by actionClassId
+    revalidateWorkflowByActionClassName(actionClasses, existingWorkflow.triggers);
+
+    return newWorkflow;
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error(error);
+      throw new DatabaseError(error.message);
+    }
+
+    throw error;
+  }
+};
+
+export const getSyncWorkflows = (
+  environmentId: string,
+  personId: string,
+  deviceType: "phone" | "desktop" = "desktop",
+  options?: {
+    version?: string;
+  }
+): Promise<TWorkflow[] | TLegacyWorkflow[]> =>
+  cache(
+    async () => {
+      validateInputs([environmentId, ZId]);
+      try {
+        const product = await getProductByEnvironmentId(environmentId);
+
+        if (!product) {
+          throw new Error("Product not found");
         }
-        // check if meets all attribute filters criterias
-        return attributeFilters.every((attributeFilter) => {
-          const attributeClassName = attributeClasses.find(
-            (attributeClass) => attributeClass.id === attributeFilter.attributeClassId
-          )?.name;
-          if (!attributeClassName) {
-            throw Error("Invalid attribute filter class");
-          }
-          const personAttributeValue = person.attributes[attributeClassName];
-          if (attributeFilter.condition === "equals") {
-            return personAttributeValue === attributeFilter.value;
-          } else if (attributeFilter.condition === "notEquals") {
-            return personAttributeValue !== attributeFilter.value;
+
+        const person = personId === "legacy" ? ({ id: "legacy" } as TPerson) : await getPerson(personId);
+
+        if (!person) {
+          throw new Error("Person not found");
+        }
+
+        let workflows: TWorkflow[] | TLegacyWorkflow[] = await getWorkflows(environmentId);
+
+        // filtered workflows for running and web
+        workflows = workflows.filter(
+          (workflow) => workflow.status === "inProgress" && workflow.type === "app"
+        );
+
+        // if no workflows are left, return an empty array
+        if (workflows.length === 0) {
+          return [];
+        }
+
+        const displays = await getDisplaysByPersonId(person.id);
+
+        // filter workflows that meet the displayOption criteria
+        workflows = workflows.filter((workflow) => {
+          if (workflow.displayOption === "respondMultiple") {
+            return true;
+          } else if (workflow.displayOption === "displayOnce") {
+            return displays.filter((display) => display.workflowId === workflow.id).length === 0;
+          } else if (workflow.displayOption === "displayMultiple") {
+            return (
+              displays.filter((display) => display.workflowId === workflow.id && display.responseId !== null)
+                .length === 0
+            );
           } else {
-            throw Error("Invalid attribute filter condition");
+            throw Error("Invalid displayOption");
           }
         });
-      });
 
-      const latestDisplay = displays[0];
+        const latestDisplay = displays[0];
 
-      // filter workflows that meet the recontactDays criteria
-      workflows = potentialWorkflowsWithAttributes.filter((workflow) => {
-        if (!latestDisplay) {
-          return true;
-        } else if (workflow.recontactDays !== null) {
-          const lastDisplayWorkflow = displays.filter((display) => display.workflowId === workflow.id)[0];
-          if (!lastDisplayWorkflow) {
+        // filter workflows that meet the recontactDays criteria
+        workflows = workflows.filter((workflow) => {
+          if (!latestDisplay) {
+            return true;
+          } else if (workflow.recontactDays !== null) {
+            const lastDisplayWorkflow = displays.filter((display) => display.workflowId === workflow.id)[0];
+            if (!lastDisplayWorkflow) {
+              return true;
+            }
+            return diffInDays(new Date(), new Date(lastDisplayWorkflow.createdAt)) >= workflow.recontactDays;
+          } else if (product.recontactDays !== null) {
+            return diffInDays(new Date(), new Date(latestDisplay.createdAt)) >= product.recontactDays;
+          } else {
             return true;
           }
-          return diffInDays(new Date(), new Date(lastDisplayWorkflow.createdAt)) >= workflow.recontactDays;
-        } else if (product.recontactDays !== null) {
-          return diffInDays(new Date(), new Date(latestDisplay.createdAt)) >= product.recontactDays;
-        } else {
-          return true;
-        }
-      });
+        });
 
-      if (!workflows) {
-        throw new ResourceNotFoundError("Workflow", environmentId);
+        // if no workflows are left, return an empty array
+        if (workflows.length === 0) {
+          return [];
+        }
+
+        // if no workflows have segment filters, return the workflows
+        if (!anyWorkflowHasFilters(workflows)) {
+          return workflows;
+        }
+
+        const personActions = await getActionsByPersonId(person.id);
+        const personActionClassIds = Array.from(
+          new Set(personActions?.map((action) => action.actionClass?.id ?? ""))
+        );
+
+        const attributes = await getAttributes(person.id);
+        const personUserId = person.userId;
+
+        // the workflows now have segment filters, so we need to evaluate them
+        const workflowPromises = workflows.map(async (workflow) => {
+          const { segment } = workflow;
+          // if the workflow has no segment, or the segment has no filters, we return the workflow
+          if (!segment || !segment.filters?.length) {
+            return workflow;
+          }
+
+          // backwards compatibility for older versions of the js package
+          // if the version is not provided, we will use the old method of evaluating the segment, which is attribute filters
+          // transform the segment filters to attribute filters and evaluate them
+          if (!options?.version) {
+            const attributeFilters = transformSegmentFiltersToAttributeFilters(segment.filters);
+
+            // if the attribute filters are null, it means the segment filters don't match the expected format for attribute filters, so we skip this workflow
+            if (attributeFilters === null) {
+              return null;
+            }
+
+            // if there are no attribute filters, we return the workflow
+            if (!attributeFilters.length) {
+              return workflow;
+            }
+
+            // we check if the person meets the attribute filters for all the attribute filters
+            const isEligible = attributeFilters.every((attributeFilter) => {
+              const personAttributeValue = attributes[attributeFilter.attributeClassName];
+              if (!personAttributeValue) {
+                return false;
+              }
+
+              if (attributeFilter.operator === "equals") {
+                return personAttributeValue === attributeFilter.value;
+              } else if (attributeFilter.operator === "notEquals") {
+                return personAttributeValue !== attributeFilter.value;
+              } else {
+                // if the operator is not equals or not equals, we skip the workflow, this means that new segment filter options are being used
+                return false;
+              }
+            });
+
+            return isEligible ? workflow : null;
+          }
+
+          // Evaluate the segment filters
+          const result = await evaluateSegment(
+            {
+              attributes: attributes ?? {},
+              actionIds: personActionClassIds,
+              deviceType,
+              environmentId,
+              personId: person.id,
+              userId: personUserId,
+            },
+            segment.filters
+          );
+
+          return result ? workflow : null;
+        });
+
+        const resolvedWorkflows = await Promise.all(workflowPromises);
+        workflows = resolvedWorkflows.filter((workflow) => !!workflow) as TWorkflow[];
+
+        if (!workflows) {
+          throw new ResourceNotFoundError("Workflow", environmentId);
+        }
+        return workflows;
+      } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+          console.error(error);
+          throw new DatabaseError(error.message);
+        }
+
+        throw error;
       }
-      return workflows;
     },
-    [`getSyncWorkflows-${environmentId}-${person.userId}`],
+    [`getSyncWorkflows-${environmentId}-${personId}`],
     {
       tags: [
-        personCache.tag.byEnvironmentIdAndUserId(environmentId, person.userId),
-        displayCache.tag.byPersonId(person.id),
+        personCache.tag.byEnvironmentId(environmentId),
+        personCache.tag.byId(personId),
+        displayCache.tag.byPersonId(personId),
         workflowCache.tag.byEnvironmentId(environmentId),
         productCache.tag.byEnvironmentId(environmentId),
+        attributeCache.tag.byPersonId(personId),
       ],
-      revalidate: SERVICES_REVALIDATION_INTERVAL,
     }
   )();
-  return workflows.map((workflow) => formatDateFields(workflow, ZWorkflow));
-};
 
-export const getWorkflowByResultShareKey = async (resultShareKey: string): Promise<string | null> => {
+export const getWorkflowIdByResultShareKey = async (resultShareKey: string): Promise<string | null> => {
   try {
     const workflow = await prisma.workflow.findFirst({
       where: {
         resultShareKey,
+      },
+      select: {
+        id: true,
       },
     });
 
@@ -722,3 +1025,93 @@ export const getWorkflowByResultShareKey = async (resultShareKey: string): Promi
     throw error;
   }
 };
+
+export const loadNewSegmentInWorkflow = async (
+  workflowId: string,
+  newSegmentId: string
+): Promise<TWorkflow> => {
+  validateInputs([workflowId, ZId], [newSegmentId, ZId]);
+  try {
+    const currentWorkflow = await getWorkflow(workflowId);
+    if (!currentWorkflow) {
+      throw new ResourceNotFoundError("workflow", workflowId);
+    }
+
+    const currentSegment = await getSegment(newSegmentId);
+    if (!currentSegment) {
+      throw new ResourceNotFoundError("segment", newSegmentId);
+    }
+
+    const prismaWorkflow = await prisma.workflow.update({
+      where: {
+        id: workflowId,
+      },
+      select: selectWorkflow,
+      data: {
+        segment: {
+          connect: {
+            id: newSegmentId,
+          },
+        },
+      },
+    });
+
+    segmentCache.revalidate({ id: newSegmentId });
+    workflowCache.revalidate({ id: workflowId });
+
+    let workflowSegment: TSegment | null = null;
+    if (prismaWorkflow.segment) {
+      workflowSegment = {
+        ...prismaWorkflow.segment,
+        workflows: prismaWorkflow.segment.workflows.map((workflow) => workflow.id),
+      };
+    }
+
+    // TODO: Fix this, this happens because the workflow type "web" is no longer in the zod types but its required in the schema for migration
+    // @ts-expect-error
+    const modifiedWorkflow: TWorkflow = {
+      ...prismaWorkflow, // Properties from prismaWorkflow
+      triggers: prismaWorkflow.triggers.map((trigger) => trigger.actionClass.name),
+      segment: workflowSegment,
+    };
+
+    return modifiedWorkflow;
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      throw new DatabaseError(error.message);
+    }
+
+    throw error;
+  }
+};
+
+export const getWorkflowsBySegmentId = (segmentId: string): Promise<TWorkflow[]> =>
+  cache(
+    async () => {
+      try {
+        const workflowsPrisma = await prisma.workflow.findMany({
+          where: { segmentId },
+          select: selectWorkflow,
+        });
+
+        const workflows: TWorkflow[] = [];
+
+        for (const workflowPrisma of workflowsPrisma) {
+          const transformedWorkflow = transformPrismaWorkflow(workflowPrisma);
+          workflows.push(transformedWorkflow);
+        }
+
+        return workflows;
+      } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+          throw new DatabaseError(error.message);
+        }
+
+        throw error;
+      }
+    },
+    [`getWorkflowsBySegmentId-${segmentId}`],
+    {
+      tags: [workflowCache.tag.bySegmentId(segmentId), segmentCache.tag.byId(segmentId)],
+    }
+  )();

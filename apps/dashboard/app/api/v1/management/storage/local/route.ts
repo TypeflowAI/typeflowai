@@ -4,17 +4,15 @@
 import { responses } from "@/app/lib/api/response";
 import { getServerSession } from "next-auth";
 import { headers } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 import { authOptions } from "@typeflowai/lib/authOptions";
-import { UPLOADS_DIR } from "@typeflowai/lib/constants";
+import { ENCRYPTION_KEY, UPLOADS_DIR } from "@typeflowai/lib/constants";
 import { validateLocalSignedUrl } from "@typeflowai/lib/crypto";
-import { env } from "@typeflowai/lib/env.mjs";
 import { hasUserEnvironmentAccess } from "@typeflowai/lib/environment/auth";
 import { putFileToLocalStorage } from "@typeflowai/lib/storage/service";
-import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
 
-export async function POST(req: NextRequest): Promise<NextResponse> {
+export async function POST(req: NextRequest): Promise<Response> {
   const accessType = "public"; // public files are accessible by anyone
   const headersList = headers();
 
@@ -62,12 +60,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return responses.unauthorizedResponse();
   }
 
-  const team = await getTeamByEnvironmentId(environmentId);
-
-  if (!team) {
-    return responses.notFoundResponse("TeamByEnvironmentId", environmentId);
-  }
-
   const fileName = decodeURIComponent(encodedFileName);
 
   // validate signature
@@ -79,7 +71,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     fileType,
     Number(signedTimestamp),
     signedSignature,
-    env.ENCRYPTION_KEY
+    ENCRYPTION_KEY
   );
 
   if (!validated) {
@@ -94,11 +86,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   try {
-    const plan = ["active", "canceled"].includes(team.billing.subscriptionStatus) ? "paid" : "free";
     const bytes = await file.arrayBuffer();
     const fileBuffer = Buffer.from(bytes);
 
-    await putFileToLocalStorage(fileName, fileBuffer, accessType, environmentId, UPLOADS_DIR, false, plan);
+    await putFileToLocalStorage(fileName, fileBuffer, accessType, environmentId, UPLOADS_DIR, true);
 
     return responses.successResponse({
       message: "File uploaded successfully",

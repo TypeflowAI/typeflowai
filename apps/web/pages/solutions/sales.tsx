@@ -9,16 +9,16 @@ import Hero from "@/components/solutions/Hero";
 import ThreeColumnFeatures from "@/components/solutions/ThreeColumnFeatures";
 import CTA from "@/images/ctas/cta2.svg";
 import {
-  ArrowPathIcon,
-  ArrowUturnRightIcon,
-  AtSymbolIcon,
-  Bars3CenterLeftIcon,
-  CurrencyDollarIcon,
-  EnvelopeIcon,
-  PresentationChartBarIcon,
+  DollarSignIcon,
+  LineChartIcon,
+  MailIcon,
+  MailsIcon,
+  RefreshCcwIcon,
   StarIcon,
+  TextIcon,
   UserCircleIcon,
-} from "@heroicons/react/24/outline";
+  WorkflowIcon,
+} from "lucide-react";
 
 const leadGenerationFeatures = [
   {
@@ -37,7 +37,7 @@ const leadGenerationFeatures = [
     id: "lead-nurturing-workflows",
     name: "Lead Nurturing Workflows",
     description: "Personalize lead nurturing workflows to engage and convert.",
-    icon: ArrowUturnRightIcon,
+    icon: WorkflowIcon,
   },
 ];
 const salesEmailsFeatures = [
@@ -45,19 +45,19 @@ const salesEmailsFeatures = [
     id: "cold-email-generator",
     name: "Cold Email Generator",
     description: "Create custom cold emails in seconds to boost sales opportunities.",
-    icon: EnvelopeIcon,
+    icon: MailIcon,
   },
   {
     id: "email-subject-generator",
     name: "Email Subject Generator",
     description: "Generate email subjects to achieve a goal, focusing on a company's benefits and solutions.",
-    icon: Bars3CenterLeftIcon,
+    icon: TextIcon,
   },
   {
     id: "drip-email-campaign",
     name: "Drip Email Campaign",
     description: "Streamline drip email campaign creation with AI's personalized content generation.",
-    icon: AtSymbolIcon,
+    icon: MailsIcon,
   },
 ];
 
@@ -66,19 +66,19 @@ const closeDealsFeatures = [
     id: "custom-price-quotes",
     name: "Custom Price Quotes",
     description: "Create a budget with services, prices, and a timeline for a client project.",
-    icon: CurrencyDollarIcon,
+    icon: DollarSignIcon,
   },
   {
     id: "sales-presentation-creator",
     name: "Sales Presentation Creator",
     description: "Create sales presentations featuring new ideas and outlining content.",
-    icon: PresentationChartBarIcon,
+    icon: LineChartIcon,
   },
   {
     id: "email-follow-up-sequences",
     name: "Email Follow-up Sequences",
     description: "Create contextually tailored email follow-up sequences. ",
-    icon: ArrowPathIcon,
+    icon: RefreshCcwIcon,
   },
 ];
 

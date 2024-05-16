@@ -2,10 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 
-import { TTemplate } from "@typeflowai/types/templates";
-
 import PreviewWorkflow from "./PreviewWorkflow";
 import { findTemplateByName } from "./templates";
+import { TTemplate } from "./types";
 
 interface DemoPreviewProps {
   template: string;
@@ -29,7 +28,7 @@ const DemoPreview: React.FC<DemoPreviewProps> = ({ template }) => {
     <div className="flex items-center justify-center rounded-xl border-2 border-slate-300 bg-slate-200 py-6 transition-transform duration-150">
       <div className="flex flex-col items-center justify-around">
         <p className="my-3 text-sm text-slate-500">Preview</p>
-        <div className="">
+        <div>
           {selectedTemplate && (
             <PreviewWorkflow
               activeQuestionId={activeQuestionId}

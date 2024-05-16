@@ -1,38 +1,41 @@
 "use client";
 
-import WorkflowStatusDropdown from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/components/WorkflowStatusDropdown";
-import { ArrowLeftIcon, Cog8ToothIcon, ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import { WorkflowStatusDropdown } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/components/WorkflowStatusDropdown";
+import { isWorkflowValid } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/lib/validation";
 import { isEqual } from "lodash";
+import { AlertTriangleIcon, ArrowLeftIcon, SettingsIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TProduct } from "@typeflowai/types/product";
-import { TWorkflow, TWorkflowQuestionType } from "@typeflowai/types/workflows";
-import AlertDialog from "@typeflowai/ui/AlertDialog";
+import { TSegment } from "@typeflowai/types/segment";
+import { TWorkflow, TWorkflowEditorTabs } from "@typeflowai/types/workflows";
+import { AlertDialog } from "@typeflowai/ui/AlertDialog";
 import { Button } from "@typeflowai/ui/Button";
-import { DeleteDialog } from "@typeflowai/ui/DeleteDialog";
 import { Input } from "@typeflowai/ui/Input";
-import { capturePosthogEvent } from "@typeflowai/ui/PostHogClient";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@typeflowai/ui/Tooltip";
 
-import { deleteWorkflowAction, updateWorkflowAction } from "../actions";
-import { validateQuestion } from "./Validation";
+// import { createSegmentAction } from "@typeflowai/ee/advancedTargeting/lib/actions";
+import { createBasicSegmentAction } from "../actions";
+import { updateWorkflowAction } from "../actions";
 
 interface WorkflowMenuBarProps {
   localWorkflow: TWorkflow;
   workflow: TWorkflow;
   setLocalWorkflow: (workflow: TWorkflow) => void;
   environment: TEnvironment;
-  activeId: "questions" | "settings";
-  setActiveId: (id: "questions" | "settings") => void;
-  setInvalidQuestions: (invalidQuestions: String[]) => void;
+  activeId: TWorkflowEditorTabs;
+  setActiveId: React.Dispatch<React.SetStateAction<TWorkflowEditorTabs>>;
+  setInvalidQuestions: (invalidQuestions: string[]) => void;
   product: TProduct;
   responseCount: number;
+  selectedLanguageCode: string;
+  setSelectedLanguageCode: (selectedLanguage: string) => void;
 }
 
-export default function WorkflowMenuBar({
+export const WorkflowMenuBar = ({
   localWorkflow,
   workflow,
   environment,
@@ -42,24 +45,28 @@ export default function WorkflowMenuBar({
   setInvalidQuestions,
   product,
   responseCount,
-}: WorkflowMenuBarProps) {
+  selectedLanguageCode,
+  setSelectedLanguageCode,
+}: WorkflowMenuBarProps) => {
   const router = useRouter();
   const [audiencePrompt, setAudiencePrompt] = useState(true);
-  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [isLinkWorkflow, setIsLinkWorkflow] = useState(true);
   const [isConfirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [isWorkflowPublishing, setIsWorkflowPublishing] = useState(false);
   const [isWorkflowSaving, setIsWorkflowSaving] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
   const cautionText = "This workflow received responses, make changes with caution.";
 
-  let faultyQuestions: String[] = [];
+  const faultyQuestions: string[] = [];
 
   useEffect(() => {
     if (audiencePrompt && activeId === "settings") {
       setAudiencePrompt(false);
     }
   }, [activeId, audiencePrompt]);
+
+  useEffect(() => {
+    setIsLinkWorkflow(localWorkflow.type === "link");
+  }, [localWorkflow.type]);
 
   useEffect(() => {
     const warningText = "You have unsaved changes - are you sure you wish to leave this page?";
@@ -76,6 +83,28 @@ export default function WorkflowMenuBar({
     };
   }, [localWorkflow, workflow]);
 
+  const containsEmptyTriggers = useMemo(() => {
+    if (localWorkflow.type === "link") return false;
+
+    const noTriggers =
+      !localWorkflow.triggers || localWorkflow.triggers.length === 0 || !localWorkflow.triggers[0];
+    const noInlineTriggers =
+      !localWorkflow.inlineTriggers ||
+      (!localWorkflow.inlineTriggers?.codeConfig && !localWorkflow.inlineTriggers?.noCodeConfig);
+
+    if (noTriggers && noInlineTriggers) {
+      return true;
+    }
+
+    return false;
+  }, [localWorkflow]);
+
+  const disableSave = useMemo(() => {
+    if (isWorkflowSaving) return true;
+
+    if (localWorkflow.status !== "draft" && containsEmptyTriggers) return true;
+  }, [containsEmptyTriggers, isWorkflowSaving, localWorkflow.status]);
+
   // write a function which updates the local workflow status
   const updateLocalWorkflowStatus = (status: TWorkflow["status"]) => {
     const updatedWorkflow = { ...localWorkflow };
@@ -83,179 +112,79 @@ export default function WorkflowMenuBar({
     setLocalWorkflow(updatedWorkflow);
   };
 
-  const deleteWorkflow = async (workflowId) => {
-    try {
-      await deleteWorkflowAction(workflowId);
-      router.refresh();
-      setDeleteDialogOpen(false);
-      router.back();
-    } catch (error) {
-      console.error("An error occurred deleting the workflow");
-      toast.error("An error occurred deleting the workflow");
-    }
-  };
-
   const handleBack = () => {
-    const createdAt = new Date(localWorkflow.createdAt).getTime();
-    const updatedAt = new Date(localWorkflow.updatedAt).getTime();
+    const { updatedAt, ...localWorkflowRest } = localWorkflow;
+    const { updatedAt: _, ...workflowRest } = workflow;
+    localWorkflowRest.triggers = localWorkflowRest.triggers.filter((trigger) => Boolean(trigger));
 
-    if (createdAt === updatedAt && localWorkflow.status === "draft") {
-      setDeleteDialogOpen(true);
-    } else if (!isEqual(localWorkflow, workflow)) {
+    if (!isEqual(localWorkflowRest, workflowRest)) {
       setConfirmDialogOpen(true);
     } else {
       router.back();
     }
   };
 
-  const validateWorkflow = (workflow) => {
-    const existingQuestionIds = new Set();
+  const handleTemporarySegment = async () => {
+    if (localWorkflow.segment && localWorkflow.type === "app" && localWorkflow.segment?.id === "temp") {
+      const { filters } = localWorkflow.segment;
 
-    if (workflow.questions.length === 0) {
-      toast.error("Please add at least one question");
-      return;
+      // create a new private segment
+      // const newSegment = await createSegmentAction({
+      //   environmentId: localWorkflow.environmentId,
+      //   filters,
+      //   isPrivate: true,
+      //   workflowId: localWorkflow.id,
+      //   title: localWorkflow.id,
+      // });
+      const newSegment = await createBasicSegmentAction({
+        environmentId: localWorkflow.environmentId,
+        filters,
+        isPrivate: true,
+        workflowId: localWorkflow.id,
+        title: localWorkflow.id,
+      });
+
+      return newSegment;
     }
-
-    let pin = workflow?.pin;
-    if (pin !== null && pin.toString().length !== 4) {
-      toast.error("PIN must be a four digit number.");
-      return;
-    }
-
-    faultyQuestions = [];
-    for (let index = 0; index < workflow.questions.length; index++) {
-      const question = workflow.questions[index];
-      const isValid = validateQuestion(question);
-
-      if (!isValid) {
-        faultyQuestions.push(question.id);
-      }
-    }
-    // if there are any faulty questions, the user won't be allowed to save the workflow
-    if (faultyQuestions.length > 0) {
-      setInvalidQuestions(faultyQuestions);
-      toast.error("Please fill all required fields.");
-      return false;
-    }
-
-    for (const question of workflow.questions) {
-      const existingLogicConditions = new Set();
-
-      if (existingQuestionIds.has(question.id)) {
-        toast.error("There are 2 identical question IDs. Please update one.");
-        return false;
-      }
-      existingQuestionIds.add(question.id);
-
-      if (
-        question.type === TWorkflowQuestionType.MultipleChoiceSingle ||
-        question.type === TWorkflowQuestionType.MultipleChoiceMulti
-      ) {
-        const haveSameChoices =
-          question.choices.some((element) => element.label.trim() === "") ||
-          question.choices.some((element, index) =>
-            question.choices
-              .slice(index + 1)
-              .some((nextElement) => nextElement.label.trim() === element.label.trim())
-          );
-
-        if (haveSameChoices) {
-          toast.error("You have two identical choices.");
-          return false;
-        }
-      }
-
-      for (const logic of question.logic || []) {
-        const validFields = ["condition", "destination", "value"].filter(
-          (field) => logic[field] !== undefined
-        ).length;
-
-        if (validFields < 2) {
-          setInvalidQuestions([question.id]);
-          toast.error("Incomplete logic jumps detected: Fill or remove them in the Questions tab.");
-          return false;
-        }
-
-        if (question.required && logic.condition === "skipped") {
-          toast.error("A logic condition is missing: Please update or delete it in the Questions tab.");
-          return false;
-        }
-
-        const thisLogic = `${logic.condition}-${logic.value}`;
-        if (existingLogicConditions.has(thisLogic)) {
-          setInvalidQuestions([question.id]);
-          toast.error(
-            "There are two competing logic conditons: Please update or delete one in the Questions tab."
-          );
-          return false;
-        }
-        existingLogicConditions.add(thisLogic);
-      }
-    }
-
-    if (
-      workflow.redirectUrl &&
-      !workflow.redirectUrl.includes("https://") &&
-      !workflow.redirectUrl.includes("http://")
-    ) {
-      toast.error("Please enter a valid URL for redirecting respondents.");
-      return false;
-    }
-
-    /*
-     Check whether the count for autocomplete responses is not less 
-     than the current count of accepted response and also it is not set to 0
-    */
-    if (
-      (workflow.autoComplete &&
-        workflow._count?.responses &&
-        workflow._count.responses >= workflow.autoComplete) ||
-      workflow?.autoComplete === 0
-    ) {
-      return false;
-    }
-
-    return true;
   };
 
-  const saveWorkflowAction = async (shouldNavigateBack = false) => {
-    if (localWorkflow.questions.length === 0) {
-      toast.error("Please add at least one question.");
-      return;
+  const handleSegmentUpdate = async (): Promise<TSegment | null> => {
+    if (localWorkflow.segment && localWorkflow.segment.id === "temp") {
+      const segment = await handleTemporarySegment();
+      return segment ?? null;
     }
+
+    return localWorkflow.segment;
+  };
+
+  const handleWorkflowSave = async () => {
     setIsWorkflowSaving(true);
-    // Create a copy of localWorkflow with isDraft removed from every question
-    const strippedWorkflow: TWorkflow = {
-      ...localWorkflow,
-      questions: localWorkflow.questions.map((question) => {
+    try {
+      if (
+        !isWorkflowValid(
+          localWorkflow,
+          faultyQuestions,
+          setInvalidQuestions,
+          selectedLanguageCode,
+          setSelectedLanguageCode
+        )
+      ) {
+        setIsWorkflowSaving(false);
+        return;
+      }
+      localWorkflow.triggers = localWorkflow.triggers.filter((trigger) => Boolean(trigger));
+      localWorkflow.questions = localWorkflow.questions.map((question) => {
         const { isDraft, ...rest } = question;
         return rest;
-      }),
-      attributeFilters: localWorkflow.attributeFilters.filter((attributeFilter) => {
-        if (attributeFilter.attributeClassId && attributeFilter.value) {
-          return true;
-        }
-      }),
-    };
+      });
 
-    if (!validateWorkflow(localWorkflow)) {
-      setIsWorkflowSaving(false);
-      return;
-    }
+      const segment = await handleSegmentUpdate();
+      const updatedWorkflow = await updateWorkflowAction({ ...localWorkflow, segment });
 
-    try {
-      await updateWorkflowAction({ ...strippedWorkflow });
       setIsWorkflowSaving(false);
+      setLocalWorkflow(updatedWorkflow);
+
       toast.success("Changes saved.");
-      if (shouldNavigateBack) {
-        router.back();
-      } else {
-        if (localWorkflow.status !== "draft") {
-          router.push(`/environments/${environment.id}/workflows/${localWorkflow.id}/summary`);
-        } else {
-          router.push(`/environments/${environment.id}/workflows`);
-        }
-      }
     } catch (e) {
       console.error(e);
       setIsWorkflowSaving(false);
@@ -264,13 +193,41 @@ export default function WorkflowMenuBar({
     }
   };
 
-  function containsEmptyTriggers() {
-    return (
-      localWorkflow.type === "web" &&
-      localWorkflow.triggers &&
-      (localWorkflow.triggers[0] === "" || localWorkflow.triggers.length === 0)
-    );
-  }
+  const handleSaveAndGoBack = async () => {
+    await handleWorkflowSave();
+    router.back();
+  };
+
+  const handleWorkflowPublish = async () => {
+    setIsWorkflowPublishing(true);
+    try {
+      if (
+        !isWorkflowValid(
+          localWorkflow,
+          faultyQuestions,
+          setInvalidQuestions,
+          selectedLanguageCode,
+          setSelectedLanguageCode
+        )
+      ) {
+        setIsWorkflowPublishing(false);
+        return;
+      }
+      const status = localWorkflow.runOnDate ? "scheduled" : "inProgress";
+      const segment = await handleSegmentUpdate();
+
+      await updateWorkflowAction({
+        ...localWorkflow,
+        status,
+        segment,
+      });
+      setIsWorkflowPublishing(false);
+      router.push(`/environments/${environment.id}/workflows/${localWorkflow.id}/summary?success=true`);
+    } catch (error) {
+      toast.error("An error occured while publishing the workflow.");
+      setIsWorkflowPublishing(false);
+    }
+  };
 
   return (
     <>
@@ -306,10 +263,12 @@ export default function WorkflowMenuBar({
             <TooltipProvider delayDuration={50}>
               <Tooltip>
                 <TooltipTrigger>
-                  <ExclamationTriangleIcon className=" h-5 w-5 text-amber-400" />
+                  <AlertTriangleIcon className=" h-5 w-5 text-amber-400" />
                 </TooltipTrigger>
                 <TooltipContent side={"top"} className="lg:hidden">
-                  <p className="py-2 text-center text-xs text-slate-500">{cautionText}</p>
+                  <p className="py-2 text-center text-xs text-slate-500 dark:text-slate-400 ">
+                    {cautionText}
+                  </p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -325,77 +284,60 @@ export default function WorkflowMenuBar({
             />
           </div>
           <Button
-            disabled={isWorkflowPublishing || (localWorkflow.status !== "draft" && containsEmptyTriggers())}
-            variant={localWorkflow.status === "draft" ? "secondary" : "darkCTA"}
+            disabled={disableSave}
+            variant="secondary"
             className="mr-3"
             loading={isWorkflowSaving}
-            onClick={() => saveWorkflowAction()}>
+            onClick={() => handleWorkflowSave()}>
             Save
           </Button>
-          {localWorkflow.status === "draft" && audiencePrompt && (
+          {localWorkflow.status !== "draft" && (
+            <Button
+              disabled={disableSave}
+              variant="darkCTA"
+              className="mr-3"
+              loading={isWorkflowSaving}
+              onClick={() => handleSaveAndGoBack()}>
+              Save & Close
+            </Button>
+          )}
+          {localWorkflow.status === "draft" && audiencePrompt && !isLinkWorkflow && (
             <Button
               variant="darkCTA"
               onClick={() => {
                 setAudiencePrompt(false);
                 setActiveId("settings");
               }}
-              EndIcon={Cog8ToothIcon}>
+              EndIcon={SettingsIcon}>
               Continue to Settings
             </Button>
           )}
-          {localWorkflow.status === "draft" && !audiencePrompt && (
+          {/* Always display Publish button for link workflows for better CR */}
+          {localWorkflow.status === "draft" && (!audiencePrompt || isLinkWorkflow) && (
             <Button
-              disabled={isWorkflowSaving || containsEmptyTriggers()}
+              disabled={isWorkflowSaving || containsEmptyTriggers}
               variant="darkCTA"
               loading={isWorkflowPublishing}
-              onClick={async () => {
-                setIsWorkflowPublishing(true);
-                if (!validateWorkflow(localWorkflow)) {
-                  setIsWorkflowPublishing(false);
-                  return;
-                }
-                await updateWorkflowAction({ ...localWorkflow, status: "inProgress" });
-                capturePosthogEvent("WorkflowPublished", { workflowId: localWorkflow.id });
-                router.push(
-                  `/environments/${environment.id}/workflows/${localWorkflow.id}/summary?success=true`
-                );
-              }}>
+              onClick={handleWorkflowPublish}>
               Publish
             </Button>
           )}
         </div>
-        <DeleteDialog
-          deleteWhat="Draft"
-          open={isDeleteDialogOpen}
-          setOpen={setDeleteDialogOpen}
-          onDelete={async () => {
-            setIsDeleting(true);
-            await deleteWorkflow(localWorkflow.id);
-            setIsDeleting(false);
-          }}
-          text="Do you want to delete this draft?"
-          isDeleting={isDeleting}
-          isSaving={isSaving}
-          useSaveInsteadOfCancel={true}
-          onSave={async () => {
-            setIsSaving(true);
-            await saveWorkflowAction(true);
-            setIsSaving(false);
-          }}
-        />
         <AlertDialog
-          confirmWhat="Workflow changes"
+          headerText="Confirm Workflow Changes"
           open={isConfirmDialogOpen}
           setOpen={setConfirmDialogOpen}
-          onDiscard={() => {
+          mainText="You have unsaved changes in your workflow. Would you like to save them before leaving?"
+          confirmBtnLabel="Save"
+          declineBtnLabel="Discard"
+          declineBtnVariant="warn"
+          onDecline={() => {
             setConfirmDialogOpen(false);
             router.back();
           }}
-          text="You have unsaved changes in your workflow. Would you like to save them before leaving?"
-          confirmButtonLabel="Save"
-          onSave={() => saveWorkflowAction(true)}
+          onConfirm={() => handleSaveAndGoBack()}
         />
       </div>
     </>
   );
-}
+};

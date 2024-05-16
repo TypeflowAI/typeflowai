@@ -4,7 +4,7 @@ import { Webhook } from "lucide-react";
 
 import { TWebhook } from "@typeflowai/types/webhooks";
 import { TWorkflow } from "@typeflowai/types/workflows";
-import ModalWithTabs from "@typeflowai/ui/ModalWithTabs";
+import { ModalWithTabs } from "@typeflowai/ui/ModalWithTabs";
 
 interface WebhookModalProps {
   environmentId: string;

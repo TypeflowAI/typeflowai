@@ -1,11 +1,10 @@
-import { TWorkflowQuestion, TWorkflowQuestionType } from "@typeflowai/types/workflows";
-
 import CTAQuestion from "./CTAQuestion";
 import MultipleChoiceMultiQuestion from "./MultipleChoiceMultiQuestion";
 import MultipleChoiceSingleQuestion from "./MultipleChoiceSingleQuestion";
 import NPSQuestion from "./NPSQuestion";
 import OpenTextQuestion from "./OpenTextQuestion";
 import RatingQuestion from "./RatingQuestion";
+import { TWorkflowQuestion, TWorkflowQuestionType } from "./types";
 
 interface QuestionConditionalProps {
   question: TWorkflowQuestion;

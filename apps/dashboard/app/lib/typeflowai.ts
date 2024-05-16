@@ -1,9 +1,24 @@
-import typeflowai from "@typeflowai/js";
-import { env } from "@typeflowai/lib/env.mjs";
+import { TypeflowAIAPI } from "@typeflowai/api";
+import typeflowai from "@typeflowai/js/app";
+import { env } from "@typeflowai/lib/env";
 
-export const typeflowaiEnabled =
+export const typeflowAIEnabled =
   typeof env.NEXT_PUBLIC_TYPEFLOWAI_API_HOST && env.NEXT_PUBLIC_TYPEFLOWAI_ENVIRONMENT_ID;
 const ttc = { onboarding: 0 };
+
+const getTypeflowAIApi = () => {
+  const environmentId = env.NEXT_PUBLIC_TYPEFLOWAI_ENVIRONMENT_ID;
+  const apiHost = env.NEXT_PUBLIC_TYPEFLOWAI_API_HOST;
+
+  if (typeof environmentId !== "string" || typeof apiHost !== "string") {
+    throw new Error("TypeflowAI environment ID or API host is not defined");
+  }
+
+  return new TypeflowAIAPI({
+    environmentId,
+    apiHost,
+  });
+};
 
 export const createResponse = async (
   workflowId: string,
@@ -11,7 +26,7 @@ export const createResponse = async (
   data: { [questionId: string]: any },
   finished: boolean = false
 ): Promise<any> => {
-  const api = typeflowai.getApi();
+  const api = getTypeflowAIApi();
   return await api.client.response.create({
     workflowId,
     userId,
@@ -26,7 +41,7 @@ export const updateResponse = async (
   data: { [questionId: string]: any },
   finished: boolean = false
 ): Promise<any> => {
-  const api = typeflowai.getApi();
+  const api = getTypeflowAIApi();
   return await api.client.response.update({
     responseId,
     finished,
@@ -35,6 +50,6 @@ export const updateResponse = async (
   });
 };
 
-export const typeflowaiLogout = async () => {
+export const typeflowAILogout = async () => {
   return await typeflowai.logout();
 };

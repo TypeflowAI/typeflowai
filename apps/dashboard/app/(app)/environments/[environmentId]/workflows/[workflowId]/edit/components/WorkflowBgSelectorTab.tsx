@@ -1,65 +1,108 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { TWorkflow } from "@typeflowai/types/workflows";
+import { TProductStyling } from "@typeflowai/types/product";
+import { TWorkflowStyling } from "@typeflowai/types/workflows";
+import { TabBar } from "@typeflowai/ui/TabBar";
 
-import AnimatedWorkflowBg from "./AnimatedWorkflowBg";
-import ColorWorkflowBg from "./ColorWorkflowBg";
-import ImageWorkflowBg from "./ImageWorkflowBg";
+import { AnimatedWorkflowBg } from "./AnimatedWorkflowBg";
+import { ColorWorkflowBg } from "./ColorWorkflowBg";
+import { UploadImageWorkflowBg } from "./ImageWorkflowBg";
+import { ImageFromUnsplashWorkflowBg } from "./UnsplashImages";
 
 interface WorkflowBgSelectorTabProps {
-  localWorkflow: TWorkflow;
   handleBgChange: (bg: string, bgType: string) => void;
-  colours: string[];
+  colors: string[];
   bgType: string | null | undefined;
+  environmentId: string;
+  styling: TWorkflowStyling | TProductStyling | null;
+  isUnsplashConfigured: boolean;
 }
 
-const TabButton = ({ isActive, onClick, children }) => (
-  <button
-    className={`w-1/4 rounded-md p-2 text-sm font-medium leading-none text-slate-800 ${
-      isActive ? "bg-white shadow-sm" : ""
-    }`}
-    onClick={onClick}>
-    {children}
-  </button>
-);
+const tabs = [
+  { id: "color", label: "Color" },
+  { id: "animation", label: "Animation" },
+  { id: "upload", label: "Upload" },
+  { id: "image", label: "Image" },
+];
 
 export default function WorkflowBgSelectorTab({
-  localWorkflow,
+  styling,
   handleBgChange,
-  colours,
+  colors,
   bgType,
+  environmentId,
+  isUnsplashConfigured,
 }: WorkflowBgSelectorTabProps) {
-  const [tab, setTab] = useState(bgType || "image");
+  const [activeTab, setActiveTab] = useState(bgType || "color");
+  const bgUrl = styling?.background?.bg || "";
+
+  const [colorBackground, setColorBackground] = useState(bgUrl);
+  const [animationBackground, setAnimationBackground] = useState(bgUrl);
+  const [uploadBackground, setUploadBackground] = useState(bgUrl);
+
+  useEffect(() => {
+    if (bgType === "color") {
+      setColorBackground(bgUrl);
+      setAnimationBackground("");
+      setUploadBackground("");
+    }
+
+    if (bgType === "animation") {
+      setAnimationBackground(bgUrl);
+      setColorBackground("");
+      setUploadBackground("");
+    }
+
+    if (isUnsplashConfigured && bgType === "image") {
+      setColorBackground("");
+      setAnimationBackground("");
+      setUploadBackground("");
+    }
+
+    if (bgType === "upload") {
+      setUploadBackground(bgUrl);
+      setColorBackground("");
+      setAnimationBackground("");
+    }
+  }, [bgUrl, bgType, isUnsplashConfigured]);
 
   const renderContent = () => {
-    switch (tab) {
-      case "image":
-        return <ImageWorkflowBg localWorkflow={localWorkflow} handleBgChange={handleBgChange} />;
-      case "animation":
-        return <AnimatedWorkflowBg localWorkflow={localWorkflow} handleBgChange={handleBgChange} />;
+    switch (activeTab) {
       case "color":
         return (
-          <ColorWorkflowBg localWorkflow={localWorkflow} handleBgChange={handleBgChange} colours={colours} />
+          <ColorWorkflowBg handleBgChange={handleBgChange} colors={colors} background={colorBackground} />
         );
+      case "animation":
+        return <AnimatedWorkflowBg handleBgChange={handleBgChange} background={animationBackground} />;
+      case "upload":
+        return (
+          <UploadImageWorkflowBg
+            environmentId={environmentId}
+            handleBgChange={handleBgChange}
+            background={uploadBackground}
+          />
+        );
+      case "image":
+        if (isUnsplashConfigured) {
+          return <ImageFromUnsplashWorkflowBg handleBgChange={handleBgChange} />;
+        }
       default:
         return null;
     }
   };
 
   return (
-    <div className="mt-4 flex flex-col items-center justify-center rounded-lg border bg-slate-50 p-4 px-8">
-      <div className="flex w-full items-center justify-between rounded-lg border border-slate-300 bg-slate-50 px-6 py-1.5">
-        <TabButton isActive={tab === "image"} onClick={() => setTab("image")}>
-          Image
-        </TabButton>
-        <TabButton isActive={tab === "animation"} onClick={() => setTab("animation")}>
-          Animation
-        </TabButton>
-        <TabButton isActive={tab === "color"} onClick={() => setTab("color")}>
-          Color
-        </TabButton>
+    <div className="mt-4 flex flex-col items-center justify-center rounded-lg ">
+      <TabBar
+        tabs={tabs.filter((tab) => tab.id !== "image" || isUnsplashConfigured)}
+        activeId={activeTab}
+        setActiveId={setActiveTab}
+        tabStyle="button"
+        className="bg-slate-100"
+      />
+      <div className="w-full rounded-b-lg border-x border-b border-slate-200 px-4 pb-4 pt-2">
+        {renderContent()}
       </div>
-      {renderContent()}
     </div>
   );
 }

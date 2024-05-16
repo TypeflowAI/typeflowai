@@ -1,63 +1,80 @@
-import ProgressBar from "@/components/general/ProgressBar";
-import TypeflowAIBranding from "@/components/general/TypeflowAIBranding";
+import ActivatePromptCard from "@/components/general/ActivatePromptCard";
+import { ProgressBar } from "@/components/general/ProgressBar";
+import PromptResponse from "@/components/general/PromptResponse";
+import { QuestionConditional } from "@/components/general/QuestionConditional";
+import { ResponseErrorComponent } from "@/components/general/ResponseErrorComponent";
+import SavingCard from "@/components/general/SavingCard";
+import { ThankYouCard } from "@/components/general/ThankYouCard";
+import { TypeflowAIBranding } from "@/components/general/TypeflowAIBranding";
+import { WelcomeCard } from "@/components/general/WelcomeCard";
 import { AutoCloseWrapper } from "@/components/wrappers/AutoCloseWrapper";
 import { evaluateCondition } from "@/lib/logicEvaluator";
 import { processPromptMessage } from "@/lib/parsePrompt";
 import { getUpdatedTtc } from "@/lib/ttc";
 import { cn } from "@/lib/utils";
-import { WorkflowBaseProps } from "@/types/props";
-import { useEffect, useRef, useState } from "preact/hooks";
+import { useEffect, useMemo, useRef, useState } from "preact/hooks";
 
 import { TypeflowAIAPI } from "@typeflowai/api";
+import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
+import { structuredClone } from "@typeflowai/lib/pollyfills/structuredClone";
+import { formatDateWithOrdinal, isValidDateString } from "@typeflowai/lib/utils/datetime";
+import { extractFallbackValue, extractId, extractRecallInfo } from "@typeflowai/lib/utils/recall";
 import { TOpenAIResponse } from "@typeflowai/types/openai";
 import type { TResponseData, TResponseTtc } from "@typeflowai/types/responses";
+import { WorkflowBaseProps } from "@typeflowai/types/typeflowAIWorkflows";
+import { TWorkflowQuestion } from "@typeflowai/types/workflows";
 
-import ActivatePromptCard from "./ActivatePromptCard";
-import PromptResponse from "./PromptResponse";
-import QuestionConditional from "./QuestionConditional";
-import SavingCard from "./SavingCard";
-import ThankYouCard from "./ThankYouCard";
-import WelcomeCard from "./WelcomeCard";
-
-export function Workflow({
+export const Workflow = ({
   workflow,
   webAppUrl,
+  styling,
   isBrandingEnabled,
-  activeQuestionId,
   onDisplay = () => {},
-  onActiveQuestionChange = () => {},
   onResponse = () => {},
   onClose = () => {},
   onFinished = () => {},
+  onRetry = () => {},
   isRedirectDisabled = false,
   prefillResponseData,
+  languageCode,
+  getSetIsError,
+  getSetIsResponseSendingFinished,
+  getSetQuestionId,
   onFileUpload,
   responseCount,
   isPreview,
-}: WorkflowBaseProps) {
+  isCardBorderVisible = true,
+  startAtQuestionId,
+}: WorkflowBaseProps) => {
+  const isInIframe = window.self !== window.top;
   const [questionId, setQuestionId] = useState(
-    activeQuestionId || (workflow.welcomeCard.enabled ? "start" : workflow?.questions[0]?.id)
+    workflow.welcomeCard.enabled ? "start" : workflow?.questions[0]?.id
+  );
+  const [showError, setShowError] = useState(false);
+  // flag state to store whether response processing has been completed or not, we ignore this check for workflow editor preview and link workflow preview where getSetIsResponseSendingFinished is undefined
+  const [isResponseSendingFinished, setIsResponseSendingFinished] = useState(
+    getSetIsResponseSendingFinished ? false : true
   );
   const [loadingElement, setLoadingElement] = useState(false);
   const [history, setHistory] = useState<string[]>([]);
   const [responseData, setResponseData] = useState<TResponseData>({});
-  const currentQuestionIndex = workflow.questions.findIndex((q) => q.id === questionId);
-  const currentQuestion = workflow.questions[currentQuestionIndex];
-  const contentRef = useRef<HTMLDivElement | null>(null);
-  const showProgressBar = !workflow.styling?.hideProgressBar;
   const [ttc, setTtc] = useState<TResponseTtc>({});
+  const currentQuestionIndex = workflow.questions.findIndex((q) => q.id === questionId);
+  const currentQuestion = useMemo(() => {
+    if (questionId === "end" && !workflow.thankYouCard.enabled) {
+      const newHistory = [...history];
+      const prevQuestionId = newHistory.pop();
+      return workflow.questions.find((q) => q.id === prevQuestionId);
+    } else {
+      return workflow.questions.find((q) => q.id === questionId);
+    }
+  }, [questionId, workflow, history]);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const showProgressBar = !styling.hideProgressBar;
   const typeflowaiAPI = new TypeflowAIAPI({
     apiHost: webAppUrl,
     environmentId: workflow.environmentId,
   });
-  useEffect(() => {
-    if (activeQuestionId === "hidden") return;
-    if (activeQuestionId === "start" && !workflow.welcomeCard.enabled) {
-      setQuestionId(workflow?.questions[0]?.id);
-      return;
-    }
-    setQuestionId(activeQuestionId || (workflow.welcomeCard.enabled ? "start" : workflow?.questions[0]?.id));
-  }, [activeQuestionId, workflow.questions, workflow.welcomeCard.enabled]);
 
   useEffect(() => {
     // scroll to top when question changes
@@ -70,48 +87,112 @@ export function Workflow({
     // call onDisplay when component is mounted
     onDisplay();
     if (prefillResponseData) {
-      onSubmit(prefillResponseData, {}, true);
+      onChange(prefillResponseData);
+    }
+    if (startAtQuestionId) {
+      setQuestionId(startAtQuestionId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  let currIdx = currentQuestionIndex;
-  let currQues = currentQuestion;
-  function getNextQuestionId(data: TResponseData, isFromPrefilling: Boolean = false): string {
+
+  useEffect(() => {
+    if (getSetIsError) {
+      getSetIsError((value: boolean) => {
+        setShowError(value);
+      });
+    }
+  }, [getSetIsError]);
+
+  useEffect(() => {
+    if (getSetQuestionId) {
+      getSetQuestionId((value: string) => {
+        setQuestionId(value);
+      });
+    }
+  }, [getSetQuestionId]);
+
+  useEffect(() => {
+    if (getSetIsResponseSendingFinished) {
+      getSetIsResponseSendingFinished((value: boolean) => {
+        setIsResponseSendingFinished(value);
+      });
+    }
+  }, [getSetIsResponseSendingFinished]);
+
+  let currIdxTemp = currentQuestionIndex;
+  let currQuesTemp = currentQuestion;
+
+  const getNextQuestionId = (data: TResponseData): string => {
     const questions = workflow.questions;
     const responseValue = data[questionId];
 
-    if (questionId === "start") {
-      if (!isFromPrefilling) {
-        return questions[0]?.id || "end";
-      } else {
-        currIdx = 0;
-        currQues = questions[0];
-      }
-    }
+    if (questionId === "start") return questions[0]?.id || "end";
     if (questionId === "prompt") {
       return "end";
     }
-    if (currIdx === -1) throw new Error("Question not found");
-
-    if (currQues?.logic && currQues?.logic.length > 0) {
-      for (let logic of currQues.logic) {
+    if (currIdxTemp === -1) throw new Error("Question not found");
+    if (currQuesTemp?.logic && currQuesTemp?.logic.length > 0 && currentQuestion) {
+      for (let logic of currQuesTemp.logic) {
         if (!logic.destination) continue;
+        // Check if the current question is of type 'multipleChoiceSingle' or 'multipleChoiceMulti'
+        if (
+          currentQuestion.type === "multipleChoiceSingle" ||
+          currentQuestion.type === "multipleChoiceMulti"
+        ) {
+          let choice;
 
+          // Check if the response is a string (applies to single choice questions)
+          // Sonne -> sun
+          if (typeof responseValue === "string") {
+            // Find the choice in currentQuestion.choices that matches the responseValue after localization
+            choice = currentQuestion.choices.find((choice) => {
+              return getLocalizedValue(choice.label, languageCode) === responseValue;
+            })?.label;
+
+            // If a matching choice is found, get its default localized value
+            if (choice) {
+              choice = getLocalizedValue(choice, "default");
+            }
+          }
+          // Check if the response is an array (applies to multiple choices questions)
+          // ["Sonne","Mond"]->["sun","moon"]
+          else if (Array.isArray(responseValue)) {
+            // Filter and map the choices in currentQuestion.choices that are included in responseValue after localization
+            choice = currentQuestion.choices
+              .filter((choice) => {
+                return responseValue.includes(getLocalizedValue(choice.label, languageCode));
+              })
+              .map((choice) => getLocalizedValue(choice.label, "default"));
+          }
+
+          // If a choice is determined (either single or multiple), evaluate the logic condition with that choice
+          if (choice) {
+            if (evaluateCondition(logic, choice)) {
+              return logic.destination;
+            }
+          }
+          // If choice is undefined, it implies an "other" option is selected. Evaluate the logic condition for "Other"
+          else {
+            if (evaluateCondition(logic, "Other")) {
+              return logic.destination;
+            }
+          }
+        }
         if (evaluateCondition(logic, responseValue)) {
           return logic.destination;
         }
       }
     }
-    // return questions[currIdx + 1]?.id || "end";
-    const isLastQuestion = currIdx === questions.length - 1;
+    // return questions[currIdxTemp + 1]?.id || "end";
+    const isLastQuestion = currIdxTemp === questions.length - 1;
     const shouldShowPromptCard = isLastQuestion && workflow.prompt && workflow.prompt.enabled;
 
     if (shouldShowPromptCard) {
       return "prompt";
     }
 
-    return isLastQuestion ? "end" : questions[currIdx + 1]?.id;
-  }
+    return isLastQuestion ? "end" : questions[currIdxTemp + 1]?.id;
+  };
 
   const isPromptVisible = () => {
     return workflow.prompt.enabled && workflow.prompt.isVisible;
@@ -122,20 +203,60 @@ export function Workflow({
     setResponseData(updatedResponseData);
   };
 
-  const onSubmit = (responseData: TResponseData, ttc: TResponseTtc, isFromPrefilling: Boolean = false) => {
+  const onSubmit = (responseData: TResponseData, ttc: TResponseTtc) => {
     const questionId = Object.keys(responseData)[0];
     setLoadingElement(true);
-    const nextQuestionId = getNextQuestionId(responseData, isFromPrefilling);
+    const nextQuestionId = getNextQuestionId(responseData);
     const finished = nextQuestionId === "end";
     onResponse({ data: responseData, ttc, finished });
     if (finished) {
+      // Post a message to the parent window indicating that the workflow is completed.
+      window.parent.postMessage("typeflowAIWorkflowCompleted", "*");
       onFinished();
     }
     setQuestionId(nextQuestionId);
     // add to history
     setHistory([...history, questionId]);
     setLoadingElement(false);
-    onActiveQuestionChange(nextQuestionId);
+  };
+
+  const replaceRecallInfo = (text: string): string => {
+    while (text.includes("recall:")) {
+      const recallInfo = extractRecallInfo(text);
+      if (recallInfo) {
+        const questionId = extractId(recallInfo);
+        const fallback = extractFallbackValue(recallInfo).replaceAll("nbsp", " ");
+        let value = questionId && responseData[questionId] ? (responseData[questionId] as string) : fallback;
+
+        if (isValidDateString(value)) {
+          value = formatDateWithOrdinal(new Date(value));
+        }
+        if (Array.isArray(value)) {
+          value = value.filter((item) => item !== null && item !== undefined && item !== "").join(", ");
+        }
+        text = text.replace(recallInfo, value);
+      }
+    }
+    return text;
+  };
+
+  const parseRecallInformation = (question: TWorkflowQuestion) => {
+    const modifiedQuestion = structuredClone(question);
+    if (question.headline && question.headline[languageCode]?.includes("recall:")) {
+      modifiedQuestion.headline[languageCode] = replaceRecallInfo(
+        getLocalizedValue(modifiedQuestion.headline, languageCode)
+      );
+    }
+    if (
+      question.subheader &&
+      question.subheader[languageCode]?.includes("recall:") &&
+      modifiedQuestion.subheader
+    ) {
+      modifiedQuestion.subheader[languageCode] = replaceRecallInfo(
+        getLocalizedValue(modifiedQuestion.subheader, languageCode)
+      );
+    }
+    return modifiedQuestion;
   };
 
   const onBack = (): void => {
@@ -144,17 +265,25 @@ export function Workflow({
     if (history?.length > 0) {
       const newHistory = [...history];
       prevQuestionId = newHistory.pop();
-      if (prefillResponseData && prevQuestionId === workflow.questions[0].id) return;
       setHistory(newHistory);
     } else {
       // otherwise go back to previous question in array
-      prevQuestionId = workflow.questions[currIdx - 1]?.id;
+      prevQuestionId = workflow.questions[currIdxTemp - 1]?.id;
     }
     if (!prevQuestionId) throw new Error("Question not found");
     setQuestionId(prevQuestionId);
-    onActiveQuestionChange(prevQuestionId);
   };
-  function getCardContent() {
+
+  const getCardContent = (): JSX.Element | undefined => {
+    if (showError) {
+      return (
+        <ResponseErrorComponent
+          responseData={responseData}
+          questions={workflow.questions}
+          onRetry={onRetry}
+        />
+      );
+    }
     if (questionId === "start" && workflow.welcomeCard.enabled) {
       return (
         <WelcomeCard
@@ -164,7 +293,9 @@ export function Workflow({
           buttonLabel={workflow.welcomeCard.buttonLabel}
           onSubmit={onSubmit}
           workflow={workflow}
+          languageCode={languageCode}
           responseCount={responseCount}
+          isInIframe={isInIframe}
         />
       );
     } else if (questionId === "prompt" && !workflow.prompt.enabled) {
@@ -194,36 +325,41 @@ export function Workflow({
         <ThankYouCard
           headline={workflow.thankYouCard.headline}
           subheader={workflow.thankYouCard.subheader}
+          isResponseSendingFinished={isResponseSendingFinished}
+          buttonLabel={workflow.thankYouCard.buttonLabel}
+          buttonLink={workflow.thankYouCard.buttonLink}
+          imageUrl={workflow.thankYouCard.imageUrl}
+          videoUrl={workflow.thankYouCard.videoUrl}
           redirectUrl={workflow.redirectUrl}
           isRedirectDisabled={isRedirectDisabled}
+          languageCode={languageCode}
+          replaceRecallInfo={replaceRecallInfo}
+          isInIframe={isInIframe}
         />
       );
     } else {
-      const currQues = workflow.questions.find((q) => q.id === questionId);
       return (
-        currQues && (
+        currentQuestion && (
           <QuestionConditional
             workflowId={workflow.id}
-            question={currQues}
-            value={responseData[currQues.id]}
+            question={parseRecallInformation(currentQuestion)}
+            value={responseData[currentQuestion.id]}
             onChange={onChange}
             onSubmit={onSubmit}
             onBack={onBack}
             ttc={ttc}
             setTtc={setTtc}
             onFileUpload={onFileUpload}
-            isFirstQuestion={
-              history && prefillResponseData
-                ? history[history.length - 1] === workflow.questions[0].id
-                : currQues.id === workflow?.questions[0]?.id
-            }
-            isLastQuestion={currQues.id === workflow.questions[workflow.questions.length - 1].id}
+            isFirstQuestion={currentQuestion.id === workflow?.questions[0]?.id}
+            isLastQuestion={currentQuestion.id === workflow.questions[workflow.questions.length - 1].id}
+            languageCode={languageCode}
+            isInIframe={isInIframe}
             isPromptVisible={isPromptVisible()}
           />
         )
       );
     }
-  }
+  };
 
   const fetchOpenAIResponse = async () => {
     if (!workflow.prompt.message) return;
@@ -274,7 +410,12 @@ export function Workflow({
   return (
     <>
       <AutoCloseWrapper workflow={workflow} onClose={onClose}>
-        <div className="no-scrollbar flex h-full w-full flex-col justify-between rounded-lg bg-[--fb-workflow-background-color] px-6 pb-3 pt-6">
+        <div
+          className={cn(
+            "no-scrollbar md:rounded-custom bg-workflow-bg rounded-t-custom flex h-full w-full flex-col justify-between",
+            isCardBorderVisible ? "border-workflow-border border" : "",
+            workflow.type === "link" ? "fb-workflow-shadow" : ""
+          )}>
           <div ref={contentRef} className={cn(loadingElement ? "animate-pulse opacity-60" : "", "my-auto")}>
             {workflow.questions.length === 0 &&
             !workflow.welcomeCard.enabled &&
@@ -285,14 +426,12 @@ export function Workflow({
               getCardContent()
             )}
           </div>
-          <div className="mt-8">
+          <div className="mx-6 mb-10 mt-2 space-y-3 md:mb-6 md:mt-6">
             {isBrandingEnabled && <TypeflowAIBranding />}
-            {showProgressBar && (
-              <ProgressBar workflow={workflow} questionId={questionId} isPromptVisible={isPromptVisible()} />
-            )}
+            {showProgressBar && <ProgressBar workflow={workflow} questionId={questionId} />}
           </div>
         </div>
       </AutoCloseWrapper>
     </>
   );
-}
+};

@@ -1,5 +1,5 @@
 import { Libraries } from "@/components/docs/Libraries";
-import Image from "next/image";
+import MdxImage from "next/image";
 
 import SetupChecklist from "./setup-checklist.png";
 import WidgetConnected from "./widget-connected.png";
@@ -30,7 +30,7 @@ Before getting started, make sure you have:
 1. A web application in your desired framework is set up and running.
 2. A TypeflowAI account with access to your environment ID and API host. You can find these in the **Setup Checklist** in the Settings:
 
-<Image
+<MdxImage
   src={SetupChecklist}
   alt="Step 2 - Setup Checklist"
   quality="100"
@@ -48,13 +48,13 @@ All you need to do is copy a `<script>` tag to your HTML head, and that’s abou
 ```html {{ title: 'index.html' }}
 <!-- START TypeflowAI Workflows -->
 <script type="text/javascript">
-    !function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://unpkg.com/@typeflowai/js@^1.0.0/dist/index.umd.js";var e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(t,e),setTimeout(function(){window.typeflowai.init({environmentId: "<your-environment-id>", apiHost: "<api-host>"})},500)}();
+    !function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://unpkg.com/@typeflowai/js@^1.1.0/dist/index.umd.js";var e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(t,e),setTimeout(function(){window.typeflowai.init({environmentId: "<your-environment-id>", apiHost: "<api-host>"})},500)}();
     </script>
 <!-- END TypeflowAI Workflows -->
 ```
 </CodeGroup>
 </Col>
-### Required Customizations to be Made
+### Required customizations to be made
 
 <Properties>
   <Property name="environment-id" type="string">
@@ -78,7 +78,7 @@ Install the TypeflowAI SDK using one of the package managers ie `npm`,`pnpm`,`ya
 <Col>
 <CodeGroup title="Install TypeflowAI JS library">
 ```shell {{ title: 'npm' }}
-npm install --save @typeflowai/js
+npm install @typeflowai/js
 ```
 ```shell {{ title: 'pnpm' }}
 pnpm add @typeflowai/js
@@ -101,7 +101,6 @@ if (typeof window !== "undefined") {
   typeflowai.init({
     environmentId: "<environment-id>",
     apiHost: "<api-host>",
-    debug: true, // remove when in production
   });
 }
 
@@ -114,7 +113,7 @@ export default App;
 
 </CodeGroup>
 </Col>
-### Required Customizations to be Made
+### Required customizations to be made
 
 <Properties>
   <Property name="environment-id" type="string">
@@ -149,7 +148,7 @@ Code snippets for the integration for both conventions are provided to further a
 <Col>
 <CodeGroup title="Install TypeflowAI JS library">
 ```shell {{ title: 'npm' }}
-npm install --save @typeflowai/js
+npm install @typeflowai/js
 ```
 ```shell {{ title: 'pnpm' }}
 pnpm add @typeflowai/js
@@ -177,7 +176,6 @@ useEffect(() => {
 typeflowai.init({
 environmentId: "<environment-id>",
 apiHost: "<api-host>",
-debug: true, // remove when in production
 });
 }, []);
 
@@ -225,7 +223,6 @@ if (typeof window !== "undefined") {
   typeflowai.init({
     environmentId: "<environment-id>",
     apiHost: "<api-host>",
-    debug: true, // remove when in production
   });
 }
 
@@ -248,7 +245,7 @@ export default function App({ Component, pageProps }: AppProps) {
 </CodeGroup>
 </Col>
 
-### Required Customizations to be Made
+### Required customizations to be made
 
 <Properties>
   <Property name="environment-id" type="string">
@@ -258,14 +255,6 @@ export default function App({ Component, pageProps }: AppProps) {
 <Properties>
   <Property name="api-host" type="string">
     URL of the hosted TypeflowAI instance.
-  </Property>
-</Properties>
-
-### Optional Customizations to be Made
-
-<Properties>
-  <Property name="debug" type="boolean">
-    Whether you want to see debug messages from TypeflowAI on your client-side console.
   </Property>
 </Properties>
 
@@ -286,7 +275,7 @@ We will make sure the SDK is only loaded and used on the client side, as it's no
 <Col>
 <CodeGroup title="Install TypeflowAI JS library">
 ```shell {{ title: 'npm' }}
-npm install --save @typeflowai/js
+npm install @typeflowai/js
 ````
 
 ```shell {{ title: 'pnpm' }}
@@ -337,7 +326,7 @@ router.afterEach((to, from) => {
 
 </CodeGroup>
 </Col>
-### Required Customizations to be Made
+### Required customizations to be made
 
 <Properties>
   <Property name="environment-id" type="string">
@@ -350,19 +339,11 @@ router.afterEach((to, from) => {
   </Property>
 </Properties>
 
-### Optional Customizations to be Made
-
-<Properties>
-  <Property name="debug" type="boolean">
-    Whether you want to see debug messages from TypeflowAI on your client-side console.
-  </Property>
-</Properties>
-
 ## Validate your setup
 
 Once you have completed the steps above, you can validate your setup by checking the **Setup Checklist** in the Settings. Your widget status indicator should go from this:
 
-<Image
+<MdxImage
   src={WidgetNotConnected}
   alt="Widget isnt connected"
   quality="100"
@@ -371,7 +352,7 @@ Once you have completed the steps above, you can validate your setup by checking
 
 To this:
 
-<Image
+<MdxImage
   src={WidgetConnected}
   alt="Widget is connected"
   quality="100"

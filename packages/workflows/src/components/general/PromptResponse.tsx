@@ -12,7 +12,7 @@ import { TWorkflowPrompt } from "@typeflowai/types/workflows";
 import CopyPromptButton from "../buttons/CopyPromptButton";
 import StartOverButton from "../buttons/StartOverButton";
 import TestPromptButton from "../buttons/TestPromptButton";
-import LoadingSpinner from "./LoadingSpinner";
+import { LoadingSpinner } from "./LoadingSpinner";
 import PromptMarkdownResponse from "./PromptMarkdownResponse";
 
 interface PromptResponseProps {

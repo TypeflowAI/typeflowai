@@ -1,14 +1,14 @@
 import { Popover, Transition } from "@headlessui/react";
+import clsx from "clsx";
 import {
-  ArrowLongRightIcon,
-  Bars3Icon,
   ChevronDownIcon,
   ChevronRightIcon,
   GiftIcon,
+  MenuIcon,
+  MoveRightIcon,
   UsersIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
-import clsx from "clsx";
+  XIcon,
+} from "lucide-react";
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -155,7 +155,7 @@ export default function Header({ inverted, isWhite }: HeaderProps) {
               "inline-flex items-center justify-center rounded-md p-2 focus:outline-none"
             )}>
             <span className="sr-only">Open menu</span>
-            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+            <MenuIcon className="h-6 w-6" aria-hidden="true" />
           </Popover.Button>
         </div>
         <Popover.Group as="nav" className="ml-10 hidden space-x-6 md:flex lg:space-x-10">
@@ -200,7 +200,7 @@ export default function Header({ inverted, isWhite }: HeaderProps) {
                                   href={brick.href}
                                   className="group mb-3 flex cursor-pointer items-center hover:underline">
                                   <p className="text-base font-normal text-slate-600">{brick.name}</p>
-                                  <ArrowLongRightIcon className="ml-1 h-4 w-4 opacity-0 group-hover:opacity-100" />
+                                  <MoveRightIcon className="ml-1 h-4 w-4 opacity-0 group-hover:opacity-100" />
                                 </Link>
                               ))}
                             </div>
@@ -219,7 +219,7 @@ export default function Header({ inverted, isWhite }: HeaderProps) {
                                       href={brick.href}
                                       className="group mb-3 flex cursor-pointer items-center hover:underline">
                                       <p className="text-base font-normal text-slate-600">{brick.name}</p>
-                                      <ArrowLongRightIcon className="ml-1 h-4 w-4 opacity-0 group-hover:opacity-100" />
+                                      <MoveRightIcon className="ml-1 h-4 w-4 opacity-0 group-hover:opacity-100" />
                                     </Link>
                                   ))}
                                 </div>
@@ -230,7 +230,7 @@ export default function Header({ inverted, isWhite }: HeaderProps) {
                                       href={brick.href}
                                       className="group mb-3 flex cursor-pointer items-center hover:underline">
                                       <p className="text-base font-normal text-slate-600">{brick.name}</p>
-                                      <ArrowLongRightIcon className="ml-1 h-4 w-4 opacity-0 group-hover:opacity-100" />
+                                      <MoveRightIcon className="ml-1 h-4 w-4 opacity-0 group-hover:opacity-100" />
                                     </Link>
                                   ))}
                                 </div>
@@ -334,7 +334,7 @@ export default function Header({ inverted, isWhite }: HeaderProps) {
                 <div className="-mr-2">
                   <Popover.Button className="bg-brand inline-flex items-center justify-center rounded-md p-2 text-white focus:outline-none">
                     <span className="sr-only">Close menu</span>
-                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                    <XIcon className="h-6 w-6" aria-hidden="true" />
                   </Popover.Button>
                 </div>
               </div>
@@ -361,7 +361,7 @@ export default function Header({ inverted, isWhite }: HeaderProps) {
                             href={brick.href}
                             className="group mb-2 flex cursor-pointer items-center hover:underline">
                             <p className="text-base font-normal text-slate-600">{brick.name}</p>
-                            <ArrowLongRightIcon className="ml-1 h-4 w-4 opacity-0 group-hover:opacity-100" />
+                            <MoveRightIcon className="ml-1 h-4 w-4 opacity-0 group-hover:opacity-100" />
                           </Link>
                         ))}
                       </div>
@@ -376,7 +376,7 @@ export default function Header({ inverted, isWhite }: HeaderProps) {
                             href={brick.href}
                             className="group mb-2 flex cursor-pointer items-center hover:underline">
                             <p className="text-base font-normal text-slate-600">{brick.name}</p>
-                            <ArrowLongRightIcon className="ml-1 h-4 w-4 opacity-0 group-hover:opacity-100" />
+                            <MoveRightIcon className="ml-1 h-4 w-4 opacity-0 group-hover:opacity-100" />
                           </Link>
                         ))}
                         {UseCaseUsers2.map((brick) => (
@@ -385,7 +385,7 @@ export default function Header({ inverted, isWhite }: HeaderProps) {
                             href={brick.href}
                             className="group mb-2 flex cursor-pointer items-center hover:underline">
                             <p className="text-base font-normal text-slate-600">{brick.name}</p>
-                            <ArrowLongRightIcon className="ml-1 h-4 w-4 opacity-0 group-hover:opacity-100" />
+                            <MoveRightIcon className="ml-1 h-4 w-4 opacity-0 group-hover:opacity-100" />
                           </Link>
                         ))}
                       </div>

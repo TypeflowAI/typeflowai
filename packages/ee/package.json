@@ -14,10 +14,15 @@
     "@typeflowai/tsconfig": "*",
     "@typeflowai/types": "*",
     "@typeflowai/ui": "*",
-    "eslint-config-typeflowai": "workspace:*"
+    "eslint-config-typeflowai": "workspace:*",
+    "@tiptap/extension-character-count": "^2.1.16",
+    "@tiptap/extension-mention": "^2.1.16",
+    "@tiptap/pm": "^2.1.16",
+    "@tiptap/react": "^2.1.16",
+    "@tiptap/starter-kit": "^2.1.16"
   },
   "dependencies": {
     "@typeflowai/lib": "workspace:*",
-    "stripe": "^14.11.0"
+    "stripe": "^15.3.0"
   }
 }

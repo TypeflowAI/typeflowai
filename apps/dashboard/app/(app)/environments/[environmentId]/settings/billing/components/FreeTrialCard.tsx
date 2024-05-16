@@ -1,4 +1,4 @@
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { XIcon } from "lucide-react";
 
 import { BillingSlider } from "@typeflowai/ui/BillingSlider";
 
@@ -49,13 +49,13 @@ export const FreeTrialCard = ({
             <ul className="mt-4 space-y-4">
               <li className="flex items-center">
                 <div className="rounded-full border border-red-300 bg-red-100 p-0.5">
-                  <XMarkIcon className="h-5 w-5 p-0.5 text-red-500" />
+                  <XIcon className="h-5 w-5 p-0.5 text-red-500" />
                 </div>
                 <span className="ml-2 text-sm text-slate-500">Limited responses</span>
               </li>
               <li className="flex items-center">
                 <div className="rounded-full border border-red-300 bg-red-100 p-0.5">
-                  <XMarkIcon className="h-5 w-5 p-0.5 text-red-500" />
+                  <XIcon className="h-5 w-5 p-0.5 text-red-500" />
                 </div>
                 <span className="ml-2 text-sm text-slate-500">Workflows AI responses</span>
               </li>
@@ -66,13 +66,13 @@ export const FreeTrialCard = ({
             <ul className="mt-4 space-y-4">
               <li className="flex items-center">
                 <div className="rounded-full border border-red-300 bg-red-100 p-0.5">
-                  <XMarkIcon className="h-5 w-5 p-0.5 text-red-500" />
+                  <XIcon className="h-5 w-5 p-0.5 text-red-500" />
                 </div>
                 <span className="ml-2 text-sm text-slate-500">Remove TypeflowAI Branding</span>
               </li>
               <li className="flex items-center">
                 <div className="rounded-full border border-red-300 bg-red-100 p-0.5">
-                  <XMarkIcon className="h-5 w-5 p-0.5 text-red-500" />
+                  <XIcon className="h-5 w-5 p-0.5 text-red-500" />
                 </div>
                 <span className="ml-2 text-sm text-slate-500">Team Roles</span>
               </li>

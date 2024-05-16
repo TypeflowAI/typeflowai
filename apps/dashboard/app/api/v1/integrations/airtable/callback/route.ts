@@ -1,6 +1,6 @@
 import { responses } from "@/app/lib/api/response";
 import { getServerSession } from "next-auth";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import * as z from "zod";
 
 import { connectAirtable, fetchAirtableAuthToken } from "@typeflowai/lib/airtable/service";
@@ -25,7 +25,6 @@ export async function GET(req: NextRequest) {
   const queryParams = new URLSearchParams(url.split("?")[1]); // Split the URL and get the query parameters
   const environmentId = queryParams.get("state"); // Get the value of the 'state' parameter
   const code = queryParams.get("code");
-
   const session = await getServerSession(authOptions);
 
   if (!environmentId) {
@@ -46,11 +45,7 @@ export async function GET(req: NextRequest) {
 
   const client_id = AIRTABLE_CLIENT_ID;
   const redirect_uri = WEBAPP_URL + "/api/v1/integrations/airtable/callback";
-  const code_verifier = Buffer.from(environmentId + session.user.id + environmentId)
-    .toString("base64")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
+  const code_verifier = Buffer.from(environmentId + session.user.id + environmentId).toString("base64");
 
   if (!client_id) return responses.internalServerErrorResponse("Airtable client id is missing");
   if (!redirect_uri) return responses.internalServerErrorResponse("Airtable redirect url is missing");
@@ -75,7 +70,7 @@ export async function GET(req: NextRequest) {
       email,
       key,
     });
-    return NextResponse.redirect(`${WEBAPP_URL}/environments/${environmentId}/integrations/airtable`);
+    return Response.redirect(`${WEBAPP_URL}/environments/${environmentId}/integrations/airtable`);
   } catch (error) {
     console.error(error);
     responses.internalServerErrorResponse(error);

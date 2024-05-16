@@ -13,9 +13,7 @@ export async function GET(req: NextRequest) {
   const url = req.url;
   const environmentId = req.headers.get("environmentId");
   const queryParams = new URLSearchParams(url.split("?")[1]);
-
   const session = await getServerSession(authOptions);
-
   const baseId = z.string().safeParse(queryParams.get("baseId"));
 
   if (!baseId.success) {

@@ -1,51 +1,55 @@
 "use client";
 
-import AdvancedSettings from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/AdvancedSettings";
-import DateQuestionForm from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/DateQuestionForm";
-import PictureSelectionForm from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/PictureSelectionForm";
+import { AddressQuestionForm } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/AddressQuestionForm";
+import { AdvancedSettings } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/AdvancedSettings";
+import { CTAQuestionForm } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/CTAQuestionForm";
+import { CalQuestionForm } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/CalQuestionForm";
+import { ConsentQuestionForm } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/ConsentQuestionForm";
+import { DateQuestionForm } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/DateQuestionForm";
+import { FileUploadQuestionForm } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/FileUploadQuestionForm";
+import { MatrixQuestionForm } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/MatrixQuestionForm";
+import { MultipleChoiceMultiForm } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/MultipleChoiceMultiForm";
+import { MultipleChoiceSingleForm } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/MultipleChoiceSingleForm";
+import { NPSQuestionForm } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/NPSQuestionForm";
+import { OpenQuestionForm } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/OpenQuestionForm";
+import { PictureSelectionForm } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/PictureSelectionForm";
+import { RatingQuestionForm } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/RatingQuestionForm";
 import { getTWorkflowQuestionTypeName } from "@/app/lib/questions";
+import * as Collapsible from "@radix-ui/react-collapsible";
 import {
-  ArrowUpTrayIcon,
+  ArrowUpFromLineIcon,
   CalendarDaysIcon,
-  ChatBubbleBottomCenterTextIcon,
   CheckIcon,
   ChevronDownIcon,
   ChevronRightIcon,
-  CursorArrowRippleIcon,
-  ListBulletIcon,
+  Grid3X3Icon,
+  HomeIcon,
+  ImageIcon,
+  ListIcon,
+  MessageSquareTextIcon,
+  MousePointerClickIcon,
   PhoneIcon,
-  PhotoIcon,
-  PresentationChartBarIcon,
-  QueueListIcon,
+  PresentationIcon,
+  Rows3Icon,
   StarIcon,
-} from "@heroicons/react/24/solid";
-import * as Collapsible from "@radix-ui/react-collapsible";
+} from "lucide-react";
 import { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 
 import { cn } from "@typeflowai/lib/cn";
+import { recallToHeadline } from "@typeflowai/lib/utils/recall";
 import { TProduct } from "@typeflowai/types/product";
-import { TWorkflowQuestionType } from "@typeflowai/types/workflows";
-import { TWorkflow } from "@typeflowai/types/workflows";
-import { Input } from "@typeflowai/ui/Input";
+import { TI18nString, TWorkflow, TWorkflowQuestionType } from "@typeflowai/types/workflows";
 import { Label } from "@typeflowai/ui/Label";
+import { QuestionFormInput } from "@typeflowai/ui/QuestionFormInput";
 import { Switch } from "@typeflowai/ui/Switch";
 
-import CTAQuestionForm from "./CTAQuestionForm";
-import CalQuestionForm from "./CalQuestionForm";
-import ConsentQuestionForm from "./ConsentQuestionForm";
-import FileUploadQuestionForm from "./FileUploadQuestionForm";
-import MultipleChoiceMultiForm from "./MultipleChoiceMultiForm";
-import MultipleChoiceSingleForm from "./MultipleChoiceSingleForm";
-import NPSQuestionForm from "./NPSQuestionForm";
-import OpenQuestionForm from "./OpenQuestionForm";
 import QuestionDropdown from "./QuestionMenu";
-import RatingQuestionForm from "./RatingQuestionForm";
 
 interface QuestionCardProps {
   localWorkflow: TWorkflow;
   setLocalWorkflow: (workflow: TWorkflow) => void;
-  product?: TProduct;
+  product: TProduct;
   questionIdx: number;
   moveQuestion: (questionIndex: number, up: boolean) => void;
   updateQuestion: (questionIdx: number, updatedAttributes: any) => void;
@@ -55,33 +59,9 @@ interface QuestionCardProps {
   setActiveQuestionId: (questionId: string | null) => void;
   lastQuestion: boolean;
   isPromptVisible: boolean;
-  isInValid: boolean;
-}
-
-export function BackButtonInput({
-  value,
-  onChange,
-  className,
-}: {
-  value: string | undefined;
-  onChange: (e: any) => void;
-  className?: string;
-}) {
-  return (
-    <div className="w-full">
-      <Label htmlFor="backButtonLabel">&quot;Back&quot; Button Label</Label>
-      <div className="mt-2">
-        <Input
-          id="backButtonLabel"
-          name="backButtonLabel"
-          value={value}
-          placeholder="Back"
-          onChange={onChange}
-          className={className}
-        />
-      </div>
-    </div>
-  );
+  selectedLanguageCode: string;
+  setSelectedLanguageCode: (language: string) => void;
+  isInvalid: boolean;
 }
 
 export default function QuestionCard({
@@ -97,18 +77,63 @@ export default function QuestionCard({
   setActiveQuestionId,
   lastQuestion,
   isPromptVisible,
-  isInValid,
+  selectedLanguageCode,
+  setSelectedLanguageCode,
+  isInvalid,
 }: QuestionCardProps) {
   const question = localWorkflow.questions[questionIdx];
   const open = activeQuestionId === question.id;
   const [openAdvanced, setOpenAdvanced] = useState(question.logic && question.logic.length > 0);
 
-  const updateEmptyNextButtonLabels = (labelValue: string) => {
+  // formats the text to highlight specific parts of the text with slashes
+  const formatTextWithSlashes = (text) => {
+    const regex = /\/(.*?)\\/g;
+    const parts = text.split(regex);
+
+    return parts.map((part, index) => {
+      // Check if the part was inside slashes
+      if (index % 2 !== 0) {
+        return (
+          <span key={index} className="mx-1 rounded-md bg-slate-100 p-1 px-2 text-xs">
+            {part}
+          </span>
+        );
+      } else {
+        return part;
+      }
+    });
+  };
+
+  const updateEmptyNextButtonLabels = (labelValue: TI18nString) => {
     localWorkflow.questions.forEach((q, index) => {
-      if (!q.buttonLabel || q.buttonLabel?.trim() === "") {
+      if (index === localWorkflow.questions.length - 1) return;
+      if (!q.buttonLabel || q.buttonLabel[selectedLanguageCode]?.trim() === "") {
         updateQuestion(index, { buttonLabel: labelValue });
       }
     });
+  };
+
+  const getIsRequiredToggleDisabled = (): boolean => {
+    if (question.type === "address") {
+      return [
+        question.isAddressLine1Required,
+        question.isAddressLine2Required,
+        question.isCityRequired,
+        question.isCountryRequired,
+        question.isStateRequired,
+        question.isZipRequired,
+      ].some((condition) => condition === true);
+    }
+    return false;
+  };
+
+  const handleRequiredToggle = () => {
+    // Fix for NPS and Rating questions having missing translations when buttonLabel is not removed
+    if (!question.required && (question.type === "nps" || question.type === "rating")) {
+      updateQuestion(questionIdx, { required: true, buttonLabel: undefined });
+    } else {
+      updateQuestion(questionIdx, { required: !question.required });
+    }
   };
 
   return (
@@ -124,9 +149,9 @@ export default function QuestionCard({
           {...provided.dragHandleProps}>
           <div
             className={cn(
-              open ? "bg-violet-950" : "bg-slate-400",
-              "top-0 w-10 rounded-l-lg p-2 text-center text-sm text-white hover:bg-slate-600",
-              isInValid && "bg-red-400  hover:bg-red-600"
+              open ? "bg-slate-700" : "bg-slate-400",
+              "top-0 w-10 rounded-l-lg p-2 text-center text-sm text-white hover:cursor-grab hover:bg-slate-600",
+              isInvalid && "bg-red-400  hover:bg-red-600"
             )}>
             {questionIdx + 1}
           </div>
@@ -145,34 +170,46 @@ export default function QuestionCard({
               className={cn(open ? "" : "  ", "flex cursor-pointer justify-between p-4 hover:bg-slate-50")}>
               <div>
                 <div className="inline-flex">
-                  <div className="-ml-0.5 mr-3 h-6 w-6 text-slate-400">
+                  <div className="-ml-0.5 mr-3 h-6 min-w-[1.5rem] text-slate-400">
                     {question.type === TWorkflowQuestionType.FileUpload ? (
-                      <ArrowUpTrayIcon />
+                      <ArrowUpFromLineIcon className="h-5 w-5" />
                     ) : question.type === TWorkflowQuestionType.OpenText ? (
-                      <ChatBubbleBottomCenterTextIcon />
+                      <MessageSquareTextIcon className="h-5 w-5" />
                     ) : question.type === TWorkflowQuestionType.MultipleChoiceSingle ? (
-                      <QueueListIcon />
+                      <Rows3Icon className="h-5 w-5" />
                     ) : question.type === TWorkflowQuestionType.MultipleChoiceMulti ? (
-                      <ListBulletIcon />
+                      <ListIcon className="h-5 w-5" />
                     ) : question.type === TWorkflowQuestionType.NPS ? (
-                      <PresentationChartBarIcon />
+                      <PresentationIcon className="h-5 w-5" />
                     ) : question.type === TWorkflowQuestionType.CTA ? (
-                      <CursorArrowRippleIcon />
+                      <MousePointerClickIcon className="h-5 w-5" />
                     ) : question.type === TWorkflowQuestionType.Rating ? (
-                      <StarIcon />
+                      <StarIcon className="h-5 w-5" />
                     ) : question.type === TWorkflowQuestionType.Consent ? (
-                      <CheckIcon />
+                      <CheckIcon className="h-5 w-5" />
                     ) : question.type === TWorkflowQuestionType.PictureSelection ? (
-                      <PhotoIcon />
+                      <ImageIcon className="h-5 w-5" />
                     ) : question.type === TWorkflowQuestionType.Date ? (
-                      <CalendarDaysIcon />
+                      <CalendarDaysIcon className="h-5 w-5" />
                     ) : question.type === TWorkflowQuestionType.Cal ? (
-                      <PhoneIcon />
+                      <PhoneIcon className="h-5 w-5" />
+                    ) : question.type === TWorkflowQuestionType.Matrix ? (
+                      <Grid3X3Icon className="h-5 w-5" />
+                    ) : question.type === TWorkflowQuestionType.Address ? (
+                      <HomeIcon className="h-5 w-5" />
                     ) : null}
                   </div>
                   <div>
                     <p className="text-sm font-semibold">
-                      {question.headline || getTWorkflowQuestionTypeName(question.type)}
+                      {recallToHeadline(question.headline, localWorkflow, true, selectedLanguageCode)[
+                        selectedLanguageCode
+                      ]
+                        ? formatTextWithSlashes(
+                            recallToHeadline(question.headline, localWorkflow, true, selectedLanguageCode)[
+                              selectedLanguageCode
+                            ] ?? ""
+                          )
+                        : getTWorkflowQuestionTypeName(question.type)}
                     </p>
                     {!open && question?.required && (
                       <p className="mt-1 truncate text-xs text-slate-500">
@@ -201,8 +238,9 @@ export default function QuestionCard({
                   questionIdx={questionIdx}
                   updateQuestion={updateQuestion}
                   lastQuestion={lastQuestion}
-                  isPromptVisible={isPromptVisible}
-                  isInValid={isInValid}
+                  selectedLanguageCode={selectedLanguageCode}
+                  setSelectedLanguageCode={setSelectedLanguageCode}
+                  isInvalid={isInvalid}
                 />
               ) : question.type === TWorkflowQuestionType.MultipleChoiceSingle ? (
                 <MultipleChoiceSingleForm
@@ -211,8 +249,9 @@ export default function QuestionCard({
                   questionIdx={questionIdx}
                   updateQuestion={updateQuestion}
                   lastQuestion={lastQuestion}
-                  isPromptVisible={isPromptVisible}
-                  isInValid={isInValid}
+                  selectedLanguageCode={selectedLanguageCode}
+                  setSelectedLanguageCode={setSelectedLanguageCode}
+                  isInvalid={isInvalid}
                 />
               ) : question.type === TWorkflowQuestionType.MultipleChoiceMulti ? (
                 <MultipleChoiceMultiForm
@@ -221,8 +260,9 @@ export default function QuestionCard({
                   questionIdx={questionIdx}
                   updateQuestion={updateQuestion}
                   lastQuestion={lastQuestion}
-                  isPromptVisible={isPromptVisible}
-                  isInValid={isInValid}
+                  selectedLanguageCode={selectedLanguageCode}
+                  setSelectedLanguageCode={setSelectedLanguageCode}
+                  isInvalid={isInvalid}
                 />
               ) : question.type === TWorkflowQuestionType.NPS ? (
                 <NPSQuestionForm
@@ -232,7 +272,9 @@ export default function QuestionCard({
                   updateQuestion={updateQuestion}
                   lastQuestion={lastQuestion}
                   isPromptVisible={isPromptVisible}
-                  isInValid={isInValid}
+                  selectedLanguageCode={selectedLanguageCode}
+                  setSelectedLanguageCode={setSelectedLanguageCode}
+                  isInvalid={isInvalid}
                 />
               ) : question.type === TWorkflowQuestionType.CTA ? (
                 <CTAQuestionForm
@@ -242,7 +284,9 @@ export default function QuestionCard({
                   updateQuestion={updateQuestion}
                   lastQuestion={lastQuestion}
                   isPromptVisible={isPromptVisible}
-                  isInValid={isInValid}
+                  selectedLanguageCode={selectedLanguageCode}
+                  setSelectedLanguageCode={setSelectedLanguageCode}
+                  isInvalid={isInvalid}
                 />
               ) : question.type === TWorkflowQuestionType.Rating ? (
                 <RatingQuestionForm
@@ -251,8 +295,9 @@ export default function QuestionCard({
                   questionIdx={questionIdx}
                   updateQuestion={updateQuestion}
                   lastQuestion={lastQuestion}
-                  isPromptVisible={isPromptVisible}
-                  isInValid={isInValid}
+                  selectedLanguageCode={selectedLanguageCode}
+                  setSelectedLanguageCode={setSelectedLanguageCode}
+                  isInvalid={isInvalid}
                 />
               ) : question.type === TWorkflowQuestionType.Consent ? (
                 <ConsentQuestionForm
@@ -260,7 +305,9 @@ export default function QuestionCard({
                   question={question}
                   questionIdx={questionIdx}
                   updateQuestion={updateQuestion}
-                  isInValid={isInValid}
+                  selectedLanguageCode={selectedLanguageCode}
+                  setSelectedLanguageCode={setSelectedLanguageCode}
+                  isInvalid={isInvalid}
                 />
               ) : question.type === TWorkflowQuestionType.Date ? (
                 <DateQuestionForm
@@ -269,8 +316,9 @@ export default function QuestionCard({
                   questionIdx={questionIdx}
                   updateQuestion={updateQuestion}
                   lastQuestion={lastQuestion}
-                  isPromptVisible={isPromptVisible}
-                  isInValid={isInValid}
+                  selectedLanguageCode={selectedLanguageCode}
+                  setSelectedLanguageCode={setSelectedLanguageCode}
+                  isInvalid={isInvalid}
                 />
               ) : question.type === TWorkflowQuestionType.PictureSelection ? (
                 <PictureSelectionForm
@@ -279,8 +327,9 @@ export default function QuestionCard({
                   questionIdx={questionIdx}
                   updateQuestion={updateQuestion}
                   lastQuestion={lastQuestion}
-                  isPromptVisible={isPromptVisible}
-                  isInValid={isInValid}
+                  selectedLanguageCode={selectedLanguageCode}
+                  setSelectedLanguageCode={setSelectedLanguageCode}
+                  isInvalid={isInvalid}
                 />
               ) : question.type === TWorkflowQuestionType.FileUpload ? (
                 <FileUploadQuestionForm
@@ -290,8 +339,9 @@ export default function QuestionCard({
                   questionIdx={questionIdx}
                   updateQuestion={updateQuestion}
                   lastQuestion={lastQuestion}
-                  isPromptVisible={isPromptVisible}
-                  isInValid={isInValid}
+                  selectedLanguageCode={selectedLanguageCode}
+                  setSelectedLanguageCode={setSelectedLanguageCode}
+                  isInvalid={isInvalid}
                 />
               ) : question.type === TWorkflowQuestionType.Cal ? (
                 <CalQuestionForm
@@ -300,8 +350,31 @@ export default function QuestionCard({
                   questionIdx={questionIdx}
                   updateQuestion={updateQuestion}
                   lastQuestion={lastQuestion}
-                  isPromptVisible={isPromptVisible}
-                  isInValid={isInValid}
+                  selectedLanguageCode={selectedLanguageCode}
+                  setSelectedLanguageCode={setSelectedLanguageCode}
+                  isInvalid={isInvalid}
+                />
+              ) : question.type === TWorkflowQuestionType.Matrix ? (
+                <MatrixQuestionForm
+                  localWorkflow={localWorkflow}
+                  question={question}
+                  questionIdx={questionIdx}
+                  updateQuestion={updateQuestion}
+                  lastQuestion={lastQuestion}
+                  selectedLanguageCode={selectedLanguageCode}
+                  setSelectedLanguageCode={setSelectedLanguageCode}
+                  isInvalid={isInvalid}
+                />
+              ) : question.type === TWorkflowQuestionType.Address ? (
+                <AddressQuestionForm
+                  localWorkflow={localWorkflow}
+                  question={question}
+                  questionIdx={questionIdx}
+                  updateQuestion={updateQuestion}
+                  lastQuestion={lastQuestion}
+                  selectedLanguageCode={selectedLanguageCode}
+                  setSelectedLanguageCode={setSelectedLanguageCode}
+                  isInvalid={isInvalid}
                 />
               ) : null}
               <div className="mt-4">
@@ -319,32 +392,43 @@ export default function QuestionCard({
                     {question.type !== TWorkflowQuestionType.NPS &&
                     question.type !== TWorkflowQuestionType.Rating &&
                     question.type !== TWorkflowQuestionType.CTA ? (
-                      <div className="mt-4 flex space-x-2">
+                      <div className="mt-2 flex space-x-2">
                         <div className="w-full">
-                          <Label htmlFor="buttonLabel">&quot;Next&quot; Button Label</Label>
-                          <div className="mt-2">
-                            <Input
-                              id="buttonLabel"
-                              name="buttonLabel"
-                              value={question.buttonLabel}
-                              maxLength={48}
-                              placeholder={lastQuestion ? (isPromptVisible ? "Next" : "Finish") : "Next"}
-                              onChange={(e) => {
-                                updateQuestion(questionIdx, { buttonLabel: e.target.value });
-                              }}
-                              onBlur={(e) => {
-                                updateEmptyNextButtonLabels(e.target.value);
-                              }}
-                            />
-                          </div>
+                          <QuestionFormInput
+                            id="buttonLabel"
+                            value={question.buttonLabel}
+                            localWorkflow={localWorkflow}
+                            questionIdx={questionIdx}
+                            maxLength={48}
+                            placeholder={lastQuestion ? (isPromptVisible ? "Next" : "Finish") : "Next"}
+                            isInvalid={isInvalid}
+                            updateQuestion={updateQuestion}
+                            selectedLanguageCode={selectedLanguageCode}
+                            setSelectedLanguageCode={setSelectedLanguageCode}
+                            onBlur={(e) => {
+                              if (!question.buttonLabel) return;
+                              let translatedNextButtonLabel = {
+                                ...question.buttonLabel,
+                                [selectedLanguageCode]: e.target.value,
+                              };
+
+                              if (questionIdx === localWorkflow.questions.length - 1) return;
+                              updateEmptyNextButtonLabels(translatedNextButtonLabel);
+                            }}
+                          />
                         </div>
                         {questionIdx !== 0 && (
-                          <BackButtonInput
+                          <QuestionFormInput
+                            id="backButtonLabel"
                             value={question.backButtonLabel}
-                            onChange={(e) => {
-                              if (e.target.value.trim() == "") e.target.value = "";
-                              updateQuestion(questionIdx, { backButtonLabel: e.target.value });
-                            }}
+                            localWorkflow={localWorkflow}
+                            questionIdx={questionIdx}
+                            maxLength={48}
+                            placeholder={"Back"}
+                            isInvalid={isInvalid}
+                            updateQuestion={updateQuestion}
+                            selectedLanguageCode={selectedLanguageCode}
+                            setSelectedLanguageCode={setSelectedLanguageCode}
                           />
                         )}
                       </div>
@@ -353,12 +437,17 @@ export default function QuestionCard({
                       question.type === TWorkflowQuestionType.NPS) &&
                       questionIdx !== 0 && (
                         <div className="mt-4">
-                          <BackButtonInput
+                          <QuestionFormInput
+                            id="backButtonLabel"
                             value={question.backButtonLabel}
-                            onChange={(e) => {
-                              if (e.target.value.trim() == "") e.target.value = "";
-                              updateQuestion(questionIdx, { backButtonLabel: e.target.value });
-                            }}
+                            localWorkflow={localWorkflow}
+                            questionIdx={questionIdx}
+                            maxLength={48}
+                            placeholder={"Back"}
+                            isInvalid={isInvalid}
+                            updateQuestion={updateQuestion}
+                            selectedLanguageCode={selectedLanguageCode}
+                            setSelectedLanguageCode={setSelectedLanguageCode}
                           />
                         </div>
                       )}
@@ -382,6 +471,7 @@ export default function QuestionCard({
                     <Label htmlFor="longAnswer">Long Answer</Label>
                     <Switch
                       id="longAnswer"
+                      disabled={question.inputType !== "text"}
                       checked={question.longAnswer !== false}
                       onClick={(e) => {
                         e.stopPropagation();
@@ -399,9 +489,10 @@ export default function QuestionCard({
                     <Switch
                       id="required-toggle"
                       checked={question.required}
+                      disabled={getIsRequiredToggleDisabled()}
                       onClick={(e) => {
                         e.stopPropagation();
-                        updateQuestion(questionIdx, { required: !question.required });
+                        handleRequiredToggle();
                       }}
                     />
                   </div>

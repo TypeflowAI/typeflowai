@@ -16,9 +16,9 @@ import {
   ProductSubscriptionTypes,
   StripePriceLookupKeys,
   StripeProductNames,
-} from "@typeflowai/ee/billing/lib/constants";
+} from "@typeflowai/ee/stripe/lib/constants";
 import { TTeam } from "@typeflowai/types/teams";
-import AlertDialog from "@typeflowai/ui/AlertDialog";
+import { AlertDialog } from "@typeflowai/ui/AlertDialog";
 import { Button } from "@typeflowai/ui/Button";
 import { PlanCard } from "@typeflowai/ui/PlanCard";
 import { PlanSelector } from "@typeflowai/ui/PlanSelector";
@@ -304,15 +304,15 @@ export default function PricingTableComponent({
       </div>
 
       <AlertDialog
-        confirmWhat="that you want to unsubscribe?"
+        headerText="that you want to unsubscribe?"
         open={openDeleteModal}
         setOpen={setOpenDeleteModal}
-        onDiscard={() => {
+        onDecline={() => {
           setOpenDeleteModal(false);
         }}
-        text="Your subscription for this product will be canceled at the end of the month. After that, you won't have access to the pro features anymore"
-        onSave={() => handleDeleteSubscription()}
-        confirmButtonLabel="Unsubscribe"
+        mainText="Your subscription for this product will be canceled at the end of the month. After that, you won't have access to the pro features anymore"
+        onConfirm={() => handleDeleteSubscription()}
+        confirmBtnLabel="Unsubscribe"
       />
     </div>
   );

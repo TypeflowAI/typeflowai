@@ -3,7 +3,7 @@ import { PromptAttributes } from "@typeflowai/types/prompt";
 export function processPromptMessage(
   promptMessage: string,
   promptAttributes: Record<string, string | null | undefined>,
-  questionAnswers: Record<string, string | number | string[]>
+  questionAnswers: Record<string, string | number | string[] | Record<string, string>>
 ): string {
   const parser = new DOMParser();
   const doc = parser.parseFromString(promptMessage, "text/html");

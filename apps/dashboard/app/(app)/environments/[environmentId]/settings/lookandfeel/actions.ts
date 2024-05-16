@@ -8,7 +8,7 @@ import { getProduct, updateProduct } from "@typeflowai/lib/product/service";
 import { AuthorizationError } from "@typeflowai/types/errors";
 import { TProductUpdateInput } from "@typeflowai/types/product";
 
-export async function updateProductAction(productId: string, inputProduct: Partial<TProductUpdateInput>) {
+export async function updateProductAction(productId: string, inputProduct: TProductUpdateInput) {
   const session = await getServerSession(authOptions);
 
   if (!session) throw new AuthorizationError("Not authorized");

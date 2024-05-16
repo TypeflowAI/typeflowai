@@ -1,9 +1,10 @@
 "use client";
 
-import { getMoreResponses } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/actions";
-import EmptyInAppWorkflows from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/components/EmptyInAppWorkflows";
-import React, { useEffect, useRef, useState } from "react";
+import { EmptyAppWorkflows } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/components/EmptyInAppWorkflows";
+import { useEffect, useRef, useState } from "react";
 
+import { getMembershipByUserIdTeamIdAction } from "@typeflowai/lib/membership/hooks/actions";
+import { getAccessFlags } from "@typeflowai/lib/membership/utils";
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TResponse } from "@typeflowai/types/responses";
 import { TTag } from "@typeflowai/types/tags";
@@ -11,15 +12,23 @@ import { TUser } from "@typeflowai/types/user";
 import { TWorkflow } from "@typeflowai/types/workflows";
 import EmptySpaceFiller from "@typeflowai/ui/EmptySpaceFiller";
 import SingleResponseCard from "@typeflowai/ui/SingleResponseCard";
+import { SkeletonLoader } from "@typeflowai/ui/SkeletonLoader";
 
 interface ResponseTimelineProps {
   environment: TEnvironment;
   workflowId: string;
   responses: TResponse[];
   workflow: TWorkflow;
-  user: TUser;
+  user?: TUser;
   environmentTags: TTag[];
-  responsesPerPage: number;
+  fetchNextPage: () => void;
+  hasMore: boolean;
+  updateResponse: (responseId: string, responses: TResponse) => void;
+  deleteResponse: (responseId: string) => void;
+  isFetchingFirstPage: boolean;
+  responseCount: number | null;
+  totalResponseCount: number;
+  isSharingPage?: boolean;
 }
 
 export default function ResponseTimeline({
@@ -28,29 +37,25 @@ export default function ResponseTimeline({
   workflow,
   user,
   environmentTags,
-  responsesPerPage,
+  fetchNextPage,
+  hasMore,
+  updateResponse,
+  deleteResponse,
+  isFetchingFirstPage,
+  responseCount,
+  totalResponseCount,
+  isSharingPage = false,
 }: ResponseTimelineProps) {
+  const [isViewer, setIsViewer] = useState(false);
   const loadingRef = useRef(null);
-  const [fetchedResponses, setFetchedResponses] = useState<TResponse[]>(responses);
-  const [page, setPage] = useState(2);
-  const [hasMoreResponses, setHasMoreResponses] = useState<boolean>(responses.length > 0);
 
   useEffect(() => {
     const currentLoadingRef = loadingRef.current;
 
-    const loadResponses = async () => {
-      const newResponses = await getMoreResponses(workflow.id, page);
-      if (newResponses.length === 0) {
-        setHasMoreResponses(false);
-      } else {
-        setPage(page + 1);
-      }
-      setFetchedResponses((prevResponses) => [...prevResponses, ...newResponses]);
-    };
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          if (hasMoreResponses) loadResponses();
+          if (hasMore) fetchNextPage();
         }
       },
       { threshold: 0.8 }
@@ -65,21 +70,37 @@ export default function ResponseTimeline({
         observer.unobserve(currentLoadingRef);
       }
     };
-  }, [responses, responsesPerPage, page, workflow.id, fetchedResponses.length, hasMoreResponses]);
+  }, [fetchNextPage, hasMore]);
+
+  useEffect(() => {
+    const getRole = async () => {
+      if (isSharingPage) return setIsViewer(true);
+
+      const membershipRole = await getMembershipByUserIdTeamIdAction(workflow.environmentId);
+      const { isViewer } = getAccessFlags(membershipRole);
+      setIsViewer(isViewer);
+    };
+    getRole();
+  }, [workflow.environmentId, isSharingPage]);
 
   return (
     <div className="space-y-4">
-      {workflow.type === "web" && fetchedResponses.length === 0 && !environment.widgetSetupCompleted ? (
-        <EmptyInAppWorkflows environment={environment} />
-      ) : fetchedResponses.length === 0 ? (
+      {(workflow.type === "app" || workflow.type === "website") &&
+      responses.length === 0 &&
+      !environment.widgetSetupCompleted ? (
+        <EmptyAppWorkflows environment={environment} workflowType={workflow.type} />
+      ) : isFetchingFirstPage ? (
+        <SkeletonLoader type="response" />
+      ) : responseCount === 0 ? (
         <EmptySpaceFiller
           type="response"
           environment={environment}
           noWidgetRequired={workflow.type === "link"}
+          emptyMessage={totalResponseCount === 0 ? undefined : "No response matches your filter"}
         />
       ) : (
         <div>
-          {fetchedResponses.map((response) => {
+          {responses.map((response) => {
             return (
               <div key={response.id}>
                 <SingleResponseCard
@@ -89,6 +110,9 @@ export default function ResponseTimeline({
                   environmentTags={environmentTags}
                   pageType="response"
                   environment={environment}
+                  updateResponse={updateResponse}
+                  deleteResponse={deleteResponse}
+                  isViewer={isViewer}
                 />
               </div>
             );

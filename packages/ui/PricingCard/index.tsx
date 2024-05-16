@@ -1,4 +1,4 @@
-import { CheckIcon } from "@heroicons/react/24/outline";
+import { CheckIcon } from "lucide-react";
 
 import { TTeam } from "@typeflowai/types/teams";
 
@@ -21,7 +21,7 @@ export const PricingCard = ({
   perMetricCharge,
   loading,
   onUpgrade,
-  onUbsubscribe,
+  onUnsubscribe,
 }: {
   title: string;
   subtitle: string;
@@ -41,7 +41,7 @@ export const PricingCard = ({
   perMetricCharge?: number;
   loading: boolean;
   onUpgrade: any;
-  onUbsubscribe: any;
+  onUnsubscribe: any;
 }) => {
   const featureNameKey = featureName as keyof typeof team.billing.features;
   return (
@@ -56,7 +56,7 @@ export const PricingCard = ({
               <Badge text="Subscribed" size="normal" type="success" />
               <Button
                 variant="secondary"
-                onClick={(e) => onUbsubscribe(e)}
+                onClick={(e) => onUnsubscribe(e)}
                 className="absolute right-12 top-10">
                 Unsubscribe
               </Button>
@@ -66,7 +66,7 @@ export const PricingCard = ({
           <Badge text="Cancelling at End of this Month" size="normal" type="warning" />
         ) : null}
 
-        <p className=" whitespace-pre-wrap text-sm text-slate-600">{subtitle}</p>
+        <p className=" mt-1 whitespace-pre-wrap text-sm text-slate-600">{subtitle}</p>
 
         {metric && perMetricCharge && (
           <div className="rounded-xl bg-slate-100 py-4">
@@ -95,9 +95,9 @@ export const PricingCard = ({
         <div className="flex py-3">
           <div className="w-3/5">
             {team.billing.features[featureNameKey].status === "inactive" && (
-              <p className=" whitespace-pre-wrap text-sm text-slate-600">
+              <p className="whitespace-pre-wrap text-sm leading-6 text-slate-600">
                 You&apos;re on the <b>Free plan</b> in {title}.<br />
-                Upgrade now to unlock the below features:
+                Upgrade now to unlock the following:
               </p>
             )}
 
@@ -109,15 +109,16 @@ export const PricingCard = ({
                   </div>
                   <span className="ml-2 text-sm text-slate-500">{feature.title}</span>
                   {feature.comingSoon && (
-                    <span className=" mx-2 bg-blue-100 p-1 text-xs text-slate-400">coming soon</span>
+                    <span className="mx-2 rounded bg-blue-100 px-3 py-1 text-xs text-blue-700">
+                      coming soon
+                    </span>
                   )}
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="w-1/5"></div>
-          <div className="w-1/5">
+          <div className="ml-6 flex w-2/5 flex-col items-end space-y-2">
             {!team.billing.features[featureNameKey].unlimited && (
               <div className="my-2">
                 {team.billing.features[featureNameKey].status !== "inactive" ? (
@@ -158,12 +159,8 @@ export const PricingCard = ({
               </div>
             )}
             {team.billing.features[featureNameKey].status === "inactive" && (
-              <Button
-                variant="darkCTA"
-                className="w-full justify-center py-2 text-white shadow-sm"
-                loading={loading}
-                onClick={() => onUpgrade()}>
-                Upgrade
+              <Button variant="darkCTA" loading={loading} onClick={() => onUpgrade()}>
+                Upgrade {title !== "Link Workflow Pro" ? "for free" : "now"}
               </Button>
             )}
           </div>

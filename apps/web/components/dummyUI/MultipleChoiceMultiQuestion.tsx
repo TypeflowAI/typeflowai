@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
 import { cn } from "@typeflowai/lib/cn";
-import { TWorkflowMultipleChoiceMultiQuestion } from "@typeflowai/types/workflows";
 
 import Headline from "./Headline";
 import Subheader from "./Subheader";
+import { TWorkflowMultipleChoiceMultiQuestion } from "./types";
 
 interface MultipleChoiceMultiProps {
   question: TWorkflowMultipleChoiceMultiQuestion;

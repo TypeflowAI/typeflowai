@@ -9,6 +9,7 @@ import {
 import { getEnvironment } from "@typeflowai/lib/environment/service";
 import { getSpreadSheets } from "@typeflowai/lib/googleSheet/service";
 import { getIntegrations } from "@typeflowai/lib/integration/service";
+import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
 import { getWorkflows } from "@typeflowai/lib/workflow/service";
 import { TIntegrationItem } from "@typeflowai/types/integration";
 import { TIntegrationGoogleSheets } from "@typeflowai/types/integration/googleSheet";
@@ -23,6 +24,10 @@ export default async function GoogleSheet({ params }) {
   ]);
   if (!environment) {
     throw new Error("Environment not found");
+  }
+  const product = await getProductByEnvironmentId(params.environmentId);
+  if (!product) {
+    throw new Error("Product not found");
   }
 
   const googleSheetIntegration: TIntegrationGoogleSheets | undefined = integrations?.find(

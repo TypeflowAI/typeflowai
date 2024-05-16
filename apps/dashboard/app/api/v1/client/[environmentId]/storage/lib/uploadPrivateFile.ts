@@ -6,7 +6,7 @@ const uploadPrivateFile = async (
   fileName: string,
   environmentId: string,
   fileType: string,
-  plan: "free" | "paid"
+  plan: "free" | "pro"
 ) => {
   const accessType = "private"; // private files are only accessible by the user who has access to the environment
   // if s3 is not configured, we'll upload to a local folder named uploads

@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 
-import { TTemplate } from "@typeflowai/types/templates";
-
 import PreviewWorkflow from "./PreviewWorkflow";
 import TemplateList from "./TemplateList";
 import { templates } from "./templates";
+import { TTemplate } from "./types";
 
 export default function WorkflowTemplatesPage({}) {
   const [activeTemplate, setActiveTemplate] = useState<TTemplate | null>(null);

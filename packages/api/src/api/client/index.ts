@@ -1,5 +1,6 @@
 import { ApiConfig } from "../../types";
 import { ActionAPI } from "./action";
+import { AttributeAPI } from "./attribute";
 import { DisplayAPI } from "./display";
 import { OpenAiAPI } from "./openai";
 import { PeopleAPI } from "./people";
@@ -12,6 +13,7 @@ export class Client {
   action: ActionAPI;
   people: PeopleAPI;
   storage: StorageAPI;
+  attribute: AttributeAPI;
   openai: OpenAiAPI;
 
   constructor(options: ApiConfig) {
@@ -22,6 +24,7 @@ export class Client {
     this.action = new ActionAPI(apiHost, environmentId);
     this.people = new PeopleAPI(apiHost, environmentId);
     this.storage = new StorageAPI(apiHost, environmentId);
+    this.attribute = new AttributeAPI(apiHost, environmentId);
     this.openai = new OpenAiAPI(apiHost, environmentId);
   }
 }

@@ -5,11 +5,12 @@ import {
   leaveTeamAction,
 } from "@/app/(app)/environments/[environmentId]/settings/members/actions";
 import AddMemberModal from "@/app/(app)/environments/[environmentId]/settings/members/components/AddMemberModal";
+import { XIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
-import { TMembershipRole } from "@typeflowai/types/memberships";
+import { TInvitee } from "@typeflowai/types/invites";
 import { TTeam } from "@typeflowai/types/teams";
 import { Button } from "@typeflowai/ui/Button";
 import CreateTeamModal from "@typeflowai/ui/CreateTeamModal";
@@ -22,7 +23,7 @@ type TeamActionsProps = {
   team: TTeam;
   isInviteDisabled: boolean;
   canDoRoleManagement: boolean;
-  isTypeflowAiCloud: boolean;
+  isTypeflowAICloud: boolean;
   environmentId: string;
 };
 
@@ -33,7 +34,7 @@ export default function TeamActions({
   isLeaveTeamDisabled,
   isInviteDisabled,
   canDoRoleManagement,
-  isTypeflowAiCloud,
+  isTypeflowAICloud,
   environmentId,
 }: TeamActionsProps) {
   const router = useRouter();
@@ -56,9 +57,13 @@ export default function TeamActions({
     }
   };
 
-  const handleAddMember = async (data: { name: string; email: string; role: TMembershipRole }) => {
+  const handleAddMembers = async (data: TInvitee[]) => {
     try {
-      await inviteUserAction(team.id, data.email, data.name, data.role);
+      await Promise.all(
+        data.map(async ({ name, email, role }) => {
+          await inviteUserAction(team.id, email, name, role);
+        })
+      );
       toast.success("Member invited successfully");
     } catch (err) {
       toast.error(`Error: ${err.message}`);
@@ -70,7 +75,11 @@ export default function TeamActions({
     <>
       <div className="mb-6 text-right">
         {role !== "owner" && (
-          <Button variant="minimal" className="mr-2" onClick={() => setLeaveTeamModalOpen(true)}>
+          <Button
+            EndIcon={XIcon}
+            variant="secondary"
+            className="mr-2"
+            onClick={() => setLeaveTeamModalOpen(true)}>
             Leave Team
           </Button>
         )}
@@ -97,9 +106,9 @@ export default function TeamActions({
       <AddMemberModal
         open={isAddMemberModalOpen}
         setOpen={setAddMemberModalOpen}
-        onSubmit={handleAddMember}
+        onSubmit={handleAddMembers}
         canDoRoleManagement={canDoRoleManagement}
-        isTypeflowAiCloud={isTypeflowAiCloud}
+        isTypeflowAICloud={isTypeflowAICloud}
         environmentId={environmentId}
       />
 

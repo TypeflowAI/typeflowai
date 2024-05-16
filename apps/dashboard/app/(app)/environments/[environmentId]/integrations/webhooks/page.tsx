@@ -10,7 +10,7 @@ import GoBackButton from "@typeflowai/ui/GoBackButton";
 export default async function CustomWebhookPage({ params }) {
   const [webhooksUnsorted, workflows, environment] = await Promise.all([
     getWebhooks(params.environmentId),
-    getWorkflows(params.environmentId),
+    getWorkflows(params.environmentId, 200), // HOTFIX: not getting all workflows for now since it's maxing out the prisma accelerate limit
     getEnvironment(params.environmentId),
   ]);
   if (!environment) {

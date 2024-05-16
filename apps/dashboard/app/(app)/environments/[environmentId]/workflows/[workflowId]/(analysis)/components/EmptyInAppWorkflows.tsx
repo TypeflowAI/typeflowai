@@ -4,11 +4,12 @@ import Link from "next/link";
 import { TEnvironment } from "@typeflowai/types/environment";
 import { Button } from "@typeflowai/ui/Button";
 
-type TEmptyInAppWorkflowsProps = {
+interface TEmptyAppWorkflowsProps {
   environment: TEnvironment;
-};
+  workflowType?: "app" | "website";
+}
 
-export default async function EmptyInAppWorkflows({ environment }: TEmptyInAppWorkflowsProps) {
+export const EmptyAppWorkflows = ({ environment, workflowType = "app" }: TEmptyAppWorkflowsProps) => {
   return (
     <div className="flex w-full items-center justify-center gap-8 bg-slate-100 py-12">
       <div className="flex h-20 w-20 items-center justify-center rounded-full border border-slate-200 bg-white">
@@ -19,7 +20,7 @@ export default async function EmptyInAppWorkflows({ environment }: TEmptyInAppWo
         <h1 className="text-xl font-semibold text-slate-900">You&apos;re not plugged in yet!</h1>
 
         <p className="mt-2 text-sm text-slate-600">
-          Connect your app with TypeflowAI to run in app workflows.
+          Connect your {workflowType} with TypeflowAI to run {workflowType} workflows.
         </p>
 
         <Link className="mt-2" href={`/environments/${environment.id}/settings/setup`}>
@@ -30,4 +31,4 @@ export default async function EmptyInAppWorkflows({ environment }: TEmptyInAppWo
       </div>
     </div>
   );
-}
+};

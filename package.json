@@ -12,10 +12,11 @@
   "scripts": {
     "clean": "turbo run clean && rimraf node_modules .turbo coverage out",
     "build": "turbo run build",
+    "build:dev": "turbo run build:dev",
     "post-install": "turbo run post-install",
     "db:migrate:dev": "turbo run db:migrate:dev",
     "db:migrate:deploy": "turbo run db:migrate:deploy",
-    "db:migrate:prod": "turbo run db:migrate:prod",
+    "db:start": "turbo run db:start",
     "go": "turbo run go --concurrency 20",
     "dev": "turbo run dev --parallel",
     "pre-commit": "lint-staged",
@@ -28,12 +29,13 @@
     "prepare": "husky install"
   },
   "devDependencies": {
+    "@playwright/test": "^1.43.1",
     "eslint-config-typeflowai": "workspace:*",
-    "husky": "^8.0.3",
-    "lint-staged": "^15.2.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
     "rimraf": "^5.0.5",
-    "tsx": "^4.6.2",
-    "turbo": "^1.11.2"
+    "tsx": "^4.7.2",
+    "turbo": "^1.13.2"
   },
   "lint-staged": {
     "(apps|packages)/**/*.{js,ts,jsx,tsx}": [
@@ -58,6 +60,7 @@
     "showDetails": true
   },
   "dependencies": {
-    "@changesets/cli": "^2.27.1"
+    "@changesets/cli": "^2.27.1",
+    "playwright": "^1.43.1"
   }
 }

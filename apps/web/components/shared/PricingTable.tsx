@@ -1,5 +1,5 @@
-import { CheckIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
+import { CheckIcon } from "lucide-react";
 import { usePlausible } from "next-plausible";
 import { useRouter } from "next/router";
 

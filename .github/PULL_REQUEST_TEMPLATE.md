@@ -32,6 +32,7 @@ Fixes # (issue)
 - [ ] Removed all `console.logs`
 - [ ] Merged the latest changes from main onto my branch with `git pull origin main`
 - [ ] My changes don't cause any responsiveness issues
+- [ ] First PR at TypeflowAI? [Please sign the CLA!](https://cla-assistant.io/TypeflowAI/typeflowai) Without it we wont be able to merge it 🙏
 
 ### Appreciated
 

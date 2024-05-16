@@ -2,7 +2,7 @@ import TeamActions from "@/app/(app)/environments/[environmentId]/settings/membe
 import { getServerSession } from "next-auth";
 import { Suspense } from "react";
 
-import { getRoleManagementPermission } from "@typeflowai/ee/lib/service";
+import { getIsPaidSubscription } from "@typeflowai/ee/subscription/lib/service";
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { INVITE_DISABLED, IS_TYPEFLOWAI_CLOUD } from "@typeflowai/lib/constants";
 import { getMembershipByUserIdTeamId, getMembershipsByUserId } from "@typeflowai/lib/membership/service";
@@ -24,7 +24,6 @@ const MembersLoading = () => (
       <div className="col-span-5">Fullname</div>
       <div className="col-span-5">Email</div>
       <div className="col-span-3">Role</div>
-      <div className="col-span-5"></div>
     </div>
 
     <div className="p-4">
@@ -44,7 +43,6 @@ const MembersLoading = () => (
 
 export default async function MembersSettingsPage({ params }: { params: { environmentId: string } }) {
   const session = await getServerSession(authOptions);
-
   if (!session) {
     throw new Error("Unauthenticated");
   }
@@ -53,14 +51,13 @@ export default async function MembersSettingsPage({ params }: { params: { enviro
   if (!team) {
     throw new Error("Team not found");
   }
-
-  const canDoRoleManagement = getRoleManagementPermission(team);
+  const canDoRoleManagement = getIsPaidSubscription(team);
 
   const currentUserMembership = await getMembershipByUserIdTeamId(session?.user.id, team.id);
   const { isOwner, isAdmin } = getAccessFlags(currentUserMembership?.role);
   const userMemberships = await getMembershipsByUserId(session.user.id);
 
-  const isDeleteDisabled = userMemberships.length <= 1 || !isOwner;
+  const isDeleteDisabled = !isOwner;
   const currentUserRole = currentUserMembership?.role;
 
   const isLeaveTeamDisabled = userMemberships.length <= 1;
@@ -78,7 +75,7 @@ export default async function MembersSettingsPage({ params }: { params: { enviro
             isLeaveTeamDisabled={isLeaveTeamDisabled}
             isInviteDisabled={INVITE_DISABLED}
             canDoRoleManagement={canDoRoleManagement}
-            isTypeflowAiCloud={IS_TYPEFLOWAI_CLOUD}
+            isTypeflowAICloud={IS_TYPEFLOWAI_CLOUD}
             environmentId={params.environmentId}
           />
         )}

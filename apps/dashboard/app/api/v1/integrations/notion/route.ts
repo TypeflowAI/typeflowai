@@ -13,7 +13,6 @@ import { hasUserEnvironmentAccess } from "@typeflowai/lib/environment/auth";
 
 export async function GET(req: NextRequest) {
   const environmentId = req.headers.get("environmentId");
-
   const session = await getServerSession(authOptions);
 
   if (!environmentId) {

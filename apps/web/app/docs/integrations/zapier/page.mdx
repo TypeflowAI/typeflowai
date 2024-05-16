@@ -1,4 +1,4 @@
-import Image from "next/image";
+import MdxImage from "next/image";
 
 import AddNewZap from "./add-new-zap.webp";
 import ChooseEvent from "./choose-event.webp";
@@ -34,7 +34,7 @@ Zapier is a powerful ally. Hook up TypeflowAI with Zapier and you can send your 
 
 When setting up the Zap your life will be easier when you change the `questionId`s of your workflow questions. You can only do so **before** you publish your workflow.
 
-{/* <Image
+{/* <MdxImage
   src={UpdateQuestionId}
   alt="Update Question ID"
   quality="100"
@@ -52,7 +52,7 @@ _In every question card in the Advanced Settings you find the Question ID field.
 
 In order to set up Zapier you’ll need a test response. This allows you to select the individual values of each response in your Zap. If you have TypeflowAI running locally and you want to set up an in-app workflow, you can use our [Demo App](/docs/contributing/demo) to trigger a workflow and submit a response.
 
-{/* <Image
+{/* <MdxImage
   src={SubmitTestResponse}
   alt="Submit Test Response"
   quality="100"
@@ -63,23 +63,23 @@ In order to set up Zapier you’ll need a test response. This allows you to sele
 
 Go to [zapier.com](https://zapier.com) and create a new Zap. Search for “TypeflowAI” to get started:
 
-{/* <Image src={AddNewZap} alt="Add New Zap" quality="100" className="max-w-full rounded-lg sm:max-w-3xl" /> */}
+{/* <MdxImage src={AddNewZap} alt="Add New Zap" quality="100" className="max-w-full rounded-lg sm:max-w-3xl" /> */}
 
 Then, choose the event you want to trigger the Zap on:
 
-{/* <Image src={ChooseEvent} alt="Choose Event" quality="100" className="max-w-full rounded-lg sm:max-w-3xl" /> */}
+{/* <MdxImage src={ChooseEvent} alt="Choose Event" quality="100" className="max-w-full rounded-lg sm:max-w-3xl" /> */}
 
 ## Step 4: Connect TypeflowAI with Zapier
 
 Now, you have to connect Zapier with TypeflowAI via an API Key:
 
-{/* <Image
+{/* <MdxImage
   src={ConnectWithFB1}
   alt="Connect with TypeflowAI - 1"
   quality="100"
   className="max-w-full rounded-lg sm:max-w-3xl"
 /> */}
-{/* <Image
+{/* <MdxImage
   src={ConnectWithFB2}
   alt="Connect with TypeflowAI - 2"
   quality="100"
@@ -90,7 +90,7 @@ Now you need an API key. Please refer to the [API Key Setup](/docs/api/managemen
 
 Once you copied it in the newly opened Zapier window, you will be connected:
 
-{/* <Image
+{/* <MdxImage
   src={SuccessConnection}
   alt="Successful Connection"
   quality="100"
@@ -101,7 +101,7 @@ Once you copied it in the newly opened Zapier window, you will be connected:
 
 Next, you can choose from all the workflows you have created in this environment:
 
-{/* <Image
+{/* <MdxImage
   src={SelectWorkflow}
   alt="Select Workflow"
   quality="100"
@@ -112,7 +112,7 @@ Next, you can choose from all the workflows you have created in this environment
 
 Once you hit “Test” you will see the three most recent submissions for this workflow. If you don’t have any submissions in the workflow, submit one to continue setting up your Zap:
 
-{/* <Image
+{/* <MdxImage
   src={TestSubmission}
   alt="Test Submission"
   quality="100"
@@ -124,7 +124,7 @@ _Now you're happy that you updated the questionId's_
 
 Now you have all the data you need at hand. The next steps depend on what you want to do with it. In this tutorial, we will send submissions to a Slack channel:
 
-{/* <Image
+{/* <MdxImage
   src={SlackChannelMsg}
   alt="Slack Channel Message"
   quality="100"
@@ -133,11 +133,11 @@ Now you have all the data you need at hand. The next steps depend on what you wa
 
 In the action itself we can determine the data and layout of the message. Here, we only choose the submission data. You can also refer to the meta data of the submission and the [attributes](/docs/attributes/why) of the person who submitted the workflow.
 
-{/* <Image src={SlackMsg} alt="Slack Message" quality="100" className="max-w-full rounded-lg sm:max-w-3xl" /> */}
+{/* <MdxImage src={SlackMsg} alt="Slack Message" quality="100" className="max-w-full rounded-lg sm:max-w-3xl" /> */}
 
 We now receive a notifcation in our Slack channel whenever a Churn workflow is completed:
 
-{/* <Image
+{/* <MdxImage
   src={ZapierMessage}
   alt="Zapier Message"
   quality="100"

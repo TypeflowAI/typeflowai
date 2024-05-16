@@ -1,11 +1,14 @@
 import { TActionClassNoCodeConfig } from "@typeflowai/types/actionClasses";
 import { TIntegrationConfig } from "@typeflowai/types/integration";
+import { TProductStyling } from "@typeflowai/types/product";
 import { TResponseData, TResponseMeta, TResponsePersonAttributes } from "@typeflowai/types/responses";
+import { TBaseFilters } from "@typeflowai/types/segment";
 import { TTeamBilling } from "@typeflowai/types/teams";
 import { TUserNotificationSettings } from "@typeflowai/types/user";
 import {
   TWorkflowClosedMessage,
   TWorkflowHiddenFields,
+  TWorkflowInlineTriggers,
   TWorkflowProductOverwrites,
   TWorkflowQuestions,
   TWorkflowSingleUse,
@@ -34,5 +37,8 @@ declare global {
     export type WorkflowVerifyEmail = TWorkflowVerifyEmail;
     export type TeamBilling = TTeamBilling;
     export type UserNotificationSettings = TUserNotificationSettings;
+    export type SegmentFilter = TBaseFilters;
+    export type WorkflowInlineTriggers = TWorkflowInlineTriggers;
+    export type Styling = TProductStyling;
   }
 }

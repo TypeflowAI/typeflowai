@@ -1,114 +1,137 @@
 "use client";
 
-import QuestionFormInput from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/components/QuestionFormInput";
-import { PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
 import {
-  ChatBubbleBottomCenterTextIcon,
-  EnvelopeIcon,
-  HashtagIcon,
+  HashIcon,
   LinkIcon,
+  MailIcon,
+  MessageSquareTextIcon,
   PhoneIcon,
-} from "@heroicons/react/24/solid";
+  PlusIcon,
+  TrashIcon,
+} from "lucide-react";
 import { useState } from "react";
 
+import { createI18nString, extractLanguageCodes } from "@typeflowai/lib/i18n/utils";
 import {
   TWorkflow,
   TWorkflowOpenTextQuestion,
   TWorkflowOpenTextQuestionInputType,
 } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
-import { Input } from "@typeflowai/ui/Input";
 import { Label } from "@typeflowai/ui/Label";
+import { QuestionFormInput } from "@typeflowai/ui/QuestionFormInput";
 import { OptionsSwitcher } from "@typeflowai/ui/QuestionTypeSelector";
 
 const questionTypes = [
-  { value: "text", label: "Text", icon: <ChatBubbleBottomCenterTextIcon /> },
-  { value: "email", label: "Email", icon: <EnvelopeIcon /> },
-  { value: "url", label: "URL", icon: <LinkIcon /> },
-  { value: "number", label: "Number", icon: <HashtagIcon /> },
-  { value: "phone", label: "Phone", icon: <PhoneIcon /> },
+  { value: "text", label: "Text", icon: <MessageSquareTextIcon className="h-4 w-4" /> },
+  { value: "email", label: "Email", icon: <MailIcon className="h-4 w-4" /> },
+  { value: "url", label: "URL", icon: <LinkIcon className="h-4 w-4" /> },
+  { value: "number", label: "Number", icon: <HashIcon className="h-4 w-4" /> },
+  { value: "phone", label: "Phone", icon: <PhoneIcon className="h-4 w-4" /> },
 ];
 
 interface OpenQuestionFormProps {
   localWorkflow: TWorkflow;
   question: TWorkflowOpenTextQuestion;
   questionIdx: number;
-  updateQuestion: (questionIdx: number, updatedAttributes: any) => void;
+  updateQuestion: (questionIdx: number, updatedAttributes: Partial<TWorkflowOpenTextQuestion>) => void;
   lastQuestion: boolean;
-  isPromptVisible: boolean;
-  isInValid: boolean;
+  selectedLanguageCode: string;
+  setSelectedLanguageCode: (language: string) => void;
+  isInvalid: boolean;
 }
 
-export default function OpenQuestionForm({
+export const OpenQuestionForm = ({
   question,
   questionIdx,
   updateQuestion,
-  isInValid,
+  isInvalid,
   localWorkflow,
-}: OpenQuestionFormProps): JSX.Element {
+  selectedLanguageCode,
+  setSelectedLanguageCode,
+}: OpenQuestionFormProps): JSX.Element => {
   const [showSubheader, setShowSubheader] = useState(!!question.subheader);
   const defaultPlaceholder = getPlaceholderByInputType(question.inputType ?? "text");
-
+  const workflowLanguageCodes = extractLanguageCodes(localWorkflow.languages ?? []);
   const handleInputChange = (inputType: TWorkflowOpenTextQuestionInputType) => {
     const updatedAttributes = {
       inputType: inputType,
-      placeholder: getPlaceholderByInputType(inputType),
+      placeholder: createI18nString(getPlaceholderByInputType(inputType), workflowLanguageCodes),
       longAnswer: inputType === "text" ? question.longAnswer : false,
     };
     updateQuestion(questionIdx, updatedAttributes);
   };
 
-  const environmentId = localWorkflow.environmentId;
-
   return (
     <form>
       <QuestionFormInput
-        environmentId={environmentId}
-        isInValid={isInValid}
-        question={question}
+        id="headline"
+        value={question.headline}
+        localWorkflow={localWorkflow}
         questionIdx={questionIdx}
+        isInvalid={isInvalid}
         updateQuestion={updateQuestion}
+        selectedLanguageCode={selectedLanguageCode}
+        setSelectedLanguageCode={setSelectedLanguageCode}
       />
 
-      <div className="mt-3">
+      <div>
         {showSubheader && (
-          <>
-            <Label htmlFor="subheader">Description</Label>
-            <div className="mt-2 inline-flex w-full items-center">
-              <Input
+          <div className="inline-flex w-full items-center">
+            <div className="w-full">
+              <QuestionFormInput
                 id="subheader"
-                name="subheader"
                 value={question.subheader}
-                onChange={(e) => updateQuestion(questionIdx, { subheader: e.target.value })}
-              />
-              <TrashIcon
-                className="ml-2 h-4 w-4 cursor-pointer text-slate-400 hover:text-slate-500"
-                onClick={() => {
-                  setShowSubheader(false);
-                  updateQuestion(questionIdx, { subheader: "" });
-                }}
+                localWorkflow={localWorkflow}
+                questionIdx={questionIdx}
+                isInvalid={isInvalid}
+                updateQuestion={updateQuestion}
+                selectedLanguageCode={selectedLanguageCode}
+                setSelectedLanguageCode={setSelectedLanguageCode}
               />
             </div>
-          </>
+
+            <TrashIcon
+              className="ml-2 mt-10 h-4 w-4 cursor-pointer text-slate-400 hover:text-slate-500"
+              onClick={() => {
+                setShowSubheader(false);
+                updateQuestion(questionIdx, { subheader: undefined });
+              }}
+            />
+          </div>
         )}
         {!showSubheader && (
-          <Button size="sm" variant="minimal" type="button" onClick={() => setShowSubheader(true)}>
+          <Button
+            size="sm"
+            variant="minimal"
+            className="mt-3"
+            type="button"
+            onClick={() => {
+              updateQuestion(questionIdx, {
+                subheader: createI18nString("", workflowLanguageCodes),
+              });
+              setShowSubheader(true);
+            }}>
             <PlusIcon className="mr-1 h-4 w-4" />
             Add Description
           </Button>
         )}
       </div>
-
-      <div className="mt-3">
-        <Label htmlFor="placeholder">Placeholder</Label>
-        <div className="mt-2">
-          <Input
-            id="placeholder"
-            name="placeholder"
-            value={question.placeholder ?? defaultPlaceholder}
-            onChange={(e) => updateQuestion(questionIdx, { placeholder: e.target.value })}
-          />
-        </div>
+      <div className="mt-2">
+        <QuestionFormInput
+          id="placeholder"
+          value={
+            question.placeholder
+              ? question.placeholder
+              : createI18nString(defaultPlaceholder, workflowLanguageCodes)
+          }
+          localWorkflow={localWorkflow}
+          questionIdx={questionIdx}
+          isInvalid={isInvalid}
+          updateQuestion={updateQuestion}
+          selectedLanguageCode={selectedLanguageCode}
+          setSelectedLanguageCode={setSelectedLanguageCode}
+        />
       </div>
 
       {/* Add a dropdown to select the question type */}
@@ -124,7 +147,7 @@ export default function OpenQuestionForm({
       </div>
     </form>
   );
-}
+};
 
 function getPlaceholderByInputType(inputType: TWorkflowOpenTextQuestionInputType) {
   switch (inputType) {

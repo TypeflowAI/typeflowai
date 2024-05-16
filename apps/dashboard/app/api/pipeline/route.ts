@@ -1,17 +1,18 @@
 import { responses } from "@/app/lib/api/response";
 import { transformErrorToDetails } from "@/app/lib/api/validator";
 import { headers } from "next/headers";
-import { NextResponse } from "next/server";
 
 import { prisma } from "@typeflowai/database";
+import { sendResponseFinishedEmail } from "@typeflowai/email";
 import { INTERNAL_SECRET } from "@typeflowai/lib/constants";
-import { sendResponseFinishedEmail } from "@typeflowai/lib/emails/emails";
 import { getIntegrations } from "@typeflowai/lib/integration/service";
+import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
+import { getResponseCountByWorkflowId } from "@typeflowai/lib/response/service";
 import { convertDatesInObject } from "@typeflowai/lib/time";
+import { checkForRecallInHeadline } from "@typeflowai/lib/utils/recall";
 import { getWorkflow, updateWorkflow } from "@typeflowai/lib/workflow/service";
 import { ZPipelineInput } from "@typeflowai/types/pipelines";
 import { TUserNotificationSettings } from "@typeflowai/types/user";
-import { TWorkflowQuestion } from "@typeflowai/types/workflows";
 
 import { handleIntegrations } from "./lib/handleIntegrations";
 
@@ -36,6 +37,8 @@ export async function POST(request: Request) {
   }
 
   const { environmentId, workflowId, event, response } = inputValidation.data;
+  const product = await getProductByEnvironmentId(environmentId);
+  if (!product) return;
 
   // get all webhooks of this environment where event in triggers
   const webhooks = await prisma.webhook.findMany({
@@ -99,22 +102,14 @@ export async function POST(request: Request) {
       },
     });
 
-    let workflowData;
+    const [integrations, workflowData] = await Promise.all([
+      getIntegrations(environmentId),
+      getWorkflow(workflowId),
+    ]);
+    const workflow = workflowData ? checkForRecallInHeadline(workflowData, "default") : undefined;
 
-    const integrations = await getIntegrations(environmentId);
-
-    if (integrations.length > 0) {
-      workflowData = await prisma.workflow.findUnique({
-        where: {
-          id: workflowId,
-        },
-        select: {
-          id: true,
-          name: true,
-          questions: true,
-        },
-      });
-      handleIntegrations(integrations, inputValidation.data, workflowData);
+    if (integrations.length > 0 && workflow) {
+      handleIntegrations(integrations, inputValidation.data, workflow);
     }
     // filter all users that have email notifications enabled for this workflow
     const usersWithNotifications = users.filter((user) => {
@@ -125,37 +120,20 @@ export async function POST(request: Request) {
       return false;
     });
 
-    if (usersWithNotifications.length > 0) {
-      // get workflow
-      if (!workflowData) {
-        workflowData = await prisma.workflow.findUnique({
-          where: {
-            id: workflowId,
-          },
-          select: {
-            id: true,
-            name: true,
-            questions: true,
-          },
-        });
-      }
+    // Exclude current response
+    const responseCount = await getResponseCountByWorkflowId(workflowId);
 
-      if (!workflowData) {
+    if (usersWithNotifications.length > 0) {
+      if (!workflow) {
         console.error(`Pipeline: Workflow with id ${workflowId} not found`);
         return new Response("Workflow not found", {
           status: 404,
         });
       }
-      // create workflow object
-      const workflow = {
-        id: workflowData.id,
-        name: workflowData.name,
-        questions: JSON.parse(JSON.stringify(workflowData.questions)) as TWorkflowQuestion[],
-      };
       // send email to all users
       await Promise.all(
         usersWithNotifications.map(async (user) => {
-          await sendResponseFinishedEmail(user.email, environmentId, workflow, response);
+          await sendResponseFinishedEmail(user.email, environmentId, workflow, response, responseCount);
         })
       );
     }
@@ -181,5 +159,5 @@ export async function POST(request: Request) {
     await updateWorkflowStatus(workflowId);
   }
 
-  return NextResponse.json({ data: {} });
+  return Response.json({ data: {} });
 }

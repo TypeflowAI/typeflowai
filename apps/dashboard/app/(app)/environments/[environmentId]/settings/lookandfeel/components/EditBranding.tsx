@@ -1,13 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
 import { TProduct, TProductUpdateInput } from "@typeflowai/types/product";
-import { Alert, AlertDescription } from "@typeflowai/ui/Alert";
 import { Label } from "@typeflowai/ui/Label";
 import { Switch } from "@typeflowai/ui/Switch";
+import { UpgradePlanNotice } from "@typeflowai/ui/UpgradePlanNotice";
 
 import { updateProductAction } from "../actions";
 
@@ -16,7 +15,6 @@ interface EditTypeflowAIBrandingProps {
   product: TProduct;
   canRemoveBranding: boolean;
   environmentId: string;
-  isTypeflowAICloud?: boolean;
 }
 
 export function EditTypeflowAIBranding({
@@ -24,17 +22,11 @@ export function EditTypeflowAIBranding({
   product,
   canRemoveBranding,
   environmentId,
-  isTypeflowAICloud,
 }: EditTypeflowAIBrandingProps) {
   const [isBrandingEnabled, setIsBrandingEnabled] = useState(
     type === "linkWorkflow" ? product.linkWorkflowBranding : product.inAppWorkflowBranding
   );
   const [updatingBranding, setUpdatingBranding] = useState(false);
-
-  const getTextFromType = (type) => {
-    if (type === "linkWorkflow") return "Link Workflows";
-    if (type === "inAppWorkflow") return "In App Workflows";
-  };
 
   const toggleBranding = async () => {
     try {
@@ -45,9 +37,7 @@ export function EditTypeflowAIBranding({
         [type === "linkWorkflow" ? "linkWorkflowBranding" : "inAppWorkflowBranding"]: newBrandingState,
       };
       await updateProductAction(product.id, inputProduct);
-      toast.success(
-        newBrandingState ? "TypeflowAI branding will be shown." : "TypeflowAI branding will now be hidden."
-      );
+      toast.success(newBrandingState ? "TypeflowAI branding is shown." : "TypeflowAI branding is hidden.");
     } catch (error) {
       toast.error(`Error: ${error.message}`);
     } finally {
@@ -56,33 +46,8 @@ export function EditTypeflowAIBranding({
   };
 
   return (
-    <div className="w-full items-center">
-      {!canRemoveBranding && (
-        <div className="mb-4">
-          <Alert>
-            <AlertDescription>
-              To remove the TypeflowAI branding from the&nbsp;
-              <span className="font-semibold">{getTextFromType(type)}</span>, please&nbsp;
-              {type === "linkWorkflow" ? (
-                <span className="underline">
-                  <Link href={`/environments/${environmentId}/settings/billing`}>upgrade your plan.</Link>
-                </span>
-              ) : (
-                <span className="underline">
-                  {isTypeflowAICloud ? (
-                    <Link href={`/environments/${environmentId}/settings/billing`}>upgrade your plan.</Link>
-                  ) : (
-                    <a href="mailto:support@typeflowai.com">
-                      get a self-hosted license (free to get started).
-                    </a>
-                  )}
-                </span>
-              )}
-            </AlertDescription>
-          </Alert>
-        </div>
-      )}
-      <div className="mb-6 flex items-center space-x-2">
+    <div className="w-full items-center space-y-4">
+      <div className="mb-4 flex items-center space-x-2">
         <Switch
           id={`branding-${type}`}
           checked={isBrandingEnabled}
@@ -93,6 +58,26 @@ export function EditTypeflowAIBranding({
           Show TypeflowAI Branding in {type === "linkWorkflow" ? "Link" : "In-App"} Workflows
         </Label>
       </div>
+      {!canRemoveBranding && (
+        <div>
+          {type === "linkWorkflow" && (
+            <div className="mb-8">
+              <UpgradePlanNotice
+                message="To remove the TypeflowAI branding from Link Workflows, please"
+                textForUrl="upgrade your plan."
+                url={`/environments/${environmentId}/settings/billing`}
+              />
+            </div>
+          )}
+          {type !== "linkWorkflow" && (
+            <UpgradePlanNotice
+              message="To remove the TypeflowAI branding from In-app Workflows, please"
+              textForUrl="upgrade your plan."
+              url={`/environments/${environmentId}/settings/billing`}
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 }

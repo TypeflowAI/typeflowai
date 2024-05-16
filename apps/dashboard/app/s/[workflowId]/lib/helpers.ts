@@ -1,21 +1,26 @@
 import { verifyTokenForLinkWorkflow } from "@typeflowai/lib/jwt";
 
-export const getEmailVerificationStatus = async (
+interface emailVerificationDetails {
+  status: "not-verified" | "verified" | "fishy";
+  email?: string;
+}
+
+export const getEmailVerificationDetails = async (
   workflowId: string,
   token: string
-): Promise<"verified" | "not-verified" | "fishy"> => {
+): Promise<emailVerificationDetails> => {
   if (!token) {
-    return "not-verified";
+    return { status: "not-verified" };
   } else {
     try {
-      const validateToken = await verifyTokenForLinkWorkflow(token, workflowId);
-      if (validateToken) {
-        return "verified";
+      const verifiedEmail = await verifyTokenForLinkWorkflow(token, workflowId);
+      if (verifiedEmail) {
+        return { status: "verified", email: verifiedEmail };
       } else {
-        return "fishy";
+        return { status: "fishy" };
       }
     } catch (error) {
-      return "not-verified";
+      return { status: "not-verified" };
     }
   }
 };

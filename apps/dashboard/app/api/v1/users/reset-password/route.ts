@@ -1,7 +1,5 @@
-import { NextResponse } from "next/server";
-
 import { prisma } from "@typeflowai/database";
-import { sendPasswordResetNotifyEmail } from "@typeflowai/lib/emails/emails";
+import { sendPasswordResetNotifyEmail } from "@typeflowai/email";
 import { verifyToken } from "@typeflowai/lib/jwt";
 
 export async function POST(request: Request) {
@@ -15,16 +13,16 @@ export async function POST(request: Request) {
       },
     });
     if (!user) {
-      return NextResponse.json({ error: "Invalid token provided or no longer valid" }, { status: 409 });
+      return Response.json({ error: "Invalid token provided or no longer valid" }, { status: 409 });
     }
     await prisma.user.update({
       where: { id: user.id },
       data: { password: hashedPassword },
     });
     await sendPasswordResetNotifyEmail(user);
-    return NextResponse.json({});
+    return Response.json({});
   } catch (e) {
-    return NextResponse.json(
+    return Response.json(
       {
         error: e.message,
         errorCode: e.code,

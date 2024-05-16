@@ -1,11 +1,9 @@
+import { EditLogo } from "@/app/(app)/environments/[environmentId]/settings/lookandfeel/components/EditLogo";
 import { getServerSession } from "next-auth";
 
-import {
-  getRemoveInAppBrandingPermission,
-  getRemoveLinkBrandingPermission,
-} from "@typeflowai/ee/lib/service";
+import { getIsPaidSubscription } from "@typeflowai/ee/subscription/lib/service";
 import { authOptions } from "@typeflowai/lib/authOptions";
-import { DEFAULT_BRAND_COLOR, IS_TYPEFLOWAI_CLOUD } from "@typeflowai/lib/constants";
+import { UNSPLASH_ACCESS_KEY, WEBAPP_URL, WORKFLOW_BG_COLORS } from "@typeflowai/lib/constants";
 import { getMembershipByUserIdTeamId } from "@typeflowai/lib/membership/service";
 import { getAccessFlags } from "@typeflowai/lib/membership/utils";
 import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
@@ -14,10 +12,9 @@ import { ErrorComponent } from "@typeflowai/ui/ErrorComponent";
 
 import SettingsCard from "../components/SettingsCard";
 import SettingsTitle from "../components/SettingsTitle";
-import { EditBrandColor } from "./components/EditBrandColor";
 import { EditTypeflowAIBranding } from "./components/EditBranding";
-import { EditHighlightBorder } from "./components/EditHighlightBorder";
 import { EditPlacement } from "./components/EditPlacement";
+import { ThemeStyling } from "./components/ThemeStyling";
 
 export default async function ProfileSettingsPage({ params }: { params: { environmentId: string } }) {
   const [session, team, product] = await Promise.all([
@@ -36,12 +33,11 @@ export default async function ProfileSettingsPage({ params }: { params: { enviro
     throw new Error("Team not found");
   }
 
-  const canRemoveInAppBranding = getRemoveInAppBrandingPermission(team);
-  const canRemoveLinkBranding = getRemoveLinkBrandingPermission(team);
+  const canRemoveInAppBranding = getIsPaidSubscription(team);
+  const canRemoveLinkBranding = getIsPaidSubscription(team);
 
   const currentUserMembership = await getMembershipByUserIdTeamId(session?.user.id, team.id);
-  const { isDeveloper, isViewer } = getAccessFlags(currentUserMembership?.role);
-  const isBrandColorEditDisabled = isDeveloper ? true : isViewer;
+  const { isViewer } = getAccessFlags(currentUserMembership?.role);
 
   if (isViewer) {
     return <ErrorComponent />;
@@ -50,27 +46,25 @@ export default async function ProfileSettingsPage({ params }: { params: { enviro
   return (
     <div>
       <SettingsTitle title="Look & Feel" />
-      <SettingsCard title="Brand Color" description="Match the workflows with your user interface.">
-        <EditBrandColor
-          product={product}
-          isBrandColorDisabled={isBrandColorEditDisabled}
+      <SettingsCard
+        title="Theme"
+        className="max-w-7xl"
+        description="Create a style theme for all workflows. You can enable custom styling for each workflow.">
+        <ThemeStyling
           environmentId={params.environmentId}
+          product={product}
+          webAppUrl={WEBAPP_URL}
+          colors={WORKFLOW_BG_COLORS}
+          isUnsplashConfigured={UNSPLASH_ACCESS_KEY ? true : false}
         />
+      </SettingsCard>{" "}
+      <SettingsCard title="Logo" description="Upload your company logo to brand workflows and link previews.">
+        <EditLogo product={product} environmentId={params.environmentId} isViewer={isViewer} />
       </SettingsCard>
       <SettingsCard
         title="In-app Workflow Placement"
         description="Change where workflows will be shown in your web app.">
         <EditPlacement product={product} environmentId={params.environmentId} />
-      </SettingsCard>
-      <SettingsCard
-        noPadding
-        title="Highlight Border"
-        description="Make sure your users notice the workflow you display">
-        <EditHighlightBorder
-          product={product}
-          defaultBrandColor={DEFAULT_BRAND_COLOR}
-          environmentId={params.environmentId}
-        />
       </SettingsCard>
       <SettingsCard
         title="TypeflowAI Branding"
@@ -86,7 +80,6 @@ export default async function ProfileSettingsPage({ params }: { params: { enviro
           product={product}
           canRemoveBranding={canRemoveInAppBranding}
           environmentId={params.environmentId}
-          isTypeflowAICloud={IS_TYPEFLOWAI_CLOUD}
         />
       </SettingsCard>
     </div>

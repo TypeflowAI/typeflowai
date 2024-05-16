@@ -1,8 +1,6 @@
 import { createId } from "@paralleldrive/cuid2";
 
 import { OpenAIModel } from "@typeflowai/types/openai";
-import { TTemplate } from "@typeflowai/types/templates";
-import { TWorkflowQuestionType } from "@typeflowai/types/workflows";
 import {
   AppPieChartIcon,
   ArrowRightCircleIcon,
@@ -15,6 +13,7 @@ import {
   DashboardIcon,
   DogChaserIcon,
   DoorIcon,
+  EmailIcon,
   FeedbackIcon,
   GaugeSpeedFastIcon,
   HeartCommentIcon,
@@ -27,6 +26,8 @@ import {
   VideoTabletAdjustIcon,
 } from "@typeflowai/ui/icons";
 
+import { TTemplate, TWorkflowQuestionType } from "./types";
+
 const thankYouCardDefault = {
   enabled: true,
   headline: "Thank you!",
@@ -35,6 +36,7 @@ const thankYouCardDefault = {
 
 const welcomeCardDefault = {
   enabled: true,
+  headline: "Welcome!",
   timeToFinish: false,
   showResponseCount: false,
 };
@@ -1412,6 +1414,69 @@ export const templates: TTemplate[] = [
       },
       thankYouCard: thankYouCardDefault,
       welcomeCard: welcomeCardDefault,
+      hiddenFields: {
+        enabled: false,
+      },
+    },
+  },
+  {
+    name: "Improve Newsletter Content",
+    icon: EmailIcon,
+    category: "Marketing",
+    description: "Find out how your subscribers like your newsletter content.",
+    objectives: ["increase_conversion", "sharpen_marketing_messaging"],
+    preset: {
+      name: "Improve Newsletter Content",
+      questions: [
+        {
+          id: createId(),
+          type: TWorkflowQuestionType.Rating,
+          logic: [
+            { value: "5", condition: "equals", destination: "l2q1chqssong8n0xwaagyl8g" },
+            { value: "5", condition: "lessThan", destination: "k3s6gm5ivkc5crpycdbpzkpa" },
+          ],
+          range: 5,
+          scale: "smiley",
+          headline: "How would you rate this weeks newsletter?",
+          required: true,
+          subheader: "",
+          lowerLabel: "Meh",
+          upperLabel: "Great",
+        },
+        {
+          id: "k3s6gm5ivkc5crpycdbpzkpa",
+          type: TWorkflowQuestionType.OpenText,
+          logic: [
+            { condition: "submitted", destination: "end" },
+            { condition: "skipped", destination: "end" },
+          ],
+          headline: "What would have made this weeks newsletter more helpful?",
+          required: false,
+          placeholder: "Type your answer here...",
+          inputType: "text",
+        },
+        {
+          id: "l2q1chqssong8n0xwaagyl8g",
+          html: '<p class="fb-editor-paragraph" dir="ltr"><span>Who thinks like you? You\'d do us a huge favor if you\'d share this weeks episode with your brain friend!</span></p>',
+          type: TWorkflowQuestionType.CTA,
+          headline: "Thanks! ❤️ Spread the love with ONE friend.",
+          required: false,
+          buttonUrl: "https://typeflowai.com",
+          buttonLabel: "Happy to help!",
+          buttonExternal: true,
+          dismissButtonLabel: "Find your own friends",
+        },
+      ],
+      prompt: {
+        enabled: false,
+        id: "prompt",
+        message: "",
+        attributes: {},
+        isVisible: true,
+        engine: OpenAIModel.GPT35Turbo,
+      },
+      welcomeCard: welcomeCardDefault,
+      thankYouCard: thankYouCardDefault,
       hiddenFields: {
         enabled: false,
       },

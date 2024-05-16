@@ -1,27 +1,32 @@
 import { createId } from "@paralleldrive/cuid2";
 
+import { agencyTemplates } from "@typeflowai/ee/prompt-templates/agency";
+import { hrTemplates } from "@typeflowai/ee/prompt-templates/hr";
+import { marketingTemplates } from "@typeflowai/ee/prompt-templates/marketing";
+import { salesTemplates } from "@typeflowai/ee/prompt-templates/sales";
+import { startupTemplates } from "@typeflowai/ee/prompt-templates/startup";
+import { supportTemplates } from "@typeflowai/ee/prompt-templates/support";
+import { vaTemplates } from "@typeflowai/ee/prompt-templates/va";
 import { OpenAIModel } from "@typeflowai/types/openai";
 import { TTemplate } from "@typeflowai/types/templates";
 import {
   TWorkflow,
+  TWorkflowCTAQuestion,
+  TWorkflowDisplayOption,
   TWorkflowHiddenFields,
+  TWorkflowOpenTextQuestion,
   TWorkflowQuestionType,
-  TWorkflowWelcomeCard,
+  TWorkflowStatus,
+  TWorkflowType,
 } from "@typeflowai/types/workflows";
 import templateIcon from "@typeflowai/ui/icons/templates/default.svg";
 
-import { agencyTemplates } from "./categories/agency";
-import { hrTemplates } from "./categories/hr";
-import { marketingTemplates } from "./categories/marketing";
-import { salesTemplates } from "./categories/sales";
-import { startupTemplates } from "./categories/startup";
-import { supportTemplates } from "./categories/support";
-import { vaTemplates } from "./categories/va";
-
 const thankYouCardDefault = {
   enabled: true,
-  headline: "Thank you!",
-  subheader: "We appreciate your feedback.",
+  headline: { default: "Thank you!" },
+  subheader: { default: "We appreciate your feedback." },
+  buttonLabel: { default: "Create your own Workflow" },
+  buttonLink: "https://typeflowai.com/signup",
 };
 
 const hiddenFieldsDefault: TWorkflowHiddenFields = {
@@ -29,11 +34,11 @@ const hiddenFieldsDefault: TWorkflowHiddenFields = {
   fieldIds: [],
 };
 
-const welcomeCardDefault: TWorkflowWelcomeCard = {
+const welcomeCardDefault = {
   enabled: false,
-  headline: "Welcome!",
-  html: "Thanks for providing your feedback - let's go!",
-  timeToFinish: true,
+  headline: { default: "Welcome!" },
+  html: { default: "Thanks for providing your feedback - let's go!" },
+  timeToFinish: false,
   showResponseCount: false,
 };
 
@@ -48,241 +53,241 @@ export const testTemplate: TTemplate = {
       {
         id: createId(),
         type: TWorkflowQuestionType.OpenText,
-        headline: "This is an open text question",
-        subheader: "Please enter some text:",
+        headline: { default: "This is an open text question" },
+        subheader: { default: "Please enter some text:" },
         required: true,
         inputType: "text",
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.OpenText,
-        headline: "This is an open text question",
-        subheader: "Please enter some text:",
+        headline: { default: "This is an open text question" },
+        subheader: { default: "Please enter some text:" },
         required: false,
         inputType: "text",
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.OpenText,
-        headline: "This is an open text question",
-        subheader: "Please enter an email",
+        headline: { default: "This is an open text question" },
+        subheader: { default: "Please enter an email" },
         required: true,
         inputType: "email",
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.OpenText,
-        headline: "This is an open text question",
-        subheader: "Please enter an email",
+        headline: { default: "This is an open text question" },
+        subheader: { default: "Please enter an email" },
         required: false,
         inputType: "email",
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.OpenText,
-        headline: "This is an open text question",
-        subheader: "Please enter a number",
+        headline: { default: "This is an open text question" },
+        subheader: { default: "Please enter a number" },
         required: true,
         inputType: "number",
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.OpenText,
-        headline: "This is an open text question",
-        subheader: "Please enter a number",
+        headline: { default: "This is an open text question" },
+        subheader: { default: "Please enter a number" },
         required: false,
         inputType: "number",
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.OpenText,
-        headline: "This is an open text question",
-        subheader: "Please enter a phone number",
+        headline: { default: "This is an open text question" },
+        subheader: { default: "Please enter a phone number" },
         required: true,
         inputType: "phone",
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.OpenText,
-        headline: "This is an open text question",
-        subheader: "Please enter a phone number",
+        headline: { default: "This is an open text question" },
+        subheader: { default: "Please enter a phone number" },
         required: false,
         inputType: "phone",
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.OpenText,
-        headline: "This is an open text question",
-        subheader: "Please enter a url",
+        headline: { default: "This is an open text question" },
+        subheader: { default: "Please enter a url" },
         required: true,
         inputType: "url",
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.OpenText,
-        headline: "This is an open text question",
-        subheader: "Please enter a url",
+        headline: { default: "This is an open text question" },
+        subheader: { default: "Please enter a url" },
         required: false,
         inputType: "url",
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.MultipleChoiceSingle,
-        headline: "This ia a Multiple choice Single question",
-        subheader: "Please select one of the following",
+        headline: { default: "This ia a Multiple choice Single question" },
+        subheader: { default: "Please select one of the following" },
         required: true,
         shuffleOption: "none",
         choices: [
           {
             id: createId(),
-            label: "Option1",
+            label: { default: "Option1" },
           },
           {
             id: createId(),
-            label: "Option2",
+            label: { default: "Option2" },
           },
         ],
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.MultipleChoiceSingle,
-        headline: "This ia a Multiple choice Single question",
-        subheader: "Please select one of the following",
+        headline: { default: "This ia a Multiple choice Single question" },
+        subheader: { default: "Please select one of the following" },
         required: false,
         shuffleOption: "none",
         choices: [
           {
             id: createId(),
-            label: "Option 1",
+            label: { default: "Option 1" },
           },
           {
             id: createId(),
-            label: "Option 2",
+            label: { default: "Option 2" },
           },
         ],
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.MultipleChoiceMulti,
-        headline: "This ia a Multiple choice Multiple question",
-        subheader: "Please select some from the following",
+        headline: { default: "This ia a Multiple choice Multiple question" },
+        subheader: { default: "Please select some from the following" },
         required: true,
         shuffleOption: "none",
         choices: [
           {
             id: createId(),
-            label: "Option1",
+            label: { default: "Option1" },
           },
           {
             id: createId(),
-            label: "Option2",
+            label: { default: "Option2" },
           },
         ],
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.MultipleChoiceMulti,
-        headline: "This ia a Multiple choice Multiple question",
-        subheader: "Please select some from the following",
+        headline: { default: "This ia a Multiple choice Multiple question" },
+        subheader: { default: "Please select some from the following" },
         required: false,
         shuffleOption: "none",
         choices: [
           {
             id: createId(),
-            label: "Option1",
+            label: { default: "Option1" },
           },
           {
             id: createId(),
-            label: "Option2",
+            label: { default: "Option2" },
           },
         ],
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.Rating,
-        headline: "This is a rating question",
+        headline: { default: "This is a rating question" },
         required: true,
-        lowerLabel: "Low",
-        upperLabel: "High",
+        lowerLabel: { default: "Low" },
+        upperLabel: { default: "High" },
         range: 5,
         scale: "number",
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.Rating,
-        headline: "This is a rating question",
+        headline: { default: "This is a rating question" },
         required: false,
-        lowerLabel: "Low",
-        upperLabel: "High",
+        lowerLabel: { default: "Low" },
+        upperLabel: { default: "High" },
         range: 5,
         scale: "number",
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.Rating,
-        headline: "This is a rating question",
+        headline: { default: "This is a rating question" },
         required: true,
-        lowerLabel: "Low",
-        upperLabel: "High",
+        lowerLabel: { default: "Low" },
+        upperLabel: { default: "High" },
         range: 5,
         scale: "smiley",
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.Rating,
-        headline: "This is a rating question",
+        headline: { default: "This is a rating question" },
         required: false,
-        lowerLabel: "Low",
-        upperLabel: "High",
+        lowerLabel: { default: "Low" },
+        upperLabel: { default: "High" },
         range: 5,
         scale: "smiley",
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.Rating,
-        headline: "This is a rating question",
+        headline: { default: "This is a rating question" },
         required: true,
-        lowerLabel: "Low",
-        upperLabel: "High",
+        lowerLabel: { default: "Low" },
+        upperLabel: { default: "High" },
         range: 5,
         scale: "star",
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.Rating,
-        headline: "This is a rating question",
+        headline: { default: "This is a rating question" },
         required: false,
-        lowerLabel: "Low",
-        upperLabel: "High",
+        lowerLabel: { default: "Low" },
+        upperLabel: { default: "High" },
         range: 5,
         scale: "star",
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.CTA,
-        headline: "This is a CTA question",
-        html: "This is a test CTA",
-        buttonLabel: "Click",
+        headline: { default: "This is a CTA question" },
+        html: { default: "This is a test CTA" },
+        buttonLabel: { default: "Click" },
         buttonUrl: "https://typeflowai.com",
         buttonExternal: true,
         required: true,
-        dismissButtonLabel: "Maybe later",
+        dismissButtonLabel: { default: "Maybe later" },
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.CTA,
-        headline: "This is a CTA question",
-        html: "This is a test CTA",
-        buttonLabel: "Click",
+        headline: { default: "This is a CTA question" },
+        html: { default: "This is a test CTA" },
+        buttonLabel: { default: "Click" },
         buttonUrl: "https://typeflowai.com",
         buttonExternal: true,
         required: false,
-        dismissButtonLabel: "Maybe later",
+        dismissButtonLabel: { default: "Maybe later" },
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.PictureSelection,
-        headline: "This is a Picture select",
+        headline: { default: "This is a Picture select" },
         allowMulti: true,
         required: true,
         choices: [
@@ -299,7 +304,7 @@ export const testTemplate: TTemplate = {
       {
         id: createId(),
         type: TWorkflowQuestionType.PictureSelection,
-        headline: "This is a Picture select",
+        headline: { default: "This is a Picture select" },
         allowMulti: true,
         required: false,
         choices: [
@@ -316,18 +321,16 @@ export const testTemplate: TTemplate = {
       {
         id: createId(),
         type: TWorkflowQuestionType.Consent,
-        headline: "This is a Consent question",
+        headline: { default: "This is a Consent question" },
         required: true,
-        label: "I agree to the terms and conditions",
-        dismissButtonLabel: "Skip",
+        label: { default: "I agree to the terms and conditions" },
       },
       {
         id: createId(),
         type: TWorkflowQuestionType.Consent,
-        headline: "This is a Consent question",
+        headline: { default: "This is a Consent question" },
         required: false,
-        label: "I agree to the terms and conditions",
-        dismissButtonLabel: "Skip",
+        label: { default: "I agree to the terms and conditions" },
       },
     ],
     prompt: {
@@ -339,11 +342,7 @@ export const testTemplate: TTemplate = {
       engine: OpenAIModel.GPT35Turbo,
     },
     thankYouCard: thankYouCardDefault,
-    welcomeCard: {
-      enabled: false,
-      timeToFinish: false,
-      showResponseCount: false,
-    },
+    welcomeCard: welcomeCardDefault,
     hiddenFields: {
       enabled: false,
     },
@@ -372,12 +371,12 @@ export const customWorkflow: TTemplate = {
       {
         id: createId(),
         type: TWorkflowQuestionType.OpenText,
-        headline: "What would you like to know?",
-        subheader: "This is an example workflow.",
-        placeholder: "Type your answer here...",
+        headline: { default: "What would you like to know?" },
+        subheader: { default: "This is an example workflow." },
+        placeholder: { default: "Type your answer here..." },
         required: true,
         inputType: "text",
-      },
+      } as TWorkflowOpenTextQuestion,
     ],
     prompt: {
       enabled: false,
@@ -397,10 +396,10 @@ export const minimalWorkflow: TWorkflow = {
   createdAt: new Date(),
   updatedAt: new Date(),
   name: "Minimal Workflow",
-  type: "web",
+  type: "app",
   environmentId: "someEnvId1",
+  createdBy: null,
   status: "draft",
-  attributeFilters: [],
   displayOption: "displayOnce",
   autoClose: null,
   triggers: [],
@@ -417,6 +416,7 @@ export const minimalWorkflow: TWorkflow = {
     isVisible: true,
     engine: OpenAIModel.GPT35Turbo,
   },
+  inlineTriggers: null,
   thankYouCard: {
     enabled: false,
   },
@@ -424,7 +424,9 @@ export const minimalWorkflow: TWorkflow = {
     enabled: false,
   },
   delay: 0, // No delay
+  displayPercentage: null,
   autoComplete: null,
+  runOnDate: null,
   closeOnDate: null,
   workflowClosedMessage: {
     enabled: false,
@@ -433,4 +435,31 @@ export const minimalWorkflow: TWorkflow = {
   singleUse: null,
   styling: null,
   resultShareKey: null,
+  segment: null,
+  languages: [],
 };
+
+export const getExampleWorkflowTemplate = (webAppUrl: string) => ({
+  ...customWorkflow.preset,
+  questions: customWorkflow.preset.questions.map(
+    (question) =>
+      ({
+        ...question,
+        type: TWorkflowQuestionType.CTA,
+        headline: { default: "You did it 🎉" },
+        html: {
+          default: "You're all set up. Create your own workflow to gather exactly the feedback you need :)",
+        },
+        buttonLabel: { default: "Create workflow" },
+        buttonExternal: true,
+        imageUrl: `${webAppUrl}/onboarding/meme.png`,
+      }) as TWorkflowCTAQuestion
+  ),
+  name: "Example workflow",
+  type: "website" as TWorkflowType,
+  autoComplete: 2,
+  triggers: ["New Session"],
+  status: "inProgress" as TWorkflowStatus,
+  displayOption: "respondMultiple" as TWorkflowDisplayOption,
+  recontactDays: 0,
+});

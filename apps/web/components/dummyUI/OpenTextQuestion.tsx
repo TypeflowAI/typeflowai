@@ -1,9 +1,8 @@
 import { useState } from "react";
 
-import { TWorkflowOpenTextQuestion } from "@typeflowai/types/workflows";
-
 import Headline from "./Headline";
 import Subheader from "./Subheader";
+import { TWorkflowOpenTextQuestion } from "./types";
 
 interface OpenTextQuestionProps {
   question: TWorkflowOpenTextQuestion;

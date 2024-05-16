@@ -1,6 +1,6 @@
 {
   "extends": "@typeflowai/tsconfig/js-library.json",
-  "include": ["src"],
+  "include": ["src", "../types/workflows.d.ts"],
   "compilerOptions": {
     "allowImportingTsExtensions": true,
     "isolatedModules": true,

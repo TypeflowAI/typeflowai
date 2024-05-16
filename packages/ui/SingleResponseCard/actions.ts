@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { hasUserEnvironmentAccess } from "@typeflowai/lib/environment/auth";
 import { canUserAccessResponse } from "@typeflowai/lib/response/auth";
-import { deleteResponse } from "@typeflowai/lib/response/service";
+import { deleteResponse, getResponse } from "@typeflowai/lib/response/service";
 import { canUserModifyResponseNote, canUserResolveResponseNote } from "@typeflowai/lib/responseNote/auth";
 import {
   createResponseNote,
@@ -16,6 +16,7 @@ import { createTag, getTag } from "@typeflowai/lib/tag/service";
 import { canUserAccessTagOnResponse, verifyUserRoleAccess } from "@typeflowai/lib/tagOnResponse/auth";
 import { addTagToRespone, deleteTagOnResponse } from "@typeflowai/lib/tagOnResponse/service";
 import { AuthorizationError } from "@typeflowai/types/errors";
+import { TResponse } from "@typeflowai/types/responses";
 
 export const createTagAction = async (environmentId: string, tagName: string) => {
   const session = await getServerSession(authOptions);
@@ -100,4 +101,12 @@ export const createResponseNoteAction = async (responseId: string, userId: strin
   const authotized = await canUserAccessResponse(session.user!.id, responseId);
   if (!authotized) throw new AuthorizationError("Not authorized");
   return await createResponseNote(responseId, userId, text);
+};
+
+export const getResponseAction = async (responseId: string): Promise<TResponse | null> => {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new AuthorizationError("Not authorized");
+  const authotized = await canUserAccessResponse(session.user!.id, responseId);
+  if (!authotized) throw new AuthorizationError("Not authorized");
+  return await getResponse(responseId);
 };

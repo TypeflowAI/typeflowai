@@ -1,6 +1,7 @@
 import Modal from "@/components/wrappers/Modal";
-import { WorkflowModalProps } from "@/types/props";
 import { useState } from "preact/hooks";
+
+import { WorkflowModalProps } from "@typeflowai/types/typeflowAIWorkflows";
 
 import { Workflow } from "./Workflow";
 
@@ -8,29 +9,35 @@ export function WorkflowModal({
   workflow,
   webAppUrl,
   isBrandingEnabled,
-  activeQuestionId,
+  getSetIsError,
   placement,
   clickOutside,
   darkOverlay,
-  highlightBorderColor,
-  onDisplay = () => {},
-  onActiveQuestionChange = () => {},
-  onResponse = () => {},
-  onClose = () => {},
+  onDisplay,
+  getSetIsResponseSendingFinished,
+  onResponse,
+  onClose,
   onFinished = () => {},
   onFileUpload,
+  onRetry,
   isRedirectDisabled = false,
+  languageCode,
   responseCount,
   isPreview,
+  styling,
 }: WorkflowModalProps) {
   const [isOpen, setIsOpen] = useState(true);
 
   const close = () => {
     setIsOpen(false);
     setTimeout(() => {
-      onClose();
+      if (onClose) {
+        onClose();
+      }
     }, 1000); // wait for animation to finish}
   };
+
+  const highlightBorderColor = styling?.highlightBorderColor?.light || null;
 
   return (
     <div id="fbjs" className="typeflowai-form">
@@ -45,10 +52,10 @@ export function WorkflowModal({
           workflow={workflow}
           webAppUrl={webAppUrl}
           isBrandingEnabled={isBrandingEnabled}
-          activeQuestionId={activeQuestionId}
           onDisplay={onDisplay}
-          onActiveQuestionChange={onActiveQuestionChange}
+          getSetIsResponseSendingFinished={getSetIsResponseSendingFinished}
           onResponse={onResponse}
+          languageCode={languageCode}
           onClose={close}
           onFinished={() => {
             onFinished();
@@ -56,12 +63,16 @@ export function WorkflowModal({
               if (!workflow.redirectUrl) {
                 close();
               }
-            }, 4000); // close modal automatically after 4 seconds
+            }, 3000); // close modal automatically after 3 seconds
           }}
+          onRetry={onRetry}
+          getSetIsError={getSetIsError}
           onFileUpload={onFileUpload}
           isRedirectDisabled={isRedirectDisabled}
           responseCount={responseCount}
           isPreview={isPreview}
+          styling={styling}
+          isCardBorderVisible={!highlightBorderColor}
         />
       </Modal>
     </div>

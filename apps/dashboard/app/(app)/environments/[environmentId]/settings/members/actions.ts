@@ -2,6 +2,7 @@
 
 import { getServerSession } from "next-auth";
 
+import { sendInviteMemberEmail } from "@typeflowai/email";
 import { hasTeamAuthority } from "@typeflowai/lib/auth";
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { INVITE_DISABLED } from "@typeflowai/lib/constants";
@@ -14,13 +15,11 @@ import {
 } from "@typeflowai/lib/membership/service";
 import { verifyUserRoleAccess } from "@typeflowai/lib/team/auth";
 import { deleteTeam, updateTeam } from "@typeflowai/lib/team/service";
-import { getUser } from "@typeflowai/lib/user/service";
 import { AuthenticationError, AuthorizationError, ValidationError } from "@typeflowai/types/errors";
 import { TMembershipRole } from "@typeflowai/types/memberships";
 
 export const updateTeamNameAction = async (teamId: string, teamName: string) => {
   const session = await getServerSession(authOptions);
-
   if (!session) {
     throw new AuthenticationError("Not authenticated");
   }
@@ -100,16 +99,47 @@ export const leaveTeamAction = async (teamId: string) => {
 };
 
 export const createInviteTokenAction = async (inviteId: string) => {
-  const { email } = await getInvite(inviteId);
-  const inviteToken = createInviteToken(inviteId, email, {
+  const invite = await getInvite(inviteId);
+  if (!invite) {
+    throw new ValidationError("Invite not found");
+  }
+  const inviteToken = createInviteToken(inviteId, invite.email, {
     expiresIn: "7d",
   });
 
   return { inviteToken: encodeURIComponent(inviteToken) };
 };
 
-export const resendInviteAction = async (inviteId: string) => {
-  return await resendInvite(inviteId);
+export const resendInviteAction = async (inviteId: string, teamId: string) => {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    throw new AuthenticationError("Not authenticated");
+  }
+
+  const isUserAuthorized = await hasTeamAuthority(session.user.id, teamId);
+
+  if (INVITE_DISABLED) {
+    throw new AuthenticationError("Invite disabled");
+  }
+
+  if (!isUserAuthorized) {
+    throw new AuthenticationError("Not authorized");
+  }
+
+  const { hasCreateOrUpdateMembersAccess } = await verifyUserRoleAccess(teamId, session.user.id);
+  if (!hasCreateOrUpdateMembersAccess) {
+    throw new AuthenticationError("Not authorized");
+  }
+  const invite = await getInvite(inviteId);
+
+  const updatedInvite = await resendInvite(inviteId);
+  await sendInviteMemberEmail(
+    inviteId,
+    updatedInvite.email,
+    invite?.creator.name ?? "",
+    updatedInvite.name ?? ""
+  );
 };
 
 export const inviteUserAction = async (
@@ -122,12 +152,6 @@ export const inviteUserAction = async (
 
   if (!session) {
     throw new AuthenticationError("Not authenticated");
-  }
-
-  const currentUser = session && session.user ? await getUser(session.user.id) : null;
-
-  if (!currentUser) {
-    throw new Error("User not available");
   }
 
   const isUserAuthorized = await hasTeamAuthority(session.user.id, teamId);
@@ -147,7 +171,7 @@ export const inviteUserAction = async (
 
   const invite = await inviteUser({
     teamId,
-    currentUser: { id: session.user.id, name: currentUser.name },
+    currentUser: { id: session.user.id, name: session.user.name },
     invitee: {
       email,
       name,
@@ -155,12 +179,15 @@ export const inviteUserAction = async (
     },
   });
 
+  if (invite) {
+    await sendInviteMemberEmail(invite.id, email, session.user.name ?? "", name ?? "", false);
+  }
+
   return invite;
 };
 
 export const deleteTeamAction = async (teamId: string) => {
   const session = await getServerSession(authOptions);
-
   if (!session) {
     throw new AuthenticationError("Not authenticated");
   }

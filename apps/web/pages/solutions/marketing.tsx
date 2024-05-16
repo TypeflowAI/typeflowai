@@ -8,16 +8,16 @@ import DynamicAILeadMagnet from "@/components/solutions/DynamicAILeadMagnet";
 import Hero from "@/components/solutions/Hero";
 import ThreeColumnFeatures from "@/components/solutions/ThreeColumnFeatures";
 import CTA from "@/images/ctas/cta2.svg";
+import { SiInstagram, SiX } from "@icons-pack/react-simple-icons";
 import {
-  ComputerDesktopIcon,
-  CursorArrowRaysIcon,
-  DocumentTextIcon,
-  MagnifyingGlassCircleIcon,
-  PresentationChartLineIcon,
+  FileLineChartIcon,
+  FileTextIcon,
+  LaptopIcon,
+  MousePointerIcon,
+  SearchIcon,
   ShareIcon,
   UserCircleIcon,
-} from "@heroicons/react/24/outline";
-import { SiInstagram, SiX } from "@icons-pack/react-simple-icons";
+} from "lucide-react";
 
 const socialMediaFeatures = [
   {
@@ -44,7 +44,7 @@ const copywrittingFeatures = [
     id: "blog-post-ideas",
     name: "Blog Post Ideas",
     description: "Write engaging and SEO-friendly blog posts in no time.",
-    icon: DocumentTextIcon,
+    icon: FileTextIcon,
   },
   {
     id: "lead-magnets",
@@ -56,7 +56,7 @@ const copywrittingFeatures = [
     id: "website-landing-pages",
     name: "Website / Landing Pag.",
     description: "Construct Landing Page Structures to captivate visitors.",
-    icon: ComputerDesktopIcon,
+    icon: LaptopIcon,
   },
 ];
 
@@ -65,19 +65,19 @@ const seoSemFeatures = [
     id: "keyword-ideas",
     name: "Keyword Ideas",
     description: "Leverage AI to discover and analyze top-performing keywords for SEO.",
-    icon: MagnifyingGlassCircleIcon,
+    icon: SearchIcon,
   },
   {
     id: "outreach-strategy",
     name: "Outreach Strategy",
     description: "Write cold emails that get responses and start meaningful business conversations.",
-    icon: PresentationChartLineIcon,
+    icon: FileLineChartIcon,
   },
   {
     id: "google-ads-copy",
     name: "Google Ads Copy",
     description: "Create effective ad copy that resonates with your Google Ads audience.",
-    icon: CursorArrowRaysIcon,
+    icon: MousePointerIcon,
   },
 ];
 
