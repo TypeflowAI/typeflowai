@@ -3,12 +3,14 @@ import Stripe from "stripe";
 import { STRIPE_API_VERSION } from "@typeflowai/lib/constants";
 import { env } from "@typeflowai/lib/env";
 
+// Import individual handlers for different types of webhook events
 import { handleCheckoutSessionCompleted } from "../handlers/checkoutSessionCompleted";
 import { handleCustomerDeleted } from "../handlers/customerDeleted";
 import { handleSubscriptionCreated } from "../handlers/subscriptionCreated";
 import { handleSubscriptionDeleted } from "../handlers/subscriptionDeleted";
 import { handleSubscriptionUpdated } from "../handlers/subscriptionUpdated";
 
+// Initialize Stripe with your secret key and specify the API version
 const stripe = new Stripe(env.STRIPE_SECRET_KEY!, {
   apiVersion: STRIPE_API_VERSION,
 });
@@ -26,17 +28,28 @@ const webhookHandler = async (requestBody: string, stripeSignature: string) => {
     return { status: 400, message: `Webhook Error: ${errorMessage}` };
   }
 
-  if (event.type === "checkout.session.completed") {
-    await handleCheckoutSessionCompleted(event);
-  } else if (event.type === "customer.subscription.created") {
-    await handleSubscriptionCreated(event);
-  } else if (event.type === "customer.subscription.updated") {
-    await handleSubscriptionUpdated(event);
-  } else if (event.type === "customer.subscription.deleted") {
-    await handleSubscriptionDeleted(event);
-  } else if (event.type === "customer.deleted") {
-    await handleCustomerDeleted(event);
+  // Handle the event type appropriately by dispatching to the respective handler
+  switch (event.type) {
+    case "checkout.session.completed":
+      await handleCheckoutSessionCompleted(event);
+      break;
+    case "customer.subscription.created":
+      await handleSubscriptionCreated(event);
+      break;
+    case "customer.subscription.updated":
+      await handleSubscriptionUpdated(event);
+      break;
+    case "customer.subscription.deleted":
+      await handleSubscriptionDeleted(event);
+      break;
+    case "customer.deleted":
+      await handleCustomerDeleted(event);
+      break;
+    default:
+      console.warn(`Unhandled event type: ${event.type}`);
   }
+
+  // Confirm receipt of the event
   return { status: 200, message: { received: true } };
 };
 
