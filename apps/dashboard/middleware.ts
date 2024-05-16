@@ -13,16 +13,19 @@ import {
   shareUrlRoute,
   signupRoute,
 } from "@/app/middleware/endpointValidator";
-import { RATE_LIMITING_DISABLED, WEBAPP_URL } from "@typeflowAI/lib/constants";
 import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+
+import { RATE_LIMITING_DISABLED, WEBAPP_URL } from "@typeflowai/lib/constants";
 
 export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request });
 
   if (isWebAppRoute(request.nextUrl.pathname) && !token) {
-    const loginUrl = `${WEBAPP_URL}/auth/login?callbackUrl=${encodeURIComponent(WEBAPP_URL + request.nextUrl.pathname + request.nextUrl.search)}`;
+    const loginUrl = `${WEBAPP_URL}/auth/login?callbackUrl=${encodeURIComponent(
+      WEBAPP_URL + request.nextUrl.pathname + request.nextUrl.search
+    )}`;
     return NextResponse.redirect(loginUrl);
   }
 

@@ -37,7 +37,7 @@ export const WrongAccountContent = () => {
     <ContentLayout
       headline="Ooops! Wrong email 🤦"
       description="The email in the invitation does not match yours.">
-      <Button variant="secondary" href="mailto:support@typeflowAI.io">
+      <Button variant="secondary" href="mailto:support@typeflowai.com">
         Contact support
       </Button>
       <Button variant="darkCTA" href="/">
@@ -80,7 +80,7 @@ export const UsedContent = () => {
     <ContentLayout
       headline="You’re already part of the squad."
       description="This invitation has already been used.">
-      <Button variant="secondary" href="mailto:support@typeflowAI.io">
+      <Button variant="secondary" href="mailto:support@typeflowai.com">
         Contact support
       </Button>
       <Button variant="darkCTA" href="/">
