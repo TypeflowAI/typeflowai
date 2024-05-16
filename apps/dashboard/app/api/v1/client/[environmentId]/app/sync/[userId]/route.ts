@@ -21,9 +21,9 @@ import {
 } from "@typeflowai/lib/team/service";
 import { isVersionGreaterThanOrEqualTo } from "@typeflowai/lib/utils/version";
 import { getSyncWorkflows, transformToLegacyWorkflow } from "@typeflowai/lib/workflow/service";
-import { TLegacyWorkflow } from "@typeflowai/types/LegacyWorkflow";
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TJsAppStateSync, ZJsPeopleUserIdInput } from "@typeflowai/types/js";
+import { TLegacyWorkflow } from "@typeflowai/types/legacyWorkflow";
 import { TProduct } from "@typeflowai/types/product";
 import { TWorkflow } from "@typeflowai/types/workflows";
 

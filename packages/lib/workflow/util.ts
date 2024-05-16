@@ -2,7 +2,7 @@ import "server-only";
 
 import { Prisma } from "@prisma/client";
 
-import { TLegacyWorkflow } from "@typeflowai/types/LegacyWorkflow";
+import { TLegacyWorkflow } from "@typeflowai/types/legacyWorkflow";
 import { TSegment } from "@typeflowai/types/segment";
 import { TWorkflow, TWorkflowFilterCriteria } from "@typeflowai/types/workflows";
 

@@ -16,8 +16,8 @@ import { COLOR_DEFAULTS } from "@typeflowai/lib/styling/constants";
 import { getMonthlyTeamResponseCount, getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
 import { isVersionGreaterThanOrEqualTo } from "@typeflowai/lib/utils/version";
 import { createWorkflow, getWorkflows, transformToLegacyWorkflow } from "@typeflowai/lib/workflow/service";
-import { TLegacyWorkflow } from "@typeflowai/types/LegacyWorkflow";
 import { TJsWebsiteStateSync, ZJsWebsiteSyncInput } from "@typeflowai/types/js";
+import { TLegacyWorkflow } from "@typeflowai/types/legacyWorkflow";
 import { TProduct } from "@typeflowai/types/product";
 import { TWorkflow } from "@typeflowai/types/workflows";
 

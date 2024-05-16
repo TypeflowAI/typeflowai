@@ -1,6 +1,6 @@
 import "server-only";
 
-import { TLegacyWorkflow, ZLegacyWorkflow } from "@typeflowai/types/LegacyWorkflow";
+import { TLegacyWorkflow, ZLegacyWorkflow } from "@typeflowai/types/legacyWorkflow";
 import { TI18nString, TWorkflow } from "@typeflowai/types/workflows";
 
 import { structuredClone } from "../pollyfills/structuredClone";

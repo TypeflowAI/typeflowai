@@ -3,7 +3,7 @@ import {
   TLegacyWorkflowQuestion,
   TLegacyWorkflowThankYouCard,
   TLegacyWorkflowWelcomeCard,
-} from "@typeflowai/types/LegacyWorkflow";
+} from "@typeflowai/types/legacyWorkflow";
 import { TLanguage } from "@typeflowai/types/product";
 import {
   TI18nString,

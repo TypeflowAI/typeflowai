@@ -3,11 +3,11 @@ import "server-only";
 import { Prisma } from "@prisma/client";
 
 import { prisma } from "@typeflowai/database";
-import { TLegacyWorkflow } from "@typeflowai/types/LegacyWorkflow";
 import { TActionClass } from "@typeflowai/types/actionClasses";
 import { ZOptionalNumber } from "@typeflowai/types/common";
 import { ZId } from "@typeflowai/types/environment";
 import { DatabaseError, InvalidInputError, ResourceNotFoundError } from "@typeflowai/types/errors";
+import { TLegacyWorkflow } from "@typeflowai/types/legacyWorkflow";
 import { TPerson } from "@typeflowai/types/people";
 import { TSegment, ZSegmentFilters } from "@typeflowai/types/segment";
 import {
