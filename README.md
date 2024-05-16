@@ -53,6 +53,7 @@ Our mission is to transform the user's online presence by creating engaging cont
 - [Contact](#contact)
 - [License](#license)
 - [Security](#security)
+- [Credits](#credits)
 
 ### Features
 
@@ -119,9 +120,16 @@ We're here to help make your journey with TypeflowAI smooth and successful. If t
 
 Distributed under the AGPLv3 License. See [`LICENSE`](./LICENSE) for more information.
 
+This software is a fork of [Formbricks](https://github.com/formbricks/formbricks), version 1.7.1, licensed under the GNU Affero General Public License Version 3 (AGPLv3). We have extended the original software by adding several new features to enhance its functionality. These additions include a Prompt Editor, integration of Prompt Templates, a Subscription Manager, and an updated Stripe Library for improved payment processing capabilities. These modifications are intended to provide additional tools and improved user experience while maintaining the spirit of open-source collaboration as mandated by the AGPLv3 license.
+
 <!-- SECUTIRY -->
 ## Security
 
 We take security very seriously. If you come across any security vulnerabilities, please disclose them by sending an email to [security@typeflowai.com](mailto:security@typeflowai.com). We appreciate your help in making our platform as secure as possible and are committed to working with you to resolve any issues quickly and efficiently. See [`SECURITY.md`](./SECURITY.md) for more information.
 
 <p  align="right"><a  href="#top">🔼 Back to top</a></p>
+
+<!-- CREDITS -->
+## Credits
+
+This project, **TypeflowAI**, builds upon the core technology originally developed by [Formbricks](https://formbricks.com/). We are deeply grateful to Formbricks GmbH for their pioneering work in the field and their decision to open source their software under the AGPLv3 license, which has enabled us to further develop and extend its capabilities. We acknowledge and celebrate Formbricks GmbH as the foundational creators whose original architecture and vision have made this project possible. 🎉
