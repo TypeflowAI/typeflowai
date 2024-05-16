@@ -58,8 +58,3 @@ packages/lib/uploads
 
 # Vite Timestamps
 vite.config.*.timestamp-*
-
-# Formbricks Enterprise License
-packages/ee/roleManagement/
-packages/ee/advancedTargeting/
-packages/ee/multiLanguage/
