@@ -27,6 +27,7 @@ interface OpenTextQuestionProps {
   ttc: TResponseTtc;
   setTtc: (ttc: TResponseTtc) => void;
   isInIframe: boolean;
+  currentQuestionId: string;
 }
 
 export const OpenTextQuestion = ({
@@ -42,10 +43,11 @@ export const OpenTextQuestion = ({
   ttc,
   setTtc,
   isInIframe,
+  currentQuestionId,
 }: OpenTextQuestionProps) => {
   const [startTime, setStartTime] = useState(performance.now());
   const isMediaAvailable = question.imageUrl || question.videoUrl;
-  useTtc(question.id, ttc, setTtc, startTime, setStartTime);
+  useTtc(question.id, ttc, setTtc, startTime, setStartTime, question.id === currentQuestionId);
 
   const handleInputChange = (inputValue: string) => {
     onChange({ [question.id]: inputValue });

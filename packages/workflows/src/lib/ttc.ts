@@ -23,13 +23,11 @@ export const useTtc = (
   ttc: TResponseTtc,
   setTtc: (ttc: TResponseTtc) => void,
   startTime: number,
-  setStartTime: (time: number) => void
+  setStartTime: (time: number) => void,
+  isCurrentQuestion: boolean
 ) => {
   useEffect(() => {
-    setStartTime(performance.now());
-  }, [questionId, setStartTime]);
-
-  useEffect(() => {
+    if (!isCurrentQuestion) return;
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
         // Restart the timer when the tab becomes visible again
@@ -47,5 +45,11 @@ export const useTtc = (
       // Clean up the event listener when the component is unmounted
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [questionId, setStartTime, setTtc, startTime, ttc]);
+  }, [questionId, setStartTime, setTtc, startTime, ttc, isCurrentQuestion]);
+
+  useEffect(() => {
+    if (isCurrentQuestion) {
+      setStartTime(performance.now());
+    }
+  }, [questionId, setStartTime, isCurrentQuestion]);
 };

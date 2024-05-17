@@ -25,6 +25,7 @@ interface CTAQuestionProps {
   ttc: TResponseTtc;
   setTtc: (ttc: TResponseTtc) => void;
   isInIframe: boolean;
+  currentQuestionId: string;
 }
 
 export const CTAQuestion = ({
@@ -39,11 +40,12 @@ export const CTAQuestion = ({
   ttc,
   setTtc,
   isInIframe,
+  currentQuestionId,
 }: CTAQuestionProps) => {
   const [startTime, setStartTime] = useState(performance.now());
   const isMediaAvailable = question.imageUrl || question.videoUrl;
 
-  useTtc(question.id, ttc, setTtc, startTime, setStartTime);
+  useTtc(question.id, ttc, setTtc, startTime, setStartTime, question.id === currentQuestionId);
 
   return (
     <div key={question.id}>

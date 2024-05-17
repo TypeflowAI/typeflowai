@@ -13,7 +13,7 @@ export type TCardArrangementOptions = z.infer<typeof ZCardArrangementOptions>;
 
 export const ZCardArrangement = z.object({
   linkWorkflows: ZCardArrangementOptions,
-  inAppWorkflows: ZCardArrangementOptions,
+  appWorkflows: ZCardArrangementOptions,
 });
 
 export const ZWorkflowStylingBackground = z.object({

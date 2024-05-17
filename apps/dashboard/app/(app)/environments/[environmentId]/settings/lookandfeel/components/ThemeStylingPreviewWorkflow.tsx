@@ -107,9 +107,9 @@ export const ThemeStylingPreviewWorkflow = ({
 
   const highlightBorderColor = product.styling.highlightBorderColor?.light;
 
-  function resetQuestionProgress() {
+  const resetQuestionProgress = () => {
     setQuestionId(workflow?.questions[0]?.id);
-  }
+  };
 
   const onFileUpload = async (file: File) => file.name;
 
@@ -123,7 +123,7 @@ export const ThemeStylingPreviewWorkflow = ({
   };
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-items-center">
+    <div className="flex h-full w-full flex-col items-center justify-items-center overflow-hidden">
       <motion.div
         variants={previewParentContainerVariant}
         className="fixed hidden h-[95%] w-5/6"
@@ -160,14 +160,13 @@ export const ThemeStylingPreviewWorkflow = ({
             <Modal
               isOpen
               placement={placement}
-              highlightBorderColor={highlightBorderColor}
               clickOutsideClose={clickOutsideClose}
               darkOverlay={darkOverlay}
               previewMode="desktop"
               background={product.styling.cardBackgroundColor?.light}
               borderRadius={product.styling.roundness ?? 8}>
               <WorkflowInline
-                workflow={workflow}
+                workflow={{ ...workflow, type: "app" }}
                 webAppUrl={webAppUrl}
                 isBrandingEnabled={product.inAppWorkflowBranding}
                 isRedirectDisabled={true}
@@ -188,9 +187,11 @@ export const ThemeStylingPreviewWorkflow = ({
                 </div>
               )}
               <div
-                className={`${product.logo?.url && !product.styling.isLogoHidden && !isFullScreenPreview ? "mt-12" : ""} z-0  w-full max-w-md rounded-lg p-4`}>
+                className={`${
+                  product.logo?.url && !product.styling.isLogoHidden && !isFullScreenPreview ? "mt-12" : ""
+                } z-0  w-full max-w-md rounded-lg p-4`}>
                 <WorkflowInline
-                  workflow={workflow}
+                  workflow={{ ...workflow, type: "link" }}
                   webAppUrl={webAppUrl}
                   isBrandingEnabled={product.linkWorkflowBranding}
                   isRedirectDisabled={true}
@@ -211,7 +212,9 @@ export const ThemeStylingPreviewWorkflow = ({
       {/* for toggling between mobile and desktop mode  */}
       <div className="mt-2 flex rounded-full border-2 border-slate-300 p-1">
         <div
-          className={`${previewType === "link" ? "rounded-full bg-slate-200" : ""} cursor-pointer px-3 py-1 text-sm`}
+          className={`${
+            previewType === "link" ? "rounded-full bg-slate-200" : ""
+          } cursor-pointer px-3 py-1 text-sm`}
           onClick={() => setPreviewType("link")}>
           Link workflow
         </div>

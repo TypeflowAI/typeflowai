@@ -106,7 +106,7 @@ export const ThemeStyling = ({
         roundness: 8,
         cardArrangement: {
           linkWorkflows: "simple",
-          inAppWorkflows: "simple",
+          appWorkflows: "simple",
         },
       },
     });
@@ -139,7 +139,7 @@ export const ThemeStyling = ({
       roundness: 8,
       cardArrangement: {
         linkWorkflows: "simple",
-        inAppWorkflows: "simple",
+        appWorkflows: "simple",
       },
     });
 
@@ -198,7 +198,7 @@ export const ThemeStyling = ({
               setOpen={setFormStylingOpen}
               styling={styling}
               setStyling={setStyling}
-              hideCheckmark
+              isSettingsPage
             />
 
             <CardStylingSettings
@@ -206,7 +206,7 @@ export const ThemeStyling = ({
               setOpen={setCardStylingOpen}
               styling={styling}
               setStyling={setStyling}
-              hideCheckmark
+              isSettingsPage
               localProduct={localProduct}
             />
 
@@ -218,7 +218,7 @@ export const ThemeStyling = ({
               environmentId={environmentId}
               colors={colors}
               key={styling.background?.bg}
-              hideCheckmark
+              isSettingsPage
               isUnsplashConfigured={isUnsplashConfigured}
             />
           </div>

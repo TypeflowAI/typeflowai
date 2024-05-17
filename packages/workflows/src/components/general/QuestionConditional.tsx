@@ -31,6 +31,7 @@ interface QuestionConditionalProps {
   setTtc: (ttc: TResponseTtc) => void;
   workflowId: string;
   isInIframe: boolean;
+  currentQuestionId: string;
 }
 
 export const QuestionConditional = ({
@@ -48,6 +49,7 @@ export const QuestionConditional = ({
   workflowId,
   onFileUpload,
   isInIframe,
+  currentQuestionId,
 }: QuestionConditionalProps) => {
   return question.type === TWorkflowQuestionType.OpenText ? (
     <OpenTextQuestion
@@ -64,6 +66,7 @@ export const QuestionConditional = ({
       ttc={ttc}
       setTtc={setTtc}
       isInIframe={isInIframe}
+      currentQuestionId={currentQuestionId}
     />
   ) : question.type === TWorkflowQuestionType.MultipleChoiceSingle ? (
     <MultipleChoiceSingleQuestion
@@ -80,6 +83,7 @@ export const QuestionConditional = ({
       ttc={ttc}
       setTtc={setTtc}
       isInIframe={isInIframe}
+      currentQuestionId={currentQuestionId}
     />
   ) : question.type === TWorkflowQuestionType.MultipleChoiceMulti ? (
     <MultipleChoiceMultiQuestion
@@ -96,6 +100,7 @@ export const QuestionConditional = ({
       ttc={ttc}
       setTtc={setTtc}
       isInIframe={isInIframe}
+      currentQuestionId={currentQuestionId}
     />
   ) : question.type === TWorkflowQuestionType.NPS ? (
     <NPSQuestion
@@ -112,6 +117,7 @@ export const QuestionConditional = ({
       ttc={ttc}
       setTtc={setTtc}
       isInIframe={isInIframe}
+      currentQuestionId={currentQuestionId}
     />
   ) : question.type === TWorkflowQuestionType.CTA ? (
     <CTAQuestion
@@ -128,6 +134,7 @@ export const QuestionConditional = ({
       ttc={ttc}
       setTtc={setTtc}
       isInIframe={isInIframe}
+      currentQuestionId={currentQuestionId}
     />
   ) : question.type === TWorkflowQuestionType.Rating ? (
     <RatingQuestion
@@ -144,6 +151,7 @@ export const QuestionConditional = ({
       ttc={ttc}
       setTtc={setTtc}
       isInIframe={isInIframe}
+      currentQuestionId={currentQuestionId}
     />
   ) : question.type === TWorkflowQuestionType.Consent ? (
     <ConsentQuestion
@@ -160,6 +168,7 @@ export const QuestionConditional = ({
       ttc={ttc}
       setTtc={setTtc}
       isInIframe={isInIframe}
+      currentQuestionId={currentQuestionId}
     />
   ) : question.type === TWorkflowQuestionType.Date ? (
     <DateQuestion
@@ -176,6 +185,7 @@ export const QuestionConditional = ({
       ttc={ttc}
       setTtc={setTtc}
       isInIframe={isInIframe}
+      currentQuestionId={currentQuestionId}
     />
   ) : question.type === TWorkflowQuestionType.PictureSelection ? (
     <PictureSelectionQuestion
@@ -192,6 +202,7 @@ export const QuestionConditional = ({
       ttc={ttc}
       setTtc={setTtc}
       isInIframe={isInIframe}
+      currentQuestionId={currentQuestionId}
     />
   ) : question.type === TWorkflowQuestionType.FileUpload ? (
     <FileUploadQuestion
@@ -210,6 +221,7 @@ export const QuestionConditional = ({
       ttc={ttc}
       setTtc={setTtc}
       isInIframe={isInIframe}
+      currentQuestionId={currentQuestionId}
     />
   ) : question.type === TWorkflowQuestionType.Cal ? (
     <CalQuestion
@@ -226,6 +238,7 @@ export const QuestionConditional = ({
       ttc={ttc}
       isInIframe={isInIframe}
       setTtc={setTtc}
+      currentQuestionId={currentQuestionId}
     />
   ) : question.type === TWorkflowQuestionType.Matrix ? (
     <MatrixQuestion
@@ -240,6 +253,7 @@ export const QuestionConditional = ({
       languageCode={languageCode}
       ttc={ttc}
       setTtc={setTtc}
+      currentQuestionId={currentQuestionId}
     />
   ) : question.type === TWorkflowQuestionType.Address ? (
     <AddressQuestion
@@ -255,6 +269,7 @@ export const QuestionConditional = ({
       ttc={ttc}
       setTtc={setTtc}
       isInIframe={isInIframe}
+      currentQuestionId={currentQuestionId}
     />
   ) : null;
 };

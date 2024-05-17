@@ -20,7 +20,7 @@ export function WorkflowInline(props: WorkflowInlineProps) {
     <div id="fbjs" className="typeflowai-form h-full w-full">
       {isMobile ? (
         <div className="flex h-screen w-full flex-col justify-end overflow-hidden">
-          <div className="overflow-auto pt-[11vh]">
+          <div>
             <Workflow {...props} />
           </div>
         </div>

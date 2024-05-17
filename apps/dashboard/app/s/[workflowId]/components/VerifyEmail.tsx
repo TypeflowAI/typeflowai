@@ -8,22 +8,27 @@ import { Toaster, toast } from "react-hot-toast";
 
 import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
 import { checkForRecallInHeadline } from "@typeflowai/lib/utils/recall";
+import { TProductStyling } from "@typeflowai/types/product";
 import { TWorkflow } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
 import { Input } from "@typeflowai/ui/Input";
 import { StackedCardsContainer } from "@typeflowai/ui/StackedCardsContainer";
 
-export default function VerifyEmail({
-  workflow,
-  isErrorComponent,
-  singleUseId,
-  languageCode,
-}: {
+interface VerifyEmailProps {
   workflow: TWorkflow;
   isErrorComponent?: boolean;
   singleUseId?: string;
   languageCode: string;
-}) {
+  styling: TProductStyling;
+}
+
+export const VerifyEmail = ({
+  workflow,
+  isErrorComponent,
+  singleUseId,
+  languageCode,
+  styling,
+}: VerifyEmailProps) => {
   workflow = useMemo(() => {
     return checkForRecallInHeadline(workflow, "default");
   }, [workflow]);
@@ -87,7 +92,12 @@ export default function VerifyEmail({
   return (
     <div className="flex h-full w-full flex-col items-center justify-center text-center">
       <Toaster />
-      <StackedCardsContainer>
+      <StackedCardsContainer
+        cardArrangement={
+          workflow.styling?.cardArrangement?.linkWorkflows ??
+          styling.cardArrangement?.linkWorkflows ??
+          "straight"
+        }>
         {!emailSent && !showPreviewQuestions && (
           <div className="flex flex-col">
             <div className="mx-auto rounded-full border bg-slate-200 p-6">
@@ -120,9 +130,10 @@ export default function VerifyEmail({
             <p className="text-4xl font-bold">Question Preview</p>
             <div className="mt-4 flex w-full flex-col justify-center rounded-lg border border-slate-200 bg-slate-50 bg-opacity-20 p-8 text-slate-700">
               {workflow.questions.map((question, index) => (
-                <p
-                  key={index}
-                  className="my-1">{`${index + 1}. ${getLocalizedValue(question.headline, languageCode)}`}</p>
+                <p key={index} className="my-1">{`${index + 1}. ${getLocalizedValue(
+                  question.headline,
+                  languageCode
+                )}`}</p>
               ))}
             </div>
             <p className="mt-6 cursor-pointer text-xs text-slate-400" onClick={handlePreviewClick}>
@@ -132,7 +143,6 @@ export default function VerifyEmail({
         )}
         {emailSent && (
           <div>
-            {" "}
             <h1 className="mt-8 text-2xl font-bold lg:text-4xl">Check your email.</h1>
             <p className="mt-4 text-center text-sm text-slate-400 lg:text-base">
               We sent an email to <span className="font-semibold italic">{email}</span>. Please click the link
@@ -146,4 +156,4 @@ export default function VerifyEmail({
       </StackedCardsContainer>
     </div>
   );
-}
+};

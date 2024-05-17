@@ -197,6 +197,7 @@ export const PreviewWorkflow = ({
   const handlePreviewModalClose = () => {
     setIsModalOpen(false);
     setTimeout(() => {
+      setQuestionId(workflow.welcomeCard.enabled ? "start" : workflow?.questions[0]?.id);
       setIsModalOpen(true);
     }, 1000);
   };
@@ -240,7 +241,6 @@ export const PreviewWorkflow = ({
                 <Modal
                   isOpen={isModalOpen}
                   placement={placement}
-                  highlightBorderColor={styling.highlightBorderColor?.light}
                   previewMode="mobile"
                   darkOverlay={darkOverlay}
                   clickOutsideClose={clickOutsideClose}
@@ -270,9 +270,9 @@ export const PreviewWorkflow = ({
                       <ClientLogo environmentId={environment.id} product={product} previewWorkflow />
                     )}
                   </div>
-                  <div className="no-scrollbar z-10 w-full border border-transparent">
+                  <div className=" z-10 w-full max-w-md rounded-lg border border-transparent">
                     <WorkflowInline
-                      workflow={workflow}
+                      workflow={{ ...workflow, type: "link" }}
                       webAppUrl={webAppUrl}
                       isBrandingEnabled={product.linkWorkflowBranding}
                       onFileUpload={onFileUpload}
@@ -330,7 +330,6 @@ export const PreviewWorkflow = ({
               <Modal
                 isOpen={isModalOpen}
                 placement={placement}
-                highlightBorderColor={styling.highlightBorderColor?.light}
                 clickOutsideClose={clickOutsideClose}
                 darkOverlay={darkOverlay}
                 previewMode="desktop"
@@ -362,7 +361,7 @@ export const PreviewWorkflow = ({
                 </div>
                 <div className="z-0 w-full max-w-md rounded-lg border-transparent">
                   <WorkflowInline
-                    workflow={workflow}
+                    workflow={{ ...workflow, type: "link" }}
                     webAppUrl={webAppUrl}
                     isBrandingEnabled={product.linkWorkflowBranding}
                     isRedirectDisabled={true}

@@ -44,7 +44,7 @@ export function AutoCloseWrapper({ workflow, onClose, children }: AutoCloseProps
   }, [workflow.autoClose]);
 
   return (
-    <div>
+    <div className="h-full w-full">
       {workflow.autoClose && showAutoCloseProgressBar && (
         <AutoCloseProgressBar autoCloseTimeout={workflow.autoClose} />
       )}

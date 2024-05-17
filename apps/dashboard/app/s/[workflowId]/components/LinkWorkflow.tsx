@@ -1,6 +1,6 @@
 "use client";
 
-import VerifyEmail from "@/app/s/[workflowId]/components/VerifyEmail";
+import { VerifyEmail } from "@/app/s/[workflowId]/components/VerifyEmail";
 import WorkflowLinkUsed from "@/app/s/[workflowId]/components/WorkflowLinkUsed";
 import { getPrefillValue } from "@/app/s/[workflowId]/lib/prefilling";
 import { useSearchParams } from "next/navigation";
@@ -154,10 +154,24 @@ export default function LinkWorkflow({
 
   if (workflow.verifyEmail && emailVerificationStatus !== "verified") {
     if (emailVerificationStatus === "fishy") {
-      return <VerifyEmail workflow={workflow} isErrorComponent={true} languageCode={languageCode} />;
+      return (
+        <VerifyEmail
+          workflow={workflow}
+          isErrorComponent={true}
+          languageCode={languageCode}
+          styling={product.styling}
+        />
+      );
     }
     //emailVerificationStatus === "not-verified"
-    return <VerifyEmail singleUseId={suId ?? ""} workflow={workflow} languageCode={languageCode} />;
+    return (
+      <VerifyEmail
+        singleUseId={suId ?? ""}
+        workflow={workflow}
+        languageCode={languageCode}
+        styling={product.styling}
+      />
+    );
   }
 
   const determineStyling = () => {
@@ -195,7 +209,6 @@ export default function LinkWorkflow({
             />
           </div>
         )}
-
         <WorkflowInline
           workflow={workflow}
           webAppUrl={webAppUrl}
