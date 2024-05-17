@@ -56,7 +56,7 @@ export const determineImageUploaderVisibility = (questionIdx: number, localWorkf
     case localWorkflow.questions.length: // Thank You Card
       return !!localWorkflow.thankYouCard.imageUrl || !!localWorkflow.thankYouCard.videoUrl;
     case -1: // Welcome Card
-      return !!localWorkflow.welcomeCard.fileUrl || !!localWorkflow.welcomeCard.videoUrl;
+      return false;
     default:
       // Regular Workflow Question
       const question = localWorkflow.questions[questionIdx];
