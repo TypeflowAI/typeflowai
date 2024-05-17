@@ -1,7 +1,7 @@
 {
   "name": "@typeflowai/js",
   "license": "MIT",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0",
   "description": "TypeflowAI-js allows you to connect your app to TypeflowAI, display workflows and trigger events.",
   "homepage": "https://typeflowai.com",
   "repository": {
