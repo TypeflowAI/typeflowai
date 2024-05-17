@@ -80,13 +80,16 @@ export const QuestionFormInput = ({
   className,
 }: QuestionFormInputProps) => {
   const question: TWorkflowQuestion = localWorkflow.questions[questionIdx];
-  const questionId = question?.id;
   const isChoice = id.includes("choice");
   const isMatrixLabelRow = id.includes("row");
   const isMatrixLabelColumn = id.includes("column");
   const isThankYouCard = questionIdx === localWorkflow.questions.length;
   const isWelcomeCard = questionIdx === -1;
   const index = getIndex(id, isChoice || isMatrixLabelColumn || isMatrixLabelRow);
+
+  const questionId = useMemo(() => {
+    return isWelcomeCard ? "start" : isThankYouCard ? "end" : question.id;
+  }, [isWelcomeCard, isThankYouCard, question?.id]);
 
   // const enabledLanguages = useMemo(
   //   () => getEnabledLanguages(localWorkflow.languages ?? []),
