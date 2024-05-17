@@ -127,10 +127,31 @@ export const QuestionsView = ({
     };
 
     if ("backButtonLabel" in updatedAttributes) {
-      updatedWorkflow.questions.forEach((question) => {
-        question.backButtonLabel = updatedAttributes.backButtonLabel;
-      });
-      setbackButtonLabel(updatedAttributes.backButtonLabel);
+      const backButtonLabel = updatedWorkflow.questions[questionIdx].backButtonLabel;
+      // If the value of backbuttonLabel is equal to {default:""}, then delete backButtonLabel key
+      if (
+        backButtonLabel &&
+        Object.keys(backButtonLabel).length === 1 &&
+        backButtonLabel["default"].trim() === ""
+      ) {
+        delete updatedWorkflow.questions[questionIdx].backButtonLabel;
+      } else {
+        updatedWorkflow.questions.forEach((question) => {
+          question.backButtonLabel = updatedAttributes.backButtonLabel;
+        });
+        setbackButtonLabel(updatedAttributes.backButtonLabel);
+      }
+    }
+    // If the value of buttonLabel is equal to {default:""}, then delete buttonLabel key
+    if ("buttonLabel" in updatedAttributes) {
+      const currentButtonLabel = updatedWorkflow.questions[questionIdx].buttonLabel;
+      if (
+        currentButtonLabel &&
+        Object.keys(currentButtonLabel).length === 1 &&
+        currentButtonLabel["default"].trim() === ""
+      ) {
+        delete updatedWorkflow.questions[questionIdx].buttonLabel;
+      }
     }
     setLocalWorkflow(updatedWorkflow);
     validateWorkflowQuestion(updatedWorkflow.questions[questionIdx]);
