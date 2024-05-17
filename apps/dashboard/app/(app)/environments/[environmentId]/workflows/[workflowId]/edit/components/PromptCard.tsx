@@ -59,6 +59,7 @@ export default function PromtCard({
   setActiveQuestionId,
   isEngineLimited,
 }: PromptCardProps) {
+  console.log("Prompt: ", prompt);
   const open = activeQuestionId === "prompt";
   const [isPromptEditorFocused, setIsPromptEditorFocused] = useState(false);
   const [openAdvanced, setOpenAdvanced] = useState(false);

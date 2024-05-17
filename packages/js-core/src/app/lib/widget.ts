@@ -1,5 +1,6 @@
 import { TypeflowAIAPI } from "@typeflowai/api";
 import { ResponseQueue } from "@typeflowai/lib/responseQueue";
+import { getStyling } from "@typeflowai/lib/utils/styling";
 import WorkflowState from "@typeflowai/lib/workflowState";
 import { TResponseUpdate } from "@typeflowai/types/responses";
 import { TWorkflow } from "@typeflowai/types/workflows";
@@ -92,26 +93,6 @@ const renderWidget = async (workflow: TWorkflow, action?: string) => {
   const isBrandingEnabled = product.inAppWorkflowBranding;
   const typeflowAIWorkflows = await loadTypeflowAIWorkflowsExternally();
 
-  const getStyling = () => {
-    // allow style overwrite is disabled from the product
-    if (!product.styling.allowStyleOverwrite) {
-      return product.styling;
-    }
-
-    // allow style overwrite is enabled from the product
-    if (product.styling.allowStyleOverwrite) {
-      // workflow style overwrite is disabled
-      if (!workflow.styling?.overwriteThemeStyling) {
-        return product.styling;
-      }
-
-      // workflow style overwrite is enabled
-      return workflow.styling;
-    }
-
-    return product.styling;
-  };
-
   setTimeout(() => {
     typeflowAIWorkflows.renderWorkflowModal({
       workflow: workflow,
@@ -121,7 +102,7 @@ const renderWidget = async (workflow: TWorkflow, action?: string) => {
       darkOverlay,
       languageCode,
       placement,
-      styling: getStyling(),
+      styling: getStyling(product, workflow),
       getSetIsError: (f: (value: boolean) => void) => {
         setIsError = f;
       },

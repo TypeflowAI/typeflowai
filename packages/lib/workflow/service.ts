@@ -61,6 +61,7 @@ export const selectWorkflow = {
   status: true,
   welcomeCard: true,
   questions: true,
+  prompt: true,
   thankYouCard: true,
   hiddenFields: true,
   displayOption: true,

@@ -55,6 +55,7 @@ export const QuestionsView = ({
   // isTypeflowAICloud,
   isEngineLimited,
 }: QuestionsViewProps) => {
+  console.log("Local Workflow", localWorkflow);
   const internalQuestionIdMap = useMemo(() => {
     return localWorkflow.questions.reduce((acc, question) => {
       acc[question.id] = createId();

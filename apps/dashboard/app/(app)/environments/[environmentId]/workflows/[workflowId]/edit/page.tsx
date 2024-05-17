@@ -49,6 +49,8 @@ export default async function WorkflowsEditPage({ params }) {
     getSegments(params.environmentId),
   ]);
 
+  console.log("workflow: ", workflow);
+
   if (!session) {
     throw new Error("Session not found");
   }
