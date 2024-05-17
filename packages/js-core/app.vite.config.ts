@@ -26,7 +26,7 @@ const config = () => {
     plugins: [
       dts({
         rollupTypes: true,
-        bundledPackages: ["@typeflowai/api"],
+        bundledPackages: ["@typeflowai/api", "@typeflowai/types"],
       }),
     ],
   });
