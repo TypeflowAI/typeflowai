@@ -26,6 +26,7 @@ interface PromptResponseProps {
   ttc: TResponseTtc;
   setTtc: (ttc: TResponseTtc) => void;
   isPreview?: boolean;
+  currentQuestionId: string;
 }
 
 export default function PromptResponse({
@@ -39,9 +40,10 @@ export default function PromptResponse({
   ttc,
   setTtc,
   isPreview,
+  currentQuestionId,
 }: PromptResponseProps) {
   const [startTime, setStartTime] = useState(performance.now());
-  useTtc(prompt.id, ttc, setTtc, startTime, setStartTime);
+  useTtc(prompt.id, ttc, setTtc, startTime, setStartTime, prompt.id === currentQuestionId);
   const [openAIResponse, setOpenAIResponse] = useState("");
   const [displayResponse, setDisplayResponse] = useState("");
   const [textBuffer, setTextBuffer] = useState("");

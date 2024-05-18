@@ -45,7 +45,6 @@ export function WorkflowModal({
         placement={placement}
         clickOutside={clickOutside}
         darkOverlay={darkOverlay}
-        highlightBorderColor={highlightBorderColor}
         isOpen={isOpen}
         onClose={close}>
         <Workflow

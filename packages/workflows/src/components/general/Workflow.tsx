@@ -45,7 +45,6 @@ export const Workflow = ({
   onFileUpload,
   responseCount,
   isPreview,
-  isCardBorderVisible = true,
   startAtQuestionId,
 }: WorkflowBaseProps) => {
   const isInIframe = window.self !== window.top;
@@ -283,6 +282,52 @@ export const Workflow = ({
     setQuestionId(prevQuestionId);
   };
 
+  const fetchOpenAIResponse = async () => {
+    if (!workflow.prompt.message) return;
+
+    const promptMessage = processPromptMessage(
+      workflow.prompt.message,
+      workflow.prompt.attributes,
+      responseData
+    );
+
+    const requestData = {
+      messages: [
+        {
+          role: "system",
+          content: promptMessage,
+        },
+      ],
+      model: workflow.prompt.engine,
+      stream: false,
+    };
+
+    try {
+      const response = await typeflowaiAPI.client.openai.sendMessage(requestData);
+      if (response.ok) {
+        const data = response.data as TOpenAIResponse;
+        if ("limitReached" in data && data.limitReached) {
+          console.log("Error: Limit reached");
+          return;
+        }
+        const openAIResponse = response.data as TOpenAIResponse;
+        if (openAIResponse.choices && openAIResponse.choices.length > 0) {
+          const responseContent = openAIResponse.choices[0].message.content;
+          const updatedTtcObj = getUpdatedTtc(ttc, workflow.prompt.id, performance.now());
+          setTtc(updatedTtcObj);
+          const newResponseData = { ...responseData, [workflow.prompt.id]: responseContent };
+          onSubmit(newResponseData, updatedTtcObj);
+        } else {
+          console.error("No choices available in the response");
+        }
+      } else {
+        console.error("Error in API response:", response.error);
+      }
+    } catch (error) {
+      console.error("Error calling OpenAI API:", error);
+    }
+  };
+
   const getCardContent = (questionIdx: number, offset: number): JSX.Element | undefined => {
     if (showError) {
       return (
@@ -308,176 +353,155 @@ export const Workflow = ({
             isInIframe={isInIframe}
           />
         );
-      } else if (questionIdx === workflow.questions.length) {
-        return (
-          <ThankYouCard
-            headline={workflow.thankYouCard.headline}
-            subheader={workflow.thankYouCard.subheader}
-            isResponseSendingFinished={isResponseSendingFinished}
-            buttonLabel={workflow.thankYouCard.buttonLabel}
-            buttonLink={workflow.thankYouCard.buttonLink}
-            imageUrl={workflow.thankYouCard.imageUrl}
-            videoUrl={workflow.thankYouCard.videoUrl}
-            redirectUrl={workflow.redirectUrl}
-            isRedirectDisabled={isRedirectDisabled}
-            languageCode={languageCode}
-            replaceRecallInfo={replaceRecallInfo}
-            isInIframe={isInIframe}
-          />
-        );
-      } else {
-        const question = workflow.questions[questionIdx];
-        return (
-          question && (
-            <QuestionConditional
-              workflowId={workflow.id}
-              question={parseRecallInformation(question)}
-              value={responseData[question.id]}
+      } else if (questionId === "prompt") {
+        if (!workflow.prompt.enabled) {
+          return <ActivatePromptCard headline="Edit and Activate your prompt" />;
+        } else if (workflow.prompt.enabled && !workflow.prompt.isVisible) {
+          if (!isPreview) {
+            fetchOpenAIResponse();
+          }
+          return <SavingCard headline="Saving your response..." />;
+        } else if (workflow.prompt.enabled && workflow.prompt.isVisible) {
+          return (
+            <PromptResponse
+              prompt={workflow.prompt}
+              webAppUrl={webAppUrl}
+              environmentId={workflow.environmentId}
+              workflowResponses={responseData}
               onChange={onChange}
               onSubmit={onSubmit}
               onBack={onBack}
               ttc={ttc}
               setTtc={setTtc}
-              onFileUpload={onFileUpload}
-              isFirstQuestion={
-                history && prefillResponseData
-                  ? history[history.length - 1] === workflow.questions[0].id
-                  : question.id === workflow?.questions[0]?.id
-              }
-              isLastQuestion={question.id === workflow.questions[workflow.questions.length - 1].id}
-              languageCode={languageCode}
-              isInIframe={isInIframe}
+              isPreview={isPreview}
               currentQuestionId={questionId}
-              isPromptVisible={isPromptVisible()}
             />
-          )
-        );
+          );
+        } else if (questionIdx === workflow.questions.length || questionId === "prompt") {
+          return (
+            <ThankYouCard
+              headline={workflow.thankYouCard.headline}
+              subheader={workflow.thankYouCard.subheader}
+              isResponseSendingFinished={isResponseSendingFinished}
+              buttonLabel={workflow.thankYouCard.buttonLabel}
+              buttonLink={workflow.thankYouCard.buttonLink}
+              imageUrl={workflow.thankYouCard.imageUrl}
+              videoUrl={workflow.thankYouCard.videoUrl}
+              redirectUrl={workflow.redirectUrl}
+              isRedirectDisabled={isRedirectDisabled}
+              languageCode={languageCode}
+              replaceRecallInfo={replaceRecallInfo}
+              isInIframe={isInIframe}
+            />
+          );
+        } else {
+          const question = workflow.questions[questionIdx];
+          return (
+            question && (
+              <QuestionConditional
+                workflowId={workflow.id}
+                question={parseRecallInformation(question)}
+                value={responseData[question.id]}
+                onChange={onChange}
+                onSubmit={onSubmit}
+                onBack={onBack}
+                ttc={ttc}
+                setTtc={setTtc}
+                onFileUpload={onFileUpload}
+                isFirstQuestion={
+                  history && prefillResponseData
+                    ? history[history.length - 1] === workflow.questions[0].id
+                    : question.id === workflow?.questions[0]?.id
+                }
+                isLastQuestion={question.id === workflow.questions[workflow.questions.length - 1].id}
+                languageCode={languageCode}
+                isInIframe={isInIframe}
+                currentQuestionId={questionId}
+                isPromptVisible={isPromptVisible()}
+              />
+            )
+          );
+        }
+        // if (questionId === "start" && workflow.welcomeCard.enabled) {
+        //   return (
+        //     <WelcomeCard
+        //       headline={workflow.welcomeCard.headline}
+        //       html={workflow.welcomeCard.html}
+        //       fileUrl={workflow.welcomeCard.fileUrl}
+        //       buttonLabel={workflow.welcomeCard.buttonLabel}
+        //       onSubmit={onSubmit}
+        //       workflow={workflow}
+        //       languageCode={languageCode}
+        //       responseCount={responseCount}
+        //       isInIframe={isInIframe}
+        //     />
+        //   );
+        // } else if (questionId === "prompt" && !workflow.prompt.enabled) {
+        //   return <ActivatePromptCard headline="Edit and Activate your prompt" />;
+        // } else if (questionId === "prompt" && workflow.prompt.enabled && !workflow.prompt.isVisible) {
+        //   if (!isPreview) {
+        //     fetchOpenAIResponse();
+        //   }
+        //   return <SavingCard headline="Saving your response..." />;
+        // } else if (questionId === "prompt" && workflow.prompt.enabled && workflow.prompt.isVisible) {
+        //   return (
+        //     <PromptResponse
+        //       prompt={workflow.prompt}
+        //       webAppUrl={webAppUrl}
+        //       environmentId={workflow.environmentId}
+        //       workflowResponses={responseData}
+        //       onChange={onChange}
+        //       onSubmit={onSubmit}
+        //       onBack={onBack}
+        //       ttc={ttc}
+        //       setTtc={setTtc}
+        //       isPreview={isPreview}
+        //     />
+        //   );
+        // } else if ((questionId === "end" || questionId === "prompt") && workflow.thankYouCard.enabled) {
+        //   return (
+        //     <ThankYouCard
+        //       headline={workflow.thankYouCard.headline}
+        //       subheader={workflow.thankYouCard.subheader}
+        //       isResponseSendingFinished={isResponseSendingFinished}
+        //       buttonLabel={workflow.thankYouCard.buttonLabel}
+        //       buttonLink={workflow.thankYouCard.buttonLink}
+        //       imageUrl={workflow.thankYouCard.imageUrl}
+        //       videoUrl={workflow.thankYouCard.videoUrl}
+        //       redirectUrl={workflow.redirectUrl}
+        //       isRedirectDisabled={isRedirectDisabled}
+        //       languageCode={languageCode}
+        //       replaceRecallInfo={replaceRecallInfo}
+        //       isInIframe={isInIframe}
+        //     />
+        //   );
+        // } else {
+        //   return (
+        //     currentQuestion && (
+        //       <QuestionConditional
+        //         workflowId={workflow.id}
+        //         question={parseRecallInformation(currentQuestion)}
+        //         value={responseData[currentQuestion.id]}
+        //         onChange={onChange}
+        //         onSubmit={onSubmit}
+        //         onBack={onBack}
+        //         ttc={ttc}
+        //         setTtc={setTtc}
+        //         onFileUpload={onFileUpload}
+        //         isFirstQuestion={currentQuestion.id === workflow?.questions[0]?.id}
+        //         isLastQuestion={currentQuestion.id === workflow.questions[workflow.questions.length - 1].id}
+        //         languageCode={languageCode}
+        //         isInIframe={isInIframe}
+        //         isPromptVisible={isPromptVisible()}
+        //       />
+        //     )
+        //   );
       }
-      // if (questionId === "start" && workflow.welcomeCard.enabled) {
-      //   return (
-      //     <WelcomeCard
-      //       headline={workflow.welcomeCard.headline}
-      //       html={workflow.welcomeCard.html}
-      //       fileUrl={workflow.welcomeCard.fileUrl}
-      //       buttonLabel={workflow.welcomeCard.buttonLabel}
-      //       onSubmit={onSubmit}
-      //       workflow={workflow}
-      //       languageCode={languageCode}
-      //       responseCount={responseCount}
-      //       isInIframe={isInIframe}
-      //     />
-      //   );
-      // } else if (questionId === "prompt" && !workflow.prompt.enabled) {
-      //   return <ActivatePromptCard headline="Edit and Activate your prompt" />;
-      // } else if (questionId === "prompt" && workflow.prompt.enabled && !workflow.prompt.isVisible) {
-      //   if (!isPreview) {
-      //     fetchOpenAIResponse();
-      //   }
-      //   return <SavingCard headline="Saving your response..." />;
-      // } else if (questionId === "prompt" && workflow.prompt.enabled && workflow.prompt.isVisible) {
-      //   return (
-      //     <PromptResponse
-      //       prompt={workflow.prompt}
-      //       webAppUrl={webAppUrl}
-      //       environmentId={workflow.environmentId}
-      //       workflowResponses={responseData}
-      //       onChange={onChange}
-      //       onSubmit={onSubmit}
-      //       onBack={onBack}
-      //       ttc={ttc}
-      //       setTtc={setTtc}
-      //       isPreview={isPreview}
-      //     />
-      //   );
-      // } else if ((questionId === "end" || questionId === "prompt") && workflow.thankYouCard.enabled) {
-      //   return (
-      //     <ThankYouCard
-      //       headline={workflow.thankYouCard.headline}
-      //       subheader={workflow.thankYouCard.subheader}
-      //       isResponseSendingFinished={isResponseSendingFinished}
-      //       buttonLabel={workflow.thankYouCard.buttonLabel}
-      //       buttonLink={workflow.thankYouCard.buttonLink}
-      //       imageUrl={workflow.thankYouCard.imageUrl}
-      //       videoUrl={workflow.thankYouCard.videoUrl}
-      //       redirectUrl={workflow.redirectUrl}
-      //       isRedirectDisabled={isRedirectDisabled}
-      //       languageCode={languageCode}
-      //       replaceRecallInfo={replaceRecallInfo}
-      //       isInIframe={isInIframe}
-      //     />
-      //   );
-      // } else {
-      //   return (
-      //     currentQuestion && (
-      //       <QuestionConditional
-      //         workflowId={workflow.id}
-      //         question={parseRecallInformation(currentQuestion)}
-      //         value={responseData[currentQuestion.id]}
-      //         onChange={onChange}
-      //         onSubmit={onSubmit}
-      //         onBack={onBack}
-      //         ttc={ttc}
-      //         setTtc={setTtc}
-      //         onFileUpload={onFileUpload}
-      //         isFirstQuestion={currentQuestion.id === workflow?.questions[0]?.id}
-      //         isLastQuestion={currentQuestion.id === workflow.questions[workflow.questions.length - 1].id}
-      //         languageCode={languageCode}
-      //         isInIframe={isInIframe}
-      //         isPromptVisible={isPromptVisible()}
-      //       />
-      //     )
-      //   );
-      // }
     };
-
-    // const fetchOpenAIResponse = async () => {
-    //   if (!workflow.prompt.message) return;
-
-    //   const promptMessage = processPromptMessage(
-    //     workflow.prompt.message,
-    //     workflow.prompt.attributes,
-    //     responseData
-    //   );
-
-    //   const requestData = {
-    //     messages: [
-    //       {
-    //         role: "system",
-    //         content: promptMessage,
-    //       },
-    //     ],
-    //     model: workflow.prompt.engine,
-    //     stream: false,
-    //   };
-
-    //   try {
-    //     const response = await typeflowaiAPI.client.openai.sendMessage(requestData);
-    //     if (response.ok) {
-    //       const data = response.data as TOpenAIResponse;
-    //       if ("limitReached" in data && data.limitReached) {
-    //         console.log("Error: Limit reached");
-    //         return;
-    //       }
-    //       const openAIResponse = response.data as TOpenAIResponse;
-    //       if (openAIResponse.choices && openAIResponse.choices.length > 0) {
-    //         const responseContent = openAIResponse.choices[0].message.content;
-    //         const updatedTtcObj = getUpdatedTtc(ttc, workflow.prompt.id, performance.now());
-    //         setTtc(updatedTtcObj);
-    //         const newResponseData = { ...responseData, [workflow.prompt.id]: responseContent };
-    //         onSubmit(newResponseData, updatedTtcObj);
-    //       } else {
-    //         console.error("No choices available in the response");
-    //       }
-    //     } else {
-    //       console.error("Error in API response:", response.error);
-    //     }
-    //   } catch (error) {
-    //     console.error("Error calling OpenAI API:", error);
-    //   }
-    // };
 
     return (
       <AutoCloseWrapper workflow={workflow} onClose={onClose}>
+        {offset === 0 && workflow.type !== "link" && <WorkflowCloseButton onClose={onClose} />}
         <div
           className={cn(
             "no-scrollbar md:rounded-custom rounded-t-custom bg-workflow-bg flex h-full w-full flex-col justify-between overflow-hidden transition-all duration-1000 ease-in-out",
