@@ -1,8 +1,9 @@
 import { BackButton } from "@/components/buttons/BackButton";
 import SubmitButton from "@/components/buttons/SubmitButton";
+import { ScrollableContainer } from "@/components/wrappers/ScrollableContainer";
 import { processPromptMessage } from "@/lib/parsePrompt";
 import { getUpdatedTtc, useTtc } from "@/lib/ttc";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { TypeflowAIAPI } from "@typeflowai/api";
 import { TResponseTtc } from "@typeflowai/types/responses";
@@ -25,11 +26,13 @@ interface PromptResponseProps {
   onBack: () => void;
   ttc: TResponseTtc;
   setTtc: (ttc: TResponseTtc) => void;
+  isInIframe: boolean;
   isPreview?: boolean;
   currentQuestionId: string;
 }
 
-export default function PromptResponse({
+// export default function PromptResponse({
+export const PromptResponse = ({
   prompt,
   workflowResponses,
   webAppUrl,
@@ -39,9 +42,10 @@ export default function PromptResponse({
   onSubmit,
   ttc,
   setTtc,
+  isInIframe,
   isPreview,
   currentQuestionId,
-}: PromptResponseProps) {
+}: PromptResponseProps) => {
   const [startTime, setStartTime] = useState(performance.now());
   useTtc(prompt.id, ttc, setTtc, startTime, setStartTime, prompt.id === currentQuestionId);
   const [openAIResponse, setOpenAIResponse] = useState("");
@@ -167,8 +171,19 @@ export default function PromptResponse({
     setTimeout(() => setCopyButtonLabel("Copy"), 2000);
   };
 
+  const promptResponseRef = useCallback(
+    (currentElement: HTMLFormElement | null) => {
+      if (prompt.id && currentElement && !isInIframe) {
+        currentElement.focus();
+      }
+    },
+    [prompt.id, isInIframe]
+  );
+
   return (
     <form
+      ref={promptResponseRef}
+      key={prompt.id}
       onSubmit={(e) => {
         e.preventDefault();
         const updatedTtcObj = getUpdatedTtc(ttc, prompt.id, performance.now() - startTime);
@@ -176,7 +191,7 @@ export default function PromptResponse({
         onSubmit({ [prompt.id]: openAIResponse }, updatedTtcObj);
       }}
       className="w-full">
-      <div className="w-full text-left">
+      <ScrollableContainer>
         <div>
           {prompt.description && (
             <label
@@ -224,35 +239,35 @@ export default function PromptResponse({
             )}
           </div>
         </div>
-        <div className="mt-4 flex w-full justify-between">
-          <BackButton
-            backButtonLabel="Back"
-            onClick={() => {
-              const updatedttc = getUpdatedTtc(ttc, prompt.id, performance.now() - startTime);
-              setTtc(updatedttc);
-              onBack();
-            }}
-          />
-          <div className="flex justify-end">
-            {isResponseComplete && (
-              <StartOverButton
-                title="Start over"
-                ariaLabel="Start over"
-                onClick={() => {
-                  startOver();
-                }}
-                label="Start Over"
-              />
-            )}
-            <SubmitButton
-              buttonLabel="Finish"
-              isLastQuestion={false}
-              isPromptVisible={true}
-              onClick={() => {}}
+      </ScrollableContainer>
+      <div className="flex w-full justify-between px-6 py-4">
+        <BackButton
+          backButtonLabel="Back"
+          onClick={() => {
+            const updatedttc = getUpdatedTtc(ttc, prompt.id, performance.now() - startTime);
+            setTtc(updatedttc);
+            onBack();
+          }}
+        />
+        <div className="flex justify-end">
+          {isResponseComplete && (
+            <StartOverButton
+              title="Start over"
+              ariaLabel="Start over"
+              onClick={() => {
+                startOver();
+              }}
+              label="Start Over"
             />
-          </div>
+          )}
+          <SubmitButton
+            buttonLabel="Finish"
+            isLastQuestion={false}
+            isPromptVisible={true}
+            onClick={() => {}}
+          />
         </div>
       </div>
     </form>
   );
-}
+};

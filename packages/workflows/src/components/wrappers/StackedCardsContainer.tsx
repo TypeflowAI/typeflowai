@@ -36,8 +36,11 @@ export const StackedCardsContainer = ({
     if (workflow.welcomeCard.enabled) {
       cardIndexTemp.unshift(-1);
     }
-    if (workflow.thankYouCard.enabled) {
+    if (workflow.prompt.enabled) {
       cardIndexTemp.push(workflow.questions.length);
+    }
+    if (workflow.thankYouCard.enabled) {
+      cardIndexTemp.push(workflow.questions.length + 1);
     }
     return cardIndexTemp;
   }, [workflow]);
@@ -45,6 +48,7 @@ export const StackedCardsContainer = ({
   const questionIdx = useMemo(() => {
     if (currentQuestionId === "start") return workflow.welcomeCard.enabled ? -1 : 0;
     if (currentQuestionId === "end") return workflow.thankYouCard.enabled ? workflow.questions.length : 0;
+    if (currentQuestionId === "prompt") return workflow.questions.length;
     return workflow.questions.findIndex((question) => question.id === currentQuestionId);
   }, [currentQuestionId, workflow.welcomeCard.enabled, workflow.thankYouCard.enabled, workflow.questions]);
 

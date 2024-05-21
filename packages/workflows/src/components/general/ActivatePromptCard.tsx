@@ -5,7 +5,7 @@ interface ActivatePromptProps {
 
 export default function ActivatePromptCard({ headline, subheader }: ActivatePromptProps) {
   return (
-    <div className="text-center">
+    <div className="relative pt-6 text-center">
       <div className="text-brand flex items-center justify-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"

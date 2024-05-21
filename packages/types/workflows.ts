@@ -491,7 +491,6 @@ export const workflowHasBothTriggers = (workflow: TWorkflow) => {
 
 export const ZWorkflow = z.object({
   id: z.string().cuid2(),
-
   createdAt: z.date(),
   updatedAt: z.date(),
   name: z.string(),

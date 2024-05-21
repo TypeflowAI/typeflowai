@@ -1,10 +1,18 @@
 "use client";
 
-import { ArrowUpFromLineIcon, CopyIcon, EyeIcon, LinkIcon, SquarePenIcon, TrashIcon } from "lucide-react";
+import {
+  ArrowUpFromLineIcon,
+  CopyIcon,
+  EyeIcon,
+  ImageIcon,
+  LinkIcon,
+  SquarePenIcon,
+  TrashIcon,
+} from "lucide-react";
 import { MoreVertical } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 import type { TEnvironment } from "@typeflowai/types/environment";
@@ -24,6 +32,8 @@ import {
   deleteWorkflowAction,
   duplicateWorkflowAction,
   getWorkflowAction,
+  handleFileUpload,
+  updateWorkflowAction,
 } from "../actions";
 
 interface WorkflowDropDownMenuProps {
@@ -53,6 +63,7 @@ export const WorkflowDropDownMenu = ({
   const [loading, setLoading] = useState(false);
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const router = useRouter();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const workflowUrl = useMemo(() => webAppUrl + "/s/" + workflow.id, [workflow.id, webAppUrl]);
 
@@ -99,6 +110,30 @@ export const WorkflowDropDownMenu = ({
     }
     setLoading(false);
   };
+
+  const handleUpload = async (file: File, environmentId: string) => {
+    setLoading(true);
+    try {
+      const { url, error } = await handleFileUpload(file, environmentId);
+
+      if (error) {
+        toast.error(error);
+        setLoading(false);
+        return;
+      }
+
+      await updateWorkflowAction(workflow, url);
+
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      toast.error("Icon update failed. Please try again.");
+      setLoading(false);
+    }
+
+    setLoading(false);
+  };
+
   if (loading) {
     return (
       <div className="opacity-0.2 absolute left-0 top-0 h-full w-full bg-slate-100">
@@ -229,9 +264,33 @@ export const WorkflowDropDownMenu = ({
                 </button>
               </DropdownMenuItem>
             )}
+            <DropdownMenuItem>
+              <button
+                className="flex w-full  items-center"
+                onClick={() => {
+                  inputRef.current?.click();
+                }}>
+                <ImageIcon className="mr-2 h-4 w-4" />
+                Change Icon
+              </button>
+            </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      <input
+        type="file"
+        id="hiddenFileInput"
+        ref={inputRef}
+        className="hidden"
+        accept="image/*"
+        onChange={async (e) => {
+          const file = e.target.files?.[0];
+          if (file) {
+            await handleUpload(file, environmentId);
+          }
+        }}
+      />
 
       {!isWorkflowCreationDeletionDisabled && (
         <DeleteDialog

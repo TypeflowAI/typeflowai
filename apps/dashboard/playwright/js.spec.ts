@@ -112,7 +112,7 @@ test.describe("JS Package Test", async () => {
 
     // TypeflowAI Modal is not visible
     await expect(
-      page.locator("#questionCard-6").getByRole("link", { name: "Powered by Formbricks" })
+      page.locator("#questionCard-6").getByRole("link", { name: "Powered by TypeflowAI" })
     ).toBeVisible();
     await page.waitForLoadState("networkidle");
     await page.waitForTimeout(5000);

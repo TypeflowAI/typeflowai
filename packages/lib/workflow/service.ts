@@ -73,6 +73,7 @@ export const selectWorkflow = {
   displayPercentage: true,
   autoComplete: true,
   verifyEmail: true,
+  icon: true,
   redirectUrl: true,
   productOverwrites: true,
   styling: true,

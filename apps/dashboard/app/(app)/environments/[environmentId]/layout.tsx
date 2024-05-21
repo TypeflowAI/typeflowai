@@ -1,4 +1,4 @@
-import EnvironmentAlert from "@/app/(app)/environments/[environmentId]/components/EnvironmentAlert";
+// import EnvironmentAlert from "@/app/(app)/environments/[environmentId]/components/EnvironmentAlert";
 import EnvironmentsNavbar from "@/app/(app)/environments/[environmentId]/components/EnvironmentsNavbar";
 import { ResponseFilterProvider } from "@/app/(app)/environments/[environmentId]/components/ResponseFilterContext";
 import { getServerSession } from "next-auth";
@@ -36,6 +36,38 @@ export default async function EnvironmentLayout({ children, params }) {
     throw new Error("Team not found");
   }
 
+  // return (
+  //   <>
+  //     <ResponseFilterProvider>
+  //       <PosthogIdentify
+  //         session={session}
+  //         environmentId={params.environmentId}
+  //         teamId={team.id}
+  //         teamName={team.name}
+  //       />
+  //       <TypeflowAIClient session={session} />
+  //       <ToasterClient />
+  //       <div className="hidden h-screen lg:flex lg:flex-col">
+  //         <EnvironmentsNavbar environmentId={params.environmentId} session={session} isMobile={false} />
+  //         <div className="h-screen">
+  //           <EnvironmentAlert className="ml-64" environment={environment} />
+  //           <main className="h-full flex-1 overflow-y-auto bg-slate-50">
+  //             {children}
+  //             <main />
+  //           </main>
+  //         </div>
+  //       </div>
+  //       <div className="flex w-full lg:hidden">
+  //         <EnvironmentsNavbar environmentId={params.environmentId} session={session} isMobile={true} />
+  //       </div>
+  //       <main className="h-full flex-1 overflow-y-auto bg-slate-50">
+  //         {children}
+  //         <main />
+  //       </main>
+  //     </ResponseFilterProvider>
+  //   </>
+  // );
+
   return (
     <>
       <ResponseFilterProvider>
@@ -47,19 +79,7 @@ export default async function EnvironmentLayout({ children, params }) {
         />
         <TypeflowAIClient session={session} />
         <ToasterClient />
-        <div className="hidden h-screen lg:flex lg:flex-col">
-          <EnvironmentsNavbar environmentId={params.environmentId} session={session} isMobile={false} />
-          <div className="h-screen">
-            <EnvironmentAlert className="ml-64" environment={environment} />
-            <main className="h-full flex-1 overflow-y-auto bg-slate-50">
-              {children}
-              <main />
-            </main>
-          </div>
-        </div>
-        <div className="flex w-full lg:hidden">
-          <EnvironmentsNavbar environmentId={params.environmentId} session={session} isMobile={true} />
-        </div>
+        <EnvironmentsNavbar environmentId={params.environmentId} session={session} />
         <main className="h-full flex-1 overflow-y-auto bg-slate-50">
           {children}
           <main />

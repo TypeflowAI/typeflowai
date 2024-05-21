@@ -1,4 +1,5 @@
 import { Code, EarthIcon, Link2Icon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
@@ -106,7 +107,23 @@ export const WorkflowCard = ({
           />
         </div>
         <div>
-          <div className="text-md font-medium text-slate-900">{workflow.name}</div>
+          <div className="mt-4 flex flex-row">
+            {workflow.icon && (
+              <Image
+                width={48}
+                height={48}
+                src={workflow.icon}
+                style={{
+                  objectFit: "cover",
+                }}
+                className="h-12 w-12"
+                alt="Workflow Image"
+              />
+            )}
+            <div className={`mt-1 ${workflow.icon ? "ml-4" : ""}`}>
+              <p className="text-md font-medium text-slate-900">{workflow.name}</p>
+            </div>
+          </div>
           <div
             className={cn(
               "mt-3 flex w-fit items-center gap-2 rounded-full py-1 pl-1 pr-2 text-xs text-slate-800",
@@ -130,8 +147,22 @@ export const WorkflowCard = ({
         key={workflow.id}
         className="relative grid w-full grid-cols-8 place-items-center gap-3 rounded-xl border border-slate-200 bg-white p-4
     shadow-sm transition-all ease-in-out hover:scale-[101%]">
-        <div className="col-span-2 flex max-w-full items-center justify-self-start truncate whitespace-nowrap text-sm font-medium text-slate-900">
-          {workflow.name}
+        <div className="col-span-2 mt-4 flex flex max-w-full flex-row items-center justify-self-start truncate ">
+          {workflow.icon && (
+            <Image
+              width={48}
+              height={48}
+              src={workflow.icon}
+              style={{
+                objectFit: "cover",
+              }}
+              className="h-12 w-12"
+              alt="Workflow Image"
+            />
+          )}
+          <div className={`mt-1 ${workflow.icon ? "ml-4" : ""}`}>
+            <p className="whitespace-nowrap text-sm font-medium text-slate-900">{workflow.name}</p>
+          </div>
         </div>
         <div
           className={cn(

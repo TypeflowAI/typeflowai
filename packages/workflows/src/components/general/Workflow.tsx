@@ -1,6 +1,6 @@
 import ActivatePromptCard from "@/components/general/ActivatePromptCard";
 import { ProgressBar } from "@/components/general/ProgressBar";
-import PromptResponse from "@/components/general/PromptResponse";
+import { PromptResponse } from "@/components/general/PromptResponse";
 import { QuestionConditional } from "@/components/general/QuestionConditional";
 import { ResponseErrorComponent } from "@/components/general/ResponseErrorComponent";
 import SavingCard from "@/components/general/SavingCard";
@@ -199,7 +199,12 @@ export const Workflow = ({
       return "prompt";
     }
 
-    return isLastQuestion ? "end" : questions[currIdxTemp + 1]?.id;
+    if (isLastQuestion) {
+      return "end";
+    }
+
+    return questions[currIdxTemp + 1]?.id;
+    // return isLastQuestion ? "end" : questions[currIdxTemp + 1]?.id;
   };
 
   const isPromptVisible = () => {
@@ -353,7 +358,7 @@ export const Workflow = ({
             isInIframe={isInIframe}
           />
         );
-      } else if (questionId === "prompt") {
+      } else if (questionIdx === workflow.questions.length && questionId === "prompt") {
         if (!workflow.prompt.enabled) {
           return <ActivatePromptCard headline="Edit and Activate your prompt" />;
         } else if (workflow.prompt.enabled && !workflow.prompt.isVisible) {
@@ -364,6 +369,7 @@ export const Workflow = ({
         } else if (workflow.prompt.enabled && workflow.prompt.isVisible) {
           return (
             <PromptResponse
+              key={questionId}
               prompt={workflow.prompt}
               webAppUrl={webAppUrl}
               environmentId={workflow.environmentId}
@@ -373,129 +379,56 @@ export const Workflow = ({
               onBack={onBack}
               ttc={ttc}
               setTtc={setTtc}
+              isInIframe={isInIframe}
               isPreview={isPreview}
               currentQuestionId={questionId}
             />
           );
-        } else if (questionIdx === workflow.questions.length || questionId === "prompt") {
-          return (
-            <ThankYouCard
-              headline={workflow.thankYouCard.headline}
-              subheader={workflow.thankYouCard.subheader}
-              isResponseSendingFinished={isResponseSendingFinished}
-              buttonLabel={workflow.thankYouCard.buttonLabel}
-              buttonLink={workflow.thankYouCard.buttonLink}
-              imageUrl={workflow.thankYouCard.imageUrl}
-              videoUrl={workflow.thankYouCard.videoUrl}
-              redirectUrl={workflow.redirectUrl}
-              isRedirectDisabled={isRedirectDisabled}
-              languageCode={languageCode}
-              replaceRecallInfo={replaceRecallInfo}
-              isInIframe={isInIframe}
-            />
-          );
-        } else {
-          const question = workflow.questions[questionIdx];
-          return (
-            question && (
-              <QuestionConditional
-                workflowId={workflow.id}
-                question={parseRecallInformation(question)}
-                value={responseData[question.id]}
-                onChange={onChange}
-                onSubmit={onSubmit}
-                onBack={onBack}
-                ttc={ttc}
-                setTtc={setTtc}
-                onFileUpload={onFileUpload}
-                isFirstQuestion={
-                  history && prefillResponseData
-                    ? history[history.length - 1] === workflow.questions[0].id
-                    : question.id === workflow?.questions[0]?.id
-                }
-                isLastQuestion={question.id === workflow.questions[workflow.questions.length - 1].id}
-                languageCode={languageCode}
-                isInIframe={isInIframe}
-                currentQuestionId={questionId}
-                isPromptVisible={isPromptVisible()}
-              />
-            )
-          );
         }
-        // if (questionId === "start" && workflow.welcomeCard.enabled) {
-        //   return (
-        //     <WelcomeCard
-        //       headline={workflow.welcomeCard.headline}
-        //       html={workflow.welcomeCard.html}
-        //       fileUrl={workflow.welcomeCard.fileUrl}
-        //       buttonLabel={workflow.welcomeCard.buttonLabel}
-        //       onSubmit={onSubmit}
-        //       workflow={workflow}
-        //       languageCode={languageCode}
-        //       responseCount={responseCount}
-        //       isInIframe={isInIframe}
-        //     />
-        //   );
-        // } else if (questionId === "prompt" && !workflow.prompt.enabled) {
-        //   return <ActivatePromptCard headline="Edit and Activate your prompt" />;
-        // } else if (questionId === "prompt" && workflow.prompt.enabled && !workflow.prompt.isVisible) {
-        //   if (!isPreview) {
-        //     fetchOpenAIResponse();
-        //   }
-        //   return <SavingCard headline="Saving your response..." />;
-        // } else if (questionId === "prompt" && workflow.prompt.enabled && workflow.prompt.isVisible) {
-        //   return (
-        //     <PromptResponse
-        //       prompt={workflow.prompt}
-        //       webAppUrl={webAppUrl}
-        //       environmentId={workflow.environmentId}
-        //       workflowResponses={responseData}
-        //       onChange={onChange}
-        //       onSubmit={onSubmit}
-        //       onBack={onBack}
-        //       ttc={ttc}
-        //       setTtc={setTtc}
-        //       isPreview={isPreview}
-        //     />
-        //   );
-        // } else if ((questionId === "end" || questionId === "prompt") && workflow.thankYouCard.enabled) {
-        //   return (
-        //     <ThankYouCard
-        //       headline={workflow.thankYouCard.headline}
-        //       subheader={workflow.thankYouCard.subheader}
-        //       isResponseSendingFinished={isResponseSendingFinished}
-        //       buttonLabel={workflow.thankYouCard.buttonLabel}
-        //       buttonLink={workflow.thankYouCard.buttonLink}
-        //       imageUrl={workflow.thankYouCard.imageUrl}
-        //       videoUrl={workflow.thankYouCard.videoUrl}
-        //       redirectUrl={workflow.redirectUrl}
-        //       isRedirectDisabled={isRedirectDisabled}
-        //       languageCode={languageCode}
-        //       replaceRecallInfo={replaceRecallInfo}
-        //       isInIframe={isInIframe}
-        //     />
-        //   );
-        // } else {
-        //   return (
-        //     currentQuestion && (
-        //       <QuestionConditional
-        //         workflowId={workflow.id}
-        //         question={parseRecallInformation(currentQuestion)}
-        //         value={responseData[currentQuestion.id]}
-        //         onChange={onChange}
-        //         onSubmit={onSubmit}
-        //         onBack={onBack}
-        //         ttc={ttc}
-        //         setTtc={setTtc}
-        //         onFileUpload={onFileUpload}
-        //         isFirstQuestion={currentQuestion.id === workflow?.questions[0]?.id}
-        //         isLastQuestion={currentQuestion.id === workflow.questions[workflow.questions.length - 1].id}
-        //         languageCode={languageCode}
-        //         isInIframe={isInIframe}
-        //         isPromptVisible={isPromptVisible()}
-        //       />
-        //     )
-        //   );
+      } else if (questionIdx === workflow.questions.length && questionId === "end") {
+        return (
+          <ThankYouCard
+            headline={workflow.thankYouCard.headline}
+            subheader={workflow.thankYouCard.subheader}
+            isResponseSendingFinished={isResponseSendingFinished}
+            buttonLabel={workflow.thankYouCard.buttonLabel}
+            buttonLink={workflow.thankYouCard.buttonLink}
+            imageUrl={workflow.thankYouCard.imageUrl}
+            videoUrl={workflow.thankYouCard.videoUrl}
+            redirectUrl={workflow.redirectUrl}
+            isRedirectDisabled={isRedirectDisabled}
+            languageCode={languageCode}
+            replaceRecallInfo={replaceRecallInfo}
+            isInIframe={isInIframe}
+          />
+        );
+      } else {
+        const question = workflow.questions[questionIdx];
+        return (
+          question && (
+            <QuestionConditional
+              workflowId={workflow.id}
+              question={parseRecallInformation(question)}
+              value={responseData[question.id]}
+              onChange={onChange}
+              onSubmit={onSubmit}
+              onBack={onBack}
+              ttc={ttc}
+              setTtc={setTtc}
+              onFileUpload={onFileUpload}
+              isFirstQuestion={
+                history && prefillResponseData
+                  ? history[history.length - 1] === workflow.questions[0].id
+                  : question.id === workflow?.questions[0]?.id
+              }
+              isLastQuestion={question.id === workflow.questions[workflow.questions.length - 1].id}
+              languageCode={languageCode}
+              isInIframe={isInIframe}
+              currentQuestionId={questionId}
+              isPromptVisible={isPromptVisible()}
+            />
+          )
+        );
       }
     };
 

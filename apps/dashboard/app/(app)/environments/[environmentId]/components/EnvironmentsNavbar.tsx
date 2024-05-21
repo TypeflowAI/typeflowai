@@ -1,6 +1,6 @@
-// import Navigation from "@/app/(app)/environments/[environmentId]/components/Navigation";
-import NavigationDesktop from "@/app/(app)/environments/[environmentId]/components/NavigationDesktop";
-import NavigationMobile from "@/app/(app)/environments/[environmentId]/components/NavigationMobile";
+import Navigation from "@/app/(app)/environments/[environmentId]/components/Navigation";
+// import NavigationDesktop from "@/app/(app)/environments/[environmentId]/components/NavigationDesktop";
+// import NavigationMobile from "@/app/(app)/environments/[environmentId]/components/NavigationMobile";
 import { Session } from "next-auth";
 
 import { getIsPaidSubscription } from "@typeflowai/ee/subscription/lib/service";
@@ -14,13 +14,13 @@ import { ErrorComponent } from "@typeflowai/ui/ErrorComponent";
 interface EnvironmentsNavbarProps {
   environmentId: string;
   session: Session;
-  isMobile: boolean;
+  // isMobile: boolean;
 }
 
 export default async function EnvironmentsNavbar({
   environmentId,
   session,
-  isMobile,
+  // isMobile,
 }: EnvironmentsNavbarProps) {
   const [environment, teams, team] = await Promise.all([
     getEnvironment(environmentId),
@@ -44,20 +44,34 @@ export default async function EnvironmentsNavbar({
   }
   const currentUserMembership = await getMembershipByUserIdTeamId(session?.user.id, team.id);
 
-  return isMobile ? (
-    <NavigationMobile
-      environment={environment}
-      team={team}
-      teams={teams}
-      products={products}
-      environments={environments}
-      isTypeflowAICloud={IS_TYPEFLOWAI_CLOUD}
-      webAppUrl={WEBAPP_URL}
-      membershipRole={currentUserMembership?.role}
-      isMultiLanguageAllowed={isMultiLanguageAllowed}
-    />
-  ) : (
-    <NavigationDesktop
+  // return isMobile ? (
+  //   <NavigationMobile
+  //     environment={environment}
+  //     team={team}
+  //     teams={teams}
+  //     products={products}
+  //     environments={environments}
+  //     isTypeflowAICloud={IS_TYPEFLOWAI_CLOUD}
+  //     webAppUrl={WEBAPP_URL}
+  //     membershipRole={currentUserMembership?.role}
+  //     isMultiLanguageAllowed={isMultiLanguageAllowed}
+  //   />
+  // ) : (
+  //   <NavigationDesktop
+  //     environment={environment}
+  //     team={team}
+  //     teams={teams}
+  //     products={products}
+  //     environments={environments}
+  //     session={session}
+  //     isTypeflowAICloud={IS_TYPEFLOWAI_CLOUD}
+  //     webAppUrl={WEBAPP_URL}
+  //     membershipRole={currentUserMembership?.role}
+  //     isMultiLanguageAllowed={isMultiLanguageAllowed}
+  //   />
+  // );
+  return (
+    <Navigation
       environment={environment}
       team={team}
       teams={teams}
@@ -70,16 +84,4 @@ export default async function EnvironmentsNavbar({
       isMultiLanguageAllowed={isMultiLanguageAllowed}
     />
   );
-  // return (
-  //   <Navigation
-  //     environment={environment}
-  //     team={team}
-  //     teams={teams}
-  //     products={products}
-  //     environments={environments}
-  //     isTypeflowAICloud={IS_TYPEFLOWAI_CLOUD}
-  //     webAppUrl={WEBAPP_URL}
-  //     membershipRole={currentUserMembership?.role}
-  //   />
-  // );
 }
