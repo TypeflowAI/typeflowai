@@ -16,12 +16,12 @@ export const EmailTemplate = ({ content }: EmailTemplateProps) => (
           style={{
             fontFamily: "'Poppins', 'Helvetica Neue', 'Segoe UI', 'Helvetica', 'sans-serif'",
           }}>
-          <Section className="flex items-center justify-center">
+          <Section>
             <Link href="https://typeflowai.com?utm_source=email_header&utm_medium=email" target="_blank">
               <Img
                 src="https://s3.eu-central-1.amazonaws.com/listmonk-typeflowai/TypeflowAI-Light-transparent.png"
                 alt="TypeflowAI Logo"
-                className="w-80"
+                className="mx-auto w-80"
               />
             </Link>
           </Section>
