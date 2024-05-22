@@ -23,6 +23,6 @@
   },
   "dependencies": {
     "@typeflowai/lib": "workspace:*",
-    "stripe": "^15.3.0"
+    "stripe": "^15.5.0"
   }
 }

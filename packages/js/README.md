@@ -15,7 +15,7 @@ TypeflowAI is your go-to solution for in-product micro-workflows that will super
 1. Install the TypeflowAI package inside your project using npm:
 
 ```bash
-npm install -s @typeflowai/js
+npm install @typeflowai/js
 ```
 
 1. Import TypeflowAI and initialize the widget in your main component (e.g., App.tsx or App.js):
@@ -28,7 +28,7 @@ import typeflowai from "@typeflowai/js/website";
 if (typeof window !== "undefined") {
   typeflowai.init({
     environmentId: "your-environment-id",
-    apiHost: "https://app.typeflowai.com",
+    apiHost: "https://dashboard.typeflowai.com",
   });
 }
 ```
@@ -41,7 +41,7 @@ import typeflowai from "@typeflowai/js/app";
 if (typeof window !== "undefined") {
   typeflowai.init({
     environmentId: "your-environment-id",
-    apiHost: "https://app.typeflowai.com",
+    apiHost: "https://dashboard.typeflowai.com",
     userId: "REPLACE_WITH_DYNAMIC_ID",
   });
 }
