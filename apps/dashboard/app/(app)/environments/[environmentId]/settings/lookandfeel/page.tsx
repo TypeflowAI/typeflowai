@@ -33,8 +33,8 @@ export default async function ProfileSettingsPage({ params }: { params: { enviro
     throw new Error("Team not found");
   }
 
-  const canRemoveInAppBranding = getIsPaidSubscription(team);
-  const canRemoveLinkBranding = getIsPaidSubscription(team);
+  const canRemoveInAppBranding = await getIsPaidSubscription(team);
+  const canRemoveLinkBranding = await getIsPaidSubscription(team);
 
   const currentUserMembership = await getMembershipByUserIdTeamId(session?.user.id, team.id);
   const { isViewer } = getAccessFlags(currentUserMembership?.role);

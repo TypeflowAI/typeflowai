@@ -34,7 +34,7 @@ export default async function SettingsLayout({ children, params }) {
     throw new Error("Unauthenticated");
   }
 
-  const isMultiLanguageAllowed = getIsPaidSubscription(team);
+  const isMultiLanguageAllowed = await getIsPaidSubscription(team);
 
   const currentUserMembership = await getMembershipByUserIdTeamId(session?.user.id, team.id);
 

@@ -61,7 +61,7 @@ export default async function LinkWorkflowPage({ params, searchParams }: LinkWor
   if (!team) {
     throw new Error("Team not found");
   }
-  const isMultiLanguageAllowed = getIsPaidSubscription(team);
+  const isMultiLanguageAllowed = await getIsPaidSubscription(team);
 
   if (workflow && workflow.status !== "inProgress") {
     return (

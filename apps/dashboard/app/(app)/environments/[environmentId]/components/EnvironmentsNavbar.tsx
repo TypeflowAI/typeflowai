@@ -32,7 +32,7 @@ export default async function EnvironmentsNavbar({
     return <ErrorComponent />;
   }
 
-  const isMultiLanguageAllowed = getIsPaidSubscription(team);
+  const isMultiLanguageAllowed = await getIsPaidSubscription(team);
 
   const [products, environments] = await Promise.all([
     getProducts(team.id),

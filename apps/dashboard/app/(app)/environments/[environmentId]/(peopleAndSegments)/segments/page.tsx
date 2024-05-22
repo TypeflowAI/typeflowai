@@ -29,7 +29,7 @@ export default async function SegmentsPage({ params }) {
     throw new Error("Team not found");
   }
 
-  const isAdvancedTargetingAllowed = getIsPaidSubscription(team);
+  const isAdvancedTargetingAllowed = await getIsPaidSubscription(team);
 
   if (!segments) {
     throw new Error("Failed to fetch segments");

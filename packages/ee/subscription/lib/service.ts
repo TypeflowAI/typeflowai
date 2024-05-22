@@ -3,47 +3,47 @@ import "server-only";
 import { IS_TYPEFLOWAI_CLOUD } from "@typeflowai/lib/constants";
 import { TTeam } from "@typeflowai/types/teams";
 
-export const getIsBasicSubscription = (team: TTeam): boolean => {
+export const getIsBasicSubscription = async (team: TTeam): Promise<boolean> => {
   if (IS_TYPEFLOWAI_CLOUD) return team.billing.subscriptionType === "basic";
   else if (!IS_TYPEFLOWAI_CLOUD) return true;
   else return false;
 };
 
-export const getIsProSubscription = (team: TTeam): boolean => {
+export const getIsProSubscription = async (team: TTeam): Promise<boolean> => {
   if (IS_TYPEFLOWAI_CLOUD) return team.billing.subscriptionType === "pro";
   else if (!IS_TYPEFLOWAI_CLOUD) return false;
   else return false;
 };
 
-export const getIsEnterpriseSubscription = (team: TTeam): boolean => {
+export const getIsEnterpriseSubscription = async (team: TTeam): Promise<boolean> => {
   if (IS_TYPEFLOWAI_CLOUD) return team.billing.subscriptionType === "enterprise";
   else if (!IS_TYPEFLOWAI_CLOUD) return false;
   else return false;
 };
 
-export const getIsPaidSubscription = (team: TTeam): boolean => {
+export const getIsPaidSubscription = async (team: TTeam): Promise<boolean> => {
   if (IS_TYPEFLOWAI_CLOUD) return team.billing.subscriptionStatus !== "inactive";
   else if (!IS_TYPEFLOWAI_CLOUD) return true;
   else return false;
 };
 
-export const getSubscriptionType = (team: TTeam): string => {
-  if (getIsBasicSubscription(team)) {
+export const getSubscriptionType = async (team: TTeam): Promise<string> => {
+  if (await getIsBasicSubscription(team)) {
     return "basic";
-  } else if (getIsProSubscription(team)) {
+  } else if (await getIsProSubscription(team)) {
     return "pro";
-  } else if (getIsEnterpriseSubscription(team)) {
+  } else if (await getIsEnterpriseSubscription(team)) {
     return "enterprise";
   } else {
     return "free";
   }
 };
 
-export const getIsEngineLimited = (team: TTeam): boolean => {
+export const getIsEngineLimited = async (team: TTeam): Promise<boolean> => {
   if (!IS_TYPEFLOWAI_CLOUD) {
     return false;
   } else {
-    if (!getIsProSubscription(team) || !getIsEnterpriseSubscription(team)) {
+    if (!(await getIsProSubscription(team)) || !(await getIsEnterpriseSubscription(team))) {
       return false;
     } else return true;
   }

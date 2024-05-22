@@ -51,7 +51,7 @@ export default async function MembersSettingsPage({ params }: { params: { enviro
   if (!team) {
     throw new Error("Team not found");
   }
-  const canDoRoleManagement = getIsPaidSubscription(team);
+  const canDoRoleManagement = await getIsPaidSubscription(team);
 
   const currentUserMembership = await getMembershipByUserIdTeamId(session?.user.id, team.id);
   const { isOwner, isAdmin } = getAccessFlags(currentUserMembership?.role);

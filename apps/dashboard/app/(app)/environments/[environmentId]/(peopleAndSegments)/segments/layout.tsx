@@ -16,7 +16,7 @@ export default async function PeopleLayout({ params, children }) {
     throw new Error("Team not found");
   }
 
-  const isUserTargetingAllowed = getIsPaidSubscription(team);
+  const isUserTargetingAllowed = await getIsPaidSubscription(team);
 
   return (
     <>

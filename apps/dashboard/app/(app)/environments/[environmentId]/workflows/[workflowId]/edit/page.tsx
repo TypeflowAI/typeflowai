@@ -64,8 +64,8 @@ export default async function WorkflowsEditPage({ params }) {
   const { isViewer } = getAccessFlags(currentUserMembership?.role);
   const isWorkflowCreationDeletionDisabled = isViewer;
 
-  const isUserTargetingAllowed = getIsPaidSubscription(team);
-  const isMultiLanguageAllowed = getIsPaidSubscription(team);
+  const isUserTargetingAllowed = await getIsPaidSubscription(team);
+  const isMultiLanguageAllowed = await getIsPaidSubscription(team);
 
   if (
     !workflow ||
