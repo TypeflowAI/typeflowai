@@ -21,8 +21,6 @@ import {
   TWorkflowQuestions,
   TWorkflowThankYouCard,
   TWorkflowWelcomeCard,
-  ZWorkflowInlineTriggers,
-  workflowHasBothTriggers,
 } from "@typeflowai/types/workflows";
 
 // Utility function to check if label is valid for all required languages
@@ -457,21 +455,6 @@ export const isWorkflowValid = (
       toast.error(errMsg);
       return false;
     }
-  }
-
-  // if inlineTriggers are present validate with zod
-  if (!!workflow.inlineTriggers) {
-    const parsedInlineTriggers = ZWorkflowInlineTriggers.safeParse(workflow.inlineTriggers);
-    if (!parsedInlineTriggers.success) {
-      toast.error("Invalid Custom Actions: Please check your custom actions");
-      return false;
-    }
-  }
-
-  // validate that both triggers and inlineTriggers are not present
-  if (workflowHasBothTriggers(workflow)) {
-    toast.error("Workflow cannot have both custom and saved actions, please remove one.");
-    return false;
   }
 
   const questionWithEmptyFallback = checkForEmptyFallBackValue(workflow, selectedLanguageCode);

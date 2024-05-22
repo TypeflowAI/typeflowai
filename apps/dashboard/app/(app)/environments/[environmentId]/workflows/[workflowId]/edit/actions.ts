@@ -2,6 +2,7 @@
 
 import { getServerSession } from "next-auth";
 
+import { createActionClass } from "@typeflowai/lib/actionClass/service";
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { UNSPLASH_ACCESS_KEY } from "@typeflowai/lib/constants";
 import { hasUserEnvironmentAccess } from "@typeflowai/lib/environment/auth";
@@ -23,6 +24,7 @@ import {
   loadNewSegmentInWorkflow,
   updateWorkflow,
 } from "@typeflowai/lib/workflow/service";
+import { TActionClassInput } from "@typeflowai/types/actionClasses";
 import { AuthorizationError } from "@typeflowai/types/errors";
 import { TProduct } from "@typeflowai/types/product";
 import { TBaseFilters, TSegmentUpdateInput, ZSegmentFilters } from "@typeflowai/types/segment";
@@ -247,4 +249,14 @@ export async function triggerDownloadUnsplashImageAction(downloadUrl: string) {
   } catch (error) {
     throw new Error("Error downloading image from Unsplash");
   }
+}
+
+export async function createActionClassAction(action: TActionClassInput) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new AuthorizationError("Not authorized");
+
+  const isAuthorized = await hasUserEnvironmentAccess(session.user.id, action.environmentId);
+  if (!isAuthorized) throw new AuthorizationError("Not authorized");
+
+  return await createActionClass(action.environmentId, action);
 }

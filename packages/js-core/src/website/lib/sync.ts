@@ -67,7 +67,7 @@ export const sync = async (params: TJsWebsiteSyncParams, noCache = false): Promi
 
     let state: TJsWebsiteState = {
       workflows: syncResult.value.workflows as TWorkflow[],
-      noCodeActionClasses: syncResult.value.noCodeActionClasses,
+      actionClasses: syncResult.value.actionClasses,
       product: syncResult.value.product,
       displays: oldState?.displays || [],
     };

@@ -141,5 +141,4 @@ export const PREVIEW_WORKFLOW = {
   resultShareKey: null,
   languages: [],
   triggers: [],
-  inlineTriggers: null,
 } as TWorkflow;

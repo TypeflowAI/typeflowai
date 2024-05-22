@@ -99,7 +99,7 @@ export const mockUser: TUser = {
   onboardingCompleted: true,
   twoFactorEnabled: false,
   identityProvider: "google",
-  objective: "improve_user_retention",
+  objective: "improve_business_strategy",
   notificationSettings: {
     alert: {},
     weeklySummary: {},
@@ -131,6 +131,7 @@ export const mockActionClass: TActionClass = {
   type: "code",
   description: "mock desc",
   noCodeConfig: null,
+  key: "mock action class",
   ...commonMockProperties,
 };
 
@@ -190,24 +191,16 @@ export const mockTeamOutput: TTeam = {
   updatedAt: currentDate,
   billing: {
     stripeCustomerId: null,
+    subscriptionType: null,
+    subscriptionStatus: "inactive",
     features: {
-      inAppWorkflow: {
+      ai: {
         status: "inactive",
-        unlimited: false,
-      },
-      linkWorkflow: {
-        status: "inactive",
-        unlimited: false,
-      },
-      userTargeting: {
-        status: "inactive",
-        unlimited: false,
-      },
-      multiLanguage: {
-        status: "inactive",
+        responses: null,
         unlimited: false,
       },
     },
+    nextRenewalDate: null,
   },
 };
 
@@ -253,7 +246,7 @@ export const createWorkflowInput: TWorkflowInput = {
   type: "website",
   status: "inProgress",
   displayOption: "respondMultiple",
-  triggers: [mockActionClass.name],
+  triggers: [{ actionClass: mockActionClass }],
   ...baseWorkflowProperties,
 };
 
@@ -261,7 +254,7 @@ export const updateWorkflowInput: TWorkflow = {
   type: "website",
   status: "inProgress",
   displayOption: "respondMultiple",
-  triggers: [mockActionClass.name],
+  triggers: [{ actionClass: mockActionClass }],
   productOverwrites: null,
   styling: null,
   singleUse: null,
@@ -270,7 +263,6 @@ export const updateWorkflowInput: TWorkflow = {
   pin: null,
   resultShareKey: null,
   segment: null,
-  inlineTriggers: null,
   languages: [],
   ...commonMockProperties,
   ...baseWorkflowProperties,
@@ -278,10 +270,8 @@ export const updateWorkflowInput: TWorkflow = {
 
 export const mockTransformedWorkflowOutput = {
   ...mockWorkflowOutput,
-  triggers: mockWorkflowOutput.triggers.map((trigger) => trigger.actionClass.name),
 };
 
 export const mockTransformedSyncWorkflowOutput = {
   ...mockSyncWorkflowOutput,
-  triggers: mockWorkflowOutput.triggers.map((trigger) => trigger.actionClass.name),
 };

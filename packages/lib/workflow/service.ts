@@ -10,12 +10,7 @@ import { DatabaseError, InvalidInputError, ResourceNotFoundError } from "@typefl
 import { TLegacyWorkflow } from "@typeflowai/types/legacyWorkflow";
 import { TPerson } from "@typeflowai/types/people";
 import { TSegment, ZSegmentFilters } from "@typeflowai/types/segment";
-import {
-  TWorkflow,
-  TWorkflowFilterCriteria,
-  TWorkflowInput,
-  ZWorkflowWithRefinements,
-} from "@typeflowai/types/workflows";
+import { TWorkflow, TWorkflowFilterCriteria, TWorkflowInput, ZWorkflow } from "@typeflowai/types/workflows";
 
 import { getActionsByPersonId } from "../action/service";
 import { getActionClasses } from "../actionClass/service";
@@ -107,12 +102,12 @@ export const selectWorkflow = {
           name: true,
           description: true,
           type: true,
+          key: true,
           noCodeConfig: true,
         },
       },
     },
   },
-  inlineTriggers: true,
   segment: {
     include: {
       workflows: {
@@ -124,62 +119,70 @@ export const selectWorkflow = {
   },
 };
 
-const getActionClassIdFromName = (actionClasses: TActionClass[], actionClassName: string): string => {
-  return actionClasses.find((actionClass) => actionClass.name === actionClassName)!.id;
-};
+const checkTriggersValidity = (triggers: TWorkflow["triggers"], actionClasses: TActionClass[]) => {
+  if (!triggers) return;
 
-const revalidateWorkflowByActionClassName = (
-  actionClasses: TActionClass[],
-  actionClassNames: string[]
-): void => {
-  for (const actionClassName of actionClassNames) {
-    const actionClassId: string = getActionClassIdFromName(actionClasses, actionClassName);
-    workflowCache.revalidate({
-      actionClassId,
-    });
+  // check if all the triggers are valid
+  triggers.forEach((trigger) => {
+    if (!actionClasses.find((actionClass) => actionClass.id === trigger.actionClass.id)) {
+      throw new InvalidInputError("Invalid trigger id");
+    }
+  });
+
+  // check if all the triggers are unique
+  const triggerIds = triggers.map((trigger) => trigger.actionClass.id);
+
+  if (new Set(triggerIds).size !== triggerIds.length) {
+    throw new InvalidInputError("Duplicate trigger id");
   }
 };
 
-const processTriggerUpdates = (
-  triggers: string[],
-  currentWorkflowTriggers: string[],
+const handleTriggerUpdates = (
+  updatedTriggers: TWorkflow["triggers"],
+  currentTriggers: TWorkflow["triggers"],
   actionClasses: TActionClass[]
 ) => {
-  const newTriggers: string[] = [];
-  const removedTriggers: string[] = [];
+  console.log("updatedTriggers", updatedTriggers, currentTriggers);
+  if (!updatedTriggers) return {};
+  checkTriggersValidity(updatedTriggers, actionClasses);
 
-  // find added triggers
-  for (const trigger of triggers) {
-    if (!trigger || currentWorkflowTriggers.includes(trigger)) {
-      continue;
-    }
-    newTriggers.push(trigger);
-  }
+  const currentTriggerIds = currentTriggers.map((trigger) => trigger.actionClass.id);
+  const updatedTriggerIds = updatedTriggers.map((trigger) => trigger.actionClass.id);
 
-  // find removed triggers
-  for (const trigger of currentWorkflowTriggers) {
-    if (!triggers.includes(trigger)) {
-      removedTriggers.push(trigger);
-    }
-  }
+  // added triggers are triggers that are not in the current triggers and are there in the new triggers
+  const addedTriggers = updatedTriggers.filter(
+    (trigger) => !currentTriggerIds.includes(trigger.actionClass.id)
+  );
+
+  // deleted triggers are triggers that are not in the new triggers and are there in the current triggers
+  const deletedTriggers = currentTriggers.filter(
+    (trigger) => !updatedTriggerIds.includes(trigger.actionClass.id)
+  );
 
   // Construct the triggers update object
   const triggersUpdate: TriggerUpdate = {};
 
-  if (newTriggers.length > 0) {
-    triggersUpdate.create = newTriggers.map((trigger) => ({
-      actionClassId: getActionClassIdFromName(actionClasses, trigger),
+  if (addedTriggers.length > 0) {
+    triggersUpdate.create = addedTriggers.map((trigger) => ({
+      actionClassId: trigger.actionClass.id,
     }));
   }
 
-  if (removedTriggers.length > 0) {
+  if (deletedTriggers.length > 0) {
+    // disconnect the public triggers from the workflow
     triggersUpdate.deleteMany = {
       actionClassId: {
-        in: removedTriggers.map((trigger) => getActionClassIdFromName(actionClasses, trigger)),
+        in: deletedTriggers.map((trigger) => trigger.actionClass.id),
       },
     };
   }
-  revalidateWorkflowByActionClassName(actionClasses, [...newTriggers, ...removedTriggers]);
+
+  [...addedTriggers, ...deletedTriggers].forEach((trigger) => {
+    workflowCache.revalidate({
+      actionClassId: trigger.actionClass.id,
+    });
+  });
+
   return triggersUpdate;
 };
 
@@ -344,7 +347,7 @@ export const getWorkflowCount = async (environmentId: string): Promise<number> =
   )();
 
 export const updateWorkflow = async (updatedWorkflow: TWorkflow): Promise<TWorkflow> => {
-  validateInputs([updatedWorkflow, ZWorkflowWithRefinements]);
+  validateInputs([updatedWorkflow, ZWorkflow]);
 
   try {
     const workflowId = updatedWorkflow.id;
@@ -408,8 +411,9 @@ export const updateWorkflow = async (updatedWorkflow: TWorkflow): Promise<TWorkf
     }
 
     if (triggers) {
-      data.triggers = processTriggerUpdates(triggers, currentWorkflow.triggers, actionClasses);
+      data.triggers = handleTriggerUpdates(triggers, currentWorkflow.triggers, actionClasses);
     }
+
     // if the workflow body has type other than "app" but has a private segment, we delete that segment, and if it has a public segment, we disconnect from to the workflow
     if (segment) {
       if (type === "app") {
@@ -491,7 +495,6 @@ export const updateWorkflow = async (updatedWorkflow: TWorkflow): Promise<TWorkf
     // @ts-expect-error
     const modifiedWorkflow: TWorkflow = {
       ...prismaWorkflow, // Properties from prismaWorkflow
-      triggers: updatedWorkflow.triggers ? updatedWorkflow.triggers : [], // Include triggers from updatedWorkflow
       segment: workflowSegment,
     };
 
@@ -559,7 +562,7 @@ export async function deleteWorkflow(workflowId: string) {
       });
     }
 
-    // Revalidate triggers by actionClassId
+    // Revalidate public triggers by actionClassId
     deletedWorkflow.triggers.forEach((trigger) => {
       workflowCache.revalidate({
         actionClassId: trigger.actionClass.id,
@@ -584,23 +587,15 @@ export const createWorkflow = async (
   validateInputs([environmentId, ZId]);
 
   try {
-    // if the workflow body has both triggers and inlineTriggers, we throw an error
-    if (workflowBody.triggers && workflowBody.inlineTriggers) {
-      throw new InvalidInputError("Workflow body cannot have both triggers and inlineTriggers");
-    }
-
-    if (workflowBody.triggers) {
-      const actionClasses = await getActionClasses(environmentId);
-      revalidateWorkflowByActionClassName(actionClasses, workflowBody.triggers);
-    }
     const createdBy = workflowBody.createdBy;
     delete workflowBody.createdBy;
 
+    const actionClasses = await getActionClasses(environmentId);
     const data: Omit<Prisma.WorkflowCreateInput, "environment"> = {
       ...workflowBody,
       // TODO: Create with attributeFilters
       triggers: workflowBody.triggers
-        ? processTriggerUpdates(workflowBody.triggers, [], await getActionClasses(environmentId))
+        ? handleTriggerUpdates(workflowBody.triggers, [], actionClasses)
         : undefined,
       attributeFilters: undefined,
     };
@@ -663,7 +658,6 @@ export const createWorkflow = async (
     // @ts-expect-error
     const transformedWorkflow: TWorkflow = {
       ...workflow,
-      triggers: workflow.triggers.map((trigger) => trigger.actionClass.name),
       ...(workflow.segment && {
         segment: {
           ...workflow.segment,
@@ -702,8 +696,6 @@ export const duplicateWorkflow = async (environmentId: string, workflowId: strin
 
     const defaultLanguageId = existingWorkflow.languages.find((l) => l.default)?.language.id;
 
-    const actionClasses = await getActionClasses(environmentId);
-
     // create new workflow with the data of the existing workflow
     const newWorkflow = await prisma.workflow.create({
       data: {
@@ -725,10 +717,9 @@ export const duplicateWorkflow = async (environmentId: string, workflowId: strin
         },
         triggers: {
           create: existingWorkflow.triggers.map((trigger) => ({
-            actionClassId: getActionClassIdFromName(actionClasses, trigger),
+            actionClassId: trigger.actionClass.id,
           })),
         },
-        inlineTriggers: existingWorkflow.inlineTriggers ?? undefined,
         environment: {
           connect: {
             id: environmentId,
@@ -809,8 +800,11 @@ export const duplicateWorkflow = async (environmentId: string, workflowId: strin
       environmentId: newWorkflow.environmentId,
     });
 
-    // Revalidate workflows by actionClassId
-    revalidateWorkflowByActionClassName(actionClasses, existingWorkflow.triggers);
+    existingWorkflow.triggers.forEach((trigger) => {
+      workflowCache.revalidate({
+        actionClassId: trigger.actionClass.id,
+      });
+    });
 
     return newWorkflow;
   } catch (error) {
@@ -1073,7 +1067,6 @@ export const loadNewSegmentInWorkflow = async (
     // @ts-expect-error
     const modifiedWorkflow: TWorkflow = {
       ...prismaWorkflow, // Properties from prismaWorkflow
-      triggers: prismaWorkflow.triggers.map((trigger) => trigger.actionClass.name),
       segment: workflowSegment,
     };
 

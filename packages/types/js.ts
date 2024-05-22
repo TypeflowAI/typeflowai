@@ -32,7 +32,7 @@ export const ZJsAppStateSync = z.object({
   person: ZJsPerson.nullish(),
   userId: z.string().optional(),
   workflows: z.union([z.array(ZWorkflow), z.array(ZLegacyWorkflow)]),
-  noCodeActionClasses: z.array(ZActionClass),
+  actionClasses: z.array(ZActionClass),
   product: ZProduct,
   language: z.string().optional(),
 });
@@ -46,7 +46,7 @@ export type TJsWebsiteStateSync = z.infer<typeof ZJsWebsiteStateSync>;
 export const ZJsAppState = z.object({
   attributes: ZAttributes,
   workflows: z.array(ZWorkflow),
-  noCodeActionClasses: z.array(ZActionClass),
+  actionClasses: z.array(ZActionClass),
   product: ZProduct,
 });
 
@@ -54,13 +54,28 @@ export type TJsAppState = z.infer<typeof ZJsAppState>;
 
 export const ZJsWebsiteState = z.object({
   workflows: z.array(ZWorkflow),
-  noCodeActionClasses: z.array(ZActionClass),
+  actionClasses: z.array(ZActionClass),
   product: ZProduct,
   displays: z.array(ZJSWebsiteStateDisplay),
   attributes: ZAttributes.optional(),
 });
 
 export type TJsWebsiteState = z.infer<typeof ZJsWebsiteState>;
+
+export const ZJsAppLegacyStateSync = z.object({
+  person: ZJsPerson.nullish(),
+  userId: z.string().optional(),
+  workflows: z.union([z.array(ZWorkflow), z.array(ZLegacyWorkflow)]),
+  noCodeActionClasses: z.array(ZActionClass),
+  product: ZProduct,
+  language: z.string().optional(),
+});
+
+export type TJsAppLegacyStateSync = z.infer<typeof ZJsAppLegacyStateSync>;
+
+export const ZJsWebsiteLegacyStateSync = ZJsAppLegacyStateSync.omit({ person: true });
+
+export type TJsWebsiteLegacyStateSync = z.infer<typeof ZJsWebsiteLegacyStateSync>;
 
 export const ZJsLegacyState = z.object({
   person: ZPerson.nullable().or(z.object({})),

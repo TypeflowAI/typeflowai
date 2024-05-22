@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { ZNoCodeConfig } from "./actionClasses";
+import { ZActionClass, ZNoCodeConfig } from "./actionClasses";
 import { ZAttributes } from "./attributes";
 import { ZAllowedFileExtension, ZColor, ZPlacement } from "./common";
 import { ZId } from "./environment";
@@ -472,23 +472,6 @@ export const ZWorkflowInlineTriggers = z.object({
 
 export type TWorkflowInlineTriggers = z.infer<typeof ZWorkflowInlineTriggers>;
 
-export const workflowHasBothTriggers = (workflow: TWorkflow) => {
-  // if the triggers array has a single empty string, it means the workflow has no triggers
-  if (workflow.triggers?.[0] === "") {
-    return false;
-  }
-
-  const hasTriggers = workflow.triggers?.length > 0;
-  const hasInlineTriggers = !!workflow.inlineTriggers?.codeConfig || !!workflow.inlineTriggers?.noCodeConfig;
-
-  // Workflow cannot have both triggers and inlineTriggers
-  if (hasTriggers && hasInlineTriggers) {
-    return true;
-  }
-
-  return false;
-};
-
 export const ZWorkflow = z.object({
   id: z.string().cuid2(),
   createdAt: z.date(),
@@ -500,8 +483,7 @@ export const ZWorkflow = z.object({
   status: ZWorkflowStatus,
   displayOption: ZWorkflowDisplayOption,
   autoClose: z.number().nullable(),
-  triggers: z.array(z.string()),
-  inlineTriggers: ZWorkflowInlineTriggers.nullable(),
+  triggers: z.array(z.object({ actionClass: ZActionClass })),
   icon: z.string().nullable().optional(),
   redirectUrl: z.string().url().nullable(),
   recontactDays: z.number().nullable(),
@@ -526,60 +508,34 @@ export const ZWorkflow = z.object({
   languages: z.array(ZWorkflowLanguage),
 });
 
-export const ZWorkflowWithRefinements = ZWorkflow.refine((workflow) => !workflowHasBothTriggers(workflow), {
-  message: "Workflow cannot have both triggers and inlineTriggers",
+export const ZWorkflowInput = z.object({
+  name: z.string(),
+  type: ZWorkflowType.optional(),
+  createdBy: z.string().cuid().nullish(),
+  status: ZWorkflowStatus.optional(),
+  displayOption: ZWorkflowDisplayOption.optional(),
+  icon: z.string().nullable().optional(),
+  autoClose: z.number().nullish(),
+  redirectUrl: z.string().url().nullish(),
+  recontactDays: z.number().nullish(),
+  welcomeCard: ZWorkflowWelcomeCard.optional(),
+  questions: ZWorkflowQuestions.optional(),
+  prompt: ZWorkflowPrompt.optional(),
+  thankYouCard: ZWorkflowThankYouCard.optional(),
+  hiddenFields: ZWorkflowHiddenFields.optional(),
+  delay: z.number().optional(),
+  autoComplete: z.number().nullish(),
+  runOnDate: z.date().nullish(),
+  closeOnDate: z.date().nullish(),
+  styling: ZWorkflowStyling.optional(),
+  workflowClosedMessage: ZWorkflowClosedMessage.nullish(),
+  singleUse: ZWorkflowSingleUse.nullish(),
+  verifyEmail: ZWorkflowVerifyEmail.optional(),
+  pin: z.string().nullish(),
+  resultShareKey: z.string().nullish(),
+  displayPercentage: z.number().min(1).max(100).nullish(),
+  triggers: z.array(z.object({ actionClass: ZActionClass })).optional(),
 });
-
-export const ZWorkflowInput = z
-  .object({
-    name: z.string(),
-    type: ZWorkflowType.optional(),
-    createdBy: z.string().cuid().nullish(),
-    status: ZWorkflowStatus.optional(),
-    displayOption: ZWorkflowDisplayOption.optional(),
-    icon: z.string().nullable().optional(),
-    autoClose: z.number().nullish(),
-    redirectUrl: z.string().url().nullish(),
-    recontactDays: z.number().nullish(),
-    welcomeCard: ZWorkflowWelcomeCard.optional(),
-    questions: ZWorkflowQuestions.optional(),
-    prompt: ZWorkflowPrompt.optional(),
-    thankYouCard: ZWorkflowThankYouCard.optional(),
-    hiddenFields: ZWorkflowHiddenFields.optional(),
-    delay: z.number().optional(),
-    autoComplete: z.number().optional(),
-    runOnDate: z.date().nullish(),
-    closeOnDate: z.date().nullish(),
-    styling: ZWorkflowStyling.optional(),
-    workflowClosedMessage: ZWorkflowClosedMessage.nullish(),
-    singleUse: ZWorkflowSingleUse.nullish(),
-    verifyEmail: ZWorkflowVerifyEmail.optional(),
-    pin: z.string().nullish(),
-    resultShareKey: z.string().nullish(),
-    displayPercentage: z.number().min(1).max(100).nullish(),
-    triggers: z.array(z.string()).optional(),
-    inlineTriggers: ZWorkflowInlineTriggers.optional(),
-  })
-  .refine(
-    (workflow) => {
-      // if the triggers array has a single empty string, it means the workflow has no triggers
-      if (workflow.triggers?.[0] === "") {
-        return true;
-      }
-
-      const hasTriggers = !!workflow.triggers?.length;
-      const hasInlineTriggers =
-        !!workflow.inlineTriggers?.codeConfig || !!workflow.inlineTriggers?.noCodeConfig;
-
-      // Workflow cannot have both triggers and inlineTriggers
-      if (hasTriggers && hasInlineTriggers) {
-        return false;
-      }
-
-      return true;
-    },
-    { message: "Workflow cannot have both triggers and inlineTriggers" }
-  );
 
 export type TWorkflow = z.infer<typeof ZWorkflow>;
 

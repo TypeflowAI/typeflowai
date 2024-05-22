@@ -305,7 +305,6 @@ export const mockWorkflow: TWorkflow = {
   },
   pin: null,
   resultShareKey: null,
-  inlineTriggers: {},
   triggers: [],
   languages: mockWorkflowLanguages,
   segment: mockSegment,

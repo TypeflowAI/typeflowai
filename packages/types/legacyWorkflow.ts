@@ -188,6 +188,7 @@ export const ZLegacyWorkflow = ZWorkflow.extend({
   questions: ZLegacyWorkflowQuestions,
   thankYouCard: ZLegacyWorkflowThankYouCard,
   welcomeCard: ZLegacyWorkflowWelcomeCard,
+  triggers: z.array(z.string()),
 });
 
 export type TLegacyWorkflow = z.infer<typeof ZLegacyWorkflow>;

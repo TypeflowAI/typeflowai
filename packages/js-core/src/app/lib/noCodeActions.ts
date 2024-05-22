@@ -1,6 +1,5 @@
 import type { TActionClass } from "@typeflowai/types/actionClasses";
 import type { TActionClassPageUrlRule } from "@typeflowai/types/actionClasses";
-import { TWorkflowInlineTriggers } from "@typeflowai/types/workflows";
 
 import {
   ErrorHandler,
@@ -13,9 +12,8 @@ import {
   okVoid,
 } from "../../shared/errors";
 import { Logger } from "../../shared/logger";
-import { trackAction } from "./actions";
+import { trackNoCodeAction } from "./actions";
 import { AppConfig } from "./config";
-import { triggerWorkflow } from "./widget";
 
 const inAppConfig = AppConfig.getInstance();
 const logger = Logger.getInstance();
@@ -24,16 +22,13 @@ const errorHandler = ErrorHandler.getInstance();
 export const checkPageUrl = async (): Promise<Result<void, InvalidMatchTypeError | NetworkError>> => {
   logger.debug(`Checking page url: ${window.location.href}`);
   const { state } = inAppConfig.get();
-  const { noCodeActionClasses = [], workflows = [] } = state ?? {};
+  const { actionClasses = [] } = state ?? {};
+
+  const noCodeActionClasses = actionClasses.filter((action) => action.type === "noCode");
 
   const actionsWithPageUrl: TActionClass[] = noCodeActionClasses.filter((action) => {
     const { innerHtml, cssSelector, pageUrl } = action.noCodeConfig || {};
     return pageUrl && !innerHtml && !cssSelector;
-  });
-
-  const workflowsWithInlineTriggers = workflows.filter((workflow) => {
-    const { pageUrl, cssSelector, innerHtml } = workflow.inlineTriggers?.noCodeConfig || {};
-    return pageUrl && !cssSelector && !innerHtml;
   });
 
   if (actionsWithPageUrl.length > 0) {
@@ -52,26 +47,10 @@ export const checkPageUrl = async (): Promise<Result<void, InvalidMatchTypeError
 
       if (match.value === false) continue;
 
-      const trackResult = await trackAction(event.name);
+      const trackResult = await trackNoCodeAction(event.name);
 
       if (trackResult.ok !== true) return err(trackResult.error);
     }
-  }
-
-  if (workflowsWithInlineTriggers.length > 0) {
-    workflowsWithInlineTriggers.forEach((workflow) => {
-      const { noCodeConfig } = workflow.inlineTriggers ?? {};
-      const { pageUrl } = noCodeConfig ?? {};
-
-      if (pageUrl) {
-        const match = checkUrlMatch(window.location.href, pageUrl.value, pageUrl.rule);
-
-        if (match.ok !== true) return err(match.error);
-        if (match.value === false) return;
-
-        triggerWorkflow(workflow);
-      }
-    });
   }
 
   return okVoid();
@@ -119,10 +98,7 @@ export function checkUrlMatch(
   }
 }
 
-const evaluateNoCodeConfig = (
-  targetElement: HTMLElement,
-  action: TActionClass | TWorkflowInlineTriggers
-): boolean => {
+const evaluateNoCodeConfig = (targetElement: HTMLElement, action: TActionClass): boolean => {
   const innerHtml = action.noCodeConfig?.innerHtml?.value;
   const cssSelectors = action.noCodeConfig?.cssSelector?.value;
   const pageUrl = action.noCodeConfig?.pageUrl?.value;
@@ -162,8 +138,10 @@ export const checkClickMatch = (event: MouseEvent) => {
     return;
   }
 
-  const { noCodeActionClasses } = state;
-  if (!noCodeActionClasses) {
+  const { actionClasses = [] } = state;
+  const noCodeActionClasses = actionClasses.filter((action) => action.type === "noCode");
+
+  if (!noCodeActionClasses.length) {
     return;
   }
 
@@ -172,7 +150,7 @@ export const checkClickMatch = (event: MouseEvent) => {
   noCodeActionClasses.forEach((action: TActionClass) => {
     const isMatch = evaluateNoCodeConfig(targetElement, action);
     if (isMatch) {
-      trackAction(action.name).then((res) => {
+      trackNoCodeAction(action.name).then((res) => {
         match(
           res,
           (_value: unknown) => {},
@@ -189,16 +167,6 @@ export const checkClickMatch = (event: MouseEvent) => {
   if (!activeWorkflows || activeWorkflows.length === 0) {
     return;
   }
-
-  activeWorkflows.forEach((workflow) => {
-    const { inlineTriggers } = workflow;
-    if (inlineTriggers) {
-      const isMatch = evaluateNoCodeConfig(targetElement, inlineTriggers);
-      if (isMatch) {
-        triggerWorkflow(workflow);
-      }
-    }
-  });
 };
 
 let isClickEventListenerAdded = false;

@@ -18,7 +18,6 @@ export const transformPrismaWorkflow = (workflowPrisma: any): TWorkflow => {
 
   const transformedWorkflow: TWorkflow = {
     ...workflowPrisma,
-    triggers: workflowPrisma.triggers.map((trigger) => trigger.actionClass.name),
     segment,
   };
 

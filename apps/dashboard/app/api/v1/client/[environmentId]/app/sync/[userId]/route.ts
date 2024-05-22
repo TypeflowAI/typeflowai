@@ -21,9 +21,9 @@ import {
 } from "@typeflowai/lib/team/service";
 import { isVersionGreaterThanOrEqualTo } from "@typeflowai/lib/utils/version";
 import { getSyncWorkflows, transformToLegacyWorkflow } from "@typeflowai/lib/workflow/service";
+import { TLegacyWorkflow } from "@typeflowai/types/LegacyWorkflow";
 import { TEnvironment } from "@typeflowai/types/environment";
-import { TJsAppStateSync, ZJsPeopleUserIdInput } from "@typeflowai/types/js";
-import { TLegacyWorkflow } from "@typeflowai/types/legacyWorkflow";
+import { TJsAppLegacyStateSync, TJsAppStateSync, ZJsPeopleUserIdInput } from "@typeflowai/types/js";
 import { TProduct } from "@typeflowai/types/product";
 import { TWorkflow } from "@typeflowai/types/workflows";
 
@@ -133,7 +133,7 @@ export async function GET(
       await sendFreeLimitReachedEventToPosthogBiWeekly(environmentId, "inAppWorkflow");
     }
 
-    const [workflows, noCodeActionClasses, product] = await Promise.all([
+    const [workflows, actionClasses, product] = await Promise.all([
       getSyncWorkflows(environmentId, person.id, device.type === "mobile" ? "phone" : "desktop", {
         version: version ?? undefined,
       }),
@@ -145,25 +145,6 @@ export async function GET(
       throw new Error("Product not found");
     }
 
-    // Define 'transformedWorkflows' which can be an array of either TLegacyWorkflow or TWorkflow.
-    let transformedWorkflows: TLegacyWorkflow[] | TWorkflow[];
-
-    // Backwards compatibility for versions less than 1.7.0 (no multi-language support).
-    if (version && isVersionGreaterThanOrEqualTo(version, "1.7.0")) {
-      // Scenario 1: Multi language supported
-      // Use the workflows as they are.
-      transformedWorkflows = workflows;
-    } else {
-      // Scenario 2: Multi language not supported
-      // Convert to legacy workflows with default language.
-      transformedWorkflows = await Promise.all(
-        workflows.map((workflow) => {
-          const languageCode = "default";
-          return transformToLegacyWorkflow(workflow, languageCode);
-        })
-      );
-    }
-
     const updatedProduct: TProduct = {
       ...product,
       brandColor: product.styling.brandColor?.light ?? COLOR_DEFAULTS.brandColor,
@@ -173,15 +154,40 @@ export async function GET(
     };
 
     const language = await getAttribute("language", person.id);
+    const noCodeActionClasses = actionClasses.filter((actionClass) => actionClass.type === "noCode");
 
-    // return state
-    const state: TJsAppStateSync = {
-      ...(version && !isVersionGreaterThanOrEqualTo(version, "2.0.0") && { person }),
+    // Scenario 1: Multi language and updated trigger action classes supported.
+    // Use the workflows as they are.
+    let transformedWorkflows: TLegacyWorkflow[] | TWorkflow[] = workflows;
+
+    // creating state object
+    let state: TJsAppStateSync | TJsAppLegacyStateSync = {
       workflows: !isInAppWorkflowLimitReached ? transformedWorkflows : [],
-      noCodeActionClasses: noCodeActionClasses.filter((actionClass) => actionClass.type === "noCode"),
+      actionClasses,
       language,
       product: updatedProduct,
     };
+
+    // Backwards compatibility for versions less than 2.0.0 (no multi-language support and updated trigger action classes).
+    if (!isVersionGreaterThanOrEqualTo(version ?? "", "2.0.0")) {
+      // Scenario 2: Multi language and updated trigger action classes not supported
+      // Convert to legacy workflows with default language
+      // convert triggers to array of actionClasses Names
+      transformedWorkflows = await Promise.all(
+        workflows.map((workflow: TWorkflow | TLegacyWorkflow) => {
+          const languageCode = "default";
+          return transformToLegacyWorkflow(workflow as TWorkflow, languageCode);
+        })
+      );
+
+      state = {
+        workflows: !isInAppWorkflowLimitReached ? transformedWorkflows : [],
+        person,
+        noCodeActionClasses,
+        language,
+        product: updatedProduct,
+      };
+    }
 
     return responses.successResponse(
       { ...state },

@@ -4,7 +4,7 @@ import { responses } from "@/app/lib/api/response";
 import { transformErrorToDetails } from "@/app/lib/api/validator";
 import { NextRequest } from "next/server";
 
-import { getActionClasses } from "@typeflowai/lib/actionClass/service";
+import { getActionClassByEnvironmentIdAndName, getActionClasses } from "@typeflowai/lib/actionClass/service";
 import {
   IS_TYPEFLOWAI_CLOUD,
   PRICING_APPWORKFLOWS_FREE_RESPONSES,
@@ -16,8 +16,8 @@ import { COLOR_DEFAULTS } from "@typeflowai/lib/styling/constants";
 import { getMonthlyTeamResponseCount, getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
 import { isVersionGreaterThanOrEqualTo } from "@typeflowai/lib/utils/version";
 import { createWorkflow, getWorkflows, transformToLegacyWorkflow } from "@typeflowai/lib/workflow/service";
-import { TJsWebsiteStateSync, ZJsWebsiteSyncInput } from "@typeflowai/types/js";
-import { TLegacyWorkflow } from "@typeflowai/types/legacyWorkflow";
+import { TLegacyWorkflow } from "@typeflowai/types/LegacyWorkflow";
+import { TJsWebsiteLegacyStateSync, TJsWebsiteStateSync, ZJsWebsiteSyncInput } from "@typeflowai/types/js";
 import { TProduct } from "@typeflowai/types/product";
 import { TWorkflow } from "@typeflowai/types/workflows";
 
@@ -76,12 +76,16 @@ export async function GET(
     }
 
     if (!environment?.widgetSetupCompleted) {
-      const firstWorkflow = getExampleWorkflowTemplate(WEBAPP_URL);
+      const exampleTrigger = await getActionClassByEnvironmentIdAndName(environmentId, "New Session");
+      if (!exampleTrigger) {
+        throw new Error("Example trigger not found");
+      }
+      const firstWorkflow = getExampleWorkflowTemplate(WEBAPP_URL, exampleTrigger);
       await createWorkflow(environmentId, firstWorkflow);
       await updateEnvironment(environment.id, { widgetSetupCompleted: true });
     }
 
-    const [workflows, noCodeActionClasses, product] = await Promise.all([
+    const [workflows, actionClasses, product] = await Promise.all([
       getWorkflows(environmentId),
       getActionClasses(environmentId),
       getProductByEnvironmentId(environmentId),
@@ -98,25 +102,6 @@ export async function GET(
       // && (!workflow.segment || workflow.segment.filters.length === 0)
     );
 
-    // Define 'transformedWorkflows' which can be an array of either TLegacyWorkflow or TWorkflow.
-    let transformedWorkflows: TLegacyWorkflow[] | TWorkflow[];
-
-    // Backwards compatibility for versions less than 1.7.0 (no multi-language support).
-    if (version && isVersionGreaterThanOrEqualTo(version, "1.7.0")) {
-      // Scenario 1: Multi language supported
-      // Use the workflows as they are.
-      transformedWorkflows = filteredWorkflows;
-    } else {
-      // Scenario 2: Multi language not supported
-      // Convert to legacy workflows with default language.
-      transformedWorkflows = await Promise.all(
-        filteredWorkflows.map((workflow) => {
-          const languageCode = "default";
-          return transformToLegacyWorkflow(workflow, languageCode);
-        })
-      );
-    }
-
     const updatedProduct: TProduct = {
       ...product,
       brandColor: product.styling.brandColor?.light ?? COLOR_DEFAULTS.brandColor,
@@ -125,12 +110,34 @@ export async function GET(
       }),
     };
 
-    // Create the 'state' object with workflows, noCodeActionClasses, product, and person.
-    const state: TJsWebsiteStateSync = {
-      workflows: isInAppWorkflowLimitReached ? [] : transformedWorkflows,
-      noCodeActionClasses: noCodeActionClasses.filter((actionClass) => actionClass.type === "noCode"),
+    const noCodeActionClasses = actionClasses.filter((actionClass) => actionClass.type === "noCode");
+
+    // Define 'transformedWorkflows' which can be an array of either TLegacyWorkflow or TWorkflow.
+    let transformedWorkflows: TLegacyWorkflow[] | TWorkflow[] = workflows;
+    let state: TJsWebsiteStateSync | TJsWebsiteLegacyStateSync = {
+      workflows: !isInAppWorkflowLimitReached ? transformedWorkflows : [],
+      actionClasses,
       product: updatedProduct,
     };
+
+    // Backwards compatibility for versions less than 2.0.0 (no multi-language support and updated trigger action classes).
+    if (!isVersionGreaterThanOrEqualTo(version ?? "", "2.0.0")) {
+      // Scenario 2: Multi language and updated trigger action classes not supported
+      // Convert to legacy workflows with default language
+      // convert triggers to array of actionClasses Names
+      transformedWorkflows = await Promise.all(
+        filteredWorkflows.map((workflow) => {
+          const languageCode = "default";
+          return transformToLegacyWorkflow(workflow, languageCode);
+        })
+      );
+
+      state = {
+        workflows: isInAppWorkflowLimitReached ? [] : transformedWorkflows,
+        noCodeActionClasses,
+        product: updatedProduct,
+      };
+    }
 
     return responses.successResponse(
       { ...state },

@@ -88,13 +88,7 @@ export const WorkflowMenuBar = ({
 
     const noTriggers =
       !localWorkflow.triggers || localWorkflow.triggers.length === 0 || !localWorkflow.triggers[0];
-    const noInlineTriggers =
-      !localWorkflow.inlineTriggers ||
-      (!localWorkflow.inlineTriggers?.codeConfig && !localWorkflow.inlineTriggers?.noCodeConfig);
-
-    if (noTriggers && noInlineTriggers) {
-      return true;
-    }
+    if (noTriggers) return true;
 
     return false;
   }, [localWorkflow]);
@@ -172,7 +166,7 @@ export const WorkflowMenuBar = ({
         setIsWorkflowSaving(false);
         return;
       }
-      localWorkflow.triggers = localWorkflow.triggers.filter((trigger) => Boolean(trigger));
+
       localWorkflow.questions = localWorkflow.questions.map((question) => {
         const { isDraft, ...rest } = question;
         return rest;

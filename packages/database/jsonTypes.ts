@@ -8,7 +8,6 @@ import { TUserNotificationSettings } from "@typeflowai/types/user";
 import {
   TWorkflowClosedMessage,
   TWorkflowHiddenFields,
-  TWorkflowInlineTriggers,
   TWorkflowProductOverwrites,
   TWorkflowQuestions,
   TWorkflowSingleUse,
@@ -38,7 +37,6 @@ declare global {
     export type TeamBilling = TTeamBilling;
     export type UserNotificationSettings = TUserNotificationSettings;
     export type SegmentFilter = TBaseFilters;
-    export type WorkflowInlineTriggers = TWorkflowInlineTriggers;
     export type Styling = TProductStyling;
   }
 }

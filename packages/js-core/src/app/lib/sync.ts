@@ -24,9 +24,7 @@ const syncWithBackend = async (
       logger.debug("No cache option set for sync");
     }
 
-    const url = `${apiHost}/api/v1/client/${environmentId}/app/sync/${userId}?version=${
-      import.meta.env.VERSION
-    }`;
+    const url = `${apiHost}/api/v1/client/${environmentId}/app/sync/${userId}?version=${import.meta.env.VERSION}`;
 
     const response = await fetch(url, fetchOptions);
 
@@ -67,7 +65,7 @@ export const sync = async (params: TJsAppSyncParams, noCache = false): Promise<v
 
     let state: TJsAppState = {
       workflows: syncResult.value.workflows as TWorkflow[],
-      noCodeActionClasses: syncResult.value.noCodeActionClasses,
+      actionClasses: syncResult.value.actionClasses,
       product: syncResult.value.product,
       attributes,
     };

@@ -7,6 +7,7 @@ import { salesTemplates } from "@typeflowai/ee/prompt-templates/sales";
 import { startupTemplates } from "@typeflowai/ee/prompt-templates/startup";
 import { supportTemplates } from "@typeflowai/ee/prompt-templates/support";
 import { vaTemplates } from "@typeflowai/ee/prompt-templates/va";
+import { TActionClass } from "@typeflowai/types/actionClasses";
 import { OpenAIModel } from "@typeflowai/types/openai";
 import { TTemplate } from "@typeflowai/types/templates";
 import {
@@ -14,6 +15,7 @@ import {
   TWorkflowCTAQuestion,
   TWorkflowDisplayOption,
   TWorkflowHiddenFields,
+  TWorkflowInput,
   TWorkflowOpenTextQuestion,
   TWorkflowQuestionType,
   TWorkflowStatus,
@@ -416,7 +418,6 @@ export const minimalWorkflow: TWorkflow = {
     isVisible: true,
     engine: OpenAIModel.GPT35Turbo,
   },
-  inlineTriggers: null,
   thankYouCard: {
     enabled: false,
   },
@@ -439,7 +440,7 @@ export const minimalWorkflow: TWorkflow = {
   languages: [],
 };
 
-export const getExampleWorkflowTemplate = (webAppUrl: string) => ({
+export const getExampleWorkflowTemplate = (webAppUrl: string, trigger: TActionClass): TWorkflowInput => ({
   ...customWorkflow.preset,
   questions: customWorkflow.preset.questions.map(
     (question) =>
@@ -458,7 +459,7 @@ export const getExampleWorkflowTemplate = (webAppUrl: string) => ({
   name: "Example workflow",
   type: "website" as TWorkflowType,
   autoComplete: 2,
-  triggers: ["New Session"],
+  triggers: [{ actionClass: trigger }],
   status: "inProgress" as TWorkflowStatus,
   displayOption: "respondMultiple" as TWorkflowDisplayOption,
   recontactDays: 0,
