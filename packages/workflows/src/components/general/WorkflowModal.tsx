@@ -72,6 +72,7 @@ export function WorkflowModal({
           isPreview={isPreview}
           styling={styling}
           isCardBorderVisible={!highlightBorderColor}
+          clickOutside={placement === "center" ? clickOutside : undefined}
         />
       </Modal>
     </div>

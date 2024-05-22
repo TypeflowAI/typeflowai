@@ -25,6 +25,7 @@ export interface WorkflowBaseProps {
   isPreview?: boolean;
   isCardBorderVisible?: boolean;
   startAtQuestionId?: string;
+  clickOutside?: boolean;
 }
 
 export interface WorkflowInlineProps extends WorkflowBaseProps {

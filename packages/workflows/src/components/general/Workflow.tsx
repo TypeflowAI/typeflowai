@@ -46,6 +46,7 @@ export const Workflow = ({
   responseCount,
   isPreview,
   startAtQuestionId,
+  clickOutside,
 }: WorkflowBaseProps) => {
   const isInIframe = window.self !== window.top;
   const [questionId, setQuestionId] = useState(
@@ -79,6 +80,9 @@ export const Workflow = ({
   }, [questionId, workflow, history]);
   const contentRef = useRef<HTMLDivElement | null>(null);
   const showProgressBar = !styling.hideProgressBar;
+  const getShowWorkflowCloseButton = (offset: number) => {
+    return offset === 0 && workflow.type !== "link" && (clickOutside === undefined ? true : clickOutside);
+  };
   const typeflowaiAPI = new TypeflowAIAPI({
     apiHost: webAppUrl,
     environmentId: workflow.environmentId,
@@ -434,7 +438,7 @@ export const Workflow = ({
 
     return (
       <AutoCloseWrapper workflow={workflow} onClose={onClose}>
-        {offset === 0 && workflow.type !== "link" && <WorkflowCloseButton onClose={onClose} />}
+        {getShowWorkflowCloseButton(offset) && <WorkflowCloseButton onClose={onClose} />}
         <div
           className={cn(
             "no-scrollbar md:rounded-custom rounded-t-custom bg-workflow-bg flex h-full w-full flex-col justify-between overflow-hidden transition-all duration-1000 ease-in-out",
