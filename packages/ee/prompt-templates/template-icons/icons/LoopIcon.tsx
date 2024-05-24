@@ -2,7 +2,7 @@ import React from "react";
 
 export const LoopIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
-    <g fill="none" stroke="#33f098" stroke-linecap="round" stroke-width="2">
+    <g fill="none" stroke="#33f098" strokeLinecap="round" strokeWidth="2">
       <path
         stroke-dasharray="60"
         stroke-dashoffset="60"

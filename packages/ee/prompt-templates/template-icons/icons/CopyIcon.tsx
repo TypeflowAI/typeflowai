@@ -2,7 +2,7 @@ import React from "react";
 
 export const CopyIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
-    <g fill="none" stroke="#050505" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    <g fill="none" stroke="#050505" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
       <path
         fill="#050505"
         fill-opacity="0"

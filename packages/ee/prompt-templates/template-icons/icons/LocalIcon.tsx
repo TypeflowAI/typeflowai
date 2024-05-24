@@ -2,10 +2,10 @@ import React from "react";
 
 export const LocalIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48">
-    <g fill="none" stroke-linejoin="round" stroke-width="4">
+    <g fill="none" strokeLinejoin="round" strokeWidth="4">
       <path
         stroke="#000"
-        stroke-linecap="round"
+        strokeLinecap="round"
         d="M9.85786 32.7574C6.23858 33.8432 4 35.3432 4 37C4 40.3137 12.9543 43 24 43C35.0457 43 44 40.3137 44 37C44 35.3432 41.7614 33.8432 38.1421 32.7574"
       />
       <path

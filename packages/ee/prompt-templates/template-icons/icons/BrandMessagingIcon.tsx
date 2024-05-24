@@ -2,7 +2,7 @@ import React from "react";
 
 export const BrandMessagingIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48">
-    <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="4">
+    <g fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4">
       <path
         fill="#2ec0ff"
         stroke="#000"

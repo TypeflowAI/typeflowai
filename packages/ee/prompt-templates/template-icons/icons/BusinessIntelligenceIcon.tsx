@@ -4,16 +4,16 @@ export const BusinessIntelligenceIcon: React.FC<React.SVGProps<SVGSVGElement>> =
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="0.75em" height="1em" viewBox="0 0 256 342">
     <defs>
       <linearGradient id="logosMicrosoftPowerBi0" x1="42.593%" x2="57.245%" y1="0%" y2="93.174%">
-        <stop offset="0%" stop-color="#e6ad10" />
-        <stop offset="100%" stop-color="#c87e0e" />
+        <stop offset="0%" stopColor="#e6ad10" />
+        <stop offset="100%" stopColor="#c87e0e" />
       </linearGradient>
       <linearGradient id="logosMicrosoftPowerBi1" x1="40.122%" x2="62.028%" y1="0%" y2="95.592%">
-        <stop offset="0%" stop-color="#f6d751" />
-        <stop offset="100%" stop-color="#e6ad10" />
+        <stop offset="0%" stopColor="#f6d751" />
+        <stop offset="100%" stopColor="#e6ad10" />
       </linearGradient>
       <linearGradient id="logosMicrosoftPowerBi2" x1="27.774%" x2="55.012%" y1="0%" y2="96.828%">
-        <stop offset="0%" stop-color="#f9e589" />
-        <stop offset="100%" stop-color="#f6d751" />
+        <stop offset="0%" stopColor="#f9e589" />
+        <stop offset="100%" stopColor="#f6d751" />
       </linearGradient>
       <path
         id="logosMicrosoftPowerBi3"

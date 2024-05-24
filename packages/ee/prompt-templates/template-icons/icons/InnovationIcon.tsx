@@ -2,7 +2,7 @@ import React from "react";
 
 export const InnovationIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 14 14">
-    <g fill="none" stroke="#f8b830" stroke-linecap="round" stroke-linejoin="round">
+    <g fill="none" stroke="#f8b830" strokeLinecap="round" strokeLinejoin="round">
       <path d="M.65 11.694v-3.62l3.167-1.357l3.167 1.358v3.619L3.817 13.05z" />
       <path d="m.65 8.067l3.167 1.357l3.167-1.357M3.817 3.122L6.983 4.48l3.167-1.357" />
       <path d="m6.983 8.067l3.167 1.357l3.167-1.357" />

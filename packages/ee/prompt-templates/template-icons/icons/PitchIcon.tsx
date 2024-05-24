@@ -6,8 +6,8 @@ export const PitchIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <path
       fill="#ffe500"
       stroke="#45413c"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       d="m34.54 24.05l3.14-4.47a.39.39 0 0 1 .6-.07l1.75 2a.39.39 0 0 1-.15.59L35 24.57a.35.35 0 0 1-.46-.52m.71 3.02l5.52-.78a.4.4 0 0 1 .48.38L41 29.31a.39.39 0 0 1-.54.29l-5.29-1.84a.35.35 0 0 1 .08-.69m.02 3.99l4.54 2a.37.37 0 0 1 .14.55l-1.65 2.04a.36.36 0 0 1-.57 0l-2.89-4.05a.35.35 0 0 1 .43-.54"
     />
     <path
@@ -21,8 +21,8 @@ export const PitchIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <path
       fill="none"
       stroke="#45413c"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       d="M21.6 37.66H10.48a17.81 17.81 0 0 0 1.69-4.88a8.92 8.92 0 0 0-1.91-5.94A10.69 10.69 0 0 1 16.82 9c6.47-1.06 10.6 1.56 12.16-.63c.35 2.32-.13 4.21-1.74 5.51a7.48 7.48 0 0 1 .6 3.62a2.92 2.92 0 0 0 .79 2.24l1.61 1.67a1 1 0 0 1-.13 1.51l-1 .7a.61.61 0 0 0-.21.71l.26.66a1 1 0 0 1-.42 1.22L26 27.81a.78.78 0 0 0 0 1.34l2.34 1.5a1 1 0 0 1 .45 1c-.32 1-.62 2.36-2.25 2.3l-3.71-.15c-1.91.92-1.23 3.86-1.23 3.86"
     />
   </svg>

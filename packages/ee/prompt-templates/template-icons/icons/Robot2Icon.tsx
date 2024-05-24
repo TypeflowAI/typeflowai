@@ -19,9 +19,9 @@ export const Robot2Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
       y2="35.55"
       gradientTransform="matrix(1 0 0 -1 0 130)"
       gradientUnits="userSpaceOnUse">
-      <stop offset=".12" stop-color="#e0e0e0" />
-      <stop offset=".52" stop-color="#fff" />
-      <stop offset="1" stop-color="#eaeaea" />
+      <stop offset=".12" stopColor="#e0e0e0" />
+      <stop offset=".52" stopColor="#fff" />
+      <stop offset="1" stopColor="#eaeaea" />
     </linearGradient>
     <path
       fill="url(#notoRobot0)"
@@ -35,9 +35,9 @@ export const Robot2Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
       y2="35.53"
       gradientTransform="matrix(1 0 0 -1 0 130)"
       gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#333" />
-      <stop offset=".55" stop-color="#666" />
-      <stop offset="1" stop-color="#333" />
+      <stop offset="0" stopColor="#333" />
+      <stop offset=".55" stopColor="#666" />
+      <stop offset="1" stopColor="#333" />
     </linearGradient>
     <path fill="url(#notoRobot1)" d="M53.67 94.47h2.36v13.09h-2.36z" />
     <linearGradient
@@ -48,9 +48,9 @@ export const Robot2Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
       y2="35.53"
       gradientTransform="matrix(1 0 0 -1 0 130)"
       gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#333" />
-      <stop offset=".55" stop-color="#666" />
-      <stop offset="1" stop-color="#333" />
+      <stop offset="0" stopColor="#333" />
+      <stop offset=".55" stopColor="#666" />
+      <stop offset="1" stopColor="#333" />
     </linearGradient>
     <path fill="url(#notoRobot2)" d="M62.88 94.47h2.36v13.09h-2.36z" />
     <linearGradient
@@ -61,9 +61,9 @@ export const Robot2Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
       y2="35.53"
       gradientTransform="matrix(1 0 0 -1 0 130)"
       gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#333" />
-      <stop offset=".55" stop-color="#666" />
-      <stop offset="1" stop-color="#333" />
+      <stop offset="0" stopColor="#333" />
+      <stop offset=".55" stopColor="#666" />
+      <stop offset="1" stopColor="#333" />
     </linearGradient>
     <path fill="url(#notoRobot3)" d="M71.97 94.47h2.36v13.09h-2.36z" />
     <linearGradient
@@ -74,9 +74,9 @@ export const Robot2Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
       y2="35.53"
       gradientTransform="matrix(1 0 0 -1 0 130)"
       gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#333" />
-      <stop offset=".55" stop-color="#666" />
-      <stop offset="1" stop-color="#333" />
+      <stop offset="0" stopColor="#333" />
+      <stop offset=".55" stopColor="#666" />
+      <stop offset="1" stopColor="#333" />
     </linearGradient>
     <path fill="url(#notoRobot4)" d="M81.62 94.47h2.36v13.09h-2.36z" />
     <linearGradient
@@ -87,9 +87,9 @@ export const Robot2Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
       y2="35.55"
       gradientTransform="matrix(1 0 0 -1 0 130)"
       gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#333" />
-      <stop offset=".55" stop-color="#666" />
-      <stop offset="1" stop-color="#333" />
+      <stop offset="0" stopColor="#333" />
+      <stop offset=".55" stopColor="#666" />
+      <stop offset="1" stopColor="#333" />
     </linearGradient>
     <path fill="url(#notoRobot5)" d="M44.02 94.45h2.36v13.09h-2.36z" />
     <path
@@ -103,11 +103,11 @@ export const Robot2Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
       r="11.5"
       gradientTransform="matrix(1 0 0 -1 0 130)"
       gradientUnits="userSpaceOnUse">
-      <stop offset=".48" stop-color="#fff" />
-      <stop offset=".77" stop-color="#fdfdfd" />
-      <stop offset=".88" stop-color="#f6f6f6" />
-      <stop offset=".96" stop-color="#ebebeb" />
-      <stop offset="1" stop-color="#e0e0e0" />
+      <stop offset=".48" stopColor="#fff" />
+      <stop offset=".77" stopColor="#fdfdfd" />
+      <stop offset=".88" stopColor="#f6f6f6" />
+      <stop offset=".96" stopColor="#ebebeb" />
+      <stop offset="1" stopColor="#e0e0e0" />
     </radialGradient>
     <circle cx="42.64" cy="66.81" r="11.5" fill="url(#notoRobot6)" />
     <linearGradient
@@ -118,9 +118,9 @@ export const Robot2Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
       y2="63.19"
       gradientTransform="matrix(1 0 0 -1 0 130)"
       gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#333" />
-      <stop offset=".55" stop-color="#666" />
-      <stop offset="1" stop-color="#333" />
+      <stop offset="0" stopColor="#333" />
+      <stop offset=".55" stopColor="#666" />
+      <stop offset="1" stopColor="#333" />
     </linearGradient>
     <circle
       cx="42.64"
@@ -129,7 +129,7 @@ export const Robot2Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
       fill="none"
       stroke="url(#notoRobot7)"
       stroke-miterlimit="10"
-      stroke-width="2"
+      strokeWidth="2"
     />
     <radialGradient
       id="notoRobot8"
@@ -138,11 +138,11 @@ export const Robot2Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
       r="11.5"
       gradientTransform="matrix(1 0 0 -1 0 130)"
       gradientUnits="userSpaceOnUse">
-      <stop offset=".48" stop-color="#fff" />
-      <stop offset=".77" stop-color="#fdfdfd" />
-      <stop offset=".88" stop-color="#f6f6f6" />
-      <stop offset=".96" stop-color="#ebebeb" />
-      <stop offset="1" stop-color="#e0e0e0" />
+      <stop offset=".48" stopColor="#fff" />
+      <stop offset=".77" stopColor="#fdfdfd" />
+      <stop offset=".88" stopColor="#f6f6f6" />
+      <stop offset=".96" stopColor="#ebebeb" />
+      <stop offset="1" stopColor="#e0e0e0" />
     </radialGradient>
     <path
       fill="url(#notoRobot8)"
@@ -156,15 +156,15 @@ export const Robot2Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
       y2="63.22"
       gradientTransform="matrix(1 0 0 -1 0 130)"
       gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#333" />
-      <stop offset=".55" stop-color="#666" />
-      <stop offset="1" stop-color="#333" />
+      <stop offset="0" stopColor="#333" />
+      <stop offset=".55" stopColor="#666" />
+      <stop offset="1" stopColor="#333" />
     </linearGradient>
     <path
       fill="none"
       stroke="url(#notoRobot9)"
       stroke-miterlimit="10"
-      stroke-width="2"
+      strokeWidth="2"
       d="M85 55.28c-6.35 0-11.5 5.15-11.5 11.5s5.15 11.5 11.5 11.5s11.5-5.15 11.5-11.5c-.01-6.35-5.15-11.49-11.5-11.5z"
     />
   </svg>

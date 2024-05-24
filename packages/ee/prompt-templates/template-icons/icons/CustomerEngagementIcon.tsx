@@ -37,9 +37,9 @@ export const CustomerEngagementIcon: React.FC<React.SVGProps<SVGSVGElement>> = (
     <path
       fill="none"
       stroke="#444"
-      stroke-linecap="round"
+      strokeLinecap="round"
       stroke-miterlimit="10"
-      stroke-width="4"
+      strokeWidth="4"
       d="M52.56 18.99L49.86 8.9M37.69 26.42l-7.39-7.38m60.01 7.38l7.39-7.38m-22.26-.05l2.7-10.09"
     />
     <path

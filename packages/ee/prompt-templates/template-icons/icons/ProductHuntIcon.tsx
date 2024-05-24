@@ -4,8 +4,8 @@ export const ProductHuntIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) 
   <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
     <defs>
       <linearGradient id="logosProducthunt0" x1="50%" x2="50%" y1="0%" y2="100%">
-        <stop offset="0%" stop-color="#DA552F" />
-        <stop offset="100%" stop-color="#D04B25" />
+        <stop offset="0%" stopColor="#DA552F" />
+        <stop offset="100%" stopColor="#D04B25" />
       </linearGradient>
     </defs>
     <g fill="none" fill-rule="evenodd">

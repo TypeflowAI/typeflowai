@@ -87,7 +87,7 @@ export const Robot4Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
       fill="#546e7a"
       stroke="#546e7a"
       stroke-miterlimit="10"
-      stroke-width="4"
+      strokeWidth="4"
       d="M82.87 100.54H45.33c-4.42 0-8.01-3.59-8.01-8.01c0-1.22.99-2.2 2.2-2.2h49.17c1.22 0 2.2.99 2.2 2.2c-.01 4.42-3.59 8.01-8.02 8.01z"
     />
     <path fill="#546e7a" d="M46.82 91.52v8.4s-9.5-.78-9.5-8.28zm34.48 0v8.4s9.5-.78 9.5-8.28z" />
