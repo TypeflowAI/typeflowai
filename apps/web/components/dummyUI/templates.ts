@@ -24,7 +24,7 @@ import {
   TaskListSearchIcon,
   UserSearchGlasIcon,
   VideoTabletAdjustIcon,
-} from "@typeflowai/ui/icons";
+} from "@typeflowai/ui/Icons";
 
 import { TTemplate, TWorkflowQuestionType } from "./types";
 

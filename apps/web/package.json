@@ -19,6 +19,7 @@
     "@typeflowai/lib": "workspace:*",
     "@typeflowai/types": "workspace:*",
     "@typeflowai/ui": "workspace:*",
+    "@typeflowai/ee": "workspace:*",
     "@headlessui/react": "^2.0.3",
     "@headlessui/tailwindcss": "^0.2.0",
     "@mapbox/rehype-prism": "^0.9.0",

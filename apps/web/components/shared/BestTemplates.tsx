@@ -1,79 +1,70 @@
 import clsx from "clsx";
-import Image from "next/image";
 import Link from "next/link";
 
-import articleIcon from "@typeflowai/ui/icons/templates/article.svg";
-import buyerPersonaIcon from "@typeflowai/ui/icons/templates/buyerpersona.svg";
-import coldEmailIcon from "@typeflowai/ui/icons/templates/coldemail.svg";
-import googleAdsIcon from "@typeflowai/ui/icons/templates/googleads.svg";
-import ideaIcon from "@typeflowai/ui/icons/templates/idea.svg";
-import linkedinIcon from "@typeflowai/ui/icons/templates/linkedin.svg";
-import magnetIcon from "@typeflowai/ui/icons/templates/magnet.svg";
-import seoIcon from "@typeflowai/ui/icons/templates/seo.svg";
-import twitterIcon from "@typeflowai/ui/icons/templates/twitter.svg";
+import { TemplateIconComponent } from "@typeflowai/ee/prompt-templates/template-icons";
 
 export default function BestTemplates() {
   const BestTemplates = [
     {
       name: "Content Marketing Ideas",
       href: "/use-cases/content-marketing-ideas-generator",
-      icon: articleIcon,
+      icon: "ArticleIcon",
       description: "Generate fresh and engaging ideas for your content marketing strategy.",
       category: "SEO & Content strategy",
     },
     {
       name: "LinkedIn Post Gen.",
       href: "/use-cases/linkedin-post-generator",
-      icon: linkedinIcon,
+      icon: "LinkedinIcon",
       description: "Craft compelling posts for LinkedIn to engage with your professional network.",
       category: "Enhance online presence",
     },
     {
       name: "Google Ads Copy Gen.",
       href: "/use-cases/google-ads-copy-generator",
-      icon: googleAdsIcon,
+      icon: "GoogleAdsIcon",
       description: "Create effective ad copy that resonates with your Google Ads audience.",
       category: "Enhance online presence",
     },
     {
       name: "Tweet Generator",
       href: "/use-cases/tweet-generator",
-      icon: twitterIcon,
+      icon: "TwitterIcon",
       description: "Produce creative and catchy tweets to capture your audience's attention.",
       category: "Enhance online presence",
     },
     {
       name: "Dynamic Lead Magnet",
       href: "/use-cases/dynamic-lead-magnet",
-      icon: magnetIcon,
+      icon: "MagnetIcon",
       description: "Design lead magnets that convert and captivate your potential customers.",
       category: "Lead Generation",
     },
     {
       name: "Cold Email Generator",
       href: "/use-cases/cold-email-generator",
-      icon: coldEmailIcon,
+      icon: "ColdEmailIcon",
       description: "Write cold emails that get responses and start meaningful business conversations.",
       category: "Email",
     },
     {
       name: "AI Keyword Research",
       href: "/use-cases/seo-keyword-generator",
-      icon: seoIcon,
+      icon: "SeoIcon",
       description: "Leverage AI to discover and analyze top-performing keywords for SEO.",
       category: "SEO & Content strategy",
     },
     {
       name: "Buyer Persona Gen.",
       href: "/use-cases/buyer-persona-generator",
-      icon: buyerPersonaIcon,
+      icon: "BuyerPersonaIcon",
       description: "Develop detailed buyer personas to better understand your target audience.",
       category: "Business Strategy",
     },
     {
       name: "Business Model Ideas",
       href: "/use-cases/business-model-ideas-generator",
-      icon: ideaIcon,
+      icon: "IdeaIcon",
       description: "Generate low-investment, digital business ideas with a business model canvas.",
       category: "Business Strategy",
     },
@@ -120,16 +111,18 @@ export default function BestTemplates() {
                   {bestPractice.category}
                 </div>
                 <div className="h-12 w-12">
-                  {/* <bestPractice.icon className="h-12 w-12 " /> */}
-                  <Image
-                    width={16}
-                    height={16}
-                    src={bestPractice.icon}
+                  {/* <bestPractice.icon
+                    className="text-brand h-12 w-12 "
                     style={{
                       objectFit: "cover",
                     }}
+                  /> */}
+                  <TemplateIconComponent
+                    icon={bestPractice.icon}
                     className="text-brand h-12 w-12 "
-                    alt="Template icon"
+                    style={{
+                      objectFit: "cover",
+                    }}
                   />
                 </div>
                 <h3 className="mb-1 mt-3 text-xl font-bold text-slate-700">{bestPractice.name}</h3>

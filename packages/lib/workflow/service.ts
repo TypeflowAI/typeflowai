@@ -34,7 +34,12 @@ import { subscribeTeamMembersToWorkflowResponses } from "../team/service";
 import { diffInDays } from "../utils/datetime";
 import { validateInputs } from "../utils/validate";
 import { workflowCache } from "./cache";
-import { anyWorkflowHasFilters, buildOrderByClause, buildWhereClause, transformPrismaWorkflow } from "./util";
+import {
+  anyWorkflowHasFilters,
+  buildOrderByClause,
+  buildWhereClause,
+  transformPrismaWorkflow,
+} from "./utils";
 
 interface TriggerUpdate {
   create?: Array<{ actionClassId: string }>;

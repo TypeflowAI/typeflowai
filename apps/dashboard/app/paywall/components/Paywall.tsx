@@ -1,6 +1,6 @@
 "use client";
 
-import { createPlanAction } from "@/app/(app)/environments/[environmentId]/settings/billing/actions";
+import { createPlanAction } from "@/app/(app)/environments/[environmentId]/settings/(team)/billing/actions";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";

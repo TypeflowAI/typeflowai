@@ -8,7 +8,7 @@ import { convertDateTimeStringShort } from "@typeflowai/lib/time";
 import { TActionClass } from "@typeflowai/types/actionClasses";
 import { ErrorComponent } from "@typeflowai/ui/ErrorComponent";
 import { Label } from "@typeflowai/ui/Label";
-import LoadingSpinner from "@typeflowai/ui/LoadingSpinner";
+import { LoadingSpinner } from "@typeflowai/ui/LoadingSpinner";
 
 import {
   getActionCountInLast7DaysAction,
@@ -23,11 +23,11 @@ interface ActivityTabProps {
   isUserTargetingEnabled: boolean;
 }
 
-export default function EventActivityTab({
+export const EventActivityTab = ({
   actionClass,
   environmentId,
   isUserTargetingEnabled,
-}: ActivityTabProps) {
+}: ActivityTabProps) => {
   // const { eventClass, isLoadingEventClass, isErrorEventClass } = useEventClass(environmentId, actionClass.id);
 
   const [numEventsLastHour, setNumEventsLastHour] = useState<number | undefined>();
@@ -40,9 +40,8 @@ export default function EventActivityTab({
 
   useEffect(() => {
     setLoading(true);
-    updateState();
 
-    async function updateState() {
+    const updateState = async () => {
       try {
         setLoading(true);
         const [
@@ -66,7 +65,9 @@ export default function EventActivityTab({
       } finally {
         setLoading(false);
       }
-    }
+    };
+
+    updateState();
   }, [actionClass.id, environmentId, isUserTargetingEnabled]);
 
   if (loading) return <LoadingSpinner />;
@@ -145,4 +146,4 @@ export default function EventActivityTab({
       </div>
     </div>
   );
-}
+};

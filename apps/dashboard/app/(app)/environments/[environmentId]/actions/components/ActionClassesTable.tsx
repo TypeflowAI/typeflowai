@@ -1,16 +1,12 @@
 "use client";
 
-import { MousePointerClickIcon } from "lucide-react";
 import { useState } from "react";
 
 import { useMembershipRole } from "@typeflowai/lib/membership/hooks/useMembershipRole";
-import { getAccessFlags } from "@typeflowai/lib/membership/utils";
 import { TActionClass } from "@typeflowai/types/actionClasses";
-import { Button } from "@typeflowai/ui/Button";
 import { ErrorComponent } from "@typeflowai/ui/ErrorComponent";
 
-import ActionDetailModal from "./ActionDetailModal";
-import AddNoCodeActionModal from "./AddActionModal";
+import { ActionDetailModal } from "./ActionDetailModal";
 
 interface ActionClassesTableProps {
   environmentId: string;
@@ -19,16 +15,14 @@ interface ActionClassesTableProps {
   isUserTargetingEnabled: boolean;
 }
 
-export default function ActionClassesTable({
+export const ActionClassesTable = ({
   environmentId,
   actionClasses,
   children: [TableHeading, actionRows],
   isUserTargetingEnabled,
-}: ActionClassesTableProps) {
+}: ActionClassesTableProps) => {
   const [isActionDetailModalOpen, setActionDetailModalOpen] = useState(false);
-  const [isAddActionModalOpen, setAddActionModalOpen] = useState(false);
-  const { membershipRole, isLoading, error } = useMembershipRole(environmentId);
-  const { isViewer } = getAccessFlags(membershipRole);
+  const { membershipRole, error } = useMembershipRole(environmentId);
 
   const [activeActionClass, setActiveActionClass] = useState<TActionClass>({
     environmentId,
@@ -47,28 +41,15 @@ export default function ActionClassesTable({
     setActiveActionClass(actionClass);
     setActionDetailModalOpen(true);
   };
+
   if (error) {
     return <ErrorComponent />;
   }
   return (
     <>
-      {!isViewer && (
-        <div className="mb-6 text-right">
-          <Button
-            loading={isLoading}
-            variant="darkCTA"
-            onClick={() => {
-              setAddActionModalOpen(true);
-            }}>
-            <MousePointerClickIcon className="mr-2 h-5 w-5 text-white" />
-            {isLoading ? "Loading" : "Add Action"}
-          </Button>
-        </div>
-      )}
-
-      <div className="rounded-lg border border-slate-200">
+      <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
         {TableHeading}
-        <div className="grid-cols-7" id="actionClassesWrapper">
+        <div id="actionClassesWrapper" className="flex flex-col">
           {actionClasses.map((actionClass, index) => (
             <button
               onClick={(e) => {
@@ -91,13 +72,6 @@ export default function ActionClassesTable({
         membershipRole={membershipRole}
         isUserTargetingEnabled={isUserTargetingEnabled}
       />
-      <AddNoCodeActionModal
-        environmentId={environmentId}
-        open={isAddActionModalOpen}
-        actionClasses={actionClasses}
-        setOpen={setAddActionModalOpen}
-        isViewer={isViewer}
-      />
     </>
   );
-}
+};

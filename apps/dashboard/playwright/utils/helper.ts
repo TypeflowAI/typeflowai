@@ -133,7 +133,8 @@ export const createWorkflow = async (
   await signUpAndLogin(page, name, email, password);
   await finishOnboarding(page);
 
-  await page.getByText("Start from scratchCreate a").click();
+  await page.getByRole("button", { name: "Start from scratch Create a" }).click();
+  await page.getByRole("button", { name: "Create workflow", exact: true }).click();
 
   // Welcome Card
   await expect(page.locator("#welcome-toggle")).toBeVisible();

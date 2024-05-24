@@ -26,14 +26,14 @@ export const MatrixQuestionSummary = ({ questionSummary }: MatrixQuestionSummary
   const columns = questionSummary.data[0] ? Object.keys(questionSummary.data[0].columnPercentages) : [];
 
   return (
-    <div className="rounded-lg border border-slate-200 bg-slate-50 shadow-sm">
+    <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
       <QuestionSummaryHeader questionSummary={questionSummary} />
-      <div className="overflow-x-auto rounded-b-lg bg-white p-6">
+      <div className="overflow-x-auto p-6">
         {/* Summary Table  */}
         <table className="mx-auto border-collapse cursor-default text-left">
           <thead>
             <tr>
-              <th className="p-4 pb-3 pt-0 font-medium text-slate-400 dark:border-slate-600 dark:text-slate-200"></th>
+              <th className="p-4 pb-3 pt-0 font-medium text-slate-400"></th>
               {columns.map((column) => (
                 <th key={column} className="text-center font-medium ">
                   <TooltipRenderer tooltipContent={getTooltipContent(column)} shouldRender={true}>
@@ -52,9 +52,7 @@ export const MatrixQuestionSummary = ({ questionSummary }: MatrixQuestionSummary
                   </TooltipRenderer>
                 </td>
                 {Object.entries(columnPercentages).map(([column, percentage]) => (
-                  <td
-                    key={column}
-                    className="text-center text-slate-500 dark:border-slate-700 dark:text-slate-400">
+                  <td key={column} className="text-center text-slate-500">
                     <TooltipRenderer
                       shouldRender={true}
                       tooltipContent={getTooltipContent(

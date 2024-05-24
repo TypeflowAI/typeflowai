@@ -7,7 +7,9 @@ import { getSlackChannels } from "@typeflowai/lib/slack/service";
 import { getWorkflows } from "@typeflowai/lib/workflow/service";
 import { TIntegrationItem } from "@typeflowai/types/integration";
 import { TIntegrationSlack } from "@typeflowai/types/integration/slack";
-import GoBackButton from "@typeflowai/ui/GoBackButton";
+import { GoBackButton } from "@typeflowai/ui/GoBackButton";
+import { PageContentWrapper } from "@typeflowai/ui/PageContentWrapper";
+import { PageHeader } from "@typeflowai/ui/PageHeader";
 
 export default async function Slack({ params }) {
   const isEnabled = !!(SLACK_CLIENT_ID && SLACK_CLIENT_SECRET);
@@ -28,8 +30,9 @@ export default async function Slack({ params }) {
   }
 
   return (
-    <>
-      <GoBackButton url={`/environments/${params.environmentId}/integrations`} />
+    <PageContentWrapper>
+      <GoBackButton url={`${WEBAPP_URL}/environments/${params.environmentId}/integrations`} />
+      <PageHeader pageTitle="Slack Integration" />
       <div className="h-[75vh] w-full">
         <SlackWrapper
           isEnabled={isEnabled}
@@ -40,6 +43,6 @@ export default async function Slack({ params }) {
           webAppUrl={WEBAPP_URL}
         />
       </div>
-    </>
+    </PageContentWrapper>
   );
 }

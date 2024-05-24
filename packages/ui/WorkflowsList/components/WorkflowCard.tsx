@@ -1,8 +1,8 @@
 import { Code, EarthIcon, Link2Icon } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
+import { TemplateIconComponent } from "@typeflowai/ee/prompt-templates/template-icons";
 import { cn } from "@typeflowai/lib/cn";
 import { convertDateString, timeSince } from "@typeflowai/lib/time";
 import { TEnvironment } from "@typeflowai/types/environment";
@@ -90,7 +90,7 @@ export const WorkflowCard = ({
       <Link
         href={linkHref}
         key={workflow.id}
-        className="relative col-span-2 flex h-44 flex-col justify-between rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all ease-in-out hover:scale-105 ">
+        className="relative col-span-1 flex h-44 flex-col justify-between rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all ease-in-out hover:scale-105">
         <div className="flex justify-between">
           <WorkflowTypeIndicator type={workflow.type} />
           <WorkflowDropDownMenu
@@ -109,14 +109,12 @@ export const WorkflowCard = ({
         <div>
           <div className="mt-4 flex flex-row">
             {workflow.icon && (
-              <Image
-                width={48}
-                height={48}
-                src={workflow.icon}
+              <TemplateIconComponent
+                icon={workflow.icon}
+                className="h-12 w-12 "
                 style={{
                   objectFit: "cover",
                 }}
-                className="h-12 w-12"
                 alt="Workflow Image"
               />
             )}
@@ -149,14 +147,12 @@ export const WorkflowCard = ({
     shadow-sm transition-all ease-in-out hover:scale-[101%]">
         <div className="col-span-2 mt-4 flex flex max-w-full flex-row items-center justify-self-start truncate ">
           {workflow.icon && (
-            <Image
-              width={48}
-              height={48}
-              src={workflow.icon}
+            <TemplateIconComponent
+              icon={workflow.icon}
+              className="h-12 w-12 "
               style={{
                 objectFit: "cover",
               }}
-              className="h-12 w-12"
               alt="Workflow Image"
             />
           )}

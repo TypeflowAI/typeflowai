@@ -18,6 +18,8 @@ import { getWebhookCountBySource } from "@typeflowai/lib/webhook/service";
 import { TIntegrationType } from "@typeflowai/types/integration";
 import { Card } from "@typeflowai/ui/Card";
 import { ErrorComponent } from "@typeflowai/ui/ErrorComponent";
+import { PageContentWrapper } from "@typeflowai/ui/PageContentWrapper";
+import { PageHeader } from "@typeflowai/ui/PageHeader";
 
 import AirtableLogo from "./airtable/images/airtable.svg";
 import GoogleSheetsLogo from "./google-sheets/images/google-sheets-small.png";
@@ -69,6 +71,9 @@ export default async function IntegrationsPage({ params }) {
       docsHref: "https://typeflowai.com/docs/getting-started/framework-guides#next-js",
       docsText: "Docs",
       docsNewTab: true,
+      connectHref: `/environments/${environmentId}/product/setup`,
+      connectText: "Connect",
+      connectNewTab: false,
       label: "Javascript Widget",
       description: "Integrate TypeflowAI into your Webapp",
       icon: <Image src={JsLogo} alt="Javascript Logo" />,
@@ -204,10 +209,9 @@ export default async function IntegrationsPage({ params }) {
   if (isViewer) return <ErrorComponent />;
 
   return (
-    <div>
-      <h1 className="my-2 text-3xl font-bold text-slate-800">Integrations</h1>
-      <p className="mb-6 text-slate-500">Connect TypeflowAI with your favorite tools.</p>
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+    <PageContentWrapper>
+      <PageHeader pageTitle="Integrations" />
+      <div className="grid grid-cols-3 place-content-stretch gap-4 lg:grid-cols-3">
         {integrationCards.map((card) => (
           <Card
             key={card.label}
@@ -225,6 +229,6 @@ export default async function IntegrationsPage({ params }) {
           />
         ))}
       </div>
-    </div>
+    </PageContentWrapper>
   );
 }

@@ -118,16 +118,16 @@ input[type="search"]::-ms-reveal {
 }
 
 .workflowFilterDropdown[data-state="open"] {
-  background-color: #0f172a;
-  color: white;
+  background-color: #7b4cfa;
+  color: white !important;
 }
 .workflowFilterDropdown:hover * {
-  background-color: #0f172a;
+  background-color: #7b4cfa;
   color: white;
 }
 
 input[type="range"]::-webkit-slider-thumb {
-  background: #0f172a;
+  background: #7b4cfa;
   height: 20px;
   width: 20px;
   border-radius: 50%;

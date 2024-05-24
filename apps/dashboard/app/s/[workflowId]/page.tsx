@@ -1,7 +1,6 @@
 import { validateWorkflowSingleUseId } from "@/app/lib/singleUseWorkflows";
 import LegalFooter from "@/app/s/[workflowId]/components/LegalFooter";
 import LinkWorkflow from "@/app/s/[workflowId]/components/LinkWorkflow";
-import { MediaBackground } from "@/app/s/[workflowId]/components/MediaBackground";
 import PinScreen from "@/app/s/[workflowId]/components/PinScreen";
 import WorkflowInactive from "@/app/s/[workflowId]/components/WorkflowInactive";
 import { getMetadataForLinkWorkflow } from "@/app/s/[workflowId]/metadata";
@@ -17,6 +16,7 @@ import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
 import { getWorkflow } from "@typeflowai/lib/workflow/service";
 import { ZId } from "@typeflowai/types/environment";
 import { TResponse } from "@typeflowai/types/responses";
+import { MediaBackground } from "@typeflowai/ui/MediaBackground";
 
 import { getEmailVerificationDetails } from "./lib/helpers";
 

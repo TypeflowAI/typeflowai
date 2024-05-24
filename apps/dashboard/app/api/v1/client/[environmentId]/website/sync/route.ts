@@ -1,9 +1,9 @@
-import { getExampleWorkflowTemplate } from "@/app/(app)/environments/[environmentId]/workflows/templates/templates";
 import { sendFreeLimitReachedEventToPosthogBiWeekly } from "@/app/api/v1/client/[environmentId]/app/sync/lib/posthog";
 import { responses } from "@/app/lib/api/response";
 import { transformErrorToDetails } from "@/app/lib/api/validator";
 import { NextRequest } from "next/server";
 
+import { getExampleWorkflowTemplate } from "@typeflowai/ee/prompt-templates/templates";
 import { getActionClassByEnvironmentIdAndName, getActionClasses } from "@typeflowai/lib/actionClass/service";
 import {
   IS_TYPEFLOWAI_CLOUD,

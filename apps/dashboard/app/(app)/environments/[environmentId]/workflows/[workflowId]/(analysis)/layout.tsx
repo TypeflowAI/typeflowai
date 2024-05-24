@@ -12,9 +12,9 @@ type Props = {
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const session = await getServerSession(authOptions);
   const workflow = await getWorkflow(params.workflowId);
+  const responseCount = await getResponseCountByWorkflowId(params.workflowId);
 
   if (session) {
-    const responseCount = await getResponseCountByWorkflowId(params.workflowId);
     return {
       title: `${responseCount} Responses | ${workflow?.name} Results`,
     };
@@ -24,8 +24,6 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
   };
 };
 
-const WorkflowLayout = ({ children }) => {
-  return <div>{children}</div>;
-};
-
-export default WorkflowLayout;
+export default async function WorkflowLayout({ children }) {
+  return <>{children}</>;
+}

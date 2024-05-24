@@ -1,4 +1,3 @@
-import { updateWorkflowAction } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/edit/actions";
 import { CheckCircle2Icon, PauseCircleIcon, PlayCircleIcon } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -7,6 +6,8 @@ import { TWorkflow } from "@typeflowai/types/workflows";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@typeflowai/ui/Select";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@typeflowai/ui/Tooltip";
 import { WorkflowStatusIndicator } from "@typeflowai/ui/WorkflowStatusIndicator";
+
+import { updateWorkflowAction } from "../actions";
 
 interface WorkflowStatusDropdownProps {
   environment: TEnvironment;

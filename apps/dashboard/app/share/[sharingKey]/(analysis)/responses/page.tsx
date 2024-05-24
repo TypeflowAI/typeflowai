@@ -1,3 +1,4 @@
+import { WorkflowAnalysisNavigation } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/components/WorkflowAnalysisNavigation";
 import ResponsePage from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/responses/components/ResponsePage";
 import { notFound } from "next/navigation";
 
@@ -7,6 +8,8 @@ import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
 import { getResponseCountByWorkflowId } from "@typeflowai/lib/response/service";
 import { getTagsByEnvironmentId } from "@typeflowai/lib/tag/service";
 import { getWorkflow, getWorkflowIdByResultShareKey } from "@typeflowai/lib/workflow/service";
+import { PageContentWrapper } from "@typeflowai/ui/PageContentWrapper";
+import { PageHeader } from "@typeflowai/ui/PageHeader";
 
 export default async function Page({ params }) {
   const workflowId = await getWorkflowIdByResultShareKey(params.sharingKey);
@@ -35,17 +38,26 @@ export default async function Page({ params }) {
   const totalResponseCount = await getResponseCountByWorkflowId(workflowId);
 
   return (
-    <>
-      <ResponsePage
-        environment={environment}
-        workflow={workflow}
-        workflowId={workflowId}
-        webAppUrl={WEBAPP_URL}
-        product={product}
-        environmentTags={tags}
-        responsesPerPage={RESPONSES_PER_PAGE}
-        totalResponseCount={totalResponseCount}
-      />
-    </>
+    <div className="flex w-full justify-center">
+      <PageContentWrapper className="w-full">
+        <PageHeader pageTitle={workflow.name}>
+          <WorkflowAnalysisNavigation
+            workflowId={workflow.id}
+            environmentId={environment.id}
+            activeId="summary"
+            responseCount={totalResponseCount}
+          />
+        </PageHeader>
+        <ResponsePage
+          environment={environment}
+          workflow={workflow}
+          workflowId={workflowId}
+          webAppUrl={WEBAPP_URL}
+          environmentTags={tags}
+          responsesPerPage={RESPONSES_PER_PAGE}
+          totalResponseCount={totalResponseCount}
+        />
+      </PageContentWrapper>
+    </div>
   );
 }

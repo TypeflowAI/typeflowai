@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { cn } from "@typeflowai/lib/cn";
 import { TAllowedFileExtension } from "@typeflowai/types/common";
 
-import LoadingSpinner from "../LoadingSpinner";
+import { LoadingSpinner } from "../LoadingSpinner";
 import { TabBar } from "../TabBar";
 import { Uploader } from "./components/Uploader";
 import { VideoSettings } from "./components/VideoSettings";

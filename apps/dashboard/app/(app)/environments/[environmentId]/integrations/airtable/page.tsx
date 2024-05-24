@@ -8,7 +8,9 @@ import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
 import { getWorkflows } from "@typeflowai/lib/workflow/service";
 import { TIntegrationItem } from "@typeflowai/types/integration";
 import { TIntegrationAirtable } from "@typeflowai/types/integration/airtable";
-import GoBackButton from "@typeflowai/ui/GoBackButton";
+import { GoBackButton } from "@typeflowai/ui/GoBackButton";
+import { PageContentWrapper } from "@typeflowai/ui/PageContentWrapper";
+import { PageHeader } from "@typeflowai/ui/PageHeader";
 
 export default async function Airtable({ params }) {
   const enabled = !!AIRTABLE_CLIENT_ID;
@@ -35,8 +37,9 @@ export default async function Airtable({ params }) {
   }
 
   return (
-    <>
+    <PageContentWrapper>
       <GoBackButton url={`${WEBAPP_URL}/environments/${params.environmentId}/integrations`} />
+      <PageHeader pageTitle="Airtable Integration" />
       <div className="h-[75vh] w-full">
         <AirtableWrapper
           enabled={enabled}
@@ -48,6 +51,6 @@ export default async function Airtable({ params }) {
           webAppUrl={WEBAPP_URL}
         />
       </div>
-    </>
+    </PageContentWrapper>
   );
 }

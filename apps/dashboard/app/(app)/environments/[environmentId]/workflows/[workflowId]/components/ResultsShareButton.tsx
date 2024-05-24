@@ -5,8 +5,7 @@ import {
   generateResultShareUrlAction,
   getResultShareUrlAction,
 } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/actions";
-import { CopyIcon, GlobeIcon, LinkIcon } from "lucide-react";
-import { DownloadIcon } from "lucide-react";
+import { CopyIcon, DownloadIcon, GlobeIcon, LinkIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -89,7 +88,7 @@ export const ResultsShareButton = ({ workflow, webAppUrl, user }: ResultsShareBu
     }
   };
   return (
-    <div className="mb-12">
+    <div>
       <DropdownMenu>
         <DropdownMenuTrigger
           asChild

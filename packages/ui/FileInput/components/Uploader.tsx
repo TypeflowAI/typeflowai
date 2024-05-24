@@ -30,7 +30,7 @@ export const Uploader = ({
     <label
       htmlFor={`${id}-${name}`}
       className={cn(
-        "relative flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:hover:border-slate-500 dark:hover:bg-slate-800",
+        "relative flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 hover:bg-slate-100",
         uploaderClassName
       )}
       onDragOver={(e) => handleDragOver(e)}

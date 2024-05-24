@@ -1,19 +1,20 @@
-import WidgetStatusIndicator from "@/app/(app)/environments/[environmentId]/components/WidgetStatusIndicator";
 import WorkflowStarter from "@/app/(app)/environments/[environmentId]/workflows/components/WorkflowStarter";
+import { PlusIcon } from "lucide-react";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 
 import { getIsEngineLimited } from "@typeflowai/ee/subscription/lib/service";
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { WEBAPP_URL, WORKFLOWS_PER_PAGE } from "@typeflowai/lib/constants";
-import { getEnvironment } from "@typeflowai/lib/environment/service";
-import { getEnvironments } from "@typeflowai/lib/environment/service";
+import { getEnvironment, getEnvironments } from "@typeflowai/lib/environment/service";
 import { getMembershipByUserIdTeamId } from "@typeflowai/lib/membership/service";
 import { getAccessFlags } from "@typeflowai/lib/membership/utils";
 import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
 import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
 import { getWorkflowCount } from "@typeflowai/lib/workflow/service";
-import { ContentWrapper } from "@typeflowai/ui/ContentWrapper";
+import { Button } from "@typeflowai/ui/Button";
+import { PageContentWrapper } from "@typeflowai/ui/PageContentWrapper";
+import { PageHeader } from "@typeflowai/ui/PageHeader";
 import { WorkflowsList } from "@typeflowai/ui/WorkflowsList";
 
 export const metadata: Metadata = {
@@ -51,17 +52,30 @@ export default async function WorkflowsPage({ params }) {
   const environments = await getEnvironments(product.id);
   const otherEnvironment = environments.find((e) => e.type !== environment.type)!;
 
+  const CreateWorkflowButton = (
+    <Button
+      size="sm"
+      href={`/environments/${environment.id}/workflows/templates`}
+      variant="darkCTA"
+      EndIcon={PlusIcon}>
+      New workflow
+    </Button>
+  );
+
   return (
-    <ContentWrapper className="flex h-full flex-col justify-between">
+    <PageContentWrapper>
       {workflowCount > 0 ? (
-        <WorkflowsList
-          environment={environment}
-          otherEnvironment={otherEnvironment}
-          isViewer={isViewer}
-          WEBAPP_URL={WEBAPP_URL}
-          userId={session.user.id}
-          workflowsPerPage={WORKFLOWS_PER_PAGE}
-        />
+        <>
+          <PageHeader pageTitle="AI Tools" cta={CreateWorkflowButton} />
+          <WorkflowsList
+            environment={environment}
+            otherEnvironment={otherEnvironment}
+            isViewer={isViewer}
+            WEBAPP_URL={WEBAPP_URL}
+            userId={session.user.id}
+            workflowsPerPage={WORKFLOWS_PER_PAGE}
+          />
+        </>
       ) : (
         <WorkflowStarter
           environmentId={params.environmentId}
@@ -71,8 +85,6 @@ export default async function WorkflowsPage({ params }) {
           isEngineLimited={isEngineLimited}
         />
       )}
-
-      <WidgetStatusIndicator environmentId={params.environmentId} type="mini" />
-    </ContentWrapper>
+    </PageContentWrapper>
   );
 }

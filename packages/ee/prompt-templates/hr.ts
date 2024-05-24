@@ -1,43 +1,13 @@
 import { OpenAIModel } from "@typeflowai/types/openai";
 import { TTemplate } from "@typeflowai/types/templates";
-import { TWorkflowHiddenFields, TWorkflowQuestionType } from "@typeflowai/types/workflows";
-import automationIcon from "@typeflowai/ui/icons/templates/automation.svg";
-import benefitsIcon from "@typeflowai/ui/icons/templates/benefits.svg";
-import bonusIcon from "@typeflowai/ui/icons/templates/bonus.svg";
-import complianceIcon from "@typeflowai/ui/icons/templates/compliance.svg";
-import computerIcon from "@typeflowai/ui/icons/templates/computer.svg";
-import cultureIcon from "@typeflowai/ui/icons/templates/culture.svg";
-import descriptionIcon from "@typeflowai/ui/icons/templates/description.svg";
-import diversityIcon from "@typeflowai/ui/icons/templates/diversity.svg";
-import documentIcon from "@typeflowai/ui/icons/templates/document.svg";
-import employeeTrainerIcon from "@typeflowai/ui/icons/templates/employee-trainer.svg";
-import exitIcon from "@typeflowai/ui/icons/templates/exit.svg";
-import formIcon from "@typeflowai/ui/icons/templates/form.svg";
-import goalIcon from "@typeflowai/ui/icons/templates/goal.svg";
-import growthIcon from "@typeflowai/ui/icons/templates/growth.svg";
-import jobIcon from "@typeflowai/ui/icons/templates/job.svg";
-import leadershipIcon from "@typeflowai/ui/icons/templates/leadership.svg";
-import LearningPathsIcon from "@typeflowai/ui/icons/templates/learning-paths.svg";
-import learningIcon from "@typeflowai/ui/icons/templates/learning.svg";
-import negotiationIcon from "@typeflowai/ui/icons/templates/negotiation.svg";
-import payIcon from "@typeflowai/ui/icons/templates/pay.svg";
-import performanceIcon from "@typeflowai/ui/icons/templates/performance.svg";
-import phoneIcon from "@typeflowai/ui/icons/templates/phone.svg";
-import planIcon from "@typeflowai/ui/icons/templates/plan.svg";
-import reportIcon from "@typeflowai/ui/icons/templates/report.svg";
-import rewardIcon from "@typeflowai/ui/icons/templates/reward.svg";
-import chatbotIcon from "@typeflowai/ui/icons/templates/robot3.svg";
-import salaryIcon from "@typeflowai/ui/icons/templates/salary.svg";
-import scorecardIcon from "@typeflowai/ui/icons/templates/scorecard.svg";
-import selectionIcon from "@typeflowai/ui/icons/templates/selection.svg";
-import templateIcon from "@typeflowai/ui/icons/templates/template.svg";
-import trackingIcon from "@typeflowai/ui/icons/templates/tracking.svg";
-import wellnessIcon from "@typeflowai/ui/icons/templates/wellness.svg";
-import workflowIcon from "@typeflowai/ui/icons/templates/workflow.svg";
-import workforceIcon from "@typeflowai/ui/icons/templates/workforce.svg";
-import writeIcon from "@typeflowai/ui/icons/templates/write.svg";
+import {
+  TWorkflowHiddenFields,
+  TWorkflowQuestionType,
+  TWorkflowThankYouCard,
+  TWorkflowWelcomeCard,
+} from "@typeflowai/types/workflows";
 
-const thankYouCardDefault = {
+const thankYouCardDefault: TWorkflowThankYouCard = {
   enabled: true,
   headline: { default: "Thank you!" },
   subheader: { default: "We appreciate your feedback." },
@@ -50,7 +20,7 @@ const hiddenFieldsDefault: TWorkflowHiddenFields = {
   fieldIds: [],
 };
 
-const welcomeCardDefault = {
+const welcomeCardDefault: TWorkflowWelcomeCard = {
   enabled: false,
   headline: { default: "Welcome!" },
   html: { default: "Thanks for providing your feedback - let's go!" },
@@ -58,19 +28,35 @@ const welcomeCardDefault = {
   showResponseCount: false,
 };
 
+const workflowDefault: TTemplate["preset"] = {
+  name: "New Workflow",
+  welcomeCard: welcomeCardDefault,
+  prompt: {
+    enabled: false,
+    id: "prompt",
+    message: "",
+    attributes: {},
+    isVisible: true,
+    engine: OpenAIModel.GPT35Turbo,
+  },
+  thankYouCard: thankYouCardDefault,
+  hiddenFields: hiddenFieldsDefault,
+  questions: [],
+};
+
 export const hrTemplates: TTemplate[] = [
   {
     name: "HR Selection Criteria",
-    icon: selectionIcon.src,
+    icon: "SelectionIcon",
     category: "Human Resources",
     subcategory: "HR Technology",
     description: "Identify key features and suggest evaluation criteria.",
     objectives: ["improve_business_strategy", "innovate_and_develop"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "HR Selection Criteria",
-      welcomeCard: welcomeCardDefault,
-      icon: selectionIcon.src,
+      icon: "SelectionIcon",
       questions: [
         {
           id: "hr-need",
@@ -99,22 +85,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "HR Chatbot",
-    icon: chatbotIcon.src,
+    icon: "ChatbotIcon",
     category: "Human Resources",
     subcategory: "HR Technology",
     description: "Optimize job candidate sourcing by generating profiles and descriptions.",
     objectives: ["optimize_content_and_seo_strategy", "streamline_operations_and_sales", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "HR Chatbot",
-      welcomeCard: welcomeCardDefault,
-      icon: chatbotIcon.src,
+      icon: "ChatbotIcon",
       questions: [
         {
           id: "job-title",
@@ -143,22 +127,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "HR Automation",
-    icon: automationIcon.src,
+    icon: "AutomationIcon",
     category: "Human Resources",
     subcategory: "HR Technology",
     description: "Enhance HR automation: job descriptions, onboard and programs.",
     objectives: ["improve_customer_and_employee_experience", "streamline_operations_and_sales", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "HR Automation",
-      welcomeCard: welcomeCardDefault,
-      icon: automationIcon.src,
+      icon: "AutomationIcon",
       questions: [
         {
           id: "areas",
@@ -179,22 +161,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Team Leadership Programs",
-    icon: leadershipIcon.src,
+    icon: "LeadershipIcon",
     category: "Human Resources",
     subcategory: "Leadership development",
     description: "Improve team leadership: brainstorm ideas and strategies for effective training.",
     objectives: ["improve_customer_and_employee_experience", "innovate_and_develop"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Team Leadership Programs",
-      welcomeCard: welcomeCardDefault,
-      icon: leadershipIcon.src,
+      icon: "LeadershipIcon",
       questions: [
         {
           id: "department",
@@ -223,22 +203,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Leadership Shadowing",
-    icon: leadershipIcon.src,
+    icon: "LeadershipIcon",
     category: "Human Resources",
     subcategory: "Leadership development",
     description: "Manage leadership shadowing: plan programs and select candidates.",
     objectives: ["improve_customer_and_employee_experience", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Leadership Shadowing",
-      welcomeCard: welcomeCardDefault,
-      icon: leadershipIcon.src,
+      icon: "LeadershipIcon",
       questions: [
         {
           id: "department",
@@ -259,22 +237,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Phone screening",
-    icon: phoneIcon.src,
+    icon: "PhoneIcon",
     category: "Human Resources",
     subcategory: "Recruiting",
     description: "Streamline phone screenings: ask, capture, and analyze responses.",
     objectives: ["improve_customer_and_employee_experience", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Phone Screening",
-      welcomeCard: welcomeCardDefault,
-      icon: phoneIcon.src,
+      icon: "PhoneIcon",
       questions: [
         {
           id: "skill",
@@ -303,22 +279,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Job Description Copy",
-    icon: descriptionIcon.src,
+    icon: "DescriptionIcon",
     category: "Human Resources",
     subcategory: "Recruiting",
     description: "Transform job descriptions into narratives for recruiting.",
     objectives: ["optimize_content_and_seo_strategy", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Job Description Copy",
-      welcomeCard: welcomeCardDefault,
-      icon: descriptionIcon.src,
+      icon: "DescriptionIcon",
       questions: [
         {
           id: "job-title",
@@ -401,22 +375,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Resume Screening Tool",
-    icon: documentIcon.src,
+    icon: "DocumentIcon",
     category: "Human Resources",
     subcategory: "Recruiting",
     description: "Screen resumes of top candidates, saving time and reducing bias.",
     objectives: ["improve_customer_and_employee_experience", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Resume Screening Tool",
-      welcomeCard: welcomeCardDefault,
-      icon: documentIcon.src,
+      icon: "DocumentIcon",
       questions: [
         {
           id: "industry",
@@ -437,22 +409,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Writing I-9 forms",
-    icon: writeIcon.src,
+    icon: "WriteIcon",
     category: "Human Resources",
     subcategory: "Compliance",
     description: "Generate accurate I-9 Forms based on templates and guidelines.",
     objectives: ["streamline_operations_and_sales", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Writing I-9 forms",
-      welcomeCard: welcomeCardDefault,
-      icon: writeIcon.src,
+      icon: "WriteIcon",
       questions: [
         {
           id: "employee-name",
@@ -513,22 +483,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "OFCCP Compliance",
-    icon: complianceIcon.src,
+    icon: "ComplianceIcon",
     category: "Human Resources",
     subcategory: "Compliance",
     description: "Develop OFCCP compliance strategies based on recommendations.",
     objectives: ["improve_business_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "OFCCP Compliance",
-      welcomeCard: welcomeCardDefault,
-      icon: complianceIcon.src,
+      icon: "ComplianceIcon",
       questions: [
         {
           id: "role-department",
@@ -581,22 +549,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "HR Scorecards",
-    icon: scorecardIcon.src,
+    icon: "ScorecardIcon",
     category: "Human Resources",
     subcategory: "Data & Analytics",
     description: "Generate HR scorecards offering suggestions for comprehensive design.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "HR Scorecards",
-      welcomeCard: welcomeCardDefault,
-      icon: scorecardIcon.src,
+      icon: "ScorecardIcon",
       questions: [
         {
           id: "company-type",
@@ -632,22 +598,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "HR Reports Dashboards",
-    icon: reportIcon.src,
+    icon: "ReportIcon",
     category: "Human Resources",
     subcategory: "Data & Analytics",
     description: "Generate customized HR reports dashboards based on input data.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "HR Reports Dashboards",
-      welcomeCard: welcomeCardDefault,
-      icon: reportIcon.src,
+      icon: "ReportIcon",
       questions: [
         {
           id: "metric",
@@ -692,13 +656,11 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Performance Review Summaries",
-    icon: performanceIcon.src,
+    icon: "PerformanceIcon",
     category: "Human Resources",
     subcategory: "Performance management",
     description: "Enhance performance reviews by generating concise and personalized summaries.",
@@ -706,9 +668,9 @@ export const hrTemplates: TTemplate[] = [
 
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Performance Review Summaries",
-      welcomeCard: welcomeCardDefault,
-      icon: performanceIcon.src,
+      icon: "PerformanceIcon",
       questions: [
         {
           id: "department-name",
@@ -753,22 +715,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Employee Goal-Setting",
-    icon: goalIcon.src,
+    icon: "GoalIcon",
     category: "Human Resources",
     subcategory: "Performance management",
     description: "Optimize employee goal-setting to enhance performance and motivation.",
     objectives: ["improve_customer_and_employee_experience", "innovate_and_develop"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Employee Goal-Setting",
-      welcomeCard: welcomeCardDefault,
-      icon: goalIcon.src,
+      icon: "GoalIcon",
       questions: [
         {
           id: "department-name",
@@ -821,22 +781,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Performance Review Templates",
-    icon: templateIcon.src,
+    icon: "TemplateIcon",
     category: "Human Resources",
     subcategory: "Performance management",
     description: "Generate personalized performance review templates for evaluations.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Performance Review Templates",
-      welcomeCard: welcomeCardDefault,
-      icon: templateIcon.src,
+      icon: "TemplateIcon",
       questions: [
         {
           id: "job-title",
@@ -881,22 +839,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Performance Improvement Plans",
-    icon: growthIcon.src,
+    icon: "GrowthIcon",
     category: "Human Resources",
     subcategory: "Performance management",
     description: "Create performance improvement plans based on personalized insights.",
     objectives: ["improve_customer_and_employee_experience", "innovate_and_develop"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Performance Improvement Plans",
-      welcomeCard: welcomeCardDefault,
-      icon: growthIcon.src,
+      icon: "GrowthIcon",
       questions: [
         {
           id: "employee-name",
@@ -949,22 +905,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Performance Appraisal Forms",
-    icon: formIcon.src,
+    icon: "FormIcon",
     category: "Human Resources",
     subcategory: "Performance management",
     description: "Use performance appraisal forms to efficiently provide feedback.",
     objectives: ["improve_customer_and_employee_experience", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Performance Appraisal Forms",
-      welcomeCard: welcomeCardDefault,
-      icon: formIcon.src,
+      icon: "FormIcon",
       questions: [
         {
           id: "kpis",
@@ -1000,22 +954,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Remote Work Policies",
-    icon: computerIcon.src,
+    icon: "ComputerIcon",
     category: "Human Resources",
     subcategory: "Employee relations",
     description: "Create remote work policies based on suggestions and examples.",
     objectives: ["improve_customer_and_employee_experience", "optimize_content_and_seo_strategy", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Remote Work Policies",
-      welcomeCard: welcomeCardDefault,
-      icon: computerIcon.src,
+      icon: "ComputerIcon",
       questions: [
         {
           id: "industry",
@@ -1052,22 +1004,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Diversity & Inclusion Strategies",
-    icon: diversityIcon.src,
+    icon: "DiversityIcon",
     category: "Human Resources",
     subcategory: "Employee relations",
     description: "Devise diversity and inclusion strategies based on ideas and real examples.",
     objectives: ["improve_customer_and_employee_experience", "innovate_and_develop", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Diversity & inclusion Strategies",
-      welcomeCard: welcomeCardDefault,
-      icon: diversityIcon.src,
+      icon: "DiversityIcon",
       questions: [
         {
           id: "data",
@@ -1104,22 +1054,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Exit Interviews",
-    icon: exitIcon.src,
+    icon: "ExitIcon",
     category: "Human Resources",
     subcategory: "Employee relations",
     description: "Conduct exit interviews by generating questions and suggesting actions.",
     objectives: ["improve_customer_and_employee_experience", "optimize_content_and_seo_strategy", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Exit Interviews",
-      welcomeCard: welcomeCardDefault,
-      icon: exitIcon.src,
+      icon: "ExitIcon",
       questions: [
         {
           id: "employee-name",
@@ -1148,22 +1096,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Employee Engagement Workflows",
-    icon: workflowIcon.src,
+    icon: "WorkflowIcon",
     category: "Human Resources",
     subcategory: "Compensation & Benefits",
     description: "Enhance employee engagement by creating structured workflow questions.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Employee Engagement Workflows",
-      welcomeCard: welcomeCardDefault,
-      icon: workflowIcon.src,
+      icon: "WorkflowIcon",
       questions: [
         {
           id: "industry",
@@ -1192,22 +1138,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Paid Time Off Policies",
-    icon: payIcon.src,
+    icon: "PayIcon",
     category: "Human Resources",
     subcategory: "Compensation & Benefits",
     description: "Design comprehensive paid time off policies efficiently.",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Paid Time Off Policies",
-      welcomeCard: welcomeCardDefault,
-      icon: payIcon.src,
+      icon: "PayIcon",
       questions: [
         {
           id: "company-size",
@@ -1244,22 +1188,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Equity Compensation Programs",
-    icon: rewardIcon.src,
+    icon: "RewardIcon",
     category: "Human Resources",
     subcategory: "Compensation & Benefits",
     description: "Create comprehensive equity compensation programs efficiently.",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Equity Compensation Programs",
-      welcomeCard: welcomeCardDefault,
-      icon: rewardIcon.src,
+      icon: "RewardIcon",
       questions: [
         {
           id: "situation",
@@ -1296,22 +1238,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Job Evaluations",
-    icon: jobIcon.src,
+    icon: "JobIcon",
     category: "Human Resources",
     subcategory: "Compensation & Benefits",
     description: "Conduct thorough job evaluations gaining insights and recommendations.",
     objectives: ["improve_business_strategy", "innovate_and_develop", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Conducting job evaluations",
-      welcomeCard: welcomeCardDefault,
-      icon: jobIcon.src,
+      icon: "JobIcon",
       questions: [
         {
           id: "job-title",
@@ -1348,22 +1288,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Health and Wellness Programs",
-    icon: wellnessIcon.src,
+    icon: "WellnessIcon",
     category: "Human Resources",
     subcategory: "Compensation & Benefits",
     description: "Create comprehensive health and wellness programs for your employees.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Health and Wellness Programs",
-      welcomeCard: welcomeCardDefault,
-      icon: wellnessIcon.src,
+      icon: "WellnessIcon",
       questions: [
         {
           id: "audience",
@@ -1408,22 +1346,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Employee Satisfaction Workflows",
-    icon: workflowIcon.src,
+    icon: "WorkflowIcon",
     category: "Human Resources",
     subcategory: "Compensation & Benefits",
     description: "Write employee satisfaction workflows by generating relevant questions and responses.",
     objectives: ["improve_customer_and_employee_experience", "optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Employee Satisfaction Workflows",
-      welcomeCard: welcomeCardDefault,
-      icon: workflowIcon.src,
+      icon: "WorkflowIcon",
       questions: [
         {
           id: "company-name",
@@ -1468,22 +1404,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Salary Workflow Reports",
-    icon: salaryIcon.src,
+    icon: "SalaryIcon",
     category: "Human Resources",
     subcategory: "Compensation & Benefits",
     description: "Generate salary workflow reports, analyzing data efficiently for accurate insights.",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Salary Workflow Reports",
-      welcomeCard: welcomeCardDefault,
-      icon: salaryIcon.src,
+      icon: "SalaryIcon",
       questions: [
         {
           id: "job-title",
@@ -1536,22 +1470,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Bonus Plan Generator",
-    icon: bonusIcon.src,
+    icon: "BonusIcon",
     category: "Human Resources",
     subcategory: "Compensation & Benefits",
     description: "Create bonus plans with incentives that align with company goals.",
     objectives: ["improve_business_strategy", "innovate_and_develop", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Bonus Plan Generator",
-      welcomeCard: welcomeCardDefault,
-      icon: bonusIcon.src,
+      icon: "BonusIcon",
       questions: [
         {
           id: "company-size",
@@ -1604,22 +1536,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Employee Benefits",
-    icon: benefitsIcon.src,
+    icon: "BenefitsIcon",
     category: "Human Resources",
     subcategory: "Compensation & Benefits",
     description: "Optimize employee benefits by offering tailored packages and personalized advice.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Employee Benefits",
-      welcomeCard: welcomeCardDefault,
-      icon: benefitsIcon.src,
+      icon: "BenefitsIcon",
       questions: [
         {
           id: "benefits",
@@ -1664,22 +1594,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Holistic Wellness Programs",
-    icon: wellnessIcon.src,
+    icon: "WellnessIcon",
     category: "Human Resources",
     subcategory: "Compensation & Benefits",
     description: "Transform the office into a wellness space, promoting work-life balance.",
     objectives: ["improve_customer_and_employee_experience", "innovate_and_develop", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Holistic Wellness Programs",
-      welcomeCard: welcomeCardDefault,
-      icon: wellnessIcon.src,
+      icon: "WellnessIcon",
       questions: [
         {
           id: "sector",
@@ -1724,22 +1652,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Benefit Packages",
-    icon: benefitsIcon.src,
+    icon: "BenefitsIcon",
     category: "Human Resources",
     subcategory: "Workforce planning",
     description: "Create benefit packages by empowering employees to customize their perks.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Benefit Packages",
-      welcomeCard: welcomeCardDefault,
-      icon: benefitsIcon.src,
+      icon: "BenefitsIcon",
       questions: [
         {
           id: "sector",
@@ -1780,22 +1706,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Coaching Plans",
-    icon: employeeTrainerIcon.src,
+    icon: "EmployeeTrainerIcon",
     category: "Human Resources",
     subcategory: "Training & Development",
     description: "Write coaching plans with goal-setting iniciatives and actionable strategies.",
     objectives: ["improve_customer_and_employee_experience", "innovate_and_develop"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Coaching Plans",
-      welcomeCard: welcomeCardDefault,
-      icon: employeeTrainerIcon.src,
+      icon: "EmployeeTrainerIcon",
       questions: [
         {
           id: "plan",
@@ -1832,22 +1756,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Employee Development Plans",
-    icon: planIcon.src,
+    icon: "PlanIcon",
     category: "Human Resources",
     subcategory: "Training & Development",
     description: "Design employee development plans aligned with organizational and individual goals.",
     objectives: ["improve_customer_and_employee_experience", "innovate_and_develop"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Employee Development Plans",
-      welcomeCard: welcomeCardDefault,
-      icon: planIcon.src,
+      icon: "PlanIcon",
       questions: [
         {
           id: "employee-name",
@@ -1876,13 +1798,11 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Learning Objectives",
-    icon: learningIcon.src,
+    icon: "LearningIcon",
     category: "Human Resources",
     subcategory: "Training & Development",
     description: "Develop clear, specific, and measurable learning objectives aligned with your goals.",
@@ -1893,9 +1813,9 @@ export const hrTemplates: TTemplate[] = [
     ],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Learning Objectives",
-      welcomeCard: welcomeCardDefault,
-      icon: learningIcon.src,
+      icon: "LearningIcon",
       questions: [
         {
           id: "program",
@@ -1948,13 +1868,11 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Employee Learning Paths",
-    icon: LearningPathsIcon.src,
+    icon: "LearningPathsIcon",
     category: "Human Resources",
     subcategory: "Training & Development",
     description:
@@ -1962,9 +1880,9 @@ export const hrTemplates: TTemplate[] = [
     objectives: ["improve_customer_and_employee_experience", "innovate_and_develop"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Employee Learning Paths",
-      welcomeCard: welcomeCardDefault,
-      icon: LearningPathsIcon.src,
+      icon: "LearningPathsIcon",
       questions: [
         {
           id: "sector",
@@ -2004,22 +1922,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Job Offers Negotiation Script",
-    icon: negotiationIcon.src,
+    icon: "NegotiationIcon",
     category: "Human Resources",
     subcategory: "Recruituiting",
     description: "Create negotiation scripts for job offers, guiding users through the process.",
     objectives: ["optimize_content_and_seo_strategy", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Job Offers Negotiation Script",
-      welcomeCard: welcomeCardDefault,
-      icon: negotiationIcon.src,
+      icon: "NegotiationIcon",
       questions: [
         {
           id: "job-title",
@@ -2056,22 +1972,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Cultural Fit Assessments",
-    icon: cultureIcon.src,
+    icon: "CultureIcon",
     category: "Human Resources",
     subcategory: "Recruituiting",
     description: "Generate cultural fit assessment questions, aiding in evaluating candidates.",
     objectives: ["optimize_content_and_seo_strategy", "improve_business_strategy", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Cultural Fit Assessments",
-      welcomeCard: welcomeCardDefault,
-      icon: cultureIcon.src,
+      icon: "CultureIcon",
       questions: [
         {
           id: "job-role",
@@ -2100,22 +2014,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Applicant Tracking System",
-    icon: trackingIcon.src,
+    icon: "TrackingIcon",
     category: "Human Resources",
     subcategory: "Recruituiting",
     description: "Optimize your hiring process by managing an Applicant Tracking System (ATS).",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Applicant Tracking System",
-      welcomeCard: welcomeCardDefault,
-      icon: trackingIcon.src,
+      icon: "TrackingIcon",
       questions: [
         {
           id: "use-ats",
@@ -2136,22 +2048,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Onboarding Plans",
-    icon: planIcon.src,
+    icon: "PlanIcon",
     category: "Human Resources",
     subcategory: "Recruituiting",
     description: "Create onboarding plans to ensure new employees thrive.",
     objectives: ["improve_customer_and_employee_experience", "innovate_and_develop"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Onboarding Plans",
-      welcomeCard: welcomeCardDefault,
-      icon: planIcon.src,
+      icon: "PlanIcon",
       questions: [
         {
           id: "employee-name",
@@ -2204,22 +2114,20 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Workforce Demands",
-    icon: workforceIcon.src,
+    icon: "WorkforceIcon",
     category: "Human Resources",
     subcategory: "Workforce planning",
     description: "Integrate workforce ensuring rapid adaptation and fostering innovation within teams.",
     objectives: ["innovate_and_develop", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Workforce Demands",
-      welcomeCard: welcomeCardDefault,
-      icon: workforceIcon.src,
+      icon: "WorkforceIcon",
       questions: [
         {
           id: "sector",
@@ -2264,8 +2172,6 @@ export const hrTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
 ];

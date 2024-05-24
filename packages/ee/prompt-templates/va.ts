@@ -1,32 +1,13 @@
 import { OpenAIModel } from "@typeflowai/types/openai";
 import { TTemplate } from "@typeflowai/types/templates";
-import { TWorkflowHiddenFields, TWorkflowQuestionType } from "@typeflowai/types/workflows";
-import adsIcon from "@typeflowai/ui/icons/templates/ads.svg";
-import airplaneIcon from "@typeflowai/ui/icons/templates/airplane.svg";
-import apiIcon from "@typeflowai/ui/icons/templates/api.svg";
-import awsIcon from "@typeflowai/ui/icons/templates/aws.svg";
-import clockIcon from "@typeflowai/ui/icons/templates/clock.svg";
-import computerIcon from "@typeflowai/ui/icons/templates/computer.svg";
-import destinationIcon from "@typeflowai/ui/icons/templates/destination.svg";
-import eventIcon from "@typeflowai/ui/icons/templates/event.svg";
-import factoryIcon from "@typeflowai/ui/icons/templates/factory.svg";
-import flyerIcon from "@typeflowai/ui/icons/templates/flyer.svg";
-import hotelIcon from "@typeflowai/ui/icons/templates/hotel.svg";
-import legalIcon from "@typeflowai/ui/icons/templates/legal.svg";
-import listingIcon from "@typeflowai/ui/icons/templates/listing.svg";
-import projectIcon from "@typeflowai/ui/icons/templates/project-planner.svg";
-import realStateLetterIcon from "@typeflowai/ui/icons/templates/real-state-letter.svg";
-import realstateIcon from "@typeflowai/ui/icons/templates/real-state.svg";
-import taskIcon from "@typeflowai/ui/icons/templates/task.svg";
-import teamIcon from "@typeflowai/ui/icons/templates/team.svg";
-import todoIcon from "@typeflowai/ui/icons/templates/todo.svg";
-import translateIcon from "@typeflowai/ui/icons/templates/translate.svg";
-import travelInsuranceIcon from "@typeflowai/ui/icons/templates/travel-insurance.svg";
-import travelOptionsIcon from "@typeflowai/ui/icons/templates/travel-options.svg";
-import visaIcon from "@typeflowai/ui/icons/templates/visa.svg";
-import workoutIcon from "@typeflowai/ui/icons/templates/workout.svg";
+import {
+  TWorkflowHiddenFields,
+  TWorkflowQuestionType,
+  TWorkflowThankYouCard,
+  TWorkflowWelcomeCard,
+} from "@typeflowai/types/workflows";
 
-const thankYouCardDefault = {
+const thankYouCardDefault: TWorkflowThankYouCard = {
   enabled: true,
   headline: { default: "Thank you!" },
   subheader: { default: "We appreciate your feedback." },
@@ -39,7 +20,7 @@ const hiddenFieldsDefault: TWorkflowHiddenFields = {
   fieldIds: [],
 };
 
-const welcomeCardDefault = {
+const welcomeCardDefault: TWorkflowWelcomeCard = {
   enabled: false,
   headline: { default: "Welcome!" },
   html: { default: "Thanks for providing your feedback - let's go!" },
@@ -47,19 +28,35 @@ const welcomeCardDefault = {
   showResponseCount: false,
 };
 
+const workflowDefault: TTemplate["preset"] = {
+  name: "New Workflow",
+  welcomeCard: welcomeCardDefault,
+  prompt: {
+    enabled: false,
+    id: "prompt",
+    message: "",
+    attributes: {},
+    isVisible: true,
+    engine: OpenAIModel.GPT35Turbo,
+  },
+  thankYouCard: thankYouCardDefault,
+  hiddenFields: hiddenFieldsDefault,
+  questions: [],
+};
+
 export const vaTemplates: TTemplate[] = [
   {
     name: "Team Productivity Performance",
-    icon: teamIcon.src,
+    icon: "TeamIcon",
     category: "Virtual Assistant",
     subcategory: "Productivity",
     description: "Optimize team productivity with personalized insights and recommendations.",
     objectives: ["improve_customer_and_employee_experience", "innovate_and_develop"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Team Productivity Performance",
-      welcomeCard: welcomeCardDefault,
-      icon: teamIcon.src,
+      icon: "TeamIcon",
       questions: [
         {
           id: "team-member",
@@ -98,22 +95,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "To-do List Generator",
-    icon: todoIcon.src,
+    icon: "TodoIcon",
     category: "Virtual Assistant",
     subcategory: "Productivity",
     description: "Generate personalized daily to-do lists to enhance productivity.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "To-do List Generator",
-      welcomeCard: welcomeCardDefault,
-      icon: todoIcon.src,
+      icon: "TodoIcon",
       questions: [
         {
           id: "deadline",
@@ -143,22 +138,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Basic Project Plans",
-    icon: projectIcon.src,
+    icon: "ProjectPlannerIcon",
     category: "Virtual Assistant",
     subcategory: "Productivity",
     description: "Automate project plan creation, saving time and effort.",
     objectives: ["streamline_operations_and_sales", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Basic Project Plans",
-      welcomeCard: welcomeCardDefault,
-      icon: projectIcon.src,
+      icon: "ProjectPlannerIcon",
       questions: [
         {
           id: "client-name",
@@ -196,22 +189,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Daily Task Reports",
-    icon: taskIcon.src,
+    icon: "TaskIcon",
     category: "Virtual Assistant",
     subcategory: "Productivity",
     description: "Generate daily task reports, saving time for virtual assistants.",
     objectives: ["streamline_operations_and_sales", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Daily Task Reports",
-      welcomeCard: welcomeCardDefault,
-      icon: taskIcon.src,
+      icon: "TaskIcon",
       questions: [
         {
           id: "team-member",
@@ -241,22 +232,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "High-performance Time Management",
-    icon: clockIcon.src,
+    icon: "ClockIcon",
     category: "Virtual Assistant",
     subcategory: "Productivity",
     description: "Transform your team's productivity landscape with advanced time management strategies.",
     objectives: ["improve_customer_and_employee_experience", "innovate_and_develop", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "High-performance Time Management",
-      welcomeCard: welcomeCardDefault,
-      icon: clockIcon.src,
+      icon: "ClockIcon",
       questions: [
         {
           id: "team-size",
@@ -319,22 +308,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Travel itineraries",
-    icon: airplaneIcon.src,
+    icon: "AirplaneIcon",
     category: "Virtual Assistant",
     subcategory: "Personal Assitence",
     description: "Simplify travel planning with recommendations and booking assistance.",
     objectives: ["streamline_operations_and_sales", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Travel itineraries",
-      welcomeCard: welcomeCardDefault,
-      icon: airplaneIcon.src,
+      icon: "AirplaneIcon",
       questions: [
         {
           id: "length-trip",
@@ -372,22 +359,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Travel Options Seeker",
-    icon: travelOptionsIcon.src,
+    icon: "TravelOptionsIcon",
     category: "Virtual Assistant",
     subcategory: "Personal Assitence",
     description: "Research travel options, providing comprehensive results to customers' queries.",
     objectives: ["other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Travel Options Seeker",
-      welcomeCard: welcomeCardDefault,
-      icon: travelOptionsIcon.src,
+      icon: "TravelOptionsIcon",
       questions: [
         {
           id: "destination",
@@ -433,22 +418,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Workout Plans",
-    icon: workoutIcon.src,
+    icon: "WorkoutIcon",
     category: "Virtual Assistant",
     subcategory: "Personal Assitence",
     description: "Workout plans tailored to your fitness goals, preferences, and limitations.",
     objectives: ["other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Workout Plans",
-      welcomeCard: welcomeCardDefault,
-      icon: workoutIcon.src,
+      icon: "WorkoutIcon",
       questions: [
         {
           id: "client-name",
@@ -520,22 +503,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Expert Translator",
-    icon: translateIcon.src,
+    icon: "TranslateIcon",
     category: "Virtual Assistant",
     subcategory: "Translation",
     description: "Address translation challenges by providing expert, context-aware assistance.",
     objectives: ["other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Expert Translator",
-      welcomeCard: welcomeCardDefault,
-      icon: translateIcon.src,
+      icon: "TranslateIcon",
       questions: [
         {
           id: "source-language",
@@ -613,22 +594,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Emails & Messages Translator",
-    icon: translateIcon.src,
+    icon: "TranslateIcon",
     category: "Virtual Assistant",
     subcategory: "Translation",
     description: "Translate emails and messages and streamline communication globally.",
     objectives: ["other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Emails & Messages Translator",
-      welcomeCard: welcomeCardDefault,
-      icon: translateIcon.src,
+      icon: "TranslateIcon",
       questions: [
         {
           id: "source-language",
@@ -667,22 +646,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Document Translator",
-    icon: translateIcon.src,
+    icon: "TranslateIcon",
     category: "Virtual Assistant",
     subcategory: "Translation",
     description: "Facilitate global communication for businesses and individuals.",
     objectives: ["streamline_operations_and_sales", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Document translator",
-      welcomeCard: welcomeCardDefault,
-      icon: translateIcon.src,
+      icon: "TranslateIcon",
       questions: [
         {
           id: "source-language",
@@ -721,22 +698,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Text Translator",
-    icon: translateIcon.src,
+    icon: "TranslateIcon",
     category: "Virtual Assistant",
     subcategory: "Translation",
     description: "Precise and context-aware translations across various text types and languages.",
     objectives: ["other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Text Translator",
-      welcomeCard: welcomeCardDefault,
-      icon: translateIcon.src,
+      icon: "TranslateIcon",
       questions: [
         {
           id: "source-language",
@@ -775,22 +750,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Legal Documents Translator",
-    icon: legalIcon.src,
+    icon: "LegalIcon",
     category: "Virtual Assistant",
     subcategory: "Translation",
     description: "Receive translated documents instantly to save time.",
     objectives: ["other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Legal Documents Translator",
-      welcomeCard: welcomeCardDefault,
-      icon: legalIcon.src,
+      icon: "LegalIcon",
       questions: [
         {
           id: "source-language",
@@ -829,22 +802,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "AWS Cloud Formation Templates",
-    icon: awsIcon.src,
+    icon: "AwsIcon",
     category: "Virtual Assistant",
     subcategory: "IT",
     description: "Streamline the creation of AWS Cloud Formation by producing accurate templates.",
     objectives: ["innovate_and_develop", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "AWS Cloud Formation Templates",
-      welcomeCard: welcomeCardDefault,
-      icon: awsIcon.src,
+      icon: "AwsIcon",
       questions: [
         {
           id: "subnets",
@@ -866,22 +837,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Software Documentation Writer",
-    icon: computerIcon.src,
+    icon: "ComputerIcon",
     category: "Virtual Assistant",
     subcategory: "IT",
     description: "Create software documentation with a virtual assistant, ensuring accuracy and clarity.",
     objectives: ["innovate_and_develop", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Software Documentation Writer",
-      welcomeCard: welcomeCardDefault,
-      icon: computerIcon.src,
+      icon: "ComputerIcon",
       questions: [
         {
           id: "software",
@@ -921,22 +890,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "API Documentation Writer",
-    icon: apiIcon.src,
+    icon: "ApiIcon",
     category: "Virtual Assistant",
     subcategory: "IT",
     description: "Generate custom APIs tailored to your business needs, enhancing operations.",
     objectives: ["innovate_and_develop", "streamline_operations_and_sales", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "API Documentation Writer",
-      welcomeCard: welcomeCardDefault,
-      icon: apiIcon.src,
+      icon: "ApiIcon",
       questions: [
         {
           id: "source",
@@ -974,22 +941,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Hybrid Events Engagement",
-    icon: eventIcon.src,
+    icon: "EventIcon",
     category: "Virtual Assistant",
     subcategory: "Event Planning",
     description: "Develop strategies that maximize engagement and interaction in hybrid events.",
     objectives: ["boost_engagement_and_conversion", "improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Hybrid Events Engagement",
-      welcomeCard: welcomeCardDefault,
-      icon: eventIcon.src,
+      icon: "EventIcon",
       questions: [
         {
           id: "event-type",
@@ -1059,22 +1024,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Event Environmental Impact Mitigator",
-    icon: factoryIcon.src,
+    icon: "FactoryIcon",
     category: "Virtual Assistant",
     subcategory: "Event Planning",
     description: "Plan and execute events that adhere to high environmental standards",
     objectives: ["improve_customer_and_employee_experience", "innovate_and_develop", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Event Environmental Impact Mitigator",
-      welcomeCard: welcomeCardDefault,
-      icon: factoryIcon.src,
+      icon: "FactoryIcon",
       questions: [
         {
           id: "event-type",
@@ -1144,22 +1107,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Real Estate Copy",
-    icon: realstateIcon.src,
+    icon: "RealStateIcon",
     category: "Virtual Assistant",
     subcategory: "Real State",
     description: "Generate engaging real estate blog content effortlessly.",
     objectives: ["optimize_content_and_seo_strategy", "boost_engagement_and_conversion"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Real Estate Copy",
-      welcomeCard: welcomeCardDefault,
-      icon: realstateIcon.src,
+      icon: "RealStateIcon",
       questions: [
         {
           id: "number-words",
@@ -1197,22 +1158,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Real Estate Ad Copy",
-    icon: adsIcon.src,
+    icon: "AdsIcon",
     category: "Virtual Assistant",
     subcategory: "Real State",
     description: "Create real estate ad copy to captivate potential buyers.",
     objectives: ["optimize_content_and_seo_strategy", "boost_engagement_and_conversion"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Real Estate Ad Copy",
-      welcomeCard: welcomeCardDefault,
-      icon: adsIcon.src,
+      icon: "AdsIcon",
       questions: [
         {
           id: "property-type",
@@ -1274,22 +1233,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Real Estate Flyers",
-    icon: flyerIcon.src,
+    icon: "FlyerIcon",
     category: "Virtual Assistant",
     subcategory: "Real State",
     description: "Generate real estate flyers ensuring engaging content for your audience.",
     objectives: ["optimize_content_and_seo_strategy", "boost_engagement_and_conversion"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Generate real estate flyers",
-      welcomeCard: welcomeCardDefault,
-      icon: flyerIcon.src,
+      icon: "FlyerIcon",
       questions: [
         {
           id: "property-type",
@@ -1319,22 +1276,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Real Estate Website Copy",
-    icon: realstateIcon.src,
+    icon: "RealStateIcon",
     category: "Virtual Assistant",
     subcategory: "Real State",
     description: "Generate engaging real estate website content quickly.",
     objectives: ["optimize_content_and_seo_strategy", "boost_engagement_and_conversion"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Real Estate Website Copy",
-      welcomeCard: welcomeCardDefault,
-      icon: realstateIcon.src,
+      icon: "RealStateIcon",
       questions: [
         {
           id: "number-words",
@@ -1388,22 +1343,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Real Estate Offer Letters",
-    icon: realStateLetterIcon.src,
+    icon: "RealStateLetterIcon",
     category: "Virtual Assistant",
     subcategory: "Real State",
     description: "Create real estate offer letters to secure a deal.",
     objectives: ["optimize_content_and_seo_strategy", "boost_engagement_and_conversion"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Real Estate Offer Letters",
-      welcomeCard: welcomeCardDefault,
-      icon: realStateLetterIcon.src,
+      icon: "RealStateLetterIcon",
       questions: [
         {
           id: "number-words",
@@ -1449,22 +1402,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Real Estate Listings Writer",
-    icon: listingIcon.src,
+    icon: "ListingIcon",
     category: "Virtual Assistant",
     subcategory: "Real State",
     description: "Create compelling real estate listings in no time.",
     objectives: ["optimize_content_and_seo_strategy", "boost_engagement_and_conversion"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Real Estate Listings Writer",
-      welcomeCard: welcomeCardDefault,
-      icon: listingIcon.src,
+      icon: "ListingIcon",
       questions: [
         {
           id: "property-type",
@@ -1518,22 +1469,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Visa Requirements",
-    icon: visaIcon.src,
+    icon: "VisaIcon",
     category: "Virtual Assistant",
     subcategory: "Travel",
     description: "Streamline the process of obtaining visa requirements.",
     objectives: ["other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Visa Requirements",
-      welcomeCard: welcomeCardDefault,
-      icon: visaIcon.src,
+      icon: "VisaIcon",
       questions: [
         {
           id: "nationality",
@@ -1571,22 +1520,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Travel Insurance Options",
-    icon: travelInsuranceIcon.src,
+    icon: "TravelInsuranceIcon",
     category: "Virtual Assistant",
     subcategory: "Travel",
     description: "Assist users in exploring travel insurance options.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Travel Insurance Options",
-      welcomeCard: welcomeCardDefault,
-      icon: travelInsuranceIcon.src,
+      icon: "TravelInsuranceIcon",
       questions: [
         {
           id: "duration",
@@ -1632,22 +1579,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Destination Guides Writer",
-    icon: destinationIcon.src,
+    icon: "DestinationIcon",
     category: "Virtual Assistant",
     subcategory: "Travel",
     description: "Create engaging and personalized destination guides.",
     objectives: ["optimize_content_and_seo_strategy", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Destination Guides Writer",
-      welcomeCard: welcomeCardDefault,
-      icon: destinationIcon.src,
+      icon: "DestinationIcon",
       questions: [
         {
           id: "activity",
@@ -1677,22 +1622,20 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Hotel Reviews Writer",
-    icon: hotelIcon.src,
+    icon: "HotelIcon",
     category: "Virtual Assistant",
     subcategory: "Travel",
     description: "Write personalized hotel reviews effortlessly.",
     objectives: ["optimize_content_and_seo_strategy", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Hotel Reviews Writer",
-      welcomeCard: welcomeCardDefault,
-      icon: hotelIcon.src,
+      icon: "HotelIcon",
       questions: [
         {
           id: "review-type",
@@ -1722,8 +1665,6 @@ export const vaTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
 ];

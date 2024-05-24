@@ -3,7 +3,6 @@
 import { validateWorkflowPinAction } from "@/app/s/[workflowId]/actions";
 import LegalFooter from "@/app/s/[workflowId]/components/LegalFooter";
 import LinkWorkflow from "@/app/s/[workflowId]/components/LinkWorkflow";
-import { MediaBackground } from "@/app/s/[workflowId]/components/MediaBackground";
 import { TWorkflowPinValidationResponseError } from "@/app/s/[workflowId]/types";
 import type { NextPage } from "next";
 import { useCallback, useEffect, useState } from "react";
@@ -12,6 +11,7 @@ import { cn } from "@typeflowai/lib/cn";
 import { TProduct } from "@typeflowai/types/product";
 import { TResponse } from "@typeflowai/types/responses";
 import { TWorkflow } from "@typeflowai/types/workflows";
+import { MediaBackground } from "@typeflowai/ui/MediaBackground";
 import { OTPInput } from "@typeflowai/ui/OTPInput";
 
 interface LinkWorkflowPinScreenProps {

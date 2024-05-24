@@ -1,8 +1,8 @@
 import { signIn } from "next-auth/react";
 import { useCallback, useEffect } from "react";
-import { FaMicrosoft } from "react-icons/fa";
 
 import { Button } from "@typeflowai/ui/Button";
+import { MicrosoftIcon } from "@typeflowai/ui/icons";
 
 export const AzureButton = ({
   text = "Continue with Azure",
@@ -29,7 +29,7 @@ export const AzureButton = ({
   return (
     <Button
       type="button"
-      EndIcon={FaMicrosoft}
+      EndIcon={MicrosoftIcon}
       startIconClassName="ml-2"
       onClick={handleLogin}
       variant="secondary"

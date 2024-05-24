@@ -2,20 +2,15 @@ import clsx from "clsx";
 import { AlertTriangleIcon, CheckIcon } from "lucide-react";
 import Link from "next/link";
 
-import { getEnvironment } from "@typeflowai/lib/environment/service";
+import { TEnvironment } from "@typeflowai/types/environment";
+import { Label } from "@typeflowai/ui/Label";
 
 interface WidgetStatusIndicatorProps {
-  environmentId: string;
+  environment: TEnvironment;
   type: "large" | "mini";
 }
 
-export default async function WidgetStatusIndicator({ environmentId, type }: WidgetStatusIndicatorProps) {
-  const environment = await getEnvironment(environmentId);
-
-  if (!environment) {
-    throw new Error("Environment not found");
-  }
-
+export const WidgetStatusIndicator = ({ environment, type }: WidgetStatusIndicatorProps) => {
   const stati = {
     notImplemented: {
       icon: AlertTriangleIcon,
@@ -23,12 +18,14 @@ export default async function WidgetStatusIndicator({ environmentId, type }: Wid
       title: "Connect TypeflowAI to your app or website.",
       subtitle:
         "Your app or website is not yet connected with TypeflowAI. To run in-app workflows follow the setup guide.",
+      shortText: "Connect TypeflowAI to your app or website",
     },
     running: {
       icon: CheckIcon,
       color: "green",
       title: "Receiving data.",
       subtitle: "Your app or website is connected with TypeflowAI.",
+      shortText: "Connected",
     },
   };
 
@@ -52,7 +49,7 @@ export default async function WidgetStatusIndicator({ environmentId, type }: Wid
         )}>
         <div
           className={clsx(
-            "h-12 w-12 rounded-full bg-white p-2",
+            "flex h-12 w-12 items-center justify-center rounded-full bg-white p-2",
             status === "notImplemented" && "text-slate-700",
             status === "running" && "text-green-700"
           )}>
@@ -65,10 +62,12 @@ export default async function WidgetStatusIndicator({ environmentId, type }: Wid
   }
   if (type === "mini") {
     return (
-      <Link href={`/environments/${environment.id}/settings/setup`}>
-        <div className="group my-4 flex justify-center">
-          <div className=" flex rounded-full bg-slate-100 px-2 py-1">
-            <p className="mr-2 text-sm text-slate-500 group-hover:underline">{currentStatus.subtitle}</p>
+      <Link href={`/environments/${environment.id}/product/setup`}>
+        <div className="group flex justify-center">
+          <div className="flex items-center space-x-2 rounded-lg bg-slate-100 p-2">
+            <Label className="group-hover:cursor-pointer group-hover:underline">
+              {currentStatus.shortText}
+            </Label>
             <div
               className={clsx(
                 "h-5 w-5 rounded-full",
@@ -84,4 +83,4 @@ export default async function WidgetStatusIndicator({ environmentId, type }: Wid
   } else {
     return null;
   }
-}
+};

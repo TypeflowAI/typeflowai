@@ -33,7 +33,7 @@ import {
   CommandItem,
   CommandList,
 } from "@typeflowai/ui/Command";
-import { NetPromoterScoreIcon } from "@typeflowai/ui/icons";
+import { NetPromoterScoreIcon } from "@typeflowai/ui/Icons";
 
 export enum OptionsType {
   QUESTIONS = "Questions",

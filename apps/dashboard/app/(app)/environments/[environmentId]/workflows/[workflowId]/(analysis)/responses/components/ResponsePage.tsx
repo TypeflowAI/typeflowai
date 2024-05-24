@@ -5,11 +5,9 @@ import {
   getResponseCountAction,
   getResponsesAction,
 } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/actions";
-import { WorkflowResultsTabs } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/components/WorkflowResultsTabs";
 import ResponseTimeline from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/responses/components/ResponseTimeline";
 import { CustomFilter } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/components/CustomFilter";
 import { ResultsShareButton } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/components/ResultsShareButton";
-import { SummaryHeader } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/components/SummaryHeader";
 import { getFormattedFilters } from "@/app/lib/workflows/workflows";
 import {
   getResponseCountByWorkflowSharingKeyAction,
@@ -20,24 +18,19 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { checkForRecallInHeadline } from "@typeflowai/lib/utils/recall";
 import { TEnvironment } from "@typeflowai/types/environment";
-import { TMembershipRole } from "@typeflowai/types/memberships";
-import { TProduct } from "@typeflowai/types/product";
 import { TResponse } from "@typeflowai/types/responses";
 import { TTag } from "@typeflowai/types/tags";
 import { TUser } from "@typeflowai/types/user";
 import { TWorkflow } from "@typeflowai/types/workflows";
-import { ContentWrapper } from "@typeflowai/ui/ContentWrapper";
 
 interface ResponsePageProps {
   environment: TEnvironment;
   workflow: TWorkflow;
   workflowId: string;
   webAppUrl: string;
-  product: TProduct;
   user?: TUser;
   environmentTags: TTag[];
   responsesPerPage: number;
-  membershipRole?: TMembershipRole;
   totalResponseCount: number;
 }
 
@@ -46,11 +39,9 @@ const ResponsePage = ({
   workflow,
   workflowId,
   webAppUrl,
-  product,
   user,
   environmentTags,
   responsesPerPage,
-  membershipRole,
   totalResponseCount,
 }: ResponsePageProps) => {
   const params = useParams();
@@ -164,26 +155,11 @@ const ResponsePage = ({
   }, [filters]);
 
   return (
-    <ContentWrapper>
-      <SummaryHeader
-        environment={environment}
-        workflow={workflow}
-        workflowId={workflowId}
-        webAppUrl={webAppUrl}
-        product={product}
-        user={user}
-        membershipRole={membershipRole}
-      />
+    <>
       <div className="flex gap-1.5">
         <CustomFilter workflow={workflow} />
         {!isSharingPage && <ResultsShareButton workflow={workflow} webAppUrl={webAppUrl} user={user} />}
       </div>
-      <WorkflowResultsTabs
-        activeId="responses"
-        environmentId={environment.id}
-        workflowId={workflowId}
-        responseCount={responseCount}
-      />
       <ResponseTimeline
         environment={environment}
         workflowId={workflowId}
@@ -200,7 +176,7 @@ const ResponsePage = ({
         totalResponseCount={totalResponseCount}
         isSharingPage={isSharingPage}
       />
-    </ContentWrapper>
+    </>
   );
 };
 

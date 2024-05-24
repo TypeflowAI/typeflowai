@@ -1,5 +1,5 @@
 import { Button } from "@typeflowai/ui/Button";
-import GoBackButton from "@typeflowai/ui/GoBackButton";
+import { GoBackButton } from "@typeflowai/ui/GoBackButton";
 
 export default function Loading() {
   return (

@@ -10,8 +10,9 @@ test.describe("Workflow Create & Submit Response", async () => {
 
   test("Create Workflow", async ({ page }) => {
     await createWorkflow(page, name, email, password, workflows.createAndSubmit);
+
     // Save & Publish Workflow
-    await page.getByRole("button", { name: "Continue to Settings" }).click();
+    await page.getByRole("button", { name: "Settings", exact: true }).click();
 
     await page.locator("#howToSendCardTrigger").click();
     await expect(page.locator("#howToSendCardOption-link")).toBeVisible();

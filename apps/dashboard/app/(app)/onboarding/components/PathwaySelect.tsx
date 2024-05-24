@@ -43,14 +43,14 @@ export default function PathwaySelect({
     <div className="space-y-16 p-6 text-center">
       <OnboardingTitle
         title="How would you like to start?"
-        subtitle="You can always use all types of workflows later on."
+        subtitle="You can always use all types of AI tools later on."
       />
       <div className="flex space-x-8">
         <OptionCard
           cssId="onboarding-link-workflow-card"
           size="lg"
-          title="Link Workflows"
-          description="Create a new workflow and share a link."
+          title="Link AI tools"
+          description="Create a new AI tool and share a link."
           onSelect={() => {
             handleSelect("link");
           }}>
@@ -59,8 +59,8 @@ export default function PathwaySelect({
         <OptionCard
           cssId="onboarding-website-workflow-card"
           size="lg"
-          title="Website Workflows"
-          description="Run a workflow on a website."
+          title="Website AI tools"
+          description="Run a AI tool on a website."
           onSelect={() => {
             handleSelect("website");
           }}>

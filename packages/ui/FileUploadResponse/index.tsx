@@ -19,7 +19,7 @@ export const FileUploadResponse = ({ selected }: FileUploadResponseProps) => {
             const fileName = getOriginalFileNameFromUrl(fileUrl);
 
             return (
-              <div className="relative m-2 ml-0 rounded-lg bg-slate-200">
+              <div className="relative m-2 ml-0 rounded-lg bg-slate-100">
                 <a href={fileUrl as string} key={index} download={fileName}>
                   <div className="absolute right-0 top-0 m-2">
                     <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-50 hover:bg-white">
@@ -42,7 +42,7 @@ export const FileUploadResponse = ({ selected }: FileUploadResponseProps) => {
 
                 <div className="flex flex-col items-center justify-center p-2 text-center">
                   <FileIcon className="h-6 text-slate-500" />
-                  <p className="mt-2 w-full overflow-hidden overflow-ellipsis whitespace-nowrap px-1 text-sm text-slate-500 dark:text-slate-400">
+                  <p className="mt-2 w-full overflow-hidden overflow-ellipsis whitespace-nowrap px-1 text-sm text-slate-500">
                     {fileName}
                   </p>
                 </div>

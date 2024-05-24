@@ -1,36 +1,13 @@
 import { OpenAIModel } from "@typeflowai/types/openai";
 import { TTemplate } from "@typeflowai/types/templates";
-import { TWorkflowHiddenFields, TWorkflowQuestionType } from "@typeflowai/types/workflows";
-import angryIcon from "@typeflowai/ui/icons/templates/angry.svg";
-import articleIcon from "@typeflowai/ui/icons/templates/article.svg";
-import brandIcon from "@typeflowai/ui/icons/templates/brand.svg";
-import commentIcon from "@typeflowai/ui/icons/templates/comment.svg";
-import creditCardIcon from "@typeflowai/ui/icons/templates/credit-card.svg";
-import customerSupportIcon from "@typeflowai/ui/icons/templates/customer-support.svg";
-import designIdeasIcon from "@typeflowai/ui/icons/templates/design-ideas.svg";
-import feedbackIcon from "@typeflowai/ui/icons/templates/feedback.svg";
-import informationIcon from "@typeflowai/ui/icons/templates/information.svg";
-import interviewIcon from "@typeflowai/ui/icons/templates/interview.svg";
-import legalIcon from "@typeflowai/ui/icons/templates/legal.svg";
-import moderatorIcon from "@typeflowai/ui/icons/templates/moderator.svg";
-import orderConfirmedIcon from "@typeflowai/ui/icons/templates/order-confirmed.svg";
-import refundIcon from "@typeflowai/ui/icons/templates/refund.svg";
-import relationshipIcon from "@typeflowai/ui/icons/templates/relationship.svg";
-import returnIcon from "@typeflowai/ui/icons/templates/return.svg";
-import robot1Icon from "@typeflowai/ui/icons/templates/robot1.svg";
-import robot2Icon from "@typeflowai/ui/icons/templates/robot2.svg";
-import robot3Icon from "@typeflowai/ui/icons/templates/robot3.svg";
-import robot4Icon from "@typeflowai/ui/icons/templates/robot4.svg";
-import robot5Icon from "@typeflowai/ui/icons/templates/robot5.svg";
-import robot6Icon from "@typeflowai/ui/icons/templates/robot6.svg";
-import robot7Icon from "@typeflowai/ui/icons/templates/robot7.svg";
-import robot8Icon from "@typeflowai/ui/icons/templates/robot8.svg";
-import technicalIcon from "@typeflowai/ui/icons/templates/technical.svg";
-import todoIcon from "@typeflowai/ui/icons/templates/todo.svg";
-import warningIcon from "@typeflowai/ui/icons/templates/warning.svg";
-import welcomeIcon from "@typeflowai/ui/icons/templates/welcome.svg";
+import {
+  TWorkflowHiddenFields,
+  TWorkflowQuestionType,
+  TWorkflowThankYouCard,
+  TWorkflowWelcomeCard,
+} from "@typeflowai/types/workflows";
 
-const thankYouCardDefault = {
+const thankYouCardDefault: TWorkflowThankYouCard = {
   enabled: true,
   headline: { default: "Thank you!" },
   subheader: { default: "We appreciate your feedback." },
@@ -43,7 +20,7 @@ const hiddenFieldsDefault: TWorkflowHiddenFields = {
   fieldIds: [],
 };
 
-const welcomeCardDefault = {
+const welcomeCardDefault: TWorkflowWelcomeCard = {
   enabled: false,
   headline: { default: "Welcome!" },
   html: { default: "Thanks for providing your feedback - let's go!" },
@@ -51,19 +28,35 @@ const welcomeCardDefault = {
   showResponseCount: false,
 };
 
+const workflowDefault: TTemplate["preset"] = {
+  name: "New Workflow",
+  welcomeCard: welcomeCardDefault,
+  prompt: {
+    enabled: false,
+    id: "prompt",
+    message: "",
+    attributes: {},
+    isVisible: true,
+    engine: OpenAIModel.GPT35Turbo,
+  },
+  thankYouCard: thankYouCardDefault,
+  hiddenFields: hiddenFieldsDefault,
+  questions: [],
+};
+
 export const supportTemplates: TTemplate[] = [
   {
     name: "Product Usage Instructions",
-    icon: todoIcon.src,
+    icon: "TodoIcon",
     category: "Support",
     subcategory: "Product Information",
     description: "Create your detailed product usage instructions easily.",
     objectives: ["optimize_content_and_seo_strategy", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Product Usage Instructions",
-      welcomeCard: welcomeCardDefault,
-      icon: todoIcon.src,
+      icon: "TodoIcon",
       questions: [
         {
           id: "product-name",
@@ -94,22 +87,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Chat Feedback",
-    icon: feedbackIcon.src,
+    icon: "FeedbackIcon",
     category: "Support",
     subcategory: "Chat Support",
     description: "Enhance customer experience by analyzing chat feedback.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Chat Feedback",
-      welcomeCard: welcomeCardDefault,
-      icon: feedbackIcon.src,
+      icon: "FeedbackIcon",
       questions: [
         {
           id: "services",
@@ -131,22 +122,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Chat Support Guidelines",
-    icon: interviewIcon.src,
+    icon: "InterviewIcon",
     category: "Support",
     subcategory: "Chat Support",
     description: "Train chat support agents effectively by generating custom guidelines.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Chat Support Guidelines",
-      welcomeCard: welcomeCardDefault,
-      icon: interviewIcon.src,
+      icon: "InterviewIcon",
       questions: [
         {
           id: "product-service",
@@ -184,22 +173,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Product Advice",
-    icon: designIdeasIcon.src,
+    icon: "DesignIdeasIcon",
     category: "Support",
     subcategory: "Chat Support",
     description: "Provide personalized product advice, enhancing customer satisfaction.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Product Advice",
-      welcomeCard: welcomeCardDefault,
-      icon: designIdeasIcon.src,
+      icon: "DesignIdeasIcon",
       questions: [
         {
           id: "product-service",
@@ -245,22 +232,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Chat Moderator",
-    icon: moderatorIcon.src,
+    icon: "ModeratorIcon",
     category: "Support",
     subcategory: "Chat Support",
     description: "Moderate inappropriate chat messages, ensuring a safer online environment for users.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Chat Moderator",
-      welcomeCard: welcomeCardDefault,
-      icon: moderatorIcon.src,
+      icon: "ModeratorIcon",
       questions: [
         {
           id: "chat-logs",
@@ -283,22 +268,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Culturally Sensitive Support",
-    icon: warningIcon.src,
+    icon: "WarningIcon",
     category: "Support",
     subcategory: "Email Support",
     description: "Enhance multilingual support for businesses, ensuring culturally sensitive assistance.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Culturally Sensitive Support",
-      welcomeCard: welcomeCardDefault,
-      icon: warningIcon.src,
+      icon: "WarningIcon",
       questions: [
         {
           id: "e-mail",
@@ -346,22 +329,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Customer Returns & Refunds",
-    icon: refundIcon.src,
+    icon: "RefundIcon",
     category: "Support",
     subcategory: "Email Support",
     description: "Optimize customer returns and refunds to save time and boost satisfaction.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Customer Returns & Refunds",
-      welcomeCard: welcomeCardDefault,
-      icon: refundIcon.src,
+      icon: "RefundIcon",
       questions: [
         {
           id: "reason-return",
@@ -383,22 +364,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Onboarding Emails Writer",
-    icon: welcomeIcon.src,
+    icon: "WelcomeIcon",
     category: "Support",
     subcategory: "Email Support",
     description: "Optimize user onboarding by generating engaging and informative emails.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Onboarding Emails Writer",
-      welcomeCard: welcomeCardDefault,
-      icon: welcomeIcon.src,
+      icon: "WelcomeIcon",
       questions: [
         {
           id: "company-name",
@@ -446,22 +425,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Technical Support Provider",
-    icon: technicalIcon.src,
+    icon: "TechnicalIcon",
     category: "Support",
     subcategory: "Customer Service",
     description: "Enhance technical support by providing instant assistance.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Technical Support Provider",
-      welcomeCard: welcomeCardDefault,
-      icon: technicalIcon.src,
+      icon: "TechnicalIcon",
       questions: [
         {
           id: "issue",
@@ -484,22 +461,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Customer Complaints",
-    icon: angryIcon.src,
+    icon: "AngryIcon",
     category: "Support",
     subcategory: "Customer Service",
     description: "Handle customer complaints by providing quick and personalized responses.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Customer Complaints",
-      welcomeCard: welcomeCardDefault,
-      icon: angryIcon.src,
+      icon: "AngryIcon",
       questions: [
         {
           id: "complaint",
@@ -529,22 +504,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Support Articles Generator",
-    icon: articleIcon.src,
+    icon: "ArticleIcon",
     category: "Support",
     subcategory: "Customer Service",
     description: "Generate informative support articles, saving time and effort.",
     objectives: ["optimize_content_and_seo_strategy", "improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Support Articles Generator",
-      welcomeCard: welcomeCardDefault,
-      icon: articleIcon.src,
+      icon: "ArticleIcon",
       questions: [
         {
           id: "issue",
@@ -582,22 +555,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Return Requests",
-    icon: returnIcon.src,
+    icon: "ReturnIcon",
     category: "Support",
     subcategory: "Order Management",
     description: "Manage return requests efficiently, offering accurate responses and guidance.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Return Requests",
-      welcomeCard: welcomeCardDefault,
-      icon: returnIcon.src,
+      icon: "ReturnIcon",
       questions: [
         {
           id: "product",
@@ -620,22 +591,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Order Payment Issues",
-    icon: creditCardIcon.src,
+    icon: "CreditCardIcon",
     category: "Support",
     subcategory: "Order Management",
     description: "Resolve order payment issues with guidance and troubleshooting support.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Order Payment Issues",
-      welcomeCard: welcomeCardDefault,
-      icon: creditCardIcon.src,
+      icon: "CreditCardIcon",
       questions: [
         {
           id: "reason",
@@ -657,22 +626,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Order Confirmations",
-    icon: orderConfirmedIcon.src,
+    icon: "OrderConfirmedIcon",
     category: "Support",
     subcategory: "Order Management",
     description: "Generate personalized order confirmations swiftly and efficiently.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Order Confirmations",
-      welcomeCard: welcomeCardDefault,
-      icon: orderConfirmedIcon.src,
+      icon: "OrderConfirmedIcon",
       questions: [
         {
           id: "customer-name",
@@ -701,22 +668,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Legal Documents Writer",
-    icon: legalIcon.src,
+    icon: "LegalIcon",
     category: "Support",
     subcategory: "Knowledge Management",
     description: "Generate high-quality legal documents based on your specific requirements.",
     objectives: ["optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Legal Documents Writer",
-      welcomeCard: welcomeCardDefault,
-      icon: legalIcon.src,
+      icon: "LegalIcon",
       questions: [
         {
           id: "type-document",
@@ -770,22 +735,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Brand Mentions Monitor",
-    icon: brandIcon.src,
+    icon: "BrandIcon",
     category: "Support",
     subcategory: "Social Media",
     description: "Monitor brand mentions across social media platforms efficiently.",
     objectives: ["enhance_online_presence", "boost_engagement_and_conversion"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Brand Mentions Monitor",
-      welcomeCard: welcomeCardDefault,
-      icon: brandIcon.src,
+      icon: "BrandIcon",
       questions: [
         {
           id: "brand-name",
@@ -815,22 +778,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Comments Moderator",
-    icon: commentIcon.src,
+    icon: "CommentIcon",
     category: "Support",
     subcategory: "Social Media",
     description: "Moderate brand comments across social media platforms easily.",
     objectives: ["enhance_online_presence"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Comments Moderator",
-      welcomeCard: welcomeCardDefault,
-      icon: commentIcon.src,
+      icon: "CommentIcon",
       questions: [
         {
           id: "comment",
@@ -853,13 +814,11 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Customer Relationships Manager",
-    icon: relationshipIcon.src,
+    icon: "RelationshipIcon",
     category: "Support",
     subcategory: "Social Media",
     description:
@@ -867,9 +826,9 @@ export const supportTemplates: TTemplate[] = [
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Customer Relationships Manager",
-      welcomeCard: welcomeCardDefault,
-      icon: relationshipIcon.src,
+      icon: "RelationshipIcon",
       questions: [
         {
           id: "product-service",
@@ -892,22 +851,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Chatbot Content Updater",
-    icon: robot1Icon.src,
+    icon: "Robot1Icon",
     category: "Support",
     subcategory: "Chatbot & Virtual Assistants",
     description: "Update chatbot and virtual assistant content swiftly.",
     objectives: ["other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Chatbot Content Updater",
-      welcomeCard: welcomeCardDefault,
-      icon: robot1Icon.src,
+      icon: "Robot1Icon",
       questions: [
         {
           id: "product-service",
@@ -937,22 +894,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Chatbot & VA Trainer",
-    icon: robot2Icon.src,
+    icon: "Robot2Icon",
     category: "Support",
     subcategory: "Chatbot & Virtual Assistants",
     description: "Provide tailored chatbot and virtual assistant training for new users.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Chatbot & VA Trainer",
-      welcomeCard: welcomeCardDefault,
-      icon: robot2Icon.src,
+      icon: "Robot2Icon",
       questions: [
         {
           id: "product-service",
@@ -974,22 +929,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Chatbot Billing Support",
-    icon: robot3Icon.src,
+    icon: "Robot3Icon",
     category: "Support",
     subcategory: "Chatbot & Virtual Assistants",
     description: "Manage billing inquiries enhancing customer satisfaction and reducing staff workload.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Chatbot Billing Support",
-      welcomeCard: welcomeCardDefault,
-      icon: robot3Icon.src,
+      icon: "Robot3Icon",
       questions: [
         {
           id: "product-service",
@@ -1011,13 +964,11 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Sales Support Chatbot",
-    icon: robot4Icon.src,
+    icon: "Robot4Icon",
     category: "Support",
     subcategory: "Chatbot & Virtual Assistants",
     description:
@@ -1025,9 +976,9 @@ export const supportTemplates: TTemplate[] = [
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Sales Support Chatbot",
-      welcomeCard: welcomeCardDefault,
-      icon: robot4Icon.src,
+      icon: "Robot4Icon",
       questions: [
         {
           id: "target-audience",
@@ -1049,13 +1000,11 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Technical Support Chatbot",
-    icon: robot5Icon.src,
+    icon: "Robot5Icon",
     category: "Support",
     subcategory: "Chatbot & Virtual Assistants",
     description:
@@ -1063,9 +1012,9 @@ export const supportTemplates: TTemplate[] = [
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Technical Support Chatbot",
-      welcomeCard: welcomeCardDefault,
-      icon: robot5Icon.src,
+      icon: "Robot5Icon",
       questions: [
         {
           id: "inquiries",
@@ -1095,22 +1044,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Customer Onboarding VA",
-    icon: customerSupportIcon.src,
+    icon: "CustomerSupportIcon",
     category: "Support",
     subcategory: "Chatbot & Virtual Assistants",
     description: "Create virtual assistants for customer onboarding, enhancing efficiency and satisfaction.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Customer Onboarding VA",
-      welcomeCard: welcomeCardDefault,
-      icon: customerSupportIcon.src,
+      icon: "CustomerSupportIcon",
       questions: [
         {
           id: "onboarding-process",
@@ -1132,22 +1079,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "FAQ Chatbot",
-    icon: robot6Icon.src,
+    icon: "Robot6Icon",
     category: "Support",
     subcategory: "Chatbot & Virtual Assistants",
     description: "Design a chatbot for FAQ support, enhancing customer assistance and engagement.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "FAQ Chatbot",
-      welcomeCard: welcomeCardDefault,
-      icon: robot6Icon.src,
+      icon: "Robot6Icon",
       questions: [
         {
           id: "product-service",
@@ -1170,22 +1115,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "User Feedback Chatbot",
-    icon: robot7Icon.src,
+    icon: "Robot7Icon",
     category: "Support",
     subcategory: "Chatbot & Virtual Assistants",
     description: "Streamline the process of designing chatbots for user feedback and workflows.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "User Feedback Support",
-      welcomeCard: welcomeCardDefault,
-      icon: robot7Icon.src,
+      icon: "Robot7Icon",
       questions: [
         {
           id: "feature",
@@ -1215,22 +1158,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Warranty Chatbot",
-    icon: robot8Icon.src,
+    icon: "Robot8Icon",
     category: "Support",
     subcategory: "Chatbot & Virtual Assistants",
     description: "Generate chatbot responses for warranty inquiries, enhancing customer service.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Warranty Chatbot",
-      welcomeCard: welcomeCardDefault,
-      icon: robot8Icon.src,
+      icon: "Robot8Icon",
       questions: [
         {
           id: "name",
@@ -1260,22 +1201,20 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Specific Information Request Tool",
-    icon: informationIcon.src,
+    icon: "InformationIcon",
     category: "Support",
     subcategory: "Chatbot & Virtual Assistants",
     description: "Ask users for specific information to help them reach their goals.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Specific Information Request Tool",
-      welcomeCard: welcomeCardDefault,
-      icon: informationIcon.src,
+      icon: "InformationIcon",
       questions: [
         {
           id: "user-needs",
@@ -1317,8 +1256,6 @@ export const supportTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
 ];

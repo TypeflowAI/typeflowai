@@ -3,15 +3,15 @@
 import "prismjs/themes/prism.css";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { IoLogoHtml5, IoLogoNpm } from "react-icons/io5";
 
 import { cn } from "@typeflowai/lib/cn";
 import { Button } from "@typeflowai/ui/Button";
 import CodeBlock from "@typeflowai/ui/CodeBlock";
+import { Html5Icon, NpmIcon } from "@typeflowai/ui/Icons";
 
 const tabs = [
-  { id: "html", label: "HTML", icon: <IoLogoHtml5 /> },
-  { id: "npm", label: "NPM", icon: <IoLogoNpm /> },
+  { id: "html", label: "HTML", icon: <Html5Icon /> },
+  { id: "npm", label: "NPM", icon: <NpmIcon /> },
 ];
 
 interface SetupInstructionsOnboardingProps {

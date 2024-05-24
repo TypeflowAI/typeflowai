@@ -28,16 +28,6 @@ import { ITEMS_PER_PAGE, WEBAPP_URL } from "../constants";
 import { displayCache } from "../display/cache";
 import { deleteDisplayByResponseId, getDisplayCountByWorkflowId } from "../display/service";
 import { createPerson, getPersonByUserId } from "../person/service";
-import {
-  buildWhereClause,
-  calculateTtcTotal,
-  extractWorkflowDetails,
-  getQuestionWiseSummary,
-  getResponsesFileName,
-  getResponsesJson,
-  getWorkflowSummaryDropOff,
-  getWorkflowSummaryMeta,
-} from "../response/util";
 import { responseNoteCache } from "../responseNote/cache";
 import { getResponseNotes } from "../responseNote/service";
 import { putFile } from "../storage/service";
@@ -47,6 +37,16 @@ import { checkForRecallInHeadline } from "../utils/recall";
 import { validateInputs } from "../utils/validate";
 import { getWorkflow } from "../workflow/service";
 import { responseCache } from "./cache";
+import {
+  buildWhereClause,
+  calculateTtcTotal,
+  extractWorkflowDetails,
+  getQuestionWiseSummary,
+  getResponsesFileName,
+  getResponsesJson,
+  getWorkflowSummaryDropOff,
+  getWorkflowSummaryMeta,
+} from "./utils";
 
 const RESPONSES_PER_PAGE = 10;
 

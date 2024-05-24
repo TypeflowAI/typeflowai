@@ -1,45 +1,13 @@
 import { OpenAIModel } from "@typeflowai/types/openai";
 import { TTemplate } from "@typeflowai/types/templates";
-import { TWorkflowHiddenFields, TWorkflowQuestionType } from "@typeflowai/types/workflows";
-import agileIcon from "@typeflowai/ui/icons/templates/agile.svg";
-import assumptionIcon from "@typeflowai/ui/icons/templates/assumption.svg";
-import brandIcon from "@typeflowai/ui/icons/templates/brand.svg";
-import brushIcon from "@typeflowai/ui/icons/templates/brush.svg";
-import budgetIcon from "@typeflowai/ui/icons/templates/budget.svg";
-import calculatorIcon from "@typeflowai/ui/icons/templates/calculator.svg";
-import calendarIcon from "@typeflowai/ui/icons/templates/calendar.svg";
-import caseStudyIcon from "@typeflowai/ui/icons/templates/case-study.svg";
-import cashflowIcon from "@typeflowai/ui/icons/templates/cashflow.svg";
-import cpaIcon from "@typeflowai/ui/icons/templates/cpa.svg";
-import creditCardIcon from "@typeflowai/ui/icons/templates/credit-card.svg";
-import customerEngagementIcon from "@typeflowai/ui/icons/templates/customer-engagement.svg";
-import documentIcon from "@typeflowai/ui/icons/templates/document.svg";
-import feedbackIcon from "@typeflowai/ui/icons/templates/feedback.svg";
-import financialIcon from "@typeflowai/ui/icons/templates/financial.svg";
-import goalIcon from "@typeflowai/ui/icons/templates/goal.svg";
-import growthIcon from "@typeflowai/ui/icons/templates/growth.svg";
-import invoiceIcon from "@typeflowai/ui/icons/templates/invoice.svg";
-import leadScoreIcon from "@typeflowai/ui/icons/templates/lead-score.svg";
-import magnetIcon from "@typeflowai/ui/icons/templates/magnet.svg";
-import newspaperIcon from "@typeflowai/ui/icons/templates/newspaper.svg";
-import okIcon from "@typeflowai/ui/icons/templates/ok.svg";
-import payIcon from "@typeflowai/ui/icons/templates/pay.svg";
-import phoneIcon from "@typeflowai/ui/icons/templates/phone.svg";
-import progressIcon from "@typeflowai/ui/icons/templates/progress.svg";
-import projectAsignIcon from "@typeflowai/ui/icons/templates/project-asign.svg";
-import projectPlannerIcon from "@typeflowai/ui/icons/templates/project-planner.svg";
-import refundIcon from "@typeflowai/ui/icons/templates/refund.svg";
-import reportIcon from "@typeflowai/ui/icons/templates/report.svg";
-import researchIcon from "@typeflowai/ui/icons/templates/research.svg";
-import rewardIcon from "@typeflowai/ui/icons/templates/reward.svg";
-import scopeIcon from "@typeflowai/ui/icons/templates/scope.svg";
-import startIcon from "@typeflowai/ui/icons/templates/start.svg";
-import taskIcon from "@typeflowai/ui/icons/templates/task.svg";
-import timelineIcon from "@typeflowai/ui/icons/templates/timeline.svg";
-import trendIcon from "@typeflowai/ui/icons/templates/trend.svg";
-import warningIcon from "@typeflowai/ui/icons/templates/warning.svg";
+import {
+  TWorkflowHiddenFields,
+  TWorkflowQuestionType,
+  TWorkflowThankYouCard,
+  TWorkflowWelcomeCard,
+} from "@typeflowai/types/workflows";
 
-const thankYouCardDefault = {
+const thankYouCardDefault: TWorkflowThankYouCard = {
   enabled: true,
   headline: { default: "Thank you!" },
   subheader: { default: "We appreciate your feedback." },
@@ -52,7 +20,7 @@ const hiddenFieldsDefault: TWorkflowHiddenFields = {
   fieldIds: [],
 };
 
-const welcomeCardDefault = {
+const welcomeCardDefault: TWorkflowWelcomeCard = {
   enabled: false,
   headline: { default: "Welcome!" },
   html: { default: "Thanks for providing your feedback - let's go!" },
@@ -60,19 +28,35 @@ const welcomeCardDefault = {
   showResponseCount: false,
 };
 
+const workflowDefault: TTemplate["preset"] = {
+  name: "New Workflow",
+  welcomeCard: welcomeCardDefault,
+  prompt: {
+    enabled: false,
+    id: "prompt",
+    message: "",
+    attributes: {},
+    isVisible: true,
+    engine: OpenAIModel.GPT35Turbo,
+  },
+  thankYouCard: thankYouCardDefault,
+  hiddenFields: hiddenFieldsDefault,
+  questions: [],
+};
+
 export const agencyTemplates: TTemplate[] = [
   {
     name: "Unpaid Invoices Tracker",
-    icon: invoiceIcon.src,
+    icon: "InvoiceIcon",
     category: "Agency",
     subcategory: "Client Management",
     description: "Efficiently streamline follow-ups on overdue unpaid invoices.",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Unpaid Invoices Tracker",
-      welcomeCard: welcomeCardDefault,
-      icon: invoiceIcon.src,
+      icon: "InvoiceIcon",
       questions: [
         {
           id: "invoice-number",
@@ -117,22 +101,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Client Proposals Copy",
-    icon: documentIcon.src,
+    icon: "DocumentIcon",
     category: "Agency",
     subcategory: "Client Management",
     description: "Quickly generate high-quality, custom client proposals.",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Client Proposals Copy",
-      welcomeCard: welcomeCardDefault,
-      icon: documentIcon.src,
+      icon: "DocumentIcon",
       questions: [
         {
           id: "client-name",
@@ -161,22 +143,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Thank You Emails",
-    icon: okIcon.src,
+    icon: "OkIcon",
     category: "Agency",
     subcategory: "Client Management",
     description: "Create personalized and professional thank you emails for your clients.",
     objectives: ["improve_business_strategy", "improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Thank You Emails",
-      welcomeCard: welcomeCardDefault,
-      icon: okIcon.src,
+      icon: "OkIcon",
       questions: [
         {
           id: "client-name",
@@ -221,13 +201,11 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Status Reports",
-    icon: reportIcon.src,
+    icon: "ReportIcon",
     category: "Agency",
     subcategory: "Client Management",
     description: "Create and send detailed status reports to your clients.",
@@ -238,9 +216,9 @@ export const agencyTemplates: TTemplate[] = [
     ],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Status Reports",
-      welcomeCard: welcomeCardDefault,
-      icon: reportIcon.src,
+      icon: "ReportIcon",
       questions: [
         {
           id: "client-name",
@@ -277,22 +255,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Client Complaint Resolver",
-    icon: warningIcon.src,
+    icon: "WarningIcon",
     category: "Agency",
     subcategory: "Client Management",
     description: "Resolve client complaints using personalized responses and actionable solutions.",
     objectives: ["improve_customer_and_employee_experience", "streamline_operations_and_sales", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Client Complaint Resolver",
-      welcomeCard: welcomeCardDefault,
-      icon: warningIcon.src,
+      icon: "WarningIcon",
       questions: [
         {
           id: "company-name",
@@ -321,22 +297,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Project Assigner",
-    icon: projectAsignIcon.src,
+    icon: "ProjectAsignIcon",
     category: "Agency",
     subcategory: "Team Management",
     description: "Optimize project assignments with task delegation suggestions.",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Project Assigner",
-      welcomeCard: welcomeCardDefault,
-      icon: projectAsignIcon.src,
+      icon: "ProjectAsignIcon",
       questions: [
         {
           id: "project-type",
@@ -373,22 +347,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Project Feedback Provider",
-    icon: feedbackIcon.src,
+    icon: "FeedbackIcon",
     category: "Agency",
     subcategory: "Team Management",
     description: "Enhance team performance giving feedback and solutions.",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Project Feedback Provider",
-      welcomeCard: welcomeCardDefault,
-      icon: feedbackIcon.src,
+      icon: "FeedbackIcon",
       questions: [
         {
           id: "project-name",
@@ -425,22 +397,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Individual Feedback Provider",
-    icon: feedbackIcon.src,
+    icon: "FeedbackIcon",
     category: "Agency",
     subcategory: "Team Management",
     description: "Offer personalized feedback, aiding in performance evaluation and growth.",
     objectives: ["improve_customer_and_employee_experience", "streamline_operations_and_sales", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Individual Feedback Provider",
-      welcomeCard: welcomeCardDefault,
-      icon: feedbackIcon.src,
+      icon: "FeedbackIcon",
       questions: [
         {
           id: "employee-name",
@@ -469,22 +439,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Budget Plan Creator",
-    icon: budgetIcon.src,
+    icon: "BudgetIcon",
     category: "Agency",
     subcategory: "Financial Management",
     description: "Optimize resource allocation and forecast revenue in budget planning.",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Budget Plan Creator",
-      welcomeCard: welcomeCardDefault,
-      icon: budgetIcon.src,
+      icon: "BudgetIcon",
       questions: [
         {
           id: "company-name",
@@ -513,22 +481,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Financial Reporter",
-    icon: financialIcon.src,
+    icon: "FinancialIcon",
     category: "Agency",
     subcategory: "Financial Management",
     description: "Identify key financial metrics to create financial reports.",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Financial Reporter",
-      welcomeCard: welcomeCardDefault,
-      icon: financialIcon.src,
+      icon: "FinancialIcon",
       questions: [
         {
           id: "company",
@@ -549,22 +515,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Expense Reporter",
-    icon: creditCardIcon.src,
+    icon: "CreditCardIcon",
     category: "Agency",
     subcategory: "Financial Management",
     description: "Facilitate expense report approval with decision-making support.",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Expense Reporter",
-      welcomeCard: welcomeCardDefault,
-      icon: creditCardIcon.src,
+      icon: "CreditCardIcon",
       questions: [
         {
           id: "report-name",
@@ -601,13 +565,11 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Refund Responder",
-    icon: refundIcon.src,
+    icon: "RefundIcon",
     category: "Agency",
     subcategory: "Financial Management",
     description: "Enhance customer satisfaction by generating refunds responses.",
@@ -618,9 +580,9 @@ export const agencyTemplates: TTemplate[] = [
     ],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Refunder Responder",
-      welcomeCard: welcomeCardDefault,
-      icon: refundIcon.src,
+      icon: "RefundIcon",
       questions: [
         {
           id: "amount",
@@ -673,13 +635,11 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Payment Plan Creator",
-    icon: payIcon.src,
+    icon: "PayIcon",
     category: "Agency",
     subcategory: "Financial Management",
     description: "Create and customize flexible payment plans to save time.",
@@ -690,9 +650,9 @@ export const agencyTemplates: TTemplate[] = [
     ],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Payment Plan Creator",
-      welcomeCard: welcomeCardDefault,
-      icon: payIcon.src,
+      icon: "PayIcon",
       questions: [
         {
           id: "client-name",
@@ -737,22 +697,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Financial Statements Reviewer",
-    icon: financialIcon.src,
+    icon: "FinancialIcon",
     category: "Agency",
     subcategory: "Financial Management",
     description: "Analyze financial statements to identify improvement areas efficiently.",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Financial Statements Reviewer",
-      welcomeCard: welcomeCardDefault,
-      icon: financialIcon.src,
+      icon: "FinancialIcon",
       questions: [
         {
           id: "company-name",
@@ -789,13 +747,11 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "ROI Calculator",
-    icon: calculatorIcon.src,
+    icon: "CalculatorIcon",
     category: "Agency",
     subcategory: "Financial Management",
     description: "Calculate ROI, estimate revenue and forecast expenses.",
@@ -806,9 +762,9 @@ export const agencyTemplates: TTemplate[] = [
     ],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "ROI Calculator",
-      welcomeCard: welcomeCardDefault,
-      icon: calculatorIcon.src,
+      icon: "CalculatorIcon",
       questions: [
         {
           id: "company-name",
@@ -853,13 +809,11 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Cash Flow Statement Creator",
-    icon: cashflowIcon.src,
+    icon: "CashflowIcon",
     category: "Agency",
     subcategory: "Financial Management",
     description: "Revise marketing plans providing feedback and suggestions.",
@@ -870,9 +824,9 @@ export const agencyTemplates: TTemplate[] = [
     ],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Cash Flow Statement Creator",
-      welcomeCard: welcomeCardDefault,
-      icon: cashflowIcon.src,
+      icon: "CashflowIcon",
       questions: [
         {
           id: "company-name",
@@ -901,22 +855,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Industry Trends Researcher",
-    icon: trendIcon.src,
+    icon: "TrendIcon",
     category: "Agency",
     subcategory: "Business Development",
     description: "Research industry trends, analyze data and look ahead.",
     objectives: ["improve_business_strategy", "innovate_and_develop"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Industry Trends Researcher",
-      welcomeCard: welcomeCardDefault,
-      icon: trendIcon.src,
+      icon: "TrendIcon",
       questions: [
         {
           id: "industry",
@@ -937,22 +889,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Market Research",
-    icon: researchIcon.src,
+    icon: "ResearchIcon",
     category: "Agency",
     subcategory: "Business Development",
     description: "Conduct market research across industries and niches efficiently.",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Market Research",
-      welcomeCard: welcomeCardDefault,
-      icon: researchIcon.src,
+      icon: "ResearchIcon",
       questions: [
         {
           id: "product-service",
@@ -981,22 +931,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Lead Scoring System",
-    icon: leadScoreIcon.src,
+    icon: "LeadScoreIcon",
     category: "Agency",
     subcategory: "Business Development",
     description: "Create a lead scoring system, enhancing sales and boosting conversion.",
     objectives: ["boost_engagement_and_conversion", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Lead Scoring System",
-      welcomeCard: welcomeCardDefault,
-      icon: leadScoreIcon.src,
+      icon: "LeadScoreIcon",
       questions: [
         {
           id: "industry",
@@ -1017,22 +965,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Brand Audit",
-    icon: brandIcon.src,
+    icon: "BrandIcon",
     category: "Agency",
     subcategory: "Business Development",
     description: "Conduct brand audits, identifying areas for improvement.",
     objectives: ["improve_business_strategy", "optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Brand Audit",
-      welcomeCard: welcomeCardDefault,
-      icon: brandIcon.src,
+      icon: "BrandIcon",
       questions: [
         {
           id: "industry",
@@ -1053,22 +999,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Referral Program Creator",
-    icon: rewardIcon.src,
+    icon: "RewardIcon",
     category: "Agency",
     subcategory: "Business Development",
     description: "Develop an effective referral program to grow your agency.",
     objectives: ["boost_engagement_and_conversion", "innovate_and_develop"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Referral Program Creator",
-      welcomeCard: welcomeCardDefault,
-      icon: rewardIcon.src,
+      icon: "RewardIcon",
       questions: [
         {
           id: "company-name",
@@ -1097,22 +1041,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Public Relations Strategy",
-    icon: newspaperIcon.src,
+    icon: "NewspaperIcon",
     category: "Agency",
     subcategory: "Business Development",
     description: "Develop a PR strategy by creating press releases and social media posts.",
     objectives: ["enhance_online_presence", "optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Public Relations Strategy",
-      welcomeCard: welcomeCardDefault,
-      icon: newspaperIcon.src,
+      icon: "NewspaperIcon",
       questions: [
         {
           id: "company-name",
@@ -1149,22 +1091,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Growth Opportunities Finder",
-    icon: growthIcon.src,
+    icon: "GrowthIcon",
     category: "Agency",
     subcategory: "Business Development",
     description: "Identify growth opportunities and provide tailored strategies",
     objectives: ["improve_business_strategy", "innovate_and_develop"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Growth Opportunities Finder",
-      welcomeCard: welcomeCardDefault,
-      icon: growthIcon.src,
+      icon: "GrowthIcon",
       questions: [
         {
           id: "company-name",
@@ -1224,22 +1164,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Infographic Creator",
-    icon: brushIcon.src,
+    icon: "BrushIcon",
     category: "Agency",
     subcategory: "Content Creation",
     description: "Generate data-driven content for visually engaging infographics.",
     objectives: ["optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Infographic Creator",
-      welcomeCard: welcomeCardDefault,
-      icon: brushIcon.src,
+      icon: "BrushIcon",
       questions: [
         {
           id: "product-service",
@@ -1268,22 +1206,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Lead Magnet Content Creator",
-    icon: magnetIcon.src,
+    icon: "MagnetIcon",
     category: "Agency",
     subcategory: "Content Creation",
     description: "Generate engaging and informative lead magnet content.",
     objectives: ["optimize_content_and_seo_strategy", "boost_engagement_and_conversion"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Lead Magnet Content Creator",
-      welcomeCard: welcomeCardDefault,
-      icon: magnetIcon.src,
+      icon: "MagnetIcon",
       questions: [
         {
           id: "topic",
@@ -1312,22 +1248,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Case Study Writer",
-    icon: caseStudyIcon.src,
+    icon: "CaseStudyIcon",
     category: "Agency",
     subcategory: "Content Creation",
     description: "Create compelling case studies content effortlessly.",
     objectives: ["optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Case Study Writer",
-      welcomeCard: welcomeCardDefault,
-      icon: caseStudyIcon.src,
+      icon: "CaseStudyIcon",
       questions: [
         {
           id: "client-name",
@@ -1380,22 +1314,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Project Kickoffs",
-    icon: startIcon.src,
+    icon: "StartIcon",
     category: "Agency",
     subcategory: "Project Management",
     description: "Streamline project kickoff meetings with scheduling assistance.",
     objectives: ["improve_customer_and_employee_experience", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Project Kickoffs",
-      welcomeCard: welcomeCardDefault,
-      icon: startIcon.src,
+      icon: "StartIcon",
       questions: [
         {
           id: "topics",
@@ -1416,22 +1348,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Project Timeline Developer",
-    icon: timelineIcon.src,
+    icon: "TimelineIcon",
     category: "Agency",
     subcategory: "Project Management",
     description: "Create accurate project timelines to ensure on-time delivery.",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Project Timeline Developer",
-      welcomeCard: welcomeCardDefault,
-      icon: timelineIcon.src,
+      icon: "TimelineIcon",
       questions: [
         {
           id: "project-name",
@@ -1460,22 +1390,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Project Tasks Assigner",
-    icon: taskIcon.src,
+    icon: "TaskIcon",
     category: "Agency",
     subcategory: "Project Management",
     description: "Optimize project management by assigning tasks efficiently.",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Project Tasks Assigner",
-      welcomeCard: welcomeCardDefault,
-      icon: taskIcon.src,
+      icon: "TaskIcon",
       questions: [
         {
           id: "task",
@@ -1512,13 +1440,11 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Project kick-off Calls",
-    icon: phoneIcon.src,
+    icon: "PhoneIcon",
     category: "Agency",
     subcategory: "Project Management",
     description: "Initiate project kick-off calls ensuring alignment and clarity.",
@@ -1529,9 +1455,9 @@ export const agencyTemplates: TTemplate[] = [
     ],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Project kick-off Calls",
-      welcomeCard: welcomeCardDefault,
-      icon: phoneIcon.src,
+      icon: "PhoneIcon",
       questions: [
         {
           id: "project-name",
@@ -1560,22 +1486,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Project Scope Reviewer",
-    icon: scopeIcon.src,
+    icon: "ScopeIcon",
     category: "Agency",
     subcategory: "Project Management",
     description: "Optimize project scopes with recommendations and document generation.",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Project Scope Reviewer",
-      welcomeCard: welcomeCardDefault,
-      icon: scopeIcon.src,
+      icon: "ScopeIcon",
       questions: [
         {
           id: "companyt-name",
@@ -1604,22 +1528,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Project Milestones Reviewer",
-    icon: goalIcon.src,
+    icon: "GoalIcon",
     category: "Agency",
     subcategory: "Project Management",
     description: "Optimize project milestones by analyzing the scope and objectives.",
     objectives: ["optimize_content_and_seo_strategy", "improve_business_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Project Milestones Reviewer",
-      welcomeCard: welcomeCardDefault,
-      icon: goalIcon.src,
+      icon: "GoalIcon",
       questions: [
         {
           id: "company-name",
@@ -1648,22 +1570,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Project Documentation Updater",
-    icon: documentIcon.src,
+    icon: "DocumentIcon",
     category: "Agency",
     subcategory: "Project Management",
     description: "Update project documentation efficiently with human-like texts.",
     objectives: ["improve_customer_and_employee_experience", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Project Documentation Updater",
-      welcomeCard: welcomeCardDefault,
-      icon: documentIcon.src,
+      icon: "DocumentIcon",
       questions: [
         {
           id: "project",
@@ -1684,22 +1604,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Project Progress Monitor",
-    icon: progressIcon.src,
+    icon: "ProgressIcon",
     category: "Agency",
     subcategory: "Project Management",
     description: "Track project progress with task monitoring and issue identification.",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Project Progress Monitor",
-      welcomeCard: welcomeCardDefault,
-      icon: progressIcon.src,
+      icon: "ProgressIcon",
       questions: [
         {
           id: "project",
@@ -1729,22 +1647,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Project Expenses Tracker",
-    icon: creditCardIcon.src,
+    icon: "CreditCardIcon",
     category: "Agency",
     subcategory: "Project Management",
     description: "Optimize project expenses tracking with custom reports.",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Project Expenses Tracker",
-      welcomeCard: welcomeCardDefault,
-      icon: creditCardIcon.src,
+      icon: "CreditCardIcon",
       questions: [
         {
           id: "expenses",
@@ -1773,22 +1689,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Project Risks Reviewer",
-    icon: warningIcon.src,
+    icon: "WarningIcon",
     category: "Agency",
     subcategory: "Project Management",
     description: "Identify and mitigate project risks for enhanced risk management.",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Project risks Reviewer",
-      welcomeCard: welcomeCardDefault,
-      icon: warningIcon.src,
+      icon: "WarningIcon",
       questions: [
         {
           id: "company-name",
@@ -1817,22 +1731,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Project Assumptions Reviewer",
-    icon: assumptionIcon.src,
+    icon: "AssumptionIcon",
     category: "Agency",
     subcategory: "Project Management",
     description: "Ensure accuracy and achieve better project outcomes.",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Project Assumptions Reviewer",
-      welcomeCard: welcomeCardDefault,
-      icon: assumptionIcon.src,
+      icon: "AssumptionIcon",
       questions: [
         {
           id: "project-assumptions",
@@ -1861,22 +1773,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Project Gantt Charts",
-    icon: projectPlannerIcon.src,
+    icon: "ProjectPlannerIcon",
     category: "Agency",
     subcategory: "Project Management",
     description: "Streamline Gantt chart creation: tasks, dependencies, and milestones.",
     objectives: ["streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Project Gantt Charts",
-      welcomeCard: welcomeCardDefault,
-      icon: projectPlannerIcon.src,
+      icon: "ProjectPlannerIcon",
       questions: [
         {
           id: "project-name",
@@ -1905,22 +1815,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Project Schedule Reviewer",
-    icon: calendarIcon.src,
+    icon: "CalendarIcon",
     category: "Agency",
     subcategory: "Project Management",
     description: "Optimize project schedules by analyzing risks and allocating resources.",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Project Schedule Reviewer",
-      welcomeCard: welcomeCardDefault,
-      icon: calendarIcon.src,
+      icon: "CalendarIcon",
       questions: [
         {
           id: "project-name",
@@ -1949,22 +1857,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Agile Implementor",
-    icon: agileIcon.src,
+    icon: "AgileIcon",
     category: "Agency",
     subcategory: "Project Management",
     description: "Implement Agile techniques for better project management.",
     objectives: ["improve_business_strategy", "innovate_and_develop"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Agile Implementor",
-      welcomeCard: welcomeCardDefault,
-      icon: agileIcon.src,
+      icon: "AgileIcon",
       questions: [
         {
           id: "project-type",
@@ -2027,22 +1933,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Customer Engagement Data",
-    icon: customerEngagementIcon.src,
+    icon: "CustomerEngagementIcon",
     category: "Agency",
     subcategory: "Reporting",
     description: "Analyze customer engagement data to enhance performance.",
     objectives: ["boost_engagement_and_conversion", "optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Customer Engagement Data",
-      welcomeCard: welcomeCardDefault,
-      icon: customerEngagementIcon.src,
+      icon: "CustomerEngagementIcon",
       questions: [
         {
           id: "product-service",
@@ -2079,22 +1983,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "CPA Analyzer",
-    icon: cpaIcon.src,
+    icon: "CpaIcon",
     category: "Agency",
     subcategory: "Reporting",
     description: "Analyze cost per acquisition data, gaining insights and optimizing campaigns.",
     objectives: ["boost_engagement_and_conversion", "improve_business_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "CPA Analyzer",
-      welcomeCard: welcomeCardDefault,
-      icon: cpaIcon.src,
+      icon: "CpaIcon",
       questions: [
         {
           id: "product-service",
@@ -2123,22 +2025,20 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Customer Feedback Reviewer",
-    icon: feedbackIcon.src,
+    icon: "FeedbackIcon",
     category: "Agency",
     subcategory: "Reporting",
     description: "Analyze customer feedback data to gain valuable insights.",
     objectives: ["improve_customer_and_employee_experience", "optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Customer Feedback Reviewer",
-      welcomeCard: welcomeCardDefault,
-      icon: feedbackIcon.src,
+      icon: "FeedbackIcon",
       questions: [
         {
           id: "customer-feedback",
@@ -2175,8 +2075,6 @@ export const agencyTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
 ];

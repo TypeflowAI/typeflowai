@@ -1,6 +1,5 @@
 "use client";
 
-import { PlusIcon } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { TEnvironment } from "@typeflowai/types/environment";
@@ -10,7 +9,7 @@ import { Button } from "../v2/Button";
 import { getWorkflowsAction } from "./actions";
 import { WorkflowCard } from "./components/WorkflowCard";
 import { WorkflowFilters } from "./components/WorkflowFilters";
-import { getFormattedFilters } from "./util";
+import { getFormattedFilters } from "./utils";
 
 interface WorkflowsListProps {
   environment: TEnvironment;
@@ -54,7 +53,7 @@ export const WorkflowsList = ({
       setOrientation(orientationFromLocalStorage);
     } else {
       setOrientation("grid");
-      localStorage.setItem("workflowOrientation", "grid");
+      localStorage.setItem("workflowOrientation", "list");
     }
   }, []);
 
@@ -97,16 +96,7 @@ export const WorkflowsList = ({
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between">
-        <h1 className="my-2 text-3xl font-bold text-slate-800">Workflows</h1>
-        <Button
-          href={`/environments/${environment.id}/workflows/templates`}
-          variant="darkCTA"
-          EndIcon={PlusIcon}>
-          New workflow
-        </Button>
-      </div>
+    <div className="space-y-6">
       <WorkflowFilters
         orientation={orientation}
         setOrientation={setOrientation}
@@ -142,7 +132,7 @@ export const WorkflowsList = ({
             </div>
           )}
           {orientation === "grid" && (
-            <div className="grid grid-cols-4 place-content-stretch gap-4 lg:grid-cols-6 ">
+            <div className="grid grid-cols-2 place-content-stretch gap-4 lg:grid-cols-3 2xl:grid-cols-5">
               {workflows.map((workflow) => {
                 return (
                   <WorkflowCard

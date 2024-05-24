@@ -1,4 +1,6 @@
+import { WorkflowAnalysisNavigation } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/components/WorkflowAnalysisNavigation";
 import SummaryPage from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/SummaryPage";
+import { WorkflowAnalysisCTA } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/WorkflowAnalysisCTA";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 
@@ -6,11 +8,14 @@ import { authOptions } from "@typeflowai/lib/authOptions";
 import { WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
 import { getMembershipByUserIdTeamId } from "@typeflowai/lib/membership/service";
+import { getAccessFlags } from "@typeflowai/lib/membership/utils";
 import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
 import { getResponseCountByWorkflowId } from "@typeflowai/lib/response/service";
 import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
 import { getUser } from "@typeflowai/lib/user/service";
 import { getWorkflow } from "@typeflowai/lib/workflow/service";
+import { PageContentWrapper } from "@typeflowai/ui/PageContentWrapper";
+import { PageHeader } from "@typeflowai/ui/PageHeader";
 
 export default async function Page({ params }) {
   const session = await getServerSession(authOptions);
@@ -53,18 +58,36 @@ export default async function Page({ params }) {
   const currentUserMembership = await getMembershipByUserIdTeamId(session?.user.id, team.id);
   const totalResponseCount = await getResponseCountByWorkflowId(params.workflowId);
 
+  const { isViewer } = getAccessFlags(currentUserMembership?.role);
+
   return (
-    <>
+    <PageContentWrapper>
+      <PageHeader
+        pageTitle={workflow.name}
+        cta={
+          <WorkflowAnalysisCTA
+            environment={environment}
+            workflow={workflow}
+            isViewer={isViewer}
+            webAppUrl={WEBAPP_URL}
+            user={user}
+          />
+        }>
+        <WorkflowAnalysisNavigation
+          environmentId={environment.id}
+          responseCount={totalResponseCount}
+          workflowId={workflow.id}
+          activeId="summary"
+        />
+      </PageHeader>
       <SummaryPage
         environment={environment}
         workflow={workflow}
         workflowId={params.workflowId}
         webAppUrl={WEBAPP_URL}
-        product={product}
         user={user}
-        membershipRole={currentUserMembership?.role}
         totalResponseCount={totalResponseCount}
       />
-    </>
+    </PageContentWrapper>
   );
 }

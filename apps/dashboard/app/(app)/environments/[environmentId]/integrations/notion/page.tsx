@@ -12,7 +12,9 @@ import { getIntegrationByType } from "@typeflowai/lib/integration/service";
 import { getNotionDatabases } from "@typeflowai/lib/notion/service";
 import { getWorkflows } from "@typeflowai/lib/workflow/service";
 import { TIntegrationNotion, TIntegrationNotionDatabase } from "@typeflowai/types/integration/notion";
-import GoBackButton from "@typeflowai/ui/GoBackButton";
+import { GoBackButton } from "@typeflowai/ui/GoBackButton";
+import { PageContentWrapper } from "@typeflowai/ui/PageContentWrapper";
+import { PageHeader } from "@typeflowai/ui/PageHeader";
 
 export default async function Notion({ params }) {
   const enabled = !!(
@@ -37,8 +39,9 @@ export default async function Notion({ params }) {
   }
 
   return (
-    <>
+    <PageContentWrapper>
       <GoBackButton url={`${WEBAPP_URL}/environments/${params.environmentId}/integrations`} />
+      <PageHeader pageTitle="Notion Integration" />
       <NotionWrapper
         enabled={enabled}
         workflows={workflows}
@@ -47,6 +50,6 @@ export default async function Notion({ params }) {
         webAppUrl={WEBAPP_URL}
         databasesArray={databasesArray}
       />
-    </>
+    </PageContentWrapper>
   );
 }

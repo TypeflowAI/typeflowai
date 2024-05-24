@@ -184,10 +184,10 @@ export const WorkflowFilters = ({
         <TooltipRenderer
           shouldRender={true}
           tooltipContent={getToolTipContent("List")}
-          className="bg-slate-900 text-white">
+          className="bg-brand text-white">
           <div
             className={`flex  h-8 w-8  items-center justify-center  rounded-lg border  p-1 ${
-              orientation === "list" ? "bg-slate-900 text-white" : "bg-white"
+              orientation === "list" ? "bg-brand text-white" : "bg-white text-violet-950"
             }`}
             onClick={() => handleOrientationChange("list")}>
             <Equal className="h-5 w-5" />
@@ -197,10 +197,10 @@ export const WorkflowFilters = ({
         <TooltipRenderer
           shouldRender={true}
           tooltipContent={getToolTipContent("Grid")}
-          className="bg-slate-900 text-white">
+          className="bg-brand text-white">
           <div
             className={`flex h-8 w-8  items-center justify-center rounded-lg border  p-1 ${
-              orientation === "grid" ? "bg-slate-900 text-white" : "bg-white"
+              orientation === "grid" ? "bg-brand text-white" : "bg-white text-violet-950"
             }`}
             onClick={() => handleOrientationChange("grid")}>
             <Grid2X2 className="h-5 w-5" />
@@ -210,9 +210,9 @@ export const WorkflowFilters = ({
         <DropdownMenu>
           <DropdownMenuTrigger
             asChild
-            className="workflowFilterDropdown h-full cursor-pointer border border-slate-700 outline-none hover:bg-slate-900">
+            className="workflowFilterDropdown border-brand hover:bg-brand h-full cursor-pointer border text-violet-950 outline-none hover:text-white">
             <div className="min-w-auto h-8 rounded-md border sm:flex sm:px-2">
-              <div className="hidden w-full items-center justify-between hover:text-white sm:flex">
+              <div className="hidden w-full items-center justify-between sm:flex">
                 <span className="text-sm ">
                   Sort by: {sortOptions.find((option) => option.value === sortBy)?.label}
                 </span>
@@ -220,7 +220,7 @@ export const WorkflowFilters = ({
               </div>
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="bg-slate-900 ">
+          <DropdownMenuContent align="start" className="bg-white ">
             {sortOptions.map((option) => (
               <SortOption
                 option={option}

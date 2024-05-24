@@ -15,14 +15,12 @@ export const SortOption = ({ option, sortBy, handleSortChange }: SortOptionProps
     onClick={() => {
       handleSortChange(option);
     }}>
-    <div className="flex h-full w-full items-center space-x-2 px-2 py-1 hover:bg-slate-700">
+    <div className="flex h-full w-full items-center space-x-2 px-2 py-1 hover:bg-slate-100">
       <span
         className={`h-4 w-4 rounded-full border ${
-          sortBy === option.value
-            ? "bg-brand-dark outline-brand-dark border-slate-900 outline"
-            : "border-white"
+          sortBy === option.value ? "bg-brand border-none outline-none outline" : "border-brand"
         }`}></span>
-      <p className="font-normal text-white">{option.label}</p>
+      <p className="font-normal text-slate-700">{option.label}</p>
     </div>
   </DropdownMenuItem>
 );

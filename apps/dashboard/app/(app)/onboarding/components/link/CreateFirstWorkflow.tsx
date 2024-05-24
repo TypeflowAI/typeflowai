@@ -1,9 +1,5 @@
 "use client";
 
-import {
-  customWorkflow,
-  templates,
-} from "@/app/(app)/environments/[environmentId]/workflows/templates/templates";
 import OnboardingTitle from "@/app/(app)/onboarding/components/OnboardingTitle";
 import ChurnImage from "@/images/onboarding-churn.png";
 import FeedbackImage from "@/images/onboarding-collect-feedback.png";
@@ -14,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 
+import { customWorkflow, templates } from "@typeflowai/ee/prompt-templates/templates";
 import { TTemplate } from "@typeflowai/types/templates";
 import { Button } from "@typeflowai/ui/Button";
 import { OptionCard } from "@typeflowai/ui/OptionCard";

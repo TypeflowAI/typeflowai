@@ -23,7 +23,7 @@ export const EmptyAppWorkflows = ({ environment, workflowType = "app" }: TEmptyA
           Connect your {workflowType} with TypeflowAI to run {workflowType} workflows.
         </p>
 
-        <Link className="mt-2" href={`/environments/${environment.id}/settings/setup`}>
+        <Link className="mt-2" href={`/environments/${environment.id}/product/setup`}>
           <Button variant="darkCTA" size="sm" className="flex w-[120px] justify-center">
             Connect
           </Button>

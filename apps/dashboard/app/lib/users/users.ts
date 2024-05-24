@@ -1,4 +1,4 @@
-import { hashPassword } from "@typeflowai/lib/auth/util";
+import { hashPassword } from "@typeflowai/lib/auth/utils";
 
 export const createUser = async (
   name: string,

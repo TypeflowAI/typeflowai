@@ -19,6 +19,7 @@
     "@typeflowai/database": "workspace:*",
     "@typeflowai/lib": "workspace:*",
     "@typeflowai/workflows": "workspace:*",
+    "@typeflowai/ee": "workspace:*",
     "@lexical/code": "^0.14.5",
     "@lexical/link": "^0.14.5",
     "@lexical/list": "^0.14.5",

@@ -1,62 +1,13 @@
 import { OpenAIModel } from "@typeflowai/types/openai";
 import { TTemplate } from "@typeflowai/types/templates";
-import { TWorkflowHiddenFields, TWorkflowQuestionType } from "@typeflowai/types/workflows";
-import amazonIcon from "@typeflowai/ui/icons/templates/amazon.svg";
-import articleIcon from "@typeflowai/ui/icons/templates/article.svg";
-import automationIcon from "@typeflowai/ui/icons/templates/automation.svg";
-import brandMessagingIcon from "@typeflowai/ui/icons/templates/brand-messaging.svg";
-import buyerPersonaIcon from "@typeflowai/ui/icons/templates/buyerpersona.svg";
-import influencerIcon from "@typeflowai/ui/icons/templates/camera.svg";
-import clientProposalIcon from "@typeflowai/ui/icons/templates/client-proposal.svg";
-import metaDescriptionIcon from "@typeflowai/ui/icons/templates/code.svg";
-import coldEmailIcon from "@typeflowai/ui/icons/templates/coldemail.svg";
-import communityIcon from "@typeflowai/ui/icons/templates/community.svg";
-import contentCalendarIcon from "@typeflowai/ui/icons/templates/content-calendar.svg";
-import copyIcon from "@typeflowai/ui/icons/templates/copy.svg";
-import crisisIcon from "@typeflowai/ui/icons/templates/crisis.svg";
-import ctaIcon from "@typeflowai/ui/icons/templates/cta.svg";
-import descriptionIcon from "@typeflowai/ui/icons/templates/description.svg";
-import facebookIcon from "@typeflowai/ui/icons/templates/facebook.svg";
-import faqIcon from "@typeflowai/ui/icons/templates/faq.svg";
-import featureIcon from "@typeflowai/ui/icons/templates/feature.svg";
-import followupEmailsIcon from "@typeflowai/ui/icons/templates/followup-emails.svg";
-import frameworkIcon from "@typeflowai/ui/icons/templates/framework.svg";
-import funnelIcon from "@typeflowai/ui/icons/templates/funnel.svg";
-import goalIcon from "@typeflowai/ui/icons/templates/goal.svg";
-import googleAdsIcon from "@typeflowai/ui/icons/templates/googleads.svg";
-import headlineIcon from "@typeflowai/ui/icons/templates/headline.svg";
-import ideaIcon from "@typeflowai/ui/icons/templates/idea.svg";
-// import imageIcon from "@typeflowai/ui/icons/templates/image.svg";
-import innovationIcon from "@typeflowai/ui/icons/templates/innovation.svg";
-import keywordResearchIcon from "@typeflowai/ui/icons/templates/keyword-research.svg";
-import landingIcon from "@typeflowai/ui/icons/templates/landing.svg";
-import linkedinIcon from "@typeflowai/ui/icons/templates/linkedin.svg";
-import localIcon from "@typeflowai/ui/icons/templates/local.svg";
-import magnetIcon from "@typeflowai/ui/icons/templates/magnet.svg";
-import newspaperIcon from "@typeflowai/ui/icons/templates/newspaper.svg";
-import optimizeIcon from "@typeflowai/ui/icons/templates/optimize.svg";
-import pageIcon from "@typeflowai/ui/icons/templates/page.svg";
-import planIcon from "@typeflowai/ui/icons/templates/plan.svg";
-import productValueIcon from "@typeflowai/ui/icons/templates/product-value.svg";
-import productHuntIcon from "@typeflowai/ui/icons/templates/producthunt.svg";
-import researchIcon from "@typeflowai/ui/icons/templates/research.svg";
-import reviewIcon from "@typeflowai/ui/icons/templates/review.svg";
-import salesIncentiveIcon from "@typeflowai/ui/icons/templates/sales-incentive.svg";
-import seoIcon from "@typeflowai/ui/icons/templates/seo.svg";
-import socialMediaIcon from "@typeflowai/ui/icons/templates/socialmedia.svg";
-import storytellingIcon from "@typeflowai/ui/icons/templates/storytelling.svg";
-import strategyIcon from "@typeflowai/ui/icons/templates/strategy.svg";
-import subjectIcon from "@typeflowai/ui/icons/templates/subject.svg";
-import testimonialIcon from "@typeflowai/ui/icons/templates/testimonial.svg";
-import tiktokIcon from "@typeflowai/ui/icons/templates/tiktok.svg";
-import titleIcon from "@typeflowai/ui/icons/templates/title.svg";
-import translateIcon from "@typeflowai/ui/icons/templates/translate.svg";
-import twitterIcon from "@typeflowai/ui/icons/templates/twitter.svg";
-import videoIcon from "@typeflowai/ui/icons/templates/video.svg";
-import welcomeIcon from "@typeflowai/ui/icons/templates/welcome.svg";
-import youtubeIcon from "@typeflowai/ui/icons/templates/youtube.svg";
+import {
+  TWorkflowHiddenFields,
+  TWorkflowQuestionType,
+  TWorkflowThankYouCard,
+  TWorkflowWelcomeCard,
+} from "@typeflowai/types/workflows";
 
-const thankYouCardDefault = {
+const thankYouCardDefault: TWorkflowThankYouCard = {
   enabled: true,
   headline: { default: "Thank you!" },
   subheader: { default: "We appreciate your feedback." },
@@ -69,7 +20,7 @@ const hiddenFieldsDefault: TWorkflowHiddenFields = {
   fieldIds: [],
 };
 
-const welcomeCardDefault = {
+const welcomeCardDefault: TWorkflowWelcomeCard = {
   enabled: false,
   headline: { default: "Welcome!" },
   html: { default: "Thanks for providing your feedback - let's go!" },
@@ -77,19 +28,35 @@ const welcomeCardDefault = {
   showResponseCount: false,
 };
 
+const workflowDefault: TTemplate["preset"] = {
+  name: "New Workflow",
+  welcomeCard: welcomeCardDefault,
+  prompt: {
+    enabled: false,
+    id: "prompt",
+    message: "",
+    attributes: {},
+    isVisible: true,
+    engine: OpenAIModel.GPT35Turbo,
+  },
+  thankYouCard: thankYouCardDefault,
+  hiddenFields: hiddenFieldsDefault,
+  questions: [],
+};
+
 export const marketingTemplates: TTemplate[] = [
   {
     name: "Marketing Research",
-    icon: researchIcon.src,
+    icon: "ResearchIcon",
     category: "Marketing",
     subcategory: "General",
     description: "Decipher customer behavior, unveil trends and get new marketing insights.",
     objectives: ["boost_engagement_and_conversion", "improve_business_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Marketing Research",
-      welcomeCard: welcomeCardDefault,
-      icon: researchIcon.src,
+      icon: "ResearchIcon",
       questions: [
         {
           id: "market",
@@ -141,22 +108,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Marketing Strategy Funnel",
-    icon: funnelIcon.src,
+    icon: "FunnelIcon",
     category: "Marketing",
     subcategory: "General",
     description: "Build an effective funnel: from interest to loyalty.",
     objectives: ["boost_engagement_and_conversion", "improve_business_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Marketing Strategy Funnel",
-      welcomeCard: welcomeCardDefault,
-      icon: funnelIcon.src,
+      icon: "FunnelIcon",
       questions: [
         {
           id: "product",
@@ -211,22 +176,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Product Value Progression",
-    icon: productValueIcon.src,
+    icon: "ProductValueIcon",
     category: "Marketing",
     subcategory: "General",
     description: "Maximize potential, unlock hidden revenue, and accomodate to various budgets.",
     objectives: ["boost_engagement_and_conversion", "improve_business_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Product Value Progression",
-      welcomeCard: welcomeCardDefault,
-      icon: productValueIcon.src,
+      icon: "ProductValueIcon",
       questions: [
         {
           id: "product-service",
@@ -321,22 +284,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Connect with community",
-    icon: communityIcon.src,
+    icon: "CommunityIcon",
     category: "Marketing",
     subcategory: "General",
     description: "Brainstorm 10 ways to connect cleverly with your community.",
     objectives: ["enhance_online_presence", "boost_engagement_and_conversion"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Connect with community",
-      welcomeCard: welcomeCardDefault,
-      icon: communityIcon.src,
+      icon: "CommunityIcon",
       questions: [
         {
           id: "community-focus",
@@ -392,22 +353,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Innovative Marketing Strategies",
-    icon: innovationIcon.src,
+    icon: "InnovationIcon",
     category: "Marketing",
     subcategory: "General",
     description: "Brainstorm 10 innovative and not so common marketing strategies.",
     objectives: ["enhance_online_presence", "boost_engagement_and_conversion"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Innovative Marketing Strategies",
-      welcomeCard: welcomeCardDefault,
-      icon: innovationIcon.src,
+      icon: "InnovationIcon",
       questions: [
         {
           id: "challenge",
@@ -442,22 +401,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Product Essential Features",
-    icon: featureIcon.src,
+    icon: "FeatureIcon",
     category: "Marketing",
     subcategory: "General",
     description: "Brainstorm 20 innovative product feature ideas to boost convertion rate.",
     objectives: ["boost_engagement_and_conversion", "improve_business_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Product Essential Features",
-      welcomeCard: welcomeCardDefault,
-      icon: featureIcon.src,
+      icon: "FeatureIcon",
       questions: [
         {
           id: "target-audience",
@@ -512,13 +469,11 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Persuasive Client Proposal",
-    icon: clientProposalIcon.src,
+    icon: "ClientProposalIcon",
     category: "Marketing",
     subcategory: "General",
     description: "B2B proposals that highlights the benefits of using your product or service.",
@@ -529,9 +484,9 @@ export const marketingTemplates: TTemplate[] = [
     ],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Persuasive Client Proposal",
-      welcomeCard: welcomeCardDefault,
-      icon: clientProposalIcon.src,
+      icon: "ClientProposalIcon",
       questions: [
         {
           id: "client-company",
@@ -588,22 +543,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Product Launch Strategies",
-    icon: productHuntIcon.src,
+    icon: "ProductHuntIcon",
     category: "Marketing",
     subcategory: "General",
     description: "Formulate launch strategies to reach product market fit faster.",
     objectives: ["improve_business_strategy", "innovate_and_develop", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Product Launch Strategies",
-      welcomeCard: welcomeCardDefault,
-      icon: productHuntIcon.src,
+      icon: "ProductHuntIcon",
       questions: [
         {
           id: "product-name",
@@ -659,22 +612,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Competitor Analysis Strategies",
-    icon: strategyIcon.src,
+    icon: "StrategyIcon",
     category: "Marketing",
     subcategory: "General",
     description: "Scrutinize your competition to uncover tactics, and gain insights.",
     objectives: ["improve_business_strategy", "innovate_and_develop", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Competitor Analysis Strategies",
-      welcomeCard: welcomeCardDefault,
-      icon: strategyIcon.src,
+      icon: "StrategyIcon",
       questions: [
         {
           id: "industry",
@@ -707,22 +658,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Set Goals and Objectives",
-    icon: goalIcon.src,
+    icon: "GoalIcon",
     category: "Marketing",
     subcategory: "General",
     description: "Create a set of objectives and Key Results (OKRs) effortlessly.",
     objectives: ["improve_business_strategy", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Set Goals and Objectives",
-      welcomeCard: welcomeCardDefault,
-      icon: goalIcon.src,
+      icon: "GoalIcon",
       questions: [
         {
           id: "specific-goal",
@@ -751,13 +700,11 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Facebook Ads Copy",
-    icon: facebookIcon.src,
+    icon: "FacebookIcon",
     category: "Marketing",
     subcategory: "Facebook Ads",
     description: "Peek into buyer persona's desires to write converting ads.",
@@ -768,9 +715,9 @@ export const marketingTemplates: TTemplate[] = [
     ],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Converting Ads Copy",
-      welcomeCard: welcomeCardDefault,
-      icon: facebookIcon.src,
+      icon: "FacebookIcon",
       questions: [
         {
           id: "target-audience",
@@ -825,22 +772,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Cold Email Templates",
-    icon: coldEmailIcon.src,
+    icon: "ColdEmailIcon",
     category: "Marketing",
     subcategory: "E-mail Marketing",
     description: "Acquire paying customers with cold email templates.",
     objectives: ["boost_engagement_and_conversion", "streamline_operations_and_sales"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Cold Email Templates",
-      welcomeCard: welcomeCardDefault,
-      icon: coldEmailIcon.src,
+      icon: "ColdEmailIcon",
       questions: [
         {
           id: "target-audience",
@@ -923,22 +868,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Email Subject Lines",
-    icon: subjectIcon.src,
+    icon: "SubjectIcon",
     category: "Marketing",
     subcategory: "E-mail Marketing",
     description: "Make your email subject lines irresistible to leave recipients spellbound.",
     objectives: ["boost_engagement_and_conversion", "improve_customer_and_employee_experience"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Email Subject Lines",
-      welcomeCard: welcomeCardDefault,
-      icon: subjectIcon.src,
+      icon: "SubjectIcon",
       questions: [
         {
           id: "email-topic",
@@ -984,22 +927,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Optimize your E-Mails",
-    icon: optimizeIcon.src,
+    icon: "OptimizeIcon",
     category: "Marketing",
     subcategory: "E-mail Marketing",
     description: "",
     objectives: ["boost_engagement_and_conversion", "optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Optimize your E-Mails",
-      welcomeCard: welcomeCardDefault,
-      icon: optimizeIcon.src,
+      icon: "OptimizeIcon",
       questions: [
         {
           id: "email-list",
@@ -1066,22 +1007,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Email Compliance Framework",
-    icon: frameworkIcon.src,
+    icon: "FrameworkIcon",
     category: "Marketing",
     subcategory: "E-mail Marketing",
     description: "Introduce a framework for managing your email inbox smartly.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Email Compliance Framework",
-      welcomeCard: welcomeCardDefault,
-      icon: frameworkIcon.src,
+      icon: "FrameworkIcon",
       questions: [
         {
           id: "email-collection",
@@ -1152,22 +1091,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Welcome Email Sequence",
-    icon: welcomeIcon.src,
+    icon: "WelcomeIcon",
     category: "Marketing",
     subcategory: "E-mail Marketing",
     description: "Write a welcome email sequence to make a good impression.",
     objectives: ["boost_engagement_and_conversion"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Welcome Email Sequence",
-      welcomeCard: welcomeCardDefault,
-      icon: welcomeIcon.src,
+      icon: "WelcomeIcon",
       questions: [
         {
           id: "email-purpose",
@@ -1202,22 +1139,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Email Automation Strategies",
-    icon: automationIcon.src,
+    icon: "AutomationIcon",
     category: "Marketing",
     subcategory: "E-mail Marketing",
     description: "Set up automated sequences to improve conversion rate.",
     objectives: ["boost_engagement_and_conversion", "improve_business_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Email Automation Strategies",
-      welcomeCard: welcomeCardDefault,
-      icon: automationIcon.src,
+      icon: "AutomationIcon",
       questions: [
         {
           id: "goal-event",
@@ -1274,22 +1209,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Email Lead Magnet Ideas",
-    icon: magnetIcon.src,
+    icon: "MagnetIcon",
     category: "Marketing",
     subcategory: "E-mail Marketing",
     description: "Develop lead magnet ideas for emails to capture leads effectively",
     objectives: ["boost_engagement_and_conversion", "optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Email Lead Magnet Ideas",
-      welcomeCard: welcomeCardDefault,
-      icon: magnetIcon.src,
+      icon: "MagnetIcon",
       questions: [
         {
           id: "target-audience",
@@ -1371,22 +1304,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Email Follow-up Sequences",
-    icon: followupEmailsIcon.src,
+    icon: "FollowupEmailsIcon",
     category: "Marketing",
     subcategory: "E-mail Marketing",
     description: "Create contextually tailored email follow-up sequences.",
     objectives: ["boost_engagement_and_conversion", "improve_business_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Email Follow-up Sequences",
-      welcomeCard: welcomeCardDefault,
-      icon: followupEmailsIcon.src,
+      icon: "FollowupEmailsIcon",
       questions: [
         {
           id: "client-company",
@@ -1460,22 +1391,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Twitter Content Calendar",
-    icon: twitterIcon.src,
+    icon: "TwitterIcon",
     category: "Marketing",
     subcategory: "Social Media",
     description: "Elevate your social media game with a Twitter content calendar.",
     objectives: ["enhance_online_presence", "boost_engagement_and_conversion"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Twitter Content Calendar",
-      welcomeCard: welcomeCardDefault,
-      icon: twitterIcon.src,
+      icon: "TwitterIcon",
       questions: [
         {
           id: "twitter-account-information",
@@ -1528,22 +1457,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Crisis Management Plan",
-    icon: crisisIcon.src,
+    icon: "CrisisIcon",
     category: "Marketing",
     subcategory: "Social Media",
     description: "Manage negative input effectively with a crisis management plan.",
     objectives: ["enhance_online_presence"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Crisis Management Plan",
-      welcomeCard: welcomeCardDefault,
-      icon: crisisIcon.src,
+      icon: "CrisisIcon",
       questions: [
         {
           id: "industry",
@@ -1602,22 +1529,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Social Media Strategy",
-    icon: socialMediaIcon.src,
+    icon: "SocialMediaIcon",
     category: "Marketing",
     subcategory: "Social Media",
     description: "Develop a well-rounded and usable social media strategy.",
     objectives: ["enhance_online_presence", "improve_business_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Social Media Strategy",
-      welcomeCard: welcomeCardDefault,
-      icon: socialMediaIcon.src,
+      icon: "SocialMediaIcon",
       questions: [
         {
           id: "industry",
@@ -1679,22 +1604,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Marketing Copy Review",
-    icon: copyIcon.src,
+    icon: "CopyIcon",
     category: "Marketing",
     subcategory: "Copywriting",
     description: "Revamp your marketing copy to captivate and convert.",
     objectives: ["boost_engagement_and_conversion", "optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Marketing Copy Review",
-      welcomeCard: welcomeCardDefault,
-      icon: copyIcon.src,
+      icon: "CopyIcon",
       questions: [
         {
           id: "target-audience",
@@ -1754,13 +1677,11 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Blog Post Copy",
-    icon: articleIcon.src,
+    icon: "ArticleIcon",
     category: "Marketing",
     subcategory: "Seo",
     description: "Write engaging and SEO-friendly blog posts in no time.",
@@ -1771,9 +1692,9 @@ export const marketingTemplates: TTemplate[] = [
     ],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Blog Post Copy",
-      welcomeCard: welcomeCardDefault,
-      icon: articleIcon.src,
+      icon: "ArticleIcon",
       questions: [
         {
           id: "event-news",
@@ -1847,22 +1768,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Meta Description Copy",
-    icon: metaDescriptionIcon.src,
+    icon: "CodeIcon",
     category: "Marketing",
     subcategory: "Seo",
     description: "Generate effective meta descriptions with useful details.",
     objectives: ["optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Meta Description Copy",
-      welcomeCard: welcomeCardDefault,
-      icon: metaDescriptionIcon.src,
+      icon: "CodeIcon",
       questions: [
         {
           id: "topic",
@@ -1933,22 +1852,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Long-Tail Keyword Generator",
-    icon: keywordResearchIcon.src,
+    icon: "KeywordResearchIcon",
     category: "Marketing",
     subcategory: "Seo",
     description: "Generate Long-Tail Keywords for SEO improvement.",
     objectives: ["enhance_online_presence", "optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Uncover Valuable Long-Tail Keywords",
-      welcomeCard: welcomeCardDefault,
-      icon: keywordResearchIcon.src,
+      icon: "KeywordResearchIcon",
       questions: [
         {
           id: "niche-market",
@@ -2000,22 +1917,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Article Title Ideas",
-    icon: titleIcon.src,
+    icon: "TitleIcon",
     category: "Marketing",
     subcategory: "Seo",
     description: "Infuse creativity into your article tiles to improve content.",
     objectives: ["enhance_online_presence", "optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Article Title Ideas",
-      welcomeCard: welcomeCardDefault,
-      icon: titleIcon.src,
+      icon: "TitleIcon",
       questions: [
         {
           id: "article-topic",
@@ -2075,13 +1990,11 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Engaging Storytelling Copy",
-    icon: storytellingIcon.src,
+    icon: "StorytellingIcon",
     category: "Marketing",
     subcategory: "Content Marketing",
     description: "Create engaging narratives to captivate hearts and minds.",
@@ -2092,9 +2005,9 @@ export const marketingTemplates: TTemplate[] = [
     ],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Engaging Storytelling Copy",
-      welcomeCard: welcomeCardDefault,
-      icon: storytellingIcon.src,
+      icon: "StorytellingIcon",
       questions: [
         {
           id: "core-values",
@@ -2157,13 +2070,11 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Content Planning Strategy",
-    icon: contentCalendarIcon.src,
+    icon: "ContentCalendarIcon",
     category: "Marketing",
     subcategory: "Content Marketing",
     description: "Develop a content strategic plan like a chess grandmaster.",
@@ -2174,9 +2085,9 @@ export const marketingTemplates: TTemplate[] = [
     ],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Content Planning Strategy",
-      welcomeCard: welcomeCardDefault,
-      icon: contentCalendarIcon.src,
+      icon: "ContentCalendarIcon",
       questions: [
         {
           id: "content-idea",
@@ -2232,22 +2143,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Content Ideas from Customer Journey",
-    icon: ideaIcon.src,
+    icon: "IdeaIcon",
     category: "Marketing",
     subcategory: "Content Marketing",
     description: "Discover how to get content ideas from the customer journey.",
     objectives: ["boost_engagement_and_conversion", "optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Content Ideas from Customer Journey",
-      welcomeCard: welcomeCardDefault,
-      icon: ideaIcon.src,
+      icon: "IdeaIcon",
       questions: [
         {
           id: "business",
@@ -2311,13 +2220,11 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "YouTube Video Scripts",
-    icon: youtubeIcon.src,
+    icon: "YoutubeIcon",
     category: "Marketing",
     subcategory: "Youtube Marketing",
     description: "Keep your audience hooked with captivating storytelling.",
@@ -2328,9 +2235,9 @@ export const marketingTemplates: TTemplate[] = [
     ],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "YouTube Video Scripts",
-      welcomeCard: welcomeCardDefault,
-      icon: youtubeIcon.src,
+      icon: "YoutubeIcon",
       questions: [
         {
           id: "topic",
@@ -2364,13 +2271,11 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "YouTube Brand Building",
-    icon: youtubeIcon.src,
+    icon: "YoutubeIcon",
     category: "Marketing",
     subcategory: "Youtube Marketing",
     description: "Create your unique brand of content on YouTube to stand out.",
@@ -2381,9 +2286,9 @@ export const marketingTemplates: TTemplate[] = [
     ],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "YouTube Brand Building",
-      welcomeCard: welcomeCardDefault,
-      icon: youtubeIcon.src,
+      icon: "YoutubeIcon",
       questions: [
         {
           id: "content-niche",
@@ -2447,22 +2352,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Twitter Hook Variations",
-    icon: twitterIcon.src,
+    icon: "TwitterIcon",
     category: "Marketing",
     subcategory: "Twitter Marketing",
     description: "Hook your audience with catchy and engaging tweets.",
     objectives: ["enhance_online_presence", "boost_engagement_and_conversion"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Twitter Hook Variations",
-      welcomeCard: welcomeCardDefault,
-      icon: twitterIcon.src,
+      icon: "TwitterIcon",
       questions: [
         {
           id: "thread-topic",
@@ -2525,22 +2428,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "30 Viral Tweets",
-    icon: twitterIcon.src,
+    icon: "TwitterIcon",
     category: "Marketing",
     subcategory: "Twitter Marketing",
     description: "Create 30 Viral Tweets for sizzling engagement.",
     objectives: ["enhance_online_presence", "boost_engagement_and_conversion"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "30 Viral Tweets",
-      welcomeCard: welcomeCardDefault,
-      icon: twitterIcon.src,
+      icon: "TwitterIcon",
       questions: [
         {
           id: "twitter-audience",
@@ -2601,22 +2502,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Twitter Trends Finder",
-    icon: twitterIcon.src,
+    icon: "TwitterIcon",
     category: "Marketing",
     subcategory: "Twitter Marketing",
     description: "Create engaging Twitter content based on last trends.",
     objectives: ["enhance_online_presence", "boost_engagement_and_conversion"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Twitter Trends Finder",
-      welcomeCard: welcomeCardDefault,
-      icon: twitterIcon.src,
+      icon: "TwitterIcon",
       questions: [
         {
           id: "niche-market",
@@ -2662,22 +2561,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "FAQs for Customers",
-    icon: faqIcon.src,
+    icon: "FaqIcon",
     category: "Marketing",
     subcategory: "Customer Support",
     description: "Create a comprehensive FAQ section and provide clear answers.",
     objectives: ["improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "FAQs for Customers",
-      welcomeCard: welcomeCardDefault,
-      icon: faqIcon.src,
+      icon: "FaqIcon",
       questions: [
         {
           id: "business-website-product-service",
@@ -2726,22 +2623,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "TikTok Niche Marketing",
-    icon: tiktokIcon.src,
+    icon: "TiktokIcon",
     category: "Marketing",
     subcategory: "TikTok Marketing",
     description: "Amplify your TikTok presence with a niche marketing strategy.",
     objectives: ["enhance_online_presence", "boost_engagement_and_conversion"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "TikTok Niche Marketing",
-      welcomeCard: welcomeCardDefault,
-      icon: tiktokIcon.src,
+      icon: "TiktokIcon",
       questions: [
         {
           id: "target-audience",
@@ -2824,22 +2719,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "TikTok Trends Finder",
-    icon: tiktokIcon.src,
+    icon: "TiktokIcon",
     category: "Marketing",
     subcategory: "TikTok Marketing",
     description: "Dive into viral trends, catchy challenges, and creative content.",
     objectives: ["enhance_online_presence", "boost_engagement_and_conversion"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "TikTok Trends Finder",
-      welcomeCard: welcomeCardDefault,
-      icon: tiktokIcon.src,
+      icon: "TiktokIcon",
       questions: [
         {
           id: "target-audience",
@@ -2905,22 +2798,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "100 Product Descriptions",
-    icon: descriptionIcon.src,
+    icon: "DescriptionIcon",
     category: "Marketing",
     subcategory: "Website",
     description: "Write 100 specific product descriptions effortlessly.",
     objectives: ["boost_engagement_and_conversion", "optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "100 Product Descriptions",
-      welcomeCard: welcomeCardDefault,
-      icon: descriptionIcon.src,
+      icon: "DescriptionIcon",
       questions: [
         {
           id: "company-name",
@@ -2970,22 +2861,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Landing Page Headlines",
-    icon: landingIcon.src,
+    icon: "LandingIcon",
     category: "Marketing",
     subcategory: "Website",
     description: "Write irresistible and creative headlines for your landing pages.",
     objectives: ["boost_engagement_and_conversion", "optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Landing Page Headlines",
-      welcomeCard: welcomeCardDefault,
-      icon: landingIcon.src,
+      icon: "LandingIcon",
       questions: [
         {
           id: "product-service",
@@ -3019,22 +2908,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Product Reviews Copy",
-    icon: reviewIcon.src,
+    icon: "ReviewIcon",
     category: "Marketing",
     subcategory: "Website",
     description: "Craft compelling descriptions for your product and services.",
     objectives: ["boost_engagement_and_conversion", "optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Product Reviews Copy",
-      welcomeCard: welcomeCardDefault,
-      icon: reviewIcon.src,
+      icon: "ReviewIcon",
       questions: [
         {
           id: "product-service",
@@ -3060,22 +2947,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Product Testimonials Copy",
-    icon: testimonialIcon.src,
+    icon: "TestimonialIcon",
     category: "Marketing",
     subcategory: "Website",
     description: "Write compelling testimonials that sparkle and sell.",
     objectives: ["optimize_content_and_seo_strategy", "improve_customer_and_employee_experience"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Product Testimonials Copy",
-      welcomeCard: welcomeCardDefault,
-      icon: testimonialIcon.src,
+      icon: "TestimonialIcon",
       questions: [
         {
           id: "product-service",
@@ -3101,22 +2986,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Translate Website Copy",
-    icon: translateIcon.src,
+    icon: "TranslateIcon",
     category: "Marketing",
     subcategory: "Website",
     description: "Translate your website with accurate words in any language.",
     objectives: ["optimize_content_and_seo_strategy", "improve_customer_and_employee_experience", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Translate Website Copy",
-      welcomeCard: welcomeCardDefault,
-      icon: translateIcon.src,
+      icon: "TranslateIcon",
       questions: [
         {
           id: "product-service",
@@ -3174,22 +3057,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "CTA Optimizer",
-    icon: ctaIcon.src,
+    icon: "CtaIcon",
     category: "Marketing",
     subcategory: "Website",
     description: "Optimize your Call-to-Action to improve conversions.",
     objectives: ["boost_engagement_and_conversion"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "CTA Optimizer",
-      welcomeCard: welcomeCardDefault,
-      icon: ctaIcon.src,
+      icon: "CtaIcon",
       questions: [
         {
           id: "product-service",
@@ -3231,22 +3112,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "15 Converting Headlines",
-    icon: headlineIcon.src,
+    icon: "HeadlineIcon",
     category: "Marketing",
     subcategory: "Website",
     description: "Write 15 headlines to captivate your entire audience.",
     objectives: ["boost_engagement_and_conversion", "optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "15 Converting Headlines",
-      welcomeCard: welcomeCardDefault,
-      icon: headlineIcon.src,
+      icon: "HeadlineIcon",
       questions: [
         {
           id: "product-service",
@@ -3304,13 +3183,11 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Landing Page Structures",
-    icon: landingIcon.src,
+    icon: "LandingIcon",
     category: "Marketing",
     subcategory: "Website",
     description: "Construct Landing Page Structures to captivate visitors.",
@@ -3321,9 +3198,9 @@ export const marketingTemplates: TTemplate[] = [
     ],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Landing Page Structures",
-      welcomeCard: welcomeCardDefault,
-      icon: landingIcon.src,
+      icon: "LandingIcon",
       questions: [
         {
           id: "product-service",
@@ -3371,22 +3248,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Brand Messaging for PR",
-    icon: brandMessagingIcon.src,
+    icon: "BrandMessagingIcon",
     category: "Marketing",
     subcategory: "PR",
     description: "Create brand messages that resonate with your audience.",
     objectives: ["boost_engagement_and_conversion", "optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Brand Messaging for PR",
-      welcomeCard: welcomeCardDefault,
-      icon: brandMessagingIcon.src,
+      icon: "BrandMessagingIcon",
       questions: [
         {
           id: "brand-name",
@@ -3452,13 +3327,11 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Press Releases",
-    icon: newspaperIcon.src,
+    icon: "NewspaperIcon",
     category: "Marketing",
     subcategory: "PR",
     description: "Generate press releases with catchy headlines to engage your audience.",
@@ -3469,9 +3342,9 @@ export const marketingTemplates: TTemplate[] = [
     ],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Press Releases",
-      welcomeCard: welcomeCardDefault,
-      icon: newspaperIcon.src,
+      icon: "NewspaperIcon",
       questions: [
         {
           id: "brand-name",
@@ -3518,22 +3391,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Engaging Lead Magnets",
-    icon: magnetIcon.src,
+    icon: "MagnetIcon",
     category: "Marketing",
     subcategory: "Lead Generation",
     description: "Generate fresh ideas to create engaging lead magnets.",
     objectives: ["boost_engagement_and_conversion", "optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Engaging Lead Magnets",
-      welcomeCard: welcomeCardDefault,
-      icon: magnetIcon.src,
+      icon: "MagnetIcon",
       questions: [
         {
           id: "target-audience",
@@ -3591,22 +3462,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Local Business Outreach",
-    icon: localIcon.src,
+    icon: "LocalIcon",
     category: "Marketing",
     subcategory: "Lead Generation",
     description: "Customize your message to reach local businesses effectively.",
     objectives: ["boost_engagement_and_conversion", "improve_business_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Local Business Outreach",
-      welcomeCard: welcomeCardDefault,
-      icon: localIcon.src,
+      icon: "LocalIcon",
       questions: [
         {
           id: "niche-problem",
@@ -3654,22 +3523,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Freebies & Giveaways Ideas",
-    icon: ideaIcon.src,
+    icon: "IdeaIcon",
     category: "Marketing",
     subcategory: "Lead Generation",
     description: "Generate ideas for giveaways and freebies to attract leads.",
     objectives: ["boost_engagement_and_conversion", "optimize_content_and_seo_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Freebies & Giveaways Ideas",
-      welcomeCard: welcomeCardDefault,
-      icon: ideaIcon.src,
+      icon: "IdeaIcon",
       questions: [
         {
           id: "business-type",
@@ -3740,22 +3607,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Influencer Marketing Campaigns",
-    icon: influencerIcon.src,
+    icon: "CameraIcon",
     category: "Marketing",
     subcategory: "Influencer Marketing",
     description: "Create creative influencer campaigns to stand out from competitors.",
     objectives: ["enhance_online_presence", "boost_engagement_and_conversion"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Influencer Marketing Campaigns",
-      welcomeCard: welcomeCardDefault,
-      icon: influencerIcon.src,
+      icon: "CameraIcon",
       questions: [
         {
           id: "product",
@@ -3807,22 +3672,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "B2B LinkedIn Connection Requests",
-    icon: linkedinIcon.src,
+    icon: "LinkedinIcon",
     category: "Marketing",
     subcategory: "LinkedIn Marketing",
     description: "Automate LinkedIn connection requests, messages, and follow-ups.",
     objectives: ["enhance_online_presence", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "B2B LinkedIn Connection Requests",
-      welcomeCard: welcomeCardDefault,
-      icon: linkedinIcon.src,
+      icon: "LinkedinIcon",
       questions: [
         {
           id: "product-service",
@@ -3880,22 +3743,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Personalized LinkedIn Connection Requests",
-    icon: linkedinIcon.src,
+    icon: "LinkedinIcon",
     category: "Marketing",
     subcategory: "LinkedIn Marketing",
     description: "Make more LinkedIn connections by personalizing your messages.",
     objectives: ["enhance_online_presence", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Personalized LinkedIn Connection Requests",
-      welcomeCard: welcomeCardDefault,
-      icon: linkedinIcon.src,
+      icon: "LinkedinIcon",
       questions: [
         {
           id: "industry",
@@ -3961,22 +3822,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Affiliate Networks Finder",
-    icon: salesIncentiveIcon.src,
+    icon: "SalesIncentiveIcon",
     category: "Marketing",
     subcategory: "Affiliate Marketing",
     description: "Discover the best affiliate networks in your niche.",
     objectives: ["enhance_online_presence", "other"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Affiliate Networks Finder",
-      welcomeCard: welcomeCardDefault,
-      icon: salesIncentiveIcon.src,
+      icon: "SalesIncentiveIcon",
       questions: [
         {
           id: "marketing-niche",
@@ -4026,22 +3885,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Amazon Store Booster",
-    icon: amazonIcon.src,
+    icon: "AmazonIcon",
     category: "Marketing",
     subcategory: "Amazon",
     description: "Uncover strategies for peak performance of your Amazon store.",
     objectives: ["boost_engagement_and_conversion", "improve_business_strategy"],
     isPremium: false,
     preset: {
+      ...workflowDefault,
       name: "Amazon Store Booster",
-      welcomeCard: welcomeCardDefault,
-      icon: amazonIcon.src,
+      icon: "AmazonIcon",
       questions: [
         {
           id: "target-audience",
@@ -4105,13 +3962,11 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "TikTok Video Script",
-    icon: tiktokIcon.src,
+    icon: "TiktokIcon",
     category: "Marketing",
     subcategory: "TikTok",
     description: "Create TikTok video scripts emphasizing storytelling and audience engagement.",
@@ -4122,9 +3977,9 @@ export const marketingTemplates: TTemplate[] = [
     ],
     isPremium: true,
     preset: {
+      ...workflowDefault,
       name: "TikTok Video Script",
-      welcomeCard: welcomeCardDefault,
-      icon: tiktokIcon.src,
+      icon: "TiktokIcon",
       questions: [
         {
           id: "topic",
@@ -4208,13 +4063,11 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "LinkedIn Post Generator",
-    icon: linkedinIcon.src,
+    icon: "LinkedinIcon",
     category: "Marketing",
     subcategory: "LinkedIn",
     description: "Design custom LinkedIn posts for specific audiences using validated structures.",
@@ -4225,9 +4078,9 @@ export const marketingTemplates: TTemplate[] = [
     ],
     isPremium: true,
     preset: {
+      ...workflowDefault,
       name: "LinkedIn Post Generator",
-      welcomeCard: welcomeCardDefault,
-      icon: linkedinIcon.src,
+      icon: "LinkedinIcon",
       questions: [
         {
           id: "topic",
@@ -4365,13 +4218,11 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Content Marketing Ideas Generator",
-    icon: articleIcon.src,
+    icon: "ArticleIcon",
     category: "Marketing",
     subcategory: "Content Marketing",
     description: "Brainstorm awesome content marketing ideas for a specific target.",
@@ -4382,9 +4233,9 @@ export const marketingTemplates: TTemplate[] = [
     ],
     isPremium: true,
     preset: {
+      ...workflowDefault,
       name: "Content Marketing Ideas Generator",
-      welcomeCard: welcomeCardDefault,
-      icon: articleIcon.src,
+      icon: "ArticleIcon",
       questions: [
         {
           id: "sector",
@@ -4532,13 +4383,11 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Google Ads Copy Generator",
-    icon: googleAdsIcon.src,
+    icon: "GoogleAdsIcon",
     category: "Marketing",
     subcategory: "Google Ads",
     description:
@@ -4550,9 +4399,9 @@ export const marketingTemplates: TTemplate[] = [
     ],
     isPremium: true,
     preset: {
+      ...workflowDefault,
       name: "Google Ads Copy Generator",
-      welcomeCard: welcomeCardDefault,
-      icon: googleAdsIcon.src,
+      icon: "GoogleAdsIcon",
       questions: [
         {
           id: "gender",
@@ -4679,13 +4528,11 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Tweet Generator",
-    icon: twitterIcon.src,
+    icon: "TwitterIcon",
     category: "Marketing",
     subcategory: "Twitter",
     description: "Create engaging Twitter content to boost visibility and interaction.",
@@ -4696,9 +4543,9 @@ export const marketingTemplates: TTemplate[] = [
     ],
     isPremium: true,
     preset: {
+      ...workflowDefault,
       name: "Tweet Generator",
-      welcomeCard: welcomeCardDefault,
-      icon: twitterIcon.src,
+      icon: "TwitterIcon",
       questions: [
         {
           id: "theme",
@@ -4796,13 +4643,11 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Buyer Persona Generator",
-    icon: buyerPersonaIcon.src,
+    icon: "BuyerPersonaIcon",
     category: "Marketing",
     subcategory: "",
     description:
@@ -4810,9 +4655,9 @@ export const marketingTemplates: TTemplate[] = [
     objectives: ["improve_business_strategy", "other"],
     isPremium: true,
     preset: {
+      ...workflowDefault,
       name: "Buyer Persona Generator",
-      welcomeCard: welcomeCardDefault,
-      icon: buyerPersonaIcon.src,
+      icon: "BuyerPersonaIcon",
       questions: [
         {
           id: "product-service",
@@ -4873,22 +4718,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Dynamic Lead Magnet",
-    icon: magnetIcon.src,
+    icon: "MagnetIcon",
     category: "Marketing",
     subcategory: "Lead Generation",
     description: "Create dynamic lead magnet for your business to capture leads.",
     objectives: ["boost_engagement_and_conversion", "optimize_content_and_seo_strategy"],
     isPremium: true,
     preset: {
+      ...workflowDefault,
       name: "Dynamic Lead Magnet",
-      welcomeCard: welcomeCardDefault,
-      icon: magnetIcon.src,
+      icon: "MagnetIcon",
       questions: [
         {
           id: "profession",
@@ -4985,13 +4828,11 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "SEO Keyword Generator",
-    icon: seoIcon.src,
+    icon: "SeoIcon",
     category: "Marketing",
     subcategory: "SEO",
     description: "Research high-quality keywords against competitors' URLs.",
@@ -5002,9 +4843,9 @@ export const marketingTemplates: TTemplate[] = [
     ],
     isPremium: true,
     preset: {
+      ...workflowDefault,
       name: "SEO Keyword Generator",
-      welcomeCard: welcomeCardDefault,
-      icon: seoIcon.src,
+      icon: "SeoIcon",
       questions: [
         {
           id: "business-name",
@@ -5066,13 +4907,11 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   // {
   //   name: "High-Quality Image Generator",
-  //   icon: imageIcon.src,
+  //   icon: "ImageIcon",
   //   category: "Marketing",
   //   subcategory: "",
   //   description: "Create custom images by aligning with precise specifications.",
@@ -5081,7 +4920,7 @@ export const marketingTemplates: TTemplate[] = [
   //   preset: {
   //     name: "High-Quality Image Generator",
   //     welcomeCard: welcomeCardDefault,
-  //     icon: imageIcon.src,
+  //     icon: "ImageIcon",
   //     questions: [
   //       {
   //         id: "character",
@@ -5174,16 +5013,16 @@ export const marketingTemplates: TTemplate[] = [
   // },
   {
     name: "Allan Dib 1-Page Marketing Plan",
-    icon: planIcon.src,
+    icon: "PlanIcon",
     category: "Marketing",
     subcategory: "",
     description: "Create a marketing plan based on 'The 1-page Marketing Plan' by Allan Dib.",
     objectives: ["boost_engagement_and_conversion", "improve_business_strategy"],
     isPremium: true,
     preset: {
+      ...workflowDefault,
       name: "Allan DIB 1-Page Marketing Plan",
-      welcomeCard: welcomeCardDefault,
-      icon: planIcon.src,
+      icon: "PlanIcon",
       questions: [
         {
           id: "product",
@@ -5234,22 +5073,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "1-Page Marketing Plan",
-    icon: pageIcon.src,
+    icon: "PageIcon",
     category: "Marketing",
     subcategory: "",
     description: "Develop a concise, one-page digital marketing strategy.",
     objectives: ["boost_engagement_and_conversion", "improve_business_strategy"],
     isPremium: true,
     preset: {
+      ...workflowDefault,
       name: "Page Marketing Plan",
-      welcomeCard: welcomeCardDefault,
-      icon: pageIcon.src,
+      icon: "PageIcon",
       questions: [
         {
           id: "product",
@@ -5311,22 +5148,20 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
   {
     name: "Video Sales Copy",
-    icon: videoIcon.src,
+    icon: "VideoIcon",
     category: "Marketing",
     subcategory: "Copywriting",
     description: "Develop a dynamic marketing video script for your company or products.",
     objectives: ["boost_engagement_and_conversion", "optimize_content_and_seo_strategy"],
     isPremium: true,
     preset: {
+      ...workflowDefault,
       name: "Video Sales Copy",
-      welcomeCard: welcomeCardDefault,
-      icon: videoIcon.src,
+      icon: "VideoIcon",
       questions: [
         {
           id: "company-name",
@@ -5393,8 +5228,6 @@ export const marketingTemplates: TTemplate[] = [
         isVisible: true,
         engine: OpenAIModel.GPT4,
       },
-      thankYouCard: thankYouCardDefault,
-      hiddenFields: hiddenFieldsDefault,
     },
   },
 ];

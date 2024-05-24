@@ -2,7 +2,7 @@ import { DownloadIcon, FileIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
-import { getPersonIdentifier } from "@typeflowai/lib/person/util";
+import { getPersonIdentifier } from "@typeflowai/lib/person/utils";
 import { getOriginalFileNameFromUrl } from "@typeflowai/lib/storage/utils";
 import { timeSince } from "@typeflowai/lib/time";
 import { TWorkflowQuestionSummaryFileUpload } from "@typeflowai/types/workflows";
@@ -27,9 +27,9 @@ export const FileUploadSummary = ({ questionSummary, environmentId }: FileUpload
   };
 
   return (
-    <div className="rounded-lg border border-slate-200 bg-slate-50 shadow-sm">
+    <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
       <QuestionSummaryHeader questionSummary={questionSummary} />
-      <div className="rounded-b-lg bg-white ">
+      <div className="">
         <div className="grid h-10 grid-cols-4 items-center border-y border-slate-200 bg-slate-100 text-sm font-bold text-slate-600">
           <div className="pl-4 md:pl-6">User</div>
           <div className="col-span-2 pl-4 md:pl-6">Response</div>
@@ -39,7 +39,7 @@ export const FileUploadSummary = ({ questionSummary, environmentId }: FileUpload
           {questionSummary.files.slice(0, visibleResponses).map((response) => (
             <div
               key={response.id}
-              className="grid grid-cols-4 items-center border-b border-slate-100 py-2 text-sm text-slate-800 md:text-base">
+              className="grid grid-cols-4 items-center border-b border-slate-100 py-2 text-sm text-slate-800 last:border-transparent md:text-base">
               <div className="pl-4 md:pl-6">
                 {response.person ? (
                   <Link
@@ -85,14 +85,14 @@ export const FileUploadSummary = ({ questionSummary, environmentId }: FileUpload
 
                           <div className="flex flex-col items-center justify-center p-2">
                             <FileIcon className="h-6 text-slate-500" />
-                            <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{fileName}</p>
+                            <p className="mt-2 text-sm text-slate-500">{fileName}</p>
                           </div>
                         </div>
                       );
                     })
                   ) : (
                     <div className="flex w-full flex-col items-center justify-center p-2">
-                      <p className="mt-2 text-sm font-semibold text-slate-500 dark:text-slate-400">skipped</p>
+                      <p className="mt-2 text-sm font-semibold text-slate-500">skipped</p>
                     </div>
                   ))}
               </div>
