@@ -10,7 +10,7 @@ import type { TWorkflowFileUploadQuestion } from "@typeflowai/types/workflows";
 
 import { BackButton } from "../buttons/BackButton";
 import SubmitButton from "../buttons/SubmitButton";
-import FileInput from "../general/FileInput";
+import { FileInput } from "../general/FileInput";
 import Headline from "../general/Headline";
 import Subheader from "../general/Subheader";
 
@@ -88,6 +88,7 @@ export const FileUploadQuestion = ({
             questionId={question.id}
           />
           <FileInput
+            htmlFor={question.id}
             workflowId={workflowId}
             onFileUpload={onFileUpload}
             onUploadCallback={(urls: string[]) => {
