@@ -14,7 +14,7 @@ import { TUser } from "@typeflowai/types/user";
 import { TWorkflowInput } from "@typeflowai/types/workflows";
 
 import { Button } from "../Button";
-import { DiamondIcon } from "../IconsOld/DiamondIcon";
+import { DiamondIcon } from "../Icons/DiamondIcon";
 import { capturePosthogEvent } from "../PostHogClient";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../Tooltip";
 import { createWorkflowAction } from "./actions";

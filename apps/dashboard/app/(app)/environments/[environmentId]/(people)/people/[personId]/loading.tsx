@@ -6,7 +6,7 @@ import { ArrowDownUpIcon } from "lucide-react";
 import { TrashIcon } from "lucide-react";
 
 import { TAction } from "@typeflowai/types/actions";
-import { BackIcon } from "@typeflowai/ui/IconsOld";
+import { BackIcon } from "@typeflowai/ui/Icons";
 
 export default function Loading() {
   const actionItemList: TAction[] = [

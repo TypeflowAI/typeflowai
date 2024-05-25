@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { BackIcon } from "@typeflowai/ui/IconsOld";
+import { BackIcon } from "@typeflowai/ui/Icons";
 
 interface IntegrationPageTitleProps {
   title: string;

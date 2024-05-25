@@ -2,7 +2,7 @@ import { signIn } from "next-auth/react";
 import { useCallback, useEffect } from "react";
 
 import { Button } from "@typeflowai/ui/Button";
-import { MicrosoftIcon } from "@typeflowai/ui/IconsOld";
+import { MicrosoftIcon } from "@typeflowai/ui/Icons";
 
 export const AzureButton = ({
   text = "Continue with Azure",
