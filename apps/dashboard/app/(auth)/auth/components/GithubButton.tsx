@@ -3,7 +3,7 @@
 import { signIn } from "next-auth/react";
 
 import { Button } from "@typeflowai/ui/Button";
-import { GithubIcon } from "@typeflowai/ui/icons";
+import { GithubIcon } from "@typeflowai/ui/Icons";
 
 export const GithubButton = ({
   text = "Continue with Github",
