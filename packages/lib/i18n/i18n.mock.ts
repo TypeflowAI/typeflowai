@@ -9,8 +9,7 @@ import {
   TWorkflowConsentQuestion,
   TWorkflowDateQuestion,
   TWorkflowFileUploadQuestion,
-  TWorkflowMultipleChoiceMultiQuestion,
-  TWorkflowMultipleChoiceSingleQuestion,
+  TWorkflowMultipleChoiceQuestion,
   TWorkflowNPSQuestion,
   TWorkflowOpenTextQuestion,
   TWorkflowPictureSelectionQuestion,
@@ -50,7 +49,7 @@ export const mockOpenTextQuestion: TWorkflowOpenTextQuestion = {
   },
 };
 
-export const mockSingleSelectQuestion: TWorkflowMultipleChoiceSingleQuestion = {
+export const mockSingleSelectQuestion: TWorkflowMultipleChoiceQuestion = {
   id: "mvqx8t90np6isb6oel9eamzc",
   type: TWorkflowQuestionType.MultipleChoiceSingle,
   choices: [
@@ -78,7 +77,7 @@ export const mockSingleSelectQuestion: TWorkflowMultipleChoiceSingleQuestion = {
   shuffleOption: "none",
 };
 
-export const mockMultiSelectQuestion: TWorkflowMultipleChoiceMultiQuestion = {
+export const mockMultiSelectQuestion: TWorkflowMultipleChoiceQuestion = {
   required: true,
   headline: {
     default: "What's important on vacay?",

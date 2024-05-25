@@ -7,12 +7,15 @@ import {
 import { TLanguage } from "@typeflowai/types/product";
 import {
   TI18nString,
+  TWorkflow,
   TWorkflowCTAQuestion,
   TWorkflowChoice,
   TWorkflowConsentQuestion,
-  TWorkflowMultipleChoiceSingleQuestion,
+  TWorkflowLanguage,
+  TWorkflowMultipleChoiceQuestion,
   TWorkflowNPSQuestion,
   TWorkflowOpenTextQuestion,
+  TWorkflowQuestion,
   TWorkflowRatingQuestion,
   TWorkflowThankYouCard,
   TWorkflowWelcomeCard,
@@ -20,8 +23,7 @@ import {
   ZWorkflowCalQuestion,
   ZWorkflowConsentQuestion,
   ZWorkflowFileUploadQuestion,
-  ZWorkflowMultipleChoiceMultiQuestion,
-  ZWorkflowMultipleChoiceSingleQuestion,
+  ZWorkflowMultipleChoiceQuestion,
   ZWorkflowNPSQuestion,
   ZWorkflowOpenTextQuestion,
   ZWorkflowPictureSelectionQuestion,
@@ -29,12 +31,6 @@ import {
   ZWorkflowRatingQuestion,
   ZWorkflowThankYouCard,
   ZWorkflowWelcomeCard,
-} from "@typeflowai/types/workflows";
-import {
-  TWorkflow,
-  TWorkflowLanguage,
-  TWorkflowMultipleChoiceMultiQuestion,
-  TWorkflowQuestion,
 } from "@typeflowai/types/workflows";
 
 import { structuredClone } from "../pollyfills/structuredClone";
@@ -210,23 +206,16 @@ export const translateQuestion = (
 
     case "multipleChoiceSingle":
     case "multipleChoiceMulti":
-      (
-        clonedQuestion as TWorkflowMultipleChoiceSingleQuestion | TWorkflowMultipleChoiceMultiQuestion
-      ).choices = question.choices.map((choice) => {
+      (clonedQuestion as TWorkflowMultipleChoiceQuestion).choices = question.choices.map((choice) => {
         return translateChoice(choice, languages);
       });
-      if (
-        typeof (
-          clonedQuestion as TWorkflowMultipleChoiceSingleQuestion | TWorkflowMultipleChoiceMultiQuestion
-        ).otherOptionPlaceholder !== "undefined"
-      ) {
-        (
-          clonedQuestion as TWorkflowMultipleChoiceSingleQuestion | TWorkflowMultipleChoiceMultiQuestion
-        ).otherOptionPlaceholder = createI18nString(question.otherOptionPlaceholder ?? "", languages);
+      if (typeof (clonedQuestion as TWorkflowMultipleChoiceQuestion).otherOptionPlaceholder !== "undefined") {
+        (clonedQuestion as TWorkflowMultipleChoiceQuestion).otherOptionPlaceholder = createI18nString(
+          question.otherOptionPlaceholder ?? "",
+          languages
+        );
       }
-      if (question.type === "multipleChoiceSingle") {
-        return ZWorkflowMultipleChoiceSingleQuestion.parse(clonedQuestion);
-      } else return ZWorkflowMultipleChoiceMultiQuestion.parse(clonedQuestion);
+      return ZWorkflowMultipleChoiceQuestion.parse(clonedQuestion);
 
     case "cta":
       if (typeof question.dismissButtonLabel !== "undefined") {

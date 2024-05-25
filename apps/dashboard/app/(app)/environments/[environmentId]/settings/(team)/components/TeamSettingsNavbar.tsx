@@ -22,17 +22,6 @@ export const TeamSettingsNavbar = ({
   const { isAdmin, isOwner } = getAccessFlags(membershipRole);
   const isPricingDisabled = !isOwner && !isAdmin;
 
-  console.log({
-    environmentId,
-    isTypeflowAICloud,
-    membershipRole,
-    activeId,
-    pathname,
-    isAdmin,
-    isOwner,
-    isPricingDisabled,
-  });
-
   console.log("hidden: ", !isTypeflowAICloud || isPricingDisabled);
 
   const navigation = [

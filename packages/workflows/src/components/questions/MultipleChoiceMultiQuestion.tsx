@@ -10,10 +10,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "preact/hooks"
 
 import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
 import { TResponseData, TResponseTtc } from "@typeflowai/types/responses";
-import type { TWorkflowMultipleChoiceMultiQuestion } from "@typeflowai/types/workflows";
+import type { TWorkflowMultipleChoiceQuestion } from "@typeflowai/types/workflows";
 
 interface MultipleChoiceMultiProps {
-  question: TWorkflowMultipleChoiceMultiQuestion;
+  question: TWorkflowMultipleChoiceQuestion;
   value: string[];
   onChange: (responseData: TResponseData) => void;
   onSubmit: (data: TResponseData, ttc: TResponseTtc) => void;

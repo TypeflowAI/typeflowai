@@ -191,13 +191,8 @@ export const ZWorkflowConsentLogic = ZWorkflowLogicBase.extend({
   value: z.undefined(),
 });
 
-export const ZWorkflowMultipleChoiceSingleLogic = ZWorkflowLogicBase.extend({
-  condition: z.enum(["submitted", "skipped", "equals", "notEquals", "includesOne"]).optional(),
-  value: z.union([z.array(z.string()), z.string()]).optional(),
-});
-
-export const ZWorkflowMultipleChoiceMultiLogic = ZWorkflowLogicBase.extend({
-  condition: z.enum(["submitted", "skipped", "includesAll", "includesOne", "equals"]).optional(),
+export const ZWorkflowMultipleChoiceLogic = ZWorkflowLogicBase.extend({
+  condition: z.enum(["submitted", "skipped", "equals", "notEquals", "includesOne", "includesAll"]).optional(),
   value: z.union([z.array(z.string()), z.string()]).optional(),
 });
 
@@ -256,8 +251,7 @@ const ZWorkflowMatrixLogic = ZWorkflowLogicBase.extend({
 export const ZWorkflowLogic = z.union([
   ZWorkflowOpenTextLogic,
   ZWorkflowConsentLogic,
-  ZWorkflowMultipleChoiceSingleLogic,
-  ZWorkflowMultipleChoiceMultiLogic,
+  ZWorkflowMultipleChoiceLogic,
   ZWorkflowNPSLogic,
   ZWorkflowCTALogic,
   ZWorkflowRatingLogic,
@@ -309,29 +303,38 @@ export const ZWorkflowConsentQuestion = ZWorkflowQuestionBase.extend({
 
 export type TWorkflowConsentQuestion = z.infer<typeof ZWorkflowConsentQuestion>;
 
-export const ZWorkflowMultipleChoiceSingleQuestion = ZWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.MultipleChoiceSingle),
-  choices: z.array(ZWorkflowChoice),
-  logic: z.array(ZWorkflowMultipleChoiceSingleLogic).optional(),
-  shuffleOption: z.enum(["none", "all", "exceptLast"]).optional(),
-  otherOptionPlaceholder: ZI18nString.optional(),
-});
-
-export type TWorkflowMultipleChoiceSingleQuestion = z.infer<typeof ZWorkflowMultipleChoiceSingleQuestion>;
-
 export const ZShuffleOption = z.enum(["none", "all", "exceptLast"]);
 
 export type TShuffleOption = z.infer<typeof ZShuffleOption>;
 
-export const ZWorkflowMultipleChoiceMultiQuestion = ZWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.MultipleChoiceMulti),
+export const ZWorkflowMultipleChoiceQuestion = ZWorkflowQuestionBase.extend({
+  type: z.union([
+    z.literal(TWorkflowQuestionType.MultipleChoiceSingle),
+    z.literal(TWorkflowQuestionType.MultipleChoiceMulti),
+  ]),
   choices: z.array(ZWorkflowChoice),
-  logic: z.array(ZWorkflowMultipleChoiceMultiLogic).optional(),
-  shuffleOption: z.enum(["none", "all", "exceptLast"]).optional(),
+  logic: z.array(ZWorkflowMultipleChoiceLogic).optional(),
+  shuffleOption: ZShuffleOption.optional(),
   otherOptionPlaceholder: ZI18nString.optional(),
-});
+}).refine(
+  (question) => {
+    const { logic, type } = question;
 
-export type TWorkflowMultipleChoiceMultiQuestion = z.infer<typeof ZWorkflowMultipleChoiceMultiQuestion>;
+    if (type === TWorkflowQuestionType.MultipleChoiceSingle) {
+      // The single choice question should not have 'includesAll' logic
+      return !logic?.some((l) => l.condition === "includesAll");
+    } else {
+      // The multi choice question should not have 'notEquals' logic
+      return !logic?.some((l) => l.condition === "notEquals");
+    }
+  },
+  {
+    message:
+      "MultipleChoiceSingle question should not have 'includesAll' logic and MultipleChoiceMulti question should not have 'notEquals' logic",
+  }
+);
+
+export type TWorkflowMultipleChoiceQuestion = z.infer<typeof ZWorkflowMultipleChoiceQuestion>;
 
 export const ZWorkflowNPSQuestion = ZWorkflowQuestionBase.extend({
   type: z.literal(TWorkflowQuestionType.NPS),
@@ -422,8 +425,7 @@ export type TWorkflowAddressQuestion = z.infer<typeof ZWorkflowAddressQuestion>;
 export const ZWorkflowQuestion = z.union([
   ZWorkflowOpenTextQuestion,
   ZWorkflowConsentQuestion,
-  ZWorkflowMultipleChoiceSingleQuestion,
-  ZWorkflowMultipleChoiceMultiQuestion,
+  ZWorkflowMultipleChoiceQuestion,
   ZWorkflowNPSQuestion,
   ZWorkflowCTAQuestion,
   ZWorkflowRatingQuestion,
@@ -574,7 +576,7 @@ export type TWorkflowQuestionSummaryOpenText = z.infer<typeof ZWorkflowQuestionS
 
 export const ZWorkflowQuestionSummaryMultipleChoice = z.object({
   type: z.union([z.literal("multipleChoiceMulti"), z.literal("multipleChoiceSingle")]),
-  question: z.union([ZWorkflowMultipleChoiceSingleQuestion, ZWorkflowMultipleChoiceMultiQuestion]),
+  question: ZWorkflowMultipleChoiceQuestion,
   responseCount: z.number(),
   choices: z.array(
     z.object({

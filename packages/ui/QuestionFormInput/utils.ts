@@ -3,8 +3,7 @@ import {
   TI18nString,
   TWorkflow,
   TWorkflowMatrixQuestion,
-  TWorkflowMultipleChoiceMultiQuestion,
-  TWorkflowMultipleChoiceSingleQuestion,
+  TWorkflowMultipleChoiceQuestion,
   TWorkflowQuestion,
 } from "@typeflowai/types/workflows";
 
@@ -24,9 +23,7 @@ export const getChoiceLabel = (
   choiceIdx: number,
   workflowLanguageCodes: string[]
 ): TI18nString => {
-  const choiceQuestion = question as
-    | TWorkflowMultipleChoiceMultiQuestion
-    | TWorkflowMultipleChoiceSingleQuestion;
+  const choiceQuestion = question as TWorkflowMultipleChoiceQuestion;
   return choiceQuestion.choices[choiceIdx]?.label || createI18nString("", workflowLanguageCodes);
 };
 

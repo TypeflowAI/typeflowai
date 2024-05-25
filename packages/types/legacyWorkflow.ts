@@ -8,8 +8,7 @@ import {
   ZWorkflowCalLogic,
   ZWorkflowConsentLogic,
   ZWorkflowFileUploadLogic,
-  ZWorkflowMultipleChoiceMultiLogic,
-  ZWorkflowMultipleChoiceSingleLogic,
+  ZWorkflowMultipleChoiceLogic,
   ZWorkflowNPSLogic,
   ZWorkflowOpenTextLogic,
   ZWorkflowOpenTextQuestionInputType,
@@ -56,7 +55,7 @@ export type TLegacyWorkflowChoice = z.infer<typeof ZLegacyWorkflowChoice>;
 export const ZLegacyWorkflowMultipleChoiceSingleQuestion = ZLegacyWorkflowQuestionBase.extend({
   type: z.literal(TWorkflowQuestionType.MultipleChoiceSingle),
   choices: z.array(ZLegacyWorkflowChoice),
-  logic: z.array(ZWorkflowMultipleChoiceSingleLogic).optional(),
+  logic: z.array(ZWorkflowMultipleChoiceLogic).optional(),
   shuffleOption: z.enum(["none", "all", "exceptLast"]).optional(),
   otherOptionPlaceholder: z.string().optional(),
 });
@@ -68,7 +67,7 @@ export type TLegacyWorkflowMultipleChoiceSingleQuestion = z.infer<
 export const ZLegacyWorkflowMultipleChoiceMultiQuestion = ZLegacyWorkflowQuestionBase.extend({
   type: z.literal(TWorkflowQuestionType.MultipleChoiceMulti),
   choices: z.array(ZLegacyWorkflowChoice),
-  logic: z.array(ZWorkflowMultipleChoiceMultiLogic).optional(),
+  logic: z.array(ZWorkflowMultipleChoiceLogic).optional(),
   shuffleOption: z.enum(["none", "all", "exceptLast"]).optional(),
   otherOptionPlaceholder: z.string().optional(),
 });

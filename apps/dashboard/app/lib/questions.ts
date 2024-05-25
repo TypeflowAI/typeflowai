@@ -24,8 +24,7 @@ import {
   TWorkflowDateQuestion,
   TWorkflowFileUploadQuestion,
   TWorkflowMatrixQuestion,
-  TWorkflowMultipleChoiceMultiQuestion,
-  TWorkflowMultipleChoiceSingleQuestion,
+  TWorkflowMultipleChoiceQuestion,
   TWorkflowNPSQuestion,
   TWorkflowOpenTextQuestion,
   TWorkflowPictureSelectionQuestion,
@@ -69,7 +68,7 @@ export const questionTypes: TWorkflowQuestionType[] = [
         { id: createId(), label: { default: "Have the cake 🎂" } },
       ],
       shuffleOption: "none",
-    } as Partial<TWorkflowMultipleChoiceSingleQuestion>,
+    } as Partial<TWorkflowMultipleChoiceQuestion>,
   },
   {
     id: QuestionId.MultipleChoiceMulti,
@@ -84,7 +83,7 @@ export const questionTypes: TWorkflowQuestionType[] = [
         { id: createId(), label: { default: "Palms 🌴" } },
       ],
       shuffleOption: "none",
-    } as Partial<TWorkflowMultipleChoiceMultiQuestion>,
+    } as Partial<TWorkflowMultipleChoiceQuestion>,
   },
   {
     id: QuestionId.PictureSelection,

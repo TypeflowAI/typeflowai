@@ -11,7 +11,7 @@ import {
   TI18nString,
   TShuffleOption,
   TWorkflow,
-  TWorkflowMultipleChoiceSingleQuestion,
+  TWorkflowMultipleChoiceQuestion,
   TWorkflowQuestionType,
 } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
@@ -23,19 +23,16 @@ import { isLabelValidForAllLanguages } from "../lib/validation";
 
 interface OpenQuestionFormProps {
   localWorkflow: TWorkflow;
-  question: TWorkflowMultipleChoiceSingleQuestion;
+  question: TWorkflowMultipleChoiceQuestion;
   questionIdx: number;
-  updateQuestion: (
-    questionIdx: number,
-    updatedAttributes: Partial<TWorkflowMultipleChoiceSingleQuestion>
-  ) => void;
+  updateQuestion: (questionIdx: number, updatedAttributes: Partial<TWorkflowMultipleChoiceQuestion>) => void;
   lastQuestion: boolean;
   selectedLanguageCode: string;
   setSelectedLanguageCode: (language: string) => void;
   isInvalid: boolean;
 }
 
-export const MultipleChoiceSingleForm = ({
+export const MultipleChoiceQuestionForm = ({
   question,
   questionIdx,
   updateQuestion,
@@ -48,6 +45,7 @@ export const MultipleChoiceSingleForm = ({
   const [isNew, setIsNew] = useState(true);
   const [showSubheader, setShowSubheader] = useState(!!question.subheader);
   const [isInvalidValue, setisInvalidValue] = useState<string | null>(null);
+
   const questionRef = useRef<HTMLInputElement>(null);
   const workflowLanguageCodes = extractLanguageCodes(localWorkflow.languages);
   const workflowLanguages = localWorkflow.languages ?? [];
@@ -318,10 +316,15 @@ export const MultipleChoiceSingleForm = ({
               variant="minimal"
               type="button"
               onClick={() => {
-                // @ts-expect-error
-                updateQuestion(questionIdx, { type: TWorkflowQuestionType.MultipleChoiceMulti });
+                updateQuestion(questionIdx, {
+                  type:
+                    question.type === TWorkflowQuestionType.MultipleChoiceMulti
+                      ? TWorkflowQuestionType.MultipleChoiceSingle
+                      : TWorkflowQuestionType.MultipleChoiceMulti,
+                });
               }}>
-              Convert to Multi Select
+              Convert to{" "}
+              {question.type === TWorkflowQuestionType.MultipleChoiceSingle ? "Multiple" : "Single"} Select
             </Button>
 
             <div className="flex flex-1 items-center justify-end gap-2">

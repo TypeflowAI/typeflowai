@@ -12,8 +12,7 @@ import {
   TWorkflowConsentQuestion,
   TWorkflowLanguage,
   TWorkflowMatrixQuestion,
-  TWorkflowMultipleChoiceMultiQuestion,
-  TWorkflowMultipleChoiceSingleQuestion,
+  TWorkflowMultipleChoiceQuestion,
   TWorkflowOpenTextQuestion,
   TWorkflowPictureSelectionQuestion,
   TWorkflowQuestion,
@@ -38,7 +37,7 @@ export const isLabelValidForAllLanguages = (
 
 // Validation logic for multiple choice questions
 const handleI18nCheckForMultipleChoice = (
-  question: TWorkflowMultipleChoiceMultiQuestion | TWorkflowMultipleChoiceSingleQuestion,
+  question: TWorkflowMultipleChoiceQuestion,
   languages: TWorkflowLanguage[]
 ): boolean => {
   return question.choices.every((choice) => isLabelValidForAllLanguages(choice.label, languages));
@@ -84,10 +83,10 @@ export const validationRules = {
       ? isLabelValidForAllLanguages(question.placeholder, languages)
       : true;
   },
-  multipleChoiceMulti: (question: TWorkflowMultipleChoiceMultiQuestion, languages: TWorkflowLanguage[]) => {
+  multipleChoiceMulti: (question: TWorkflowMultipleChoiceQuestion, languages: TWorkflowLanguage[]) => {
     return handleI18nCheckForMultipleChoice(question, languages);
   },
-  multipleChoiceSingle: (question: TWorkflowMultipleChoiceSingleQuestion, languages: TWorkflowLanguage[]) => {
+  multipleChoiceSingle: (question: TWorkflowMultipleChoiceQuestion, languages: TWorkflowLanguage[]) => {
     return handleI18nCheckForMultipleChoice(question, languages);
   },
   consent: (question: TWorkflowConsentQuestion, languages: TWorkflowLanguage[]) => {
