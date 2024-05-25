@@ -47,7 +47,7 @@
     "eslint-config-typeflowai": "workspace:*",
     "isomorphic-dompurify": "^2.9.0",
     "postcss": "^8.4.38",
-    "preact": "^10.21.0",
+    "preact": "^10.22.0",
     "react-date-picker": "^11.0.0",
     "serve": "14.2.3",
     "tailwindcss": "^3.4.3",
