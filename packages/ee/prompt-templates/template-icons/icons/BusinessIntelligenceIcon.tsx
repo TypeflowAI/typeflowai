@@ -29,12 +29,12 @@ export const BusinessIntelligenceIcon: React.FC<React.SVGProps<SVGSVGElement>> =
       mask="url(#logosMicrosoftPowerBi4)"
     />
     <path
-      fill-opacity="0.2"
+      fillOpacity="0.2"
       d="M184.889 100.978v241.778H71.11v-256h99.556c7.854 0 14.222 6.367 14.222 14.222"
       mask="url(#logosMicrosoftPowerBi4)"
     />
     <path
-      fill-opacity="0.18"
+      fillOpacity="0.18"
       d="M184.889 106.667v241.777H71.11v-256h99.556c7.854 0 14.222 6.368 14.222 14.223"
       mask="url(#logosMicrosoftPowerBi4)"
     />

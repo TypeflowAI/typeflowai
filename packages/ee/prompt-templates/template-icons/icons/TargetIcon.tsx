@@ -7,7 +7,7 @@ export const TargetIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
         fill="#2f88ff"
         stroke="#000"
         strokeLinejoin="round"
-        stroke-miterlimit="2"
+        strokeMiterlimit="2"
         strokeWidth="4"
         d="M23.8887 39.8887C32.7287 39.8887 39.8887 32.7287 39.8887 23.8887C39.8887 15.0487 32.7287 7.88867 23.8887 7.88867C15.0487 7.88867 7.88867 15.0487 7.88867 23.8887C7.88867 32.7287 15.0487 39.8887 23.8887 39.8887Z"
       />
@@ -15,7 +15,7 @@ export const TargetIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
         fill="#43ccf8"
         stroke="#fff"
         strokeLinejoin="round"
-        stroke-miterlimit="2"
+        strokeMiterlimit="2"
         strokeWidth="4"
         d="M23.8887 31.8887C28.3087 31.8887 31.8887 28.3087 31.8887 23.8887C31.8887 19.4687 28.3087 15.8887 23.8887 15.8887C19.4687 15.8887 15.8887 19.4687 15.8887 23.8887C15.8887 28.3087 19.4687 31.8887 23.8887 31.8887Z"
       />
@@ -27,7 +27,7 @@ export const TargetIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
         stroke="#000"
         strokeLinecap="round"
         strokeLinejoin="round"
-        stroke-miterlimit="2"
+        strokeMiterlimit="2"
         strokeWidth="4"
         d="M23.8887 7.88867V3.88867"
       />
@@ -35,7 +35,7 @@ export const TargetIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
         stroke="#000"
         strokeLinecap="round"
         strokeLinejoin="round"
-        stroke-miterlimit="2"
+        strokeMiterlimit="2"
         strokeWidth="4"
         d="M37.8887 43.8887L33.8887 36.8887"
       />
@@ -43,7 +43,7 @@ export const TargetIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
         stroke="#000"
         strokeLinecap="round"
         strokeLinejoin="round"
-        stroke-miterlimit="2"
+        strokeMiterlimit="2"
         strokeWidth="4"
         d="M13.8887 36.8887L9.88867 43.8887"
       />

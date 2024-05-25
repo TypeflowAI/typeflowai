@@ -25,7 +25,7 @@ export const Robot4Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <clipPath id="notoV1Robot1">
       <use href="#notoV1Robot0" />
     </clipPath>
-    <path fill="#ce453e" d="M12.22 49.54h2.62v34.69h-2.62z" clip-path="url(#notoV1Robot1)" />
+    <path fill="#ce453e" d="M12.22 49.54h2.62v34.69h-2.62z" clipPath="url(#notoV1Robot1)" />
     <defs>
       <ellipse id="notoV1Robot2" cx="13.69" cy="66.89" rx="9.33" ry="17.34" />
     </defs>
@@ -35,7 +35,7 @@ export const Robot4Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <path
       fill="#ce453e"
       d="M12.54 49.54h2.62v34.69h-2.62z"
-      clip-path="url(#notoV1Robot3)"
+      clipPath="url(#notoV1Robot3)"
       transform="rotate(-180 13.845 66.886)"
     />
     <ellipse cx="114.38" cy="66.89" fill="#e06055" rx="9.33" ry="17.34" />
@@ -48,7 +48,7 @@ export const Robot4Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <path
       fill="#ce453e"
       d="M113.23 49.54h2.62v34.69h-2.62z"
-      clip-path="url(#notoV1Robot5)"
+      clipPath="url(#notoV1Robot5)"
       transform="rotate(-180 114.537 66.886)"
     />
     <defs>
@@ -57,7 +57,7 @@ export const Robot4Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <clipPath id="notoV1Robot7">
       <use href="#notoV1Robot6" />
     </clipPath>
-    <path fill="#ce453e" d="M112.91 49.54h2.62v34.69h-2.62z" clip-path="url(#notoV1Robot7)" />
+    <path fill="#ce453e" d="M112.91 49.54h2.62v34.69h-2.62z" clipPath="url(#notoV1Robot7)" />
     <path
       fill="#78a3ad"
       d="m111.12 35.15l-11.07-10.82a10.841 10.841 0 0 0-7.58-3.09H35.73c-2.83 0-5.55 1.11-7.58 3.09L17.08 35.15a10.816 10.816 0 0 0-3.26 7.75v54.02c0 2.92 1.18 5.71 3.26 7.75l11.07 10.82c2.03 1.98 4.74 3.09 7.58 3.09h56.74c2.83 0 5.55-1.11 7.58-3.09l11.07-10.82c2.09-2.04 3.26-4.83 3.26-7.75V42.9c0-2.91-1.18-5.71-3.26-7.75"
@@ -86,7 +86,7 @@ export const Robot4Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <path
       fill="#546e7a"
       stroke="#546e7a"
-      stroke-miterlimit="10"
+      strokeMiterlimit="10"
       strokeWidth="4"
       d="M82.87 100.54H45.33c-4.42 0-8.01-3.59-8.01-8.01c0-1.22.99-2.2 2.2-2.2h49.17c1.22 0 2.2.99 2.2 2.2c-.01 4.42-3.59 8.01-8.02 8.01z"
     />

@@ -10,7 +10,7 @@ export const Robot3Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
       <path fill="url(#f2115id0)" d="M4 12a6 6 0 0 1 6-6h2v24h-2a6 6 0 0 1-6-6z" />
       <path fill="url(#f2115id1)" d="M4 24h24a6 6 0 0 1-6 6H10a6 6 0 0 1-6-6" />
       <path fill="url(#f2115ide)" d="M20 6h2a6 6 0 0 1 6 6v12a6 6 0 0 1-6 6h-2z" />
-      <path stroke="url(#f2115id2)" stroke-miterlimit="10" d="M3.5 3.95v9.1" />
+      <path stroke="url(#f2115id2)" strokeMiterlimit="10" d="M3.5 3.95v9.1" />
       <path fill="url(#f2115id3)" d="M4 12v11c-1.1 0-2-.9-2-1.998v-7.004C2 12.9 2.9 12 4 12" />
       <path
         fill="url(#f2115id4)"
@@ -21,7 +21,7 @@ export const Robot3Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
         d="M18.528 26h-5.056C12.66 26 12 25.326 12 24.5s.66-1.5 1.472-1.5h5.056c.811 0 1.472.674 1.472 1.5s-.66 1.5-1.472 1.5"
       />
       <path fill="url(#f2115idf)" d="M3.5 5a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3" />
-      <path stroke="url(#f2115id6)" stroke-miterlimit="10" d="M28.5 4v9.09" />
+      <path stroke="url(#f2115id6)" strokeMiterlimit="10" d="M28.5 4v9.09" />
       <path fill="url(#f2115idg)" d="M28.5 5.1a1.55 1.55 0 1 0 0-3.1a1.55 1.55 0 0 0 0 3.1" />
       <rect width="4.5" height="6" x="7" y="12" fill="url(#f2115idh)" rx="2" />
       <rect width="4.5" height="6" x="18.5" y="12" fill="url(#f2115idi)" rx="2" />
@@ -42,17 +42,17 @@ export const Robot3Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
       <ellipse cx="29" cy="16.5" fill="url(#f2115idn)" rx="1" ry="4.5" />
       <path
         fill="url(#f2115ido)"
-        fill-rule="evenodd"
+        fillRule="evenodd"
         d="M19.776 3.025a1.501 1.501 0 0 1 1.199 1.2a1 1 0 1 1-1.2-1.2"
-        clip-rule="evenodd"
+        clipRule="evenodd"
       />
       <defs>
         <linearGradient id="f2115id0" x1="12" x2="4" y1="18" y2="18" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#d5b2c0" stop-opacity="0" />
+          <stop stopColor="#d5b2c0" stopOpacity="0" />
           <stop offset="1" stopColor="#b4878d" />
         </linearGradient>
         <linearGradient id="f2115id1" x1="16" x2="16" y1="27" y2="31" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#b17edb" stop-opacity="0" />
+          <stop stopColor="#b17edb" stopOpacity="0" />
           <stop offset="1" stopColor="#a56bd6" />
         </linearGradient>
         <linearGradient id="f2115id2" x1="4" x2="4" y1="3.95" y2="13.05" gradientUnits="userSpaceOnUse">
@@ -105,11 +105,11 @@ export const Robot3Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
         </linearGradient>
         <linearGradient id="f2115idb" x1="3.5" x2="3.5" y1="7" y2="9" gradientUnits="userSpaceOnUse">
           <stop stopColor="#ff96cb" />
-          <stop offset="1" stopColor="#ff6db7" stop-opacity="0" />
+          <stop offset="1" stopColor="#ff6db7" stopOpacity="0" />
         </linearGradient>
         <linearGradient id="f2115idc" x1="28.5" x2="28.5" y1="7" y2="9" gradientUnits="userSpaceOnUse">
           <stop stopColor="#ff96cb" />
-          <stop offset="1" stopColor="#ff6db7" stop-opacity="0" />
+          <stop offset="1" stopColor="#ff6db7" stopOpacity="0" />
         </linearGradient>
         <radialGradient
           id="f2115idd"
@@ -130,7 +130,7 @@ export const Robot3Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
           gradientTransform="matrix(5 -.5 1.9111 19.11108 25 13.5)"
           gradientUnits="userSpaceOnUse">
           <stop stopColor="#f0eaf6" />
-          <stop offset="1" stopColor="#e7e0ef" stop-opacity="0" />
+          <stop offset="1" stopColor="#e7e0ef" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="f2115idf"
@@ -162,7 +162,7 @@ export const Robot3Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
           gradientTransform="matrix(-2.5 .5 -.68428 -3.42136 9.5 15)"
           gradientUnits="userSpaceOnUse">
           <stop stopColor="#322649" />
-          <stop offset="1" stopColor="#342950" stop-opacity="0" />
+          <stop offset="1" stopColor="#342950" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="f2115idi"
@@ -172,7 +172,7 @@ export const Robot3Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
           gradientTransform="matrix(-2.5 .5 -.68428 -3.42136 21 15)"
           gradientUnits="userSpaceOnUse">
           <stop stopColor="#322649" />
-          <stop offset="1" stopColor="#342950" stop-opacity="0" />
+          <stop offset="1" stopColor="#342950" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="f2115idj"
@@ -181,7 +181,7 @@ export const Robot3Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
           r="1"
           gradientTransform="matrix(0 3 -10 0 16 4)"
           gradientUnits="userSpaceOnUse">
-          <stop offset=".431" stopColor="#ca7e29" stop-opacity="0" />
+          <stop offset=".431" stopColor="#ca7e29" stopOpacity="0" />
           <stop offset="1" stopColor="#673f13" />
         </radialGradient>
         <radialGradient
@@ -192,7 +192,7 @@ export const Robot3Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
           gradientTransform="matrix(0 2.5 -1.14393 0 11 13.5)"
           gradientUnits="userSpaceOnUse">
           <stop stopColor="#54c8ff" />
-          <stop offset="1" stopColor="#54c8ff" stop-opacity="0" />
+          <stop offset="1" stopColor="#54c8ff" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="f2115idl"
@@ -202,7 +202,7 @@ export const Robot3Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
           gradientTransform="matrix(0 2.5 -1.14393 0 22.5 13.5)"
           gradientUnits="userSpaceOnUse">
           <stop stopColor="#54c8ff" />
-          <stop offset="1" stopColor="#54c8ff" stop-opacity="0" />
+          <stop offset="1" stopColor="#54c8ff" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="f2115idm"
@@ -212,7 +212,7 @@ export const Robot3Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
           gradientTransform="matrix(0 1.5 -1 0 29 13.5)"
           gradientUnits="userSpaceOnUse">
           <stop stopColor="#ff72c1" />
-          <stop offset="1" stopColor="#ff6ebf" stop-opacity="0" />
+          <stop offset="1" stopColor="#ff6ebf" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="f2115idn"
@@ -222,7 +222,7 @@ export const Robot3Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
           gradientTransform="matrix(0 4.5 -.55944 0 29 16.5)"
           gradientUnits="userSpaceOnUse">
           <stop stopColor="#ff4b9c" />
-          <stop offset="1" stopColor="#ff73c1" stop-opacity="0" />
+          <stop offset="1" stopColor="#ff73c1" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="f2115ido"
@@ -232,7 +232,7 @@ export const Robot3Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
           gradientTransform="rotate(90 8 12)"
           gradientUnits="userSpaceOnUse">
           <stop stopColor="#ffea60" />
-          <stop offset="1" stopColor="#ffef66" stop-opacity="0" />
+          <stop offset="1" stopColor="#ffef66" stopOpacity="0" />
         </radialGradient>
         <filter
           id="f2115idp"
@@ -240,9 +240,9 @@ export const Robot3Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
           height="7"
           x="3"
           y="4.5"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
           filterUnits="userSpaceOnUse">
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
           <feGaussianBlur result="effect1_foregroundBlur_31_1501" stdDeviation=".25" />
         </filter>
@@ -252,9 +252,9 @@ export const Robot3Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
           height="7"
           x="28"
           y="4.5"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
           filterUnits="userSpaceOnUse">
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
           <feGaussianBlur result="effect1_foregroundBlur_31_1501" stdDeviation=".25" />
         </filter>

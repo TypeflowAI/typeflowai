@@ -128,7 +128,7 @@ export const Robot2Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
       r="11.5"
       fill="none"
       stroke="url(#notoRobot7)"
-      stroke-miterlimit="10"
+      strokeMiterlimit="10"
       strokeWidth="2"
     />
     <radialGradient
@@ -163,7 +163,7 @@ export const Robot2Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <path
       fill="none"
       stroke="url(#notoRobot9)"
-      stroke-miterlimit="10"
+      strokeMiterlimit="10"
       strokeWidth="2"
       d="M85 55.28c-6.35 0-11.5 5.15-11.5 11.5s5.15 11.5 11.5 11.5s11.5-5.15 11.5-11.5c-.01-6.35-5.15-11.49-11.5-11.5z"
     />

@@ -4,7 +4,7 @@ export const FigmaIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 256 256">
     <g fill="none">
       <rect width="256" height="256" fill="#242938" rx="60" />
-      <g clip-path="url(#skillIconsFigmaDark0)">
+      <g clipPath="url(#skillIconsFigmaDark0)">
         <path
           fill="#0acf83"
           d="M94.347 228c18.4 0 33.333-14.933 33.333-33.333v-33.334H94.347c-18.4 0-33.334 14.934-33.334 33.334c0 18.4 14.934 33.333 33.334 33.333"

@@ -8,15 +8,15 @@ export const PodcastIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     />
     <path
       fill="#c8ca4e"
-      fill-rule="evenodd"
+      fillRule="evenodd"
       d="M11.5 20v-2.5h1V20zm-3.5.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5"
-      clip-rule="evenodd"
+      clipRule="evenodd"
     />
     <path
       fill="#c8ca4e"
-      fill-rule="evenodd"
+      fillRule="evenodd"
       d="M6.227 13.709a.5.5 0 0 1 .647.284a5.5 5.5 0 0 0 10.16.222a.5.5 0 0 1 .916.403a6.5 6.5 0 0 1-12.008-.262a.5.5 0 0 1 .285-.647"
-      clip-rule="evenodd"
+      clipRule="evenodd"
     />
   </svg>
 );

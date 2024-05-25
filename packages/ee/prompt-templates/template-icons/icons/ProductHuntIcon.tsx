@@ -8,7 +8,7 @@ export const ProductHuntIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) 
         <stop offset="100%" stopColor="#D04B25" />
       </linearGradient>
     </defs>
-    <g fill="none" fill-rule="evenodd">
+    <g fill="none" fillRule="evenodd">
       <path
         fill="url(#logosProducthunt0)"
         d="M128 256c70.694 0 128-57.306 128-128S198.694 0 128 0S0 57.306 0 128s57.306 128 128 128"

@@ -22,9 +22,9 @@ export const AssumptionIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) =
           />
           <path
             fill="#fff"
-            fill-rule="evenodd"
+            fillRule="evenodd"
             d="M24 39a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5"
-            clip-rule="evenodd"
+            clipRule="evenodd"
           />
         </g>
       </mask>

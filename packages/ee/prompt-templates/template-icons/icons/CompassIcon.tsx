@@ -60,7 +60,7 @@ export const CompassIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
       cy="65.63"
       fill="none"
       stroke="#e2a610"
-      stroke-miterlimit="10"
+      strokeMiterlimit="10"
       strokeWidth="3"
       rx="47.29"
       ry="47.32"
