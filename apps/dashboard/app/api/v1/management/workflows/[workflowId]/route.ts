@@ -62,7 +62,13 @@ export async function PUT(
     if (!workflow) {
       return responses.notFoundResponse("Workflow", params.workflowId);
     }
-    const workflowUpdate = await request.json();
+    let workflowUpdate;
+    try {
+      workflowUpdate = await request.json();
+    } catch (error) {
+      console.error(`Error parsing JSON input: ${error}`);
+      return responses.badRequestResponse("Malformed JSON input, please check your request body");
+    }
     const inputValidation = ZWorkflow.safeParse({
       ...workflow,
       ...workflowUpdate,

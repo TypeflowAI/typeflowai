@@ -30,7 +30,15 @@ export async function POST(request: Request): Promise<Response> {
   try {
     const authentication = await authenticateRequest(request);
     if (!authentication) return responses.notAuthenticatedResponse();
-    let workflowInput = await request.json();
+
+    let workflowInput;
+    try {
+      workflowInput = await request.json();
+    } catch (error) {
+      console.error(`Error parsing JSON: ${error}`);
+      return responses.badRequestResponse("Malformed JSON input, please check your request body");
+    }
+
     if (workflowInput?.questions && workflowInput.questions[0].headline) {
       const questionHeadline = workflowInput.questions[0].headline;
       if (typeof questionHeadline === "string") {
