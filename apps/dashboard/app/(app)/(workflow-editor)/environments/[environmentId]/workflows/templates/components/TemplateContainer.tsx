@@ -3,6 +3,7 @@
 import { MenuBar } from "@/app/(app)/(workflow-editor)/environments/[environmentId]/workflows/templates/components/MenuBar";
 import { useState } from "react";
 
+import { customWorkflow } from "@typeflowai/ee/prompt-templates/templates";
 import type { TEnvironment } from "@typeflowai/types/environment";
 import type { TProduct } from "@typeflowai/types/product";
 import type { TTemplate } from "@typeflowai/types/templates";
@@ -30,8 +31,9 @@ export default function TemplateContainerWithPreview({
   webAppUrl,
   isEngineLimited,
 }: TemplateContainerWithPreviewProps) {
-  const [activeTemplate, setActiveTemplate] = useState<TTemplate | null>(null);
-  const [activeQuestionId, setActiveQuestionId] = useState<string | null>(null);
+  const initialTemplate = customWorkflow;
+  const [activeTemplate, setActiveTemplate] = useState<TTemplate>(initialTemplate);
+  const [activeQuestionId, setActiveQuestionId] = useState<string>(initialTemplate.preset.questions[0].id);
   const [templateSearch, setTemplateSearch] = useState<string | null>(null);
 
   return (
