@@ -222,7 +222,7 @@ export const ThemeStylingPreviewWorkflow = ({
         <div
           className={`${isAppWorkflow ? "rounded-full bg-slate-200" : ""} cursor-pointer px-3 py-1 text-sm`}
           onClick={() => setPreviewType("app")}>
-          App workflow
+          App / Website workflow
         </div>
       </div>
     </div>

@@ -442,7 +442,7 @@ export const Workflow = ({
         <div
           className={cn(
             "no-scrollbar md:rounded-custom rounded-t-custom bg-workflow-bg flex h-full w-full flex-col justify-between overflow-hidden transition-all duration-1000 ease-in-out",
-            workflow.type === "link" ? "fb-workflow-shadow" : "",
+            cardArrangement === "simple" ? "fb-survey-shadow" : "",
             offset === 0 || cardArrangement === "simple" ? "opacity-100" : "opacity-0"
           )}>
           <div ref={contentRef} className={cn(loadingElement ? "animate-pulse opacity-60" : "", "my-auto")}>

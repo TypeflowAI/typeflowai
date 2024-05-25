@@ -173,8 +173,8 @@ export const ThemeStyling = ({
   return (
     <div className="flex">
       {/* Styling settings */}
-      <div className="relative w-1/2 pr-6">
-        <div className="flex flex-col gap-4">
+      <div className="relative flex w-1/2 flex-col pr-6">
+        <div className="flex flex-1 flex-col gap-4">
           <div className="flex flex-col gap-4 rounded-lg bg-slate-50 p-4">
             <div className="flex items-center gap-6">
               <Switch
@@ -224,7 +224,7 @@ export const ThemeStyling = ({
           </div>
         </div>
 
-        <div className="absolute bottom-0 mt-4 flex items-center gap-2">
+        <div className="mt-4 flex items-center gap-2">
           <Button variant="darkCTA" size="sm" onClick={onSave}>
             Save
           </Button>
