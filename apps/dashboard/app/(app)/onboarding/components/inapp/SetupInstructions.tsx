@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { cn } from "@typeflowai/lib/cn";
 import { Button } from "@typeflowai/ui/Button";
 import CodeBlock from "@typeflowai/ui/CodeBlock";
-import { Html5Icon, NpmIcon } from "@typeflowai/ui/Icons";
+import { Html5Icon, NpmIcon } from "@typeflowai/ui/IconsOld";
 
 const tabs = [
   { id: "html", label: "HTML", icon: <Html5Icon /> },

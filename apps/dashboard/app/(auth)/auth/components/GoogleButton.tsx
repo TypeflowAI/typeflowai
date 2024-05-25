@@ -3,7 +3,7 @@
 import { signIn } from "next-auth/react";
 
 import { Button } from "@typeflowai/ui/Button";
-import { GoogleIcon } from "@typeflowai/ui/Icons";
+import { GoogleIcon } from "@typeflowai/ui/IconsOld";
 
 export const GoogleButton = ({
   text = "Continue with Google",

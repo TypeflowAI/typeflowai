@@ -1,4 +1,4 @@
-import { SlackIcon } from "@typeflowai/ui/Icons";
+import { SlackIcon } from "@typeflowai/ui/IconsOld";
 
 interface IntegrationsTipProps {
   environmentId: string;

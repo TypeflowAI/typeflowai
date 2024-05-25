@@ -6,7 +6,7 @@ import "prismjs/themes/prism.css";
 import { useState } from "react";
 
 import CodeBlock from "@typeflowai/ui/CodeBlock";
-import { Html5Icon, NpmIcon } from "@typeflowai/ui/Icons";
+import { Html5Icon, NpmIcon } from "@typeflowai/ui/IconsOld";
 import { TabBar } from "@typeflowai/ui/TabBar";
 
 const tabs = [
