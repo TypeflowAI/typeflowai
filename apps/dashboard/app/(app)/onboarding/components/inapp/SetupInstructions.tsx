@@ -67,7 +67,7 @@ export default function SetupInstructionsOnboarding({
             </p>
             <CodeBlock
               customEditorClass="!bg-white border border-slate-200"
-              language="js">{`import typeflowai from "@typeflowai/js";
+              language="js">{`import typeflowai from "@typeflowai/website";
 
 if (typeof window !== "undefined") {
   typeflowai.init({
