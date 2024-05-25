@@ -22,20 +22,18 @@ export const WorkflowInline = (props: Omit<WorkflowInlineProps, "containerId">) 
   );
 
   useEffect(() => {
-    async function loadScript() {
-      if (typeof window !== "undefined") {
-        if (!window.typeflowAIWorkflows) {
-          try {
-            await loadWorkflowScript();
-            renderInline();
-          } catch (error) {
-            console.error("Failed to load the workflows package: ", error);
-          }
-        } else {
+    const loadScript = async () => {
+      if (!window.typeflowAIWorkflows) {
+        try {
+          await loadWorkflowScript();
           renderInline();
+        } catch (error) {
+          console.error("Failed to load the workflows package: ", error);
         }
+      } else {
+        renderInline();
       }
-    }
+    };
 
     loadScript();
   }, [containerId, props, renderInline]);
