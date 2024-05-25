@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 
 import { getAccessFlags } from "@typeflowai/lib/membership/utils";
-import { testURLmatch } from "@typeflowai/lib/utils/testUrlMatch";
+import { testURLmatch } from "@typeflowai/lib/utils/testURLMatch";
 import {
   TActionClass,
   TActionClassInput,
