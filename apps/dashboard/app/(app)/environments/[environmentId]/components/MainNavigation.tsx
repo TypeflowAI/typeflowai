@@ -267,7 +267,7 @@ export const MainNavigation = ({
           </div>
           {/* Product Switch */}
           <div>
-            {!hasAnActiveSubscription && (
+            {!hasAnActiveSubscription && !isCollapsed && (
               <div className="m-4">
                 <Button
                   variant="primary"
