@@ -43,19 +43,19 @@ const navigation = {
   useCases: [
     {
       name: "Content Marketing Ideas",
-      href: "/use-cases/content-marketing-ideas",
+      href: "/use-cases/content-marketing-ideas-generator",
     },
     {
       name: "LinkedIn Post Gen.",
-      href: "/use-cases/linkedin-post-generation",
+      href: "/use-cases/linkedin-post-generator",
     },
     {
       name: "Google Ads Copy Gen.",
       href: "/use-cases/google-ads-copy-generator",
     },
     {
-      name: "Tweets Generator",
-      href: "/use-cases/tweets-generator",
+      name: "Tweet Generator",
+      href: "/use-cases/tweet-generator",
     },
     {
       name: "Dynamic Lead Magnet",
@@ -67,7 +67,7 @@ const navigation = {
     },
     {
       name: "AI Keyword Research",
-      href: "/use-cases/ai-keyword-research",
+      href: "/use-cases/seo-keyword-generator",
     },
     {
       name: "Buyer Persona Gen.",
