@@ -26,7 +26,7 @@ import typeflowai from "@typeflowai/js";
 if (typeof window !== "undefined") {
   typeflowai.init({
     environmentId: "your-environment-id",
-    apiHost: "https://app.typeflowai.com",
+    apiHost: "https://dashboard.typeflowai.com",
   });
 }
 ```

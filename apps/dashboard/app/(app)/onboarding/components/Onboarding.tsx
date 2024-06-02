@@ -169,7 +169,7 @@ export function Onboarding({
         {renderOnboardingStep()}
         {iframeVisible && isTypeflowAICloud && (
           <iframe
-            src={`https://app.typeflowai.com/s/clr737oiseav88up09skt2hxo?userId=${session.user.id}`}
+            src={`https://dashboard.typeflowai.com/s/clr737oiseav88up09skt2hxo?userId=${session.user.id}`}
             onLoad={() => setIframeLoaded(true)}
             style={{
               inset: "0",

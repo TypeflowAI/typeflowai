@@ -2,7 +2,7 @@
 
 This is the official API wrapper for TypeflowAI. It is used to interact with the TypeflowAI API. To know more about TypeflowAI, visit [TypeflowAI.com](https://typeflowaI.com).
 
-The direct API documentation can be found in our official docs [here](https://typeflowaI.com/docs/api/client/overview). To interact with the TypeflowAI API, you need to have an environment ID. You can get it from the TypeflowAI dashboard at [app.typeflowaI.com](https://app.typeflowaI.com).
+The direct API documentation can be found in our official docs [here](https://typeflowaI.com/docs/api/client/overview). To interact with the TypeflowAI API, you need to have an environment ID. You can get it from the TypeflowAI dashboard at [dashboard.typeflowaI.com](https://dashboard.typeflowaI.com).
 
 ## Installation
 
