@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-import { MatchType, testURLmatch } from "@typeflowai/lib/utils/testUrlMatch";
+import { MatchType, testURLmatch } from "@typeflowai/lib/utils/testUrlMatchRules";
 import { TActionClass, TActionClassInput, TActionClassNoCodeConfig } from "@typeflowai/types/actionClasses";
 import { TWorkflow } from "@typeflowai/types/workflows";
 import { CssSelector, InnerHtmlSelector, PageUrlSelector } from "@typeflowai/ui/Actions";
