@@ -139,22 +139,22 @@ export const MainNavigation = ({
         isActive: pathname?.includes("/workflows"),
         isHidden: false,
       },
-      {
-        name: "People",
-        href: `/environments/${environment.id}/people`,
-        icon: UserIcon,
-        isActive:
-          pathname?.includes("/people") ||
-          pathname?.includes("/segments") ||
-          pathname?.includes("/attributes"),
-      },
-      {
-        name: "Actions",
-        href: `/environments/${environment.id}/actions`,
-        icon: MousePointerClick,
-        isActive: pathname?.includes("/actions") || pathname?.includes("/actions"),
-        isHidden: false,
-      },
+      // {
+      //   name: "People",
+      //   href: `/environments/${environment.id}/people`,
+      //   icon: UserIcon,
+      //   isActive:
+      //     pathname?.includes("/people") ||
+      //     pathname?.includes("/segments") ||
+      //     pathname?.includes("/attributes"),
+      // },
+      // {
+      //   name: "Actions",
+      //   href: `/environments/${environment.id}/actions`,
+      //   icon: MousePointerClick,
+      //   isActive: pathname?.includes("/actions") || pathname?.includes("/actions"),
+      //   isHidden: false,
+      // },
       {
         name: "Integrations",
         href: `/environments/${environment.id}/integrations`,

@@ -155,42 +155,42 @@ export default async function IntegrationsPage({ params }) {
       connected: isSlackIntegrationConnected,
       statusText: isSlackIntegrationConnected ? "Connected" : "Not Connected",
     },
-    {
-      docsHref: "https://typeflowai.com/docs/integrations/n8n",
-      connectText: `${isN8nIntegrationConnected ? "Manage" : "Connect"}`,
-      docsText: "Docs",
-      docsNewTab: true,
-      connectHref: "https://n8n.io",
-      connectNewTab: true,
-      label: "n8n",
-      description: "Integrate TypeflowAI with 350+ apps via n8n",
-      icon: <Image src={n8nLogo} alt="n8n Logo" />,
-      connected: n8nwebhookCount > 0,
-      statusText:
-        n8nwebhookCount === 1
-          ? "1 integration"
-          : n8nwebhookCount === 0
-            ? "Not Connected"
-            : `${n8nwebhookCount} integrations`,
-    },
-    {
-      docsHref: "https://typeflowai.com/docs/integrations/make",
-      docsText: "Docs",
-      docsNewTab: true,
-      connectHref: "https://www.make.com/en/integrations/typeflowai",
-      connectText: "Connect",
-      connectNewTab: true,
-      label: "Make.com",
-      description: "Integrate TypeflowAI with 1000+ apps via Make",
-      icon: <Image src={MakeLogo} alt="Make Logo" />,
-      connected: makeWebhookCount > 0,
-      statusText:
-        makeWebhookCount === 1
-          ? "1 integration"
-          : makeWebhookCount === 0
-            ? "Not Connected"
-            : `${makeWebhookCount} integration`,
-    },
+    // {
+    //   docsHref: "https://typeflowai.com/docs/integrations/n8n",
+    //   connectText: `${isN8nIntegrationConnected ? "Manage" : "Connect"}`,
+    //   docsText: "Docs",
+    //   docsNewTab: true,
+    //   connectHref: "https://n8n.io",
+    //   connectNewTab: true,
+    //   label: "n8n",
+    //   description: "Integrate TypeflowAI with 350+ apps via n8n",
+    //   icon: <Image src={n8nLogo} alt="n8n Logo" />,
+    //   connected: n8nwebhookCount > 0,
+    //   statusText:
+    //     n8nwebhookCount === 1
+    //       ? "1 integration"
+    //       : n8nwebhookCount === 0
+    //         ? "Not Connected"
+    //         : `${n8nwebhookCount} integrations`,
+    // },
+    // {
+    //   docsHref: "https://typeflowai.com/docs/integrations/make",
+    //   docsText: "Docs",
+    //   docsNewTab: true,
+    //   connectHref: "https://www.make.com/en/integrations/typeflowai",
+    //   connectText: "Connect",
+    //   connectNewTab: true,
+    //   label: "Make.com",
+    //   description: "Integrate TypeflowAI with 1000+ apps via Make",
+    //   icon: <Image src={MakeLogo} alt="Make Logo" />,
+    //   connected: makeWebhookCount > 0,
+    //   statusText:
+    //     makeWebhookCount === 1
+    //       ? "1 integration"
+    //       : makeWebhookCount === 0
+    //         ? "Not Connected"
+    //         : `${makeWebhookCount} integration`,
+    // },
     {
       connectHref: `/environments/${params.environmentId}/integrations/notion`,
       connectText: `${isNotionIntegrationConnected ? "Manage" : "Connect"}`,
