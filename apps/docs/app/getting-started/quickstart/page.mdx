@@ -1,0 +1,139 @@
+import MdxImage from "next/image";
+
+import I1 from "./1-ai-workflow-template.png";
+import I2 from "./2-select-and-define-form-questions.png";
+import I3 from "./3-implement-and-configure-prompt.png";
+import I4 from "./4-workflow-type-settings.png";
+import I5 from "./5-workflow-target-settings.png";
+import I6 from "./6-workflow-trigger-settings.png";
+import I7 from "./7-workflow-options-and-style-settings.png";
+import I8 from "./8-workflow-dashboard.png";
+import I9 from "./9-typeflowai-widget-status.png";
+import I10 from "./10-typeflowai-widget-code-snippet.png";
+
+
+export const metadata = {
+  title: "TypeflowAI Quickstart Guide: In-App AI Workflows Made Simple",
+  description:
+    "Launch your first in-app AI workflow effortlessly. Dive into our step-by-step guide to set up, integrate, and debug TypeflowAI in your web app in under 15 minutes.",
+};
+
+#### Getting Started
+
+# Quickstart
+
+Unlock the potential of direct user engagement with our AI-enhanced forms—experience a surge in conversions outperforming traditional forms. This tutorial will guide you through embedding a smart form into your web app, swiftly, in about 10 to 15 minutes. Get set for a transformative interaction!
+
+## Create a free TypeflowAI Cloud account
+
+While you can [self-host](/self-hosting/self-hosting-guide) TypeflowAI, the quickest and easiest way to get started is with the free Cloud plan. Just [sign up here](https://dashboard.typeflowai.com/auth/signup) and click through the onboarding, until you’re here:
+
+<MdxImage
+  src={I1}
+  alt="Choose AI workflow template"
+  quality="100"
+  className="max-w-full rounded-lg sm:max-w-3xl "
+/>
+
+## Create your first workflow
+
+For creating your workflow you'll be able of creating it from scratch or simply choose a template.
+
+Once you have selected your template, you will be able to customize yor form by adding more questions or changing the existing ones:
+
+<MdxImage
+  src={I2}
+  alt="Select and define form questions"
+  quality="100"
+  className="max-w-full rounded-lg sm:max-w-3xl "
+/>
+
+Finally, you can implement and configure the prompt for the workflow. You can customize the prompt to match with the questions over the workflow you are creating:
+
+<MdxImage
+  src={I3}
+  alt="Implement and configure prompt for workflow"
+  quality="100"
+  className="max-w-full rounded-lg sm:max-w-3xl "
+/>
+
+Now we'll head over to the workflow settings:
+
+<MdxImage
+  src={I4}
+  alt="Workflow type settings"
+  quality="100"
+  className="max-w-full rounded-lg sm:max-w-3xl"
+/>
+
+As you can see in the orange note here, we have not yet connected TypeflowAI Cloud with our app. We will do so in just a minute, let’s first setup the workflow correctly.
+
+You can choose between In-App or Link workflow.
+
+After that, you can set the target settings for the workflow, in case you want specify the audience that will see the workflow:
+
+<MdxImage
+  src={I5}
+  alt="Workflow target settings"
+  quality="100"
+  className="max-w-full rounded-lg sm:max-w-3xl"
+/>
+
+As we are creating an In-App workflow, we will set the trigger settings for the workflow. You can choose between the actions defined in the list, or even create a custom trigger for the workflow:
+
+<MdxImage
+  src={I6}
+  alt="Workflow trigger settings"
+  quality="100"
+  className="max-w-full rounded-lg sm:max-w-3xl"
+/>
+
+Finally, you can set the options and style settings for the workflow. You can customize the workflow to match with your app's style, or even define the behavior of the workflow, how many times it will be shown, etc:
+
+<MdxImage
+  src={I7}
+  alt="Workflow options and style settings"
+  quality="100"
+  className="max-w-full rounded-lg sm:max-w-3xl"
+/>
+
+Now hit **Publish** and you’ll be forwarded to the Summary Page. This is where you’ll find the responses to this workflow. On the Summary Page click through to the Setup Checklist:
+
+<MdxImage
+  src={I8}
+  alt="Workflow dashboard"
+  quality="100"
+  className="max-w-full rounded-lg sm:max-w-3xl"
+/>
+
+## Set up the TypeflowAI Widget in your app
+
+On the Setup Checklist you have two elements. At the top you find the Widget Status Indicator. Once your app is connected to TypeflowAI Cloud successfully, this will turn green:
+
+<MdxImage
+  src={I9}
+  alt="TypeflowAI widget status"
+  quality="100"
+  className="max-w-full rounded-lg sm:max-w-3xl"
+/>
+
+In the manual below, this code snippet contains all the information you need:
+
+- The **Environment ID** of your current TypeflowAI workspace
+- The **API Host** which is ‘https://dashboard.typeflowai.com’ for Cloud users
+
+<MdxImage
+  src={I10}
+  alt="TypeflowAI widget code snippet"
+  quality="100"
+  className="max-w-full rounded-lg sm:max-w-3xl"
+/>
+
+## Load TypeflowAI widget in your app
+
+In a local instance of your app, you'll embed the TypeflowAI Widget. Dependent on your frontend tech, the setup differs a bit:
+
+- [Next.JS App Directory](/getting-started/framework-guides#next-js)
+- [Next.JS Pages Directory](/getting-started/framework-guides#next-js)
+- [React (Create React App)](/getting-started/framework-guides#react-js)
+- [Vue.JS](/getting-started/framework-guides#vue-js)

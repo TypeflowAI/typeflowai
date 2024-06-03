@@ -2,7 +2,7 @@ import { resolve } from "path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
-import webPackageJson from "../../apps/web/package.json";
+import webPackageJson from "../../apps/dashboard/package.json";
 
 const config = () => {
   return defineConfig({

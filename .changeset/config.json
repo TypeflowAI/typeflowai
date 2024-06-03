@@ -7,5 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@typeflowai/dashboard", "@typeflowai/web"]
+  "ignore": ["@typeflowai/dashboard", "@typeflowai/docs"]
 }
