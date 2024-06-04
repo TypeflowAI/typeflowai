@@ -1,4 +1,11 @@
-import { Body, Column, Container, Html, Img, Link, Row, Section } from "@react-email/components";
+import {
+  Body, // Column,
+  Container,
+  Html,
+  Img,
+  Link, // Row,
+  Section,
+} from "@react-email/components";
 import { Tailwind } from "@react-email/components";
 import { Fragment } from "react";
 import React from "react";
@@ -19,7 +26,7 @@ export const EmailTemplate = ({ content }: EmailTemplateProps) => (
           <Section>
             <Link href="https://typeflowai.com?utm_source=email_header&utm_medium=email" target="_blank">
               <Img
-                src="https://s3.eu-central-1.amazonaws.com/listmonk-typeflowai/TypeflowAI-Light-transparent.png"
+                src="https://typeflowai-assets-bucket.s3.us-east-2.amazonaws.com/logo_dark.png"
                 alt="TypeflowAI Logo"
                 className="mx-auto w-80"
               />
@@ -27,7 +34,7 @@ export const EmailTemplate = ({ content }: EmailTemplateProps) => (
           </Section>
           <Container className="mx-auto my-8 max-w-xl bg-white p-4 text-left">{content}</Container>
 
-          <Section>
+          {/* <Section>
             <Row>
               <Column align="right" key="twitter">
                 <Link target="_blank" href="https://twitter.com/typeflowai">
@@ -60,14 +67,14 @@ export const EmailTemplate = ({ content }: EmailTemplateProps) => (
                 </Link>
               </Column>
             </Row>
-          </Section>
+          </Section> */}
           <Section className="mt-4 text-center">
             TypeflowAI {new Date().getFullYear()}. All rights reserved.
             <br />
             <Link
-              href="https://typeflowai.com/imprint?utm_source=email_footer&utm_medium=email"
+              href="https://typeflowai.com/terms?utm_source=email_footer&utm_medium=email"
               target="_blank">
-              Imprint
+              Terms
             </Link>{" "}
             |{" "}
             <Link

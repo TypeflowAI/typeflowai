@@ -10,14 +10,12 @@ import {
   ChevronRightIcon,
   Cog,
   CreditCardIcon,
-  LogOutIcon,
-  MousePointerClick,
+  LogOutIcon, // MousePointerClick,
   PanelLeftCloseIcon,
   PanelLeftOpenIcon,
   PlusIcon,
   SparklesIcon,
-  UserCircleIcon,
-  UserIcon,
+  UserCircleIcon, // UserIcon,
   UsersIcon,
 } from "lucide-react";
 import type { Session } from "next-auth";

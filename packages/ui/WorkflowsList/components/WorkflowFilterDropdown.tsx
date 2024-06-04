@@ -24,8 +24,8 @@ export const WorkflowFilterDropdown = ({
   isOpen,
   toggleDropdown,
 }: WorkflowFilterDropdownProps) => {
-  const triggerClasses = `workflowFilterDropdown min-w-auto h-8 rounded-md border border-brand sm:px-2 cursor-pointer outline-none 
-    ${selectedOptions.length > 0 ? "bg-brand text-slate-100" : "text-violet-950 hover:bg-brand"}`;
+  const triggerClasses = `workflowFilterDropdown min-w-auto h-8 rounded-md border border-violet-950 sm:px-2 cursor-pointer outline-none 
+    ${selectedOptions.length > 0 ? "bg-brand text-slate-100" : "text-violet-950 hover:bg-brand hover:border-brand"}`;
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={() => toggleDropdown(id)}>

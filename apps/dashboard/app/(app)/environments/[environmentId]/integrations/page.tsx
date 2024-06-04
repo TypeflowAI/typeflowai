@@ -1,6 +1,6 @@
 import JsLogo from "@/images/jslogo.png";
-import MakeLogo from "@/images/make-small.png";
-import n8nLogo from "@/images/n8n.png";
+// import MakeLogo from "@/images/make-small.png";
+// import n8nLogo from "@/images/n8n.png";
 import notionLogo from "@/images/notion.png";
 import SlackLogo from "@/images/slacklogo.png";
 import WebhookLogo from "@/images/webhook.png";
@@ -34,8 +34,8 @@ export default async function IntegrationsPage({ params }) {
     session,
     userWebhookCount,
     zapierWebhookCount,
-    makeWebhookCount,
-    n8nwebhookCount,
+    // makeWebhookCount,
+    // n8nwebhookCount,
   ] = await Promise.all([
     getEnvironment(environmentId),
     getIntegrations(environmentId),
@@ -63,7 +63,7 @@ export default async function IntegrationsPage({ params }) {
   const isGoogleSheetsIntegrationConnected = isIntegrationConnected("googleSheets");
   const isNotionIntegrationConnected = isIntegrationConnected("notion");
   const isAirtableIntegrationConnected = isIntegrationConnected("airtable");
-  const isN8nIntegrationConnected = isIntegrationConnected("n8n");
+  // const isN8nIntegrationConnected = isIntegrationConnected("n8n");
   const isSlackIntegrationConnected = isIntegrationConnected("slack");
 
   const integrationCards = [

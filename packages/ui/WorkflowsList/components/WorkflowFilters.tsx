@@ -210,7 +210,7 @@ export const WorkflowFilters = ({
         <DropdownMenu>
           <DropdownMenuTrigger
             asChild
-            className="workflowFilterDropdown border-brand hover:bg-brand h-full cursor-pointer border text-violet-950 outline-none hover:text-white">
+            className="workflowFilterDropdown hover:bg-brand hover:border-brand h-full cursor-pointer border border-violet-950 text-violet-950 outline-none hover:text-white">
             <div className="min-w-auto h-8 rounded-md border sm:flex sm:px-2">
               <div className="hidden w-full items-center justify-between sm:flex">
                 <span className="text-sm ">
