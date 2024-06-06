@@ -15,7 +15,7 @@ export const plansAndFeatures = {
         { title: "Access to +350 Templates", comingSoon: false, unlimited: false },
         { title: "GPT-3.5Turbo", comingSoon: false, unlimited: false },
         {
-          title: "Integrations (Webhooks, Zapier, Notion, n8n, Make, Google Sheets, Airtable)",
+          title: "Integrations (Webhooks, Zapier, Notion, Slack, Google Sheets, Airtable)",
           comingSoon: false,
           unlimited: false,
         },
@@ -35,7 +35,7 @@ export const plansAndFeatures = {
         { title: "Access to +350 Templates", comingSoon: false, unlimited: false },
         { title: "GPT-4", comingSoon: false, unlimited: false },
         {
-          title: "Integrations (Webhooks, Zapier, Notion, n8n, Make, Google Sheets, Airtable)",
+          title: "Integrations (Webhooks, Zapier, Notion, Slack, Google Sheets, Airtable)",
           comingSoon: false,
           unlimited: false,
         },
@@ -59,7 +59,7 @@ export const plansAndFeatures = {
         { title: "+350 Templates", comingSoon: false, unlimited: false },
         { title: "All GPT Engines", comingSoon: false, unlimited: false },
         {
-          title: "Integrations (Webhooks, Zapier, Notion, n8n, Make, Google Sheets, Airtable)",
+          title: "Integrations (Webhooks, Zapier, Notion, Slack, Google Sheets, Airtable)",
           comingSoon: false,
           unlimited: false,
         },
@@ -70,12 +70,12 @@ export const plansAndFeatures = {
 };
 
 export const basicFeatures = [
-  { title: "Unlimited workflows", comingSoon: false, unlimited: false },
-  { title: "500 Workflow AI responses", comingSoon: false, unlimited: false },
+  { title: "2 AI Tools", comingSoon: false, unlimited: false },
+  { title: "500 AI tool responses", comingSoon: false, unlimited: false },
   { title: "Access to +350 Templates", comingSoon: false, unlimited: false },
-  { title: "GPT-3.5Turbo", comingSoon: false, unlimited: false },
+  { title: "GPT-3.5Turbo, GPT-4, GPT-4o,...", comingSoon: false, unlimited: false },
   {
-    title: "Integrations (Webhooks, Zapier, Notion, n8n, Make, Google Sheets, Airtable)",
+    title: "Integrations (Webhooks, Zapier, Notion, Slack, Google Sheets, Airtable)",
     comingSoon: false,
     unlimited: false,
   },
@@ -83,12 +83,16 @@ export const basicFeatures = [
 ];
 
 export const proFeatures = [
-  { title: "Unlimited workflows", comingSoon: false, unlimited: false },
-  { title: "2500 Workflow AI responses", comingSoon: false, unlimited: false },
-  { title: "Access to +350 Templates", comingSoon: false, unlimited: false },
-  { title: "GPT-4", comingSoon: false, unlimited: false },
+  { title: "Unlimited AI Tools", comingSoon: false, unlimited: false },
   {
-    title: "Integrations (Webhooks, Zapier, Notion, n8n, Make, Google Sheets, Airtable)",
+    title: "2500 AI tool responses (*Unlimited responses with OpenAI API key)",
+    comingSoon: false,
+    unlimited: false,
+  },
+  { title: "Access to +350 Templates", comingSoon: false, unlimited: false },
+  { title: "GPT-3.5Turbo, GPT-4, GPT-4o,...", comingSoon: false, unlimited: false },
+  {
+    title: "Integrations (Webhooks, Zapier, Notion, Slack, Google Sheets, Airtable)",
     comingSoon: false,
     unlimited: false,
   },
@@ -96,16 +100,16 @@ export const proFeatures = [
 ];
 
 export const enterpriseFeatures = [
-  { title: "Unlimited workflows", comingSoon: false, unlimited: false },
+  { title: "Unlimited AI Tools", comingSoon: false, unlimited: false },
   {
-    title: "Unlimited workflow responses (OpenAI API key required)",
+    title: "Unlimited AI tool responses (*OpenAI API key required)",
     comingSoon: false,
     unlimited: false,
   },
   { title: "+350 Templates", comingSoon: false, unlimited: false },
   { title: "All GPT Engines", comingSoon: false, unlimited: false },
   {
-    title: "Integrations (Webhooks, Zapier, Notion, n8n, Make, Google Sheets, Airtable)",
+    title: "Integrations (Webhooks, Zapier, Notion, Slack, Google Sheets, Airtable)",
     comingSoon: false,
     unlimited: false,
   },

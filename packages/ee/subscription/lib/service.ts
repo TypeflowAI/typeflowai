@@ -39,11 +39,31 @@ export const getSubscriptionType = async (team: TTeam): Promise<string> => {
   }
 };
 
+// export const getIsEngineLimited = async (team: TTeam): Promise<boolean> => {
+//   if (!IS_TYPEFLOWAI_CLOUD) {
+//     return false;
+//   } else {
+//     if (!(await getIsProSubscription(team)) || !(await getIsEnterpriseSubscription(team))) {
+//       return false;
+//     } else return true;
+//   }
+// };
+
+// Workarround for removing all engine limitations
 export const getIsEngineLimited = async (team: TTeam): Promise<boolean> => {
   if (!IS_TYPEFLOWAI_CLOUD) {
     return false;
   } else {
-    if (!(await getIsProSubscription(team)) || !(await getIsEnterpriseSubscription(team))) {
+    await getSubscriptionType(team);
+    return false;
+  }
+};
+
+export const getIsAIToolsLimited = async (team: TTeam): Promise<boolean> => {
+  if (!IS_TYPEFLOWAI_CLOUD) {
+    return false;
+  } else {
+    if ((await getIsProSubscription(team)) || (await getIsEnterpriseSubscription(team))) {
       return false;
     } else return true;
   }

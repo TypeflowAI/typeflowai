@@ -46,6 +46,8 @@ interface WorkflowDropDownMenuProps {
   isWorkflowCreationDeletionDisabled?: boolean;
   duplicateWorkflow: (workflow: TWorkflow) => void;
   deleteWorkflow: (workflowId: string) => void;
+  isAIToolsLimited: boolean;
+  openAddAIToolModal: (addAIToolModal: boolean) => void;
 }
 
 export const WorkflowDropDownMenu = ({
@@ -58,6 +60,8 @@ export const WorkflowDropDownMenu = ({
   isWorkflowCreationDeletionDisabled,
   deleteWorkflow,
   duplicateWorkflow,
+  isAIToolsLimited,
+  openAddAIToolModal,
 }: WorkflowDropDownMenuProps) => {
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -84,6 +88,11 @@ export const WorkflowDropDownMenu = ({
   const duplicateWorkflowAndRefresh = async (workflowId: string) => {
     setLoading(true);
     try {
+      if (isAIToolsLimited) {
+        openAddAIToolModal(true);
+        setLoading(false);
+        return;
+      }
       const duplicatedWorkflow = await duplicateWorkflowAction(environmentId, workflowId);
       router.refresh();
       const transformedDuplicatedWorkflow = await getWorkflowAction(duplicatedWorkflow.id);

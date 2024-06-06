@@ -7,6 +7,7 @@ import { TWorkflow, TWorkflowFilters } from "@typeflowai/types/workflows";
 
 import { Button } from "../v2/Button";
 import { getWorkflowsAction } from "./actions";
+import { AddAIToolModal } from "./components/AddAIToolModal";
 import { WorkflowCard } from "./components/WorkflowCard";
 import { WorkflowFilters } from "./components/WorkflowFilters";
 import { getFormattedFilters } from "./utils";
@@ -18,6 +19,9 @@ interface WorkflowsListProps {
   WEBAPP_URL: string;
   userId: string;
   workflowsPerPage: number;
+  workflowCount: number;
+  isTypeflowAICloud: boolean;
+  isAIToolsLimited: boolean;
 }
 
 export const initialFilters: TWorkflowFilters = {
@@ -35,6 +39,9 @@ export const WorkflowsList = ({
   WEBAPP_URL,
   userId,
   workflowsPerPage: workflowsLimit,
+  workflowCount,
+  isTypeflowAICloud,
+  isAIToolsLimited,
 }: WorkflowsListProps) => {
   const [workflows, setWorkflows] = useState<TWorkflow[]>([]);
   const [isFetching, setIsFetching] = useState(true);
@@ -45,6 +52,9 @@ export const WorkflowsList = ({
   const filters = useMemo(() => getFormattedFilters(workflowFilters, userId), [workflowFilters, userId]);
 
   const [orientation, setOrientation] = useState("");
+
+  const [addAIToolModalOpen, setAddAIToolModalOpen] = useState(false);
+  const isAddAIToolsLimited = isAIToolsLimited && workflowCount >= 2 ? true : false;
 
   useEffect(() => {
     // Initialize orientation state with a function that checks if window is defined
@@ -126,6 +136,8 @@ export const WorkflowsList = ({
                     orientation={orientation}
                     duplicateWorkflow={handleDuplicateWorkflow}
                     deleteWorkflow={handleDeleteWorkflow}
+                    isAIToolsLimited={isAddAIToolsLimited}
+                    openAddAIToolModal={setAddAIToolModalOpen}
                   />
                 );
               })}
@@ -145,6 +157,8 @@ export const WorkflowsList = ({
                     orientation={orientation}
                     duplicateWorkflow={handleDuplicateWorkflow}
                     deleteWorkflow={handleDeleteWorkflow}
+                    isAIToolsLimited={isAddAIToolsLimited}
+                    openAddAIToolModal={setAddAIToolModalOpen}
                   />
                 );
               })}
@@ -158,6 +172,13 @@ export const WorkflowsList = ({
               </Button>
             </div>
           )}
+
+          <AddAIToolModal
+            open={addAIToolModalOpen}
+            setOpen={setAddAIToolModalOpen}
+            environmentId={environment.id}
+            isTypeflowAICloud={isTypeflowAICloud}
+          />
         </div>
       ) : (
         <div className="flex h-full flex-col items-center justify-center">

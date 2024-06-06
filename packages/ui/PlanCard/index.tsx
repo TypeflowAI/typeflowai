@@ -12,7 +12,7 @@ export const PlanCard = ({
   plan,
   sliderFeatureName,
   price,
-  isYearlyPrice,
+  isLifetimePrice,
   actionText,
   team,
   metric,
@@ -31,7 +31,7 @@ export const PlanCard = ({
   plan: string;
   sliderFeatureName: string;
   price: number;
-  isYearlyPrice: boolean;
+  isLifetimePrice?: boolean;
   actionText: string;
   team: TTeam;
   metric?: string;
@@ -71,15 +71,13 @@ export const PlanCard = ({
                   Unsubscribe
                 </Button>
               </>
-            ) : team.billing.subscriptionStatus === "cancelled" ||
+            ) : team.billing.subscriptionStatus === "canceled" ||
               team.billing.subscriptionStatus === "scheduled" ? (
               <>
                 <Badge
                   text={
-                    team.billing.subscriptionStatus === "cancelled"
-                      ? isYearlyPrice
-                        ? "Cancelling at End of Year"
-                        : "Cancelling at End of this Month"
+                    team.billing.subscriptionStatus === "canceled"
+                      ? "Cancelling at End of this Month"
                       : "Change Scheduled"
                   }
                   size="normal"
@@ -93,6 +91,11 @@ export const PlanCard = ({
                 </Button>
               </>
             ) : null}
+          </>
+        )}
+        {isLifetimePrice && team.billing.subscriptionType !== plan && (
+          <>
+            <Badge text="Pay once use forever" size="normal" type="brand" />
           </>
         )}
         <p className=" whitespace-pre-wrap text-sm text-slate-600">{subtitle}</p>
@@ -157,8 +160,8 @@ export const PlanCard = ({
 
                     <span className="text-3xl font-bold text-slate-800">${price}</span>
 
-                    {isYearlyPrice ? (
-                      <span className="text-base font-medium text-slate-400">/ year</span>
+                    {isLifetimePrice ? (
+                      <span className="text-base font-medium text-slate-400">/ once</span>
                     ) : (
                       <span className="text-base font-medium text-slate-400">/ month</span>
                     )}
@@ -167,8 +170,7 @@ export const PlanCard = ({
 
                 {team.billing.subscriptionType !== plan && (
                   <>
-                    {team.billing.subscriptionType === "basic" ||
-                    (team.billing.subscriptionType === "pro" && plan === "enterprise") ? (
+                    {team.billing.subscriptionType === "basic" || team.billing.subscriptionType !== "pro" ? (
                       <Button
                         variant="primary"
                         className="w-full justify-center py-2 text-white shadow-sm"
@@ -177,14 +179,22 @@ export const PlanCard = ({
                         Upgrade
                       </Button>
                     ) : null}
-                    {(team.billing.subscriptionType === "pro" && plan === "basic") ||
-                    team.billing.subscriptionType === "enterprise" ? (
+                    {team.billing.subscriptionType === "pro" && plan === "basic" ? (
                       <Button
                         variant="secondary"
                         className="w-full justify-center py-2"
                         loading={loading}
                         onClick={() => onDowngrade()}>
                         Downgrade
+                      </Button>
+                    ) : null}
+                    {plan === "enterprise" ? (
+                      <Button
+                        variant="primary"
+                        className="w-full justify-center py-2 text-white shadow-sm"
+                        loading={loading}
+                        onClick={() => onUpgrade()}>
+                        Buy for lifetime
                       </Button>
                     ) : null}
                   </>

@@ -22,7 +22,7 @@ export const TeamSettingsNavbar = ({
   const { isAdmin, isOwner } = getAccessFlags(membershipRole);
   const isPricingDisabled = !isOwner && !isAdmin;
 
-  console.log("hidden: ", !isTypeflowAICloud || isPricingDisabled);
+  // console.log("hidden: ", !isTypeflowAICloud || isPricingDisabled);
 
   const navigation = [
     {

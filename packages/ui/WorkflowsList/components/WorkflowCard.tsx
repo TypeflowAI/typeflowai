@@ -21,6 +21,8 @@ interface WorkflowCardProps {
   orientation: string;
   duplicateWorkflow: (workflow: TWorkflow) => void;
   deleteWorkflow: (workflowId: string) => void;
+  isAIToolsLimited: boolean;
+  openAddAIToolModal: (addAIToolModal: boolean) => void;
 }
 export const WorkflowCard = ({
   workflow,
@@ -31,6 +33,8 @@ export const WorkflowCard = ({
   orientation,
   deleteWorkflow,
   duplicateWorkflow,
+  isAIToolsLimited,
+  openAddAIToolModal,
 }: WorkflowCardProps) => {
   const isWorkflowCreationDeletionDisabled = isViewer;
 
@@ -104,6 +108,8 @@ export const WorkflowCard = ({
             isWorkflowCreationDeletionDisabled={isWorkflowCreationDeletionDisabled}
             duplicateWorkflow={duplicateWorkflow}
             deleteWorkflow={deleteWorkflow}
+            isAIToolsLimited={isAIToolsLimited}
+            openAddAIToolModal={openAddAIToolModal}
           />
         </div>
         <div>
@@ -194,6 +200,8 @@ export const WorkflowCard = ({
               isWorkflowCreationDeletionDisabled={isWorkflowCreationDeletionDisabled}
               duplicateWorkflow={duplicateWorkflow}
               deleteWorkflow={deleteWorkflow}
+              isAIToolsLimited={isAIToolsLimited}
+              openAddAIToolModal={openAddAIToolModal}
             />
           </div>
         </div>

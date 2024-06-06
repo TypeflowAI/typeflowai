@@ -17,6 +17,7 @@ import {
   SparklesIcon,
   UserCircleIcon, // UserIcon,
   UsersIcon,
+  ZapIcon,
 } from "lucide-react";
 import type { Session } from "next-auth";
 import { signOut } from "next-auth/react";
@@ -85,7 +86,9 @@ export const MainNavigation = ({
   const product = products.find((product) => product.id === environment.productId);
   const { isAdmin, isOwner, isViewer } = getAccessFlags(membershipRole);
   const isPricingDisabled = !isOwner && !isAdmin;
-  const hasAnActiveSubscription = ["active", "canceled"].includes(team.billing.subscriptionStatus);
+  const hasAnActiveSubscription = ["active", "canceled", "scheduled"].includes(
+    team.billing.subscriptionStatus
+  );
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
@@ -271,7 +274,9 @@ export const MainNavigation = ({
                   variant="primary"
                   size="base"
                   className="w-full justify-center font-bold text-white shadow-sm hover:opacity-90"
-                  onClick={() => router.push(`/environments/${environment.id}/settings/billing`)}>
+                  onClick={() => router.push(`/environments/${environment.id}/settings/billing`)}
+                  StartIcon={ZapIcon}
+                  startIconClassName="h-5 w-5">
                   Upgrade Plan
                 </Button>
               </div>

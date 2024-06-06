@@ -32,13 +32,13 @@ export const removeSubscription = async (teamId: string, environmentId: string) 
     await stripe.subscriptions.update(existingSubscription.id, { cancel_at_period_end: true });
 
     let updatedFeatures = team.billing.features;
-    updatedFeatures.ai.status = "cancelled";
+    updatedFeatures.ai.status = "canceled";
 
     await updateTeam(teamId, {
       billing: {
         ...team.billing,
         features: updatedFeatures,
-        subscriptionStatus: "cancelled",
+        subscriptionStatus: "canceled",
         nextRenewalDate: null,
       },
     });

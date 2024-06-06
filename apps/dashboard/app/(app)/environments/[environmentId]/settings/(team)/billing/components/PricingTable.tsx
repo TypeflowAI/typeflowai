@@ -51,7 +51,10 @@ export default function PricingTableComponent({
   const [changingPlan, setChangingPlan] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [activeLookupKey, setActiveLookupKey] = useState<StripePriceLookupKeys>();
-  const hasAnActiveSubscription = ["active", "canceled"].includes(team.billing.subscriptionStatus);
+  const hasAnActiveSubscription = ["active", "canceled", "scheduled"].includes(
+    team.billing.subscriptionStatus
+  );
+  const hasALifetimeSubscription = team.billing.subscriptionType === ProductSubscriptionTypes.enterprise;
 
   const openCustomerPortal = async () => {
     setLoadingCustomerPortal(true);
@@ -163,7 +166,7 @@ export default function PricingTableComponent({
 
   return (
     <div className="relative">
-      <div className="justify-between gap-4 rounded-lg">
+      <div className="max-w-4xl justify-between gap-4 rounded-lg">
         {
           team.billing.stripeCustomerId && (
             <div className="flex w-full justify-end">
@@ -211,59 +214,60 @@ export default function PricingTableComponent({
         }
 
         {hasAnActiveSubscription ? (
-          <div className="max-w-4xl">
-            <PlanCard
-              title={StripeProductNames[ProductSubscriptionTypes.basic]}
-              subtitle={"Get up to 500 AI responses every month"}
-              plan={ProductSubscriptionTypes.basic}
-              sliderFeatureName="ai"
-              price={29}
-              isYearlyPrice={false}
-              actionText={""}
-              team={team}
-              metric="AI responses"
-              sliderValue={aiLimits.basic - (aiResponseCount ?? 0)}
-              sliderLimit={aiLimits.basic * 1.2}
-              tierLimit={aiLimits.basic}
-              paidFeatures={basicFeatures}
-              loading={changingPlan}
-              onDowngrade={() => changePlan("downgrade", StripePriceLookupKeys.basic)}
-              onUnsubscribe={(e) =>
-                handleUnsubscribe(e, ProductSubscriptionTypes[ProductSubscriptionTypes.basic])
-              }
-              onReactivate={() => handleReactivateSubscription()}
-            />
+          <div>
+            {!hasALifetimeSubscription && (
+              <>
+                <PlanCard
+                  title={StripeProductNames[ProductSubscriptionTypes.basic]}
+                  subtitle={"Get up to 500 AI responses every month"}
+                  plan={ProductSubscriptionTypes.basic}
+                  sliderFeatureName="ai"
+                  price={29}
+                  actionText={""}
+                  team={team}
+                  metric="AI responses"
+                  sliderValue={aiLimits.basic - (aiResponseCount ?? 0)}
+                  sliderLimit={aiLimits.basic * 1.2}
+                  tierLimit={aiLimits.basic}
+                  paidFeatures={basicFeatures}
+                  loading={changingPlan}
+                  onDowngrade={() => changePlan("downgrade", StripePriceLookupKeys.basic)}
+                  onUnsubscribe={(e) =>
+                    handleUnsubscribe(e, ProductSubscriptionTypes[ProductSubscriptionTypes.basic])
+                  }
+                  onReactivate={() => handleReactivateSubscription()}
+                />
 
-            <PlanCard
-              title={StripeProductNames[ProductSubscriptionTypes.pro]}
-              subtitle={"Get up to 2500 AI responses every month"}
-              plan={ProductSubscriptionTypes.pro}
-              sliderFeatureName="ai"
-              price={99}
-              isYearlyPrice={false}
-              actionText={""}
-              team={team}
-              metric="AI responses"
-              sliderValue={aiLimits.pro - (aiResponseCount ?? 0)}
-              sliderLimit={aiLimits.pro * 1.2}
-              tierLimit={aiLimits.pro}
-              paidFeatures={proFeatures}
-              loading={changingPlan}
-              onUpgrade={() => changePlan("upgrade", StripePriceLookupKeys.pro)}
-              onDowngrade={() => changePlan("downgrade", StripePriceLookupKeys.pro)}
-              onUnsubscribe={(e) =>
-                handleUnsubscribe(e, ProductSubscriptionTypes[ProductSubscriptionTypes.pro])
-              }
-              onReactivate={() => handleReactivateSubscription()}
-            />
-
+                <PlanCard
+                  title={StripeProductNames[ProductSubscriptionTypes.pro]}
+                  subtitle={"Get up to 2500 AI responses every month"}
+                  plan={ProductSubscriptionTypes.pro}
+                  sliderFeatureName="ai"
+                  price={99}
+                  actionText={""}
+                  team={team}
+                  metric="AI responses"
+                  sliderValue={aiLimits.pro - (aiResponseCount ?? 0)}
+                  sliderLimit={aiLimits.pro * 1.2}
+                  tierLimit={aiLimits.pro}
+                  paidFeatures={proFeatures}
+                  loading={changingPlan}
+                  onUpgrade={() => changePlan("upgrade", StripePriceLookupKeys.pro)}
+                  onDowngrade={() => changePlan("downgrade", StripePriceLookupKeys.pro)}
+                  onUnsubscribe={(e) =>
+                    handleUnsubscribe(e, ProductSubscriptionTypes[ProductSubscriptionTypes.pro])
+                  }
+                  onReactivate={() => handleReactivateSubscription()}
+                />
+              </>
+            )}
             <PlanCard
               title={StripeProductNames[ProductSubscriptionTypes.enterprise]}
               subtitle={"Unlimited AI responses"}
               plan={ProductSubscriptionTypes.enterprise}
               sliderFeatureName="ai"
-              price={499}
-              isYearlyPrice={true}
+              price={999}
+              isLifetimePrice={true}
               actionText={""}
               team={team}
               metric="AI responses"
@@ -278,7 +282,7 @@ export default function PricingTableComponent({
           </div>
         ) : (
           <>
-            <div className="mt-10 max-w-4xl">
+            <div className="mt-10">
               <FreeTrialCard
                 title={"Free Trial"}
                 subtitle={"Get up to 250 free responses every month"}
@@ -289,7 +293,7 @@ export default function PricingTableComponent({
                 perMetricCharge={0.15}
               />
             </div>
-            <div className="mt-10 max-w-4xl">
+            <div className="mt-10">
               <PlanSelector
                 title="Upgrade your plan"
                 subtitle={plansAndFeatures.subtitle}

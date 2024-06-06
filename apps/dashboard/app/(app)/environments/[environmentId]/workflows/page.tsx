@@ -1,18 +1,18 @@
+import { AddAIToolModal } from "@/app/(app)/environments/[environmentId]/workflows/components/AddAIToolModal";
 import WorkflowStarter from "@/app/(app)/environments/[environmentId]/workflows/components/WorkflowStarter";
-import { PlusIcon } from "lucide-react";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 
-import { getIsEngineLimited } from "@typeflowai/ee/subscription/lib/service";
+import { getIsAIToolsLimited, getIsEngineLimited } from "@typeflowai/ee/subscription/lib/service";
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { WEBAPP_URL, WORKFLOWS_PER_PAGE } from "@typeflowai/lib/constants";
+import { IS_TYPEFLOWAI_CLOUD } from "@typeflowai/lib/constants";
 import { getEnvironment, getEnvironments } from "@typeflowai/lib/environment/service";
 import { getMembershipByUserIdTeamId } from "@typeflowai/lib/membership/service";
 import { getAccessFlags } from "@typeflowai/lib/membership/utils";
 import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
 import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
 import { getWorkflowCount } from "@typeflowai/lib/workflow/service";
-import { Button } from "@typeflowai/ui/Button";
 import { PageContentWrapper } from "@typeflowai/ui/PageContentWrapper";
 import { PageHeader } from "@typeflowai/ui/PageHeader";
 import { WorkflowsList } from "@typeflowai/ui/WorkflowsList";
@@ -48,25 +48,25 @@ export default async function WorkflowsPage({ params }) {
   const isEngineLimited = await getIsEngineLimited(team);
 
   const workflowCount = await getWorkflowCount(params.environmentId);
+  const isAIToolsLimited = await getIsAIToolsLimited(team);
 
   const environments = await getEnvironments(product.id);
   const otherEnvironment = environments.find((e) => e.type !== environment.type)!;
 
-  const CreateWorkflowButton = (
-    <Button
-      size="sm"
-      href={`/environments/${environment.id}/workflows/templates`}
-      variant="darkCTA"
-      EndIcon={PlusIcon}>
-      New workflow
-    </Button>
+  const renderCreateAIToolModal = () => (
+    <AddAIToolModal
+      environmentId={environment.id}
+      isTypeflowAICloud={IS_TYPEFLOWAI_CLOUD}
+      workflowCount={workflowCount}
+      isAIToolsLimited={isAIToolsLimited}
+    />
   );
 
   return (
     <PageContentWrapper>
       {workflowCount > 0 ? (
         <>
-          <PageHeader pageTitle="AI Tools" cta={CreateWorkflowButton} />
+          <PageHeader pageTitle="AI Tools" cta={renderCreateAIToolModal()} />
           <WorkflowsList
             environment={environment}
             otherEnvironment={otherEnvironment}
@@ -74,6 +74,9 @@ export default async function WorkflowsPage({ params }) {
             WEBAPP_URL={WEBAPP_URL}
             userId={session.user.id}
             workflowsPerPage={WORKFLOWS_PER_PAGE}
+            workflowCount={workflowCount}
+            isAIToolsLimited={isAIToolsLimited}
+            isTypeflowAICloud={IS_TYPEFLOWAI_CLOUD}
           />
         </>
       ) : (

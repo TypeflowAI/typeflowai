@@ -26,7 +26,7 @@ export const handleSubscriptionUpdated = async (event: Stripe.Event) => {
     await updateTeam(teamId, {
       billing: {
         ...team.billing,
-        subscriptionStatus: "cancelled",
+        subscriptionStatus: "canceled",
       },
     });
     return { status: 200, message: "Subscription cancel scheduled for end of period" };
