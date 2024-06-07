@@ -35,7 +35,7 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: "/docs",
+        source: "/",
         destination: "/docs/introduction/what-is-typeflowai",
         permanent: true,
       },
