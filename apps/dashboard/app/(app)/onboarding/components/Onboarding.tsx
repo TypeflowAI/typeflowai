@@ -137,6 +137,7 @@ export function Onboarding({
             webAppUrl={webAppUrl}
             jsPackageVersion={jsPackageJson.version}
             setCurrentStep={setCurrentStep}
+            team={team}
           />
         );
       case 5:

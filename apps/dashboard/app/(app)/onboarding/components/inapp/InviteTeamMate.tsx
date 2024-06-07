@@ -69,7 +69,7 @@ export function InviteTeamMate({ team, environmentId, setCurrentStep }: InviteTe
         localStorage.removeItem("onboardingPathway");
         localStorage.removeItem("onboardingCurrentStep");
       }
-      await finishOnboardingAction();
+      await finishOnboardingAction(team);
       router.push(`/environments/${environmentId}/workflows`);
     } catch (error) {
       toast.error("An error occurred saving your settings.");

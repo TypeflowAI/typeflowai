@@ -9,18 +9,19 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { TEnvironment } from "@typeflowai/types/environment";
+import { TTeam } from "@typeflowai/types/teams";
 import { Button } from "@typeflowai/ui/Button";
 import { capturePosthogEvent } from "@typeflowai/ui/PostHogClient";
 
 import { fetchEnvironment, finishOnboardingAction } from "../../actions";
 import SetupInstructionsOnboarding from "./SetupInstructions";
 
-const goToProduct = async (router) => {
+const goToProduct = async (router, team) => {
   if (typeof localStorage !== undefined) {
     localStorage.removeItem("onboardingPathway");
     localStorage.removeItem("onboardingCurrentStep");
   }
-  await finishOnboardingAction();
+  await finishOnboardingAction(team);
   router.push("/");
 };
 
@@ -111,6 +112,7 @@ interface ConnectProps {
   webAppUrl: string;
   jsPackageVersion: string;
   setCurrentStep: (currentStep: number) => void;
+  team: TTeam;
 }
 
 export function ConnectWithTypeflowAI({
@@ -118,6 +120,7 @@ export function ConnectWithTypeflowAI({
   webAppUrl,
   jsPackageVersion,
   setCurrentStep,
+  team,
 }: ConnectProps) {
   const router = useRouter();
   const [localEnvironment, setLocalEnvironment] = useState(environment);
@@ -136,7 +139,7 @@ export function ConnectWithTypeflowAI({
   return localEnvironment.widgetSetupCompleted ? (
     <ConnectedState
       goToProduct={() => {
-        goToProduct(router);
+        goToProduct(router, team);
       }}
     />
   ) : (
