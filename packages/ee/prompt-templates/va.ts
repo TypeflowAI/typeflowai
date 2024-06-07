@@ -86,7 +86,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - How can I improve @team-member's performance at @area ?
         - "Help me identify the root cause of @problem and provide a solution to improve  @team-member 's performance."
@@ -130,7 +130,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Could you make a schedule of tasks that need to be completed by @deadline? Please prioritize tasks: @tasks, and provide an estimated time for each task. Also, could you add any alerts that I may need?
         `,
@@ -181,7 +181,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Assist in creating a project plan for @client-name that aligns with their @industry standards and requirements? @specifics
         `,
@@ -224,7 +224,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Could you generate a detailed report on @team-member 's today/yesterday/the past week tasks, including the progress made on each task, any issues encountered, and any upcoming deadlines? @information.
         `,
@@ -277,7 +277,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context:
         You are "Time Mastery GPT," an AI productivity coach specialized in optimizing time management for high-performance teams. Your expertise includes advanced techniques in time allocation, priority setting, and eliminating inefficiencies in work processes.
@@ -351,7 +351,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you help me plan a @length-trip trip to @destination for @number-people? I'm looking for recommendations on activites/attractions and restaurantes to try.
         `,
@@ -410,7 +410,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Could you please research the best @activity options in @destination for @number-people people during @month?
         `,
@@ -493,7 +493,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Could you create a workout plan for @client-name that focuses on @muscle-group? He/She has @health-condition that limits his/her ability to do certain exercises, so please keep that in mind. He/She also prefers @workout-type workouts and has @client-level fitness level. Can you include some @equipement exercises as well?
         - Client Gender: @client-gender
@@ -562,7 +562,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         You are a Translation Expert GPT, a linguistic specialist adept in multiple languages and familiar with various industry terminologies. You excel in providing translations that not only convey the literal meaning but also capture the nuances and specific jargon relevant to different sectors.
@@ -637,7 +637,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Translate this email/message from @source-language to @target-language, please:
         @message
@@ -689,7 +689,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Could you translate from @source-language to @target-language for me, please?
         @document-info
@@ -741,7 +741,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         "How can I translate from @source-language to @target-language while preserving its contextual information?
         @text
@@ -793,7 +793,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         How can I translate a @source-language legal document to @target-language ?
         @text
@@ -829,7 +829,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         "I need your assistance in generating a Cloud Formation template that creates a VPC with @subnets and an internet gateway. The VPC should have security groups and network acls configured for inbound and outbound traffic. Could you help me with that?
         `,
@@ -880,7 +880,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you create a comprehensive guide for our @software software?
         - Our software has several @features that need documentation. Can you create some guides for each?
@@ -933,7 +933,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I'm looking for a virtual assistant to build an API that connects @source to @destination. @company-name would like the API to be scalable and secure. Can you help us with that?
         `,
@@ -992,7 +992,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context:
         You are "Hybrid Event Maestro GPT," an AI expert in the field of hybrid event planning - events that combine both in-person and virtual elements. Your expertise includes integrating technology, enhancing participant engagement, and ensuring seamless experiences for both physical and remote attendees.
@@ -1075,7 +1075,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context:
         You are "Green Event Planner GPT," a specialized AI in event planning with a focus on sustainability and eco-friendliness. Your expertise encompasses green practices, environmentally friendly materials, and sustainable event management strategies.
@@ -1150,7 +1150,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - How would you craft a blog post of @number-words that highlights the top 5 home features to look for when buying a property in @location? Please focus on @features , and provide examples of properties that showcase these features.
         `,
@@ -1225,7 +1225,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you please generate a description for a @property-type located in @city , @state ? Please include @bedrooms, @bathrooms , and any @features that make this property unique.
         `,
@@ -1268,7 +1268,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you generate a nice real estate flyer for @property-type that feature its @features ?
         `,
@@ -1335,7 +1335,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you generate @number-words words of website content for a @property-type in @location , highlighting its @features , and showcasing its @benefits to the target audience?
         `,
@@ -1394,7 +1394,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you generate a @number-words real estate offer letter for @property-type in @city , with emphasis on @key-selling-points ?
         `,
@@ -1461,7 +1461,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I need to create a real estate listing for a @property-type in @location that will appeal to @target-audience. Can you provide me with research on @features and @amenities that would be important to highlight?
         `,
@@ -1512,7 +1512,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are the entry/exit restrictions for @nationality citizens traveling to @destination on a @visa-type visa?
         `,
@@ -1571,7 +1571,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you suggest me travel insurance plans for a @duration day trip to @destination departing from @deaperture-city on @start-date ?
         `,
@@ -1614,7 +1614,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you help me generate some unique @activity ideas to add to my destination guide on @city ?
         `,
@@ -1657,7 +1657,7 @@ export const vaTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Could you please write a @review-type review for the @hotel-name that I recently stayed at?
         `,

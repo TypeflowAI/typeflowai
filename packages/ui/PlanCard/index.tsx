@@ -95,7 +95,7 @@ export const PlanCard = ({
         )}
         {isLifetimePrice && team.billing.subscriptionType !== plan && (
           <>
-            <Badge text="Pay once use forever" size="normal" type="brand" />
+            <Badge text="Pay once use forever" size="normal" type="success" />
           </>
         )}
         <p className=" whitespace-pre-wrap text-sm text-slate-600">{subtitle}</p>

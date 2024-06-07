@@ -102,7 +102,6 @@ export const PREVIEW_WORKFLOW = {
   prompt: {
     enabled: true,
     id: "prompt",
-    description: "Prompt",
     message: "",
     attributes: {},
     isVisible: true,

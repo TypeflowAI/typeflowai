@@ -1,5 +1,6 @@
 "use server";
 
+import { Team } from "@prisma/client";
 import { getServerSession } from "next-auth";
 
 import { sendInviteMemberEmail } from "@typeflowai/email";
@@ -12,6 +13,7 @@ import { inviteUser } from "@typeflowai/lib/invite/service";
 import { canUserAccessProduct } from "@typeflowai/lib/product/auth";
 import { getProduct, updateProduct } from "@typeflowai/lib/product/service";
 import { verifyUserRoleAccess } from "@typeflowai/lib/team/auth";
+import { updateTeam } from "@typeflowai/lib/team/service";
 import { updateUser } from "@typeflowai/lib/user/service";
 import { createWorkflow } from "@typeflowai/lib/workflow/service";
 import { AuthenticationError, AuthorizationError } from "@typeflowai/types/errors";
@@ -72,9 +74,23 @@ export const inviteTeamMateAction = async (
   return invite;
 };
 
-export const finishOnboardingAction = async () => {
+export const finishOnboardingAction = async (team: Team) => {
   const session = await getServerSession(authOptions);
   if (!session) throw new AuthorizationError("Not authorized");
+
+  await updateTeam(team.id, {
+    billing: {
+      ...team.billing,
+      subscriptionType: "free",
+      features: {
+        ...team.billing.features,
+        ai: {
+          ...team.billing.features.ai,
+          responses: 10,
+        },
+      },
+    },
+  });
 
   const updatedProfile = { onboardingCompleted: true };
   return await updateUser(session.user.id, updatedProfile);

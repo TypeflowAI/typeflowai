@@ -86,7 +86,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         You are an outreach master, a seasoned expert in customer communication and relationship building. Your specialty is in crafting unique, personalized outreach strategies for businesses aiming to connect deeply with their target audience.
@@ -144,7 +144,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I'm looking to create an interactive quiz to generate leads for our @product-service. Can you provide me with some ideas for quiz questions and how to design the quiz to be engaging and effective?
         - I want to create a ROI calculator to help potential customers understand the value of our @product-service. Can you help me create the calculations and design the calculator to be user-friendly and informative?
@@ -189,7 +189,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are the top factors to consider when creating lead scoring criteria for @client-company based on @product-service?
         - Help me improve @client-company's lead scoring model for @product-service?
@@ -241,7 +241,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - My brand needs to develop a series of @social-media-platform ads that convey our @unique-value-proposition to @target-audience. Can you suggest some Ad copy and messaging variations?
         `,
@@ -284,7 +284,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you help me craft a compelling email to @company-name about our @product-service? We want to highlight our unique value proposition and stand out from the competition.
         `,
@@ -327,7 +327,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you help me generate some new email subject lines for our @product-service that would resonate with our @target-audience? What type of language or messaging should I use to improve our open rates?
         `,
@@ -378,7 +378,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you help me create an email campaign for @company-name promoting our new product? We want to target @target-audience, and we'd like to include @specific-content. Can you suggest a subject line and some talking points to include in the email?"
         `,
@@ -429,7 +429,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I am looking to improve my sales pitch for my @product-service. Can you help me come up with at least @number different versions of my pitch that I can test through A/B testing? I want to know which version is most effective in terms of conversion rate. Also, can you give me some guidance on how to structure the A/B testing experiment and interpret the results?
         `,
@@ -472,7 +472,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you help me create a product comparison chart between @product-a and @product-b? I want to highlight key features, benefits, and pricing information to help customers make an informed decision.
         `,
@@ -515,7 +515,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I am looking to create a product roadmap for @product-service that addresses the needs of @target-audience. Can you suggest some specific features and functionalities that would be valuable to this audience?
         `,
@@ -550,7 +550,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I'm looking to create a tutorial video for @product-service, can you suggest a format and structure that would be effective in communicating how to use the product?
         `,
@@ -585,7 +585,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I am looking to write a problem-solving review of @product. Can you suggest some scenarios or issues that potential customers may face that this product can effectively solve?
         `,
@@ -620,7 +620,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are the most common questions that customers have about @product-service? Can you provide answers that are clear and concise, and address any concerns that customers may have?
         `,
@@ -663,7 +663,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you generate a list of high-volume keywords for @topic? The keywords should be relevant to @target-audience, and have low competition. Please include any related keywords or phrases that may be useful for optimizing content.
         `,
@@ -706,7 +706,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         "Can you generate a case study on @topic that is targeted to @target-audience? The case study should be engaging, informative, and easy to follow, with clear explanations and relevant examples. Please include any relevant data or statistics."
         `,
@@ -753,7 +753,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I'm looking to craft social media copy that highlights the unique features and benefits of my @product-service, and effectively communicates the value of my offerings to my target audience. Can you assist me in generating a range of ideas and insights that are creative, engaging, and resonate with my audience of @target-audience?
         `,
@@ -788,7 +788,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you provide me with some ideas for social media posts related to @topic? I'm trying to fill out my content calendar for the next month.
         `,
@@ -839,7 +839,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - As a @business-type, I'm looking to create an interactive quiz that engages my audience of @target-audience and promotes my @product-service. Can you assist me in generating a range of quiz questions and topics that are relevant and interesting to my target audience?
         `,
@@ -874,7 +874,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you generate a white paper that outlines the latest trends and innovations in the field of @field? Please provide data-driven insights and use cases to support the findings.
         `,
@@ -913,7 +913,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - We're looking to create a blog article that showcases the benefits and features of @product-service. Can you help us generate content that effectively communicates how our product can help businesses overcome specific challenges and achieve their goals?
         `,
@@ -948,7 +948,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Based on historical sales data, can you predict the expected sales growth for @company-name for the upcoming quarter? Please include any relevant factors or variables that may impact sales performance.
         `,
@@ -983,7 +983,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you help me identify the most profitable customer segments for @company-name? Please provide a detailed analysis of the factors contributing to profitability and identify any notable trends or patterns.
         - Based on our customer data, can you help me identify the customer segments that are most likely to be interested in our new product or service? Please provide any recommendations for targeting these segments effectively."
@@ -1027,7 +1027,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I need to generate a sales win/loss analysis report for my @company-type that sells @product-service. Can you help me identify the right metrics to track and generate a report that provides insights on our sales performance and how we can optimize our win/loss ratio?
         `,
@@ -1082,7 +1082,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Please generate a sales automation workflow for @company-name, that automates the sales process for @product-service. The workflow should be designed to help us @goal, while also taking into account the unique needs of our customers.
         `,
@@ -1125,7 +1125,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Please provide a sales policy framework for @company-name, that outlines the policies for @policy-areas and takes into account the unique needs of our business and industry.
         `,
@@ -1160,7 +1160,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         You are Proposal Feedback GPT, an experienced evaluator of business proposals with a knack for identifying strengths and weaknesses. Your role is to provide detailed, objective feedback to enhance the quality of proposals.
@@ -1223,7 +1223,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I need to create a new proposal template for our @product-service. Can you help me gather and organize the key information that should be included in the proposal, and provide suggestions for formatting and structure?
         `,
@@ -1258,7 +1258,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - We're launching a new social media campaign and need to create influencer contracts that protect our brand and ensure compliance with all legal requirements. Can you provide guidance and recommendations on how to craft effective influencer contracts?
         - Can you help me draft an influencer contract for @influencer-name that includes all necessary legal requirements and sets clear expectations for the campaign goals and deliverables?
@@ -1298,7 +1298,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What metrics should I use to measure customer engagement and satisfaction, and how can I track them over time to monitor the effectiveness of our engagement strategies?
         - Can you help me generate a report that provides insights into @product-service preferences, purchase behavior, and feedback to inform our engagement strategy?
@@ -1342,7 +1342,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are some trending hashtags in the @industry industry that we could use to increase our social media visibility and engagement, particularly among @target-audience?
         `,
@@ -1377,7 +1377,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I need to create a brand voice guideline for my @product-service that is clear and concise. Can you provide me with some suggestions on how to achieve this?
         `,
@@ -1424,7 +1424,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - How can we use data to craft a social media caption that resonates with @target-audience and highlights the unique features of our @product-service?`,
         attributes: {},
@@ -1458,7 +1458,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you give me some tips on how to write a feedback request email that is concise but also covers all the important aspects?
         - What are some ways to incentivize customers to provide feedback in a feedback request email?
@@ -1495,7 +1495,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you provide me with a template for a response to a review that highlights the benefits of our @product-service?
         `,
@@ -1530,7 +1530,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are some best practices for crafting email response templates that are personalized and engaging for @product-service
         - What are some key metrics and KPIs that can be used to measure the effectiveness of email response templates and overall customer service performance?
@@ -1574,7 +1574,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you suggest a calendar of email campaigns for @product-service for the @time-period, including the email content and the target audience?
         `,
@@ -1633,7 +1633,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context: You are Sales Communication GPT, an expert in crafting persuasive and effective follow-up communications for sales professionals. With a deep understanding of client psychology and sales tactics, you specialize in composing emails that encourage positive client responses.
 
@@ -1704,7 +1704,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you provide me with segmentation ideas for @industry customers who are interested in @product-service?
        `,
@@ -1747,7 +1747,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you help me generate an email newsletter for @company-name that includes updates on @product-service, upcoming events, and a featured article from one of our experts? Please include a call-to-action for signing up for our newsletter and sharing on social media.
         `,
@@ -1782,7 +1782,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - We need to develop a predictive market analysis model for our @industry. Can you provide insights and analysis based on historical data and industry trends that can help us make informed business decisions?
         - We want to understand the factors that influence customer behavior and preferences in the [Industry/Niche] and develop a predictive model based on these insights. Can you help us identify key trends and patterns in customer behavior?
@@ -1830,7 +1830,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you provide an analysis of customer behavior and preferences related to @product-service that can inform our customer engagement strategy?
         - What are some examples of successful customer engagement strategies used by companies in @industry that we can learn from and adapt to our own needs?
@@ -1874,7 +1874,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you help me create a customer persona for @product-service 's target audience in the @industry? Can you provide insights into their behavior, preferences, and motivations?
         `,
@@ -1929,7 +1929,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Overview:
         This prompt is designed for sales professionals seeking to enhance their partnership management skills. As Sales Partnership Optimizer GPT, you provide strategic advice on managing and nurturing business relationships, focusing on mutual growth and efficient collaboration.
@@ -1998,7 +1998,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you generate cross-promotion campaign ideas for @product-service that will appeal to @target-audience, and suggest potential partner brands and channels for promotion?
         - Please create a detailed cross-promotion marketing plan for @product-service that includes a timeline, budget, and metrics for measuring success, and incorporates both online and offline channels.
@@ -2059,7 +2059,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you help me create a custom lead nurturing chatbot script for @company-name, that can answer @questions about our @product-service and guide users through the @sales-funnel?"
         `,
@@ -2110,7 +2110,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you help me create a drip email campaign for @product-service targeting @target-audience who are interested in @interests-needs?
         `,
@@ -2145,7 +2145,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you help us create a lead nurturing KPI dashboard that includes metrics such as lead velocity, lead quality, engagement rates, and conversion rates, and provides insights on which campaigns and channels are driving the most ROI for @product-service?`,
         attributes: {},
@@ -2195,7 +2195,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         I need help creating a lead magnet campaign for @company-name , @product-service. Can you suggest some ideas for lead magnets that would appeal to our target audience of @target-audience?"
         `,
@@ -2266,7 +2266,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I need to analyze the results of @company-name for the @product-service, and identify areas for improvement @improvements. Can you provide recommendations for how to refine our performance optimization framework and improve our ROI @roi?
         `,
@@ -2313,7 +2313,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you help me create a lead nurturing workflow for @product-service that targets @target-audience and includes personalized email content at each stage of the journey? Please provide recommendations on how to optimize the workflow and measure its effectiveness.
         `,
@@ -2360,7 +2360,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I want to send a re-engagement email to @company-name @product-service subscribers who haven't opened or clicked on recent emails. Can you suggest some attention-grabbing subject lines and a compelling message that encourages them to re-engage with the course and our brand?
         `,
@@ -2407,7 +2407,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I need a loyalty program that encourages repeat purchases and upselling. Can you generate a program that offers @exclusive-discounts for customers who make multiple purchases or upgrade to premium services?
         - Can you help me create a loyalty program that integrates with our existing rewards program? The program should provide additional benefits and perks for our most loyal customers, and should be seamless and easy to participate in.
@@ -2471,7 +2471,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context:
         You are Sales Incentive Planner GPT, a renowned expert in designing sales incentive programs. You specialize in creating unique, motivating, and achievable incentives for sales teams in various industries.
@@ -2599,7 +2599,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         @lead-name , holding the position of @position at @lead-company in this industry @lead-company-do faces these challenges: @challenges . The company specializes in @lead-company-do .
         
@@ -2765,7 +2765,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         You are a seller on Amazon and you need to create descriptions for a product catalog.
         
@@ -2822,7 +2822,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         You are a Silicon Valley entrepreneur looking to generate digital business ideas that don't require a large investment and can be implemented relatively easily without facing too much competition or entry barriers.
 
@@ -2899,7 +2899,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Generate a budget for the following concepts:
 
@@ -2967,7 +2967,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         You are a Customer Experience expert and you need to generate a customer journey map. 
 
@@ -3038,7 +3038,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Generate email subjects (maximum 15 words) with the goal of @goal for a company that focuses on @focus and whose solution involves @solution thanks to its @benefit .
         
@@ -3134,7 +3134,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         You are a marketing expert and you need to generate an empathy map. Follow these steps:
 
@@ -3230,7 +3230,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         You are a marketing expert and you have to generate a unique value proposition for this @business . Follow these steps:
 
@@ -3289,7 +3289,7 @@ export const salesTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Develop a SWOT analysis for a company that sells these products and services @product and whose target market is @target-market. To do this, answer all these questions by analyzing the business and the specific market in which it operates, connecting to the internet to carry out the analysis.
 

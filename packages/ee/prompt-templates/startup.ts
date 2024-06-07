@@ -61,7 +61,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context:
         You are the Cutting-Edge Product Release Notes GPT, specializing in crafting compelling and informative release notes for software products. Your expertise includes outlining new features, improvements, and fixes in a way that is both technically informative and engaging to the user.
@@ -132,7 +132,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         "Can you provide an overview of the competitive landscape in @industry-segment, including @competitors-products, market share, and competitive advantages, to help me build a comprehensive business plan for @product-service?"
         `,
@@ -194,7 +194,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are some effective sales tactics for @product-service that cater to @customer-segment and address @pain-point? How can we measure the success of these tactics based on @metric
         `,
@@ -245,7 +245,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Generate an elevator pitch for my @product-service that highlights its unique value proposition: @unique-value-proposition , the target audience: @target-audience and captures the attention of potential investors/customers/partners.    
         `,
@@ -304,7 +304,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         "As a @position of @company, I have been tasked with developing a mission statement that encapsulates our brand and reflects our @number core values. Can you provide me with a template or structure for creating a mission statement that is well-organized and impactful in the industry of @industry?".
         `,
@@ -371,7 +371,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         "Our @company is looking to @improvement our @product-service offerings in @target-audience. Can you analyze our customer/sales/financial etc. data and suggest potential growth opportunities that align with our @brand-goals?
         `,
@@ -422,7 +422,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         "What are some emerging trends in the @industry that are likely to impact the @demographic market for @product-service and how can I adapt my marketing strategy to stay ahead of the curve?"
         `,
@@ -473,7 +473,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         "Can you suggest some potential slogans for a @product-service brand that emphasizes our commitment to @values and sets us apart from our competitors, while also considering the unique features of our @product-service and our target audience's @needs?"
         `,
@@ -532,7 +532,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - We are launching a new @product-service and we want a name that is relevant to our industry and has a strong brand identity. Can you suggest some names that incorporate @keywords, sound @tone, and appeal to our target audience of @demographic? Please provide at least 3 options.
         `,
@@ -575,7 +575,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I need to create a sales presentation for @product-service that targets @demographic. Can you help me generate ideas for how to make it more appealing to @demographic, while still highlighting the key features and benefits of the @product-service?
         `,
@@ -626,7 +626,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you create a comprehensive product launch plan for @product-service, targeting @target-audience, and incorporating @marketing-channels? Please include a detailed timeline, budget, promotional strategies, and success metrics.
         `,
@@ -677,7 +677,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         "I need a product roadmap for @product-service that takes into account the broader ecosystem of our product, including integrations with third-party platforms, APIs, and partnerships. It should create value for our customers and stakeholders across the board and address their emotional and functional needs for @needs.
         `,
@@ -720,7 +720,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are some best practices for designing interfaces of a @product-service that prioritize @user-group, and how can I ensure that my interface is useful and attractive for this group?
         `,
@@ -771,7 +771,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are some specific types of features that should be included in a minimum viable product of a @product-service for the industry: @industry, and how can they be e.g., tailored/modified to meet the unique needs of our target audience: @target-audience?
         `,
@@ -838,7 +838,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you generate some product features ideas that would differentiate our @product-service from competitors in the @industry market? Specifically, we are looking for features that address @aspects and have the potential to increase @metric by @percentage.
         `,
@@ -905,7 +905,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context:
         You are Product Viability Assessor GPT, an AI expert in product development and market analysis. You specialize in helping entrepreneurs evaluate their product ideas based on market data, trends, and feasibility studies.
@@ -986,7 +986,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Write me detailed product requirements that cover the @key-features.
         - "Please create product requirements that define the target audience: @target-audience, including @demographic. Additionally, please include requirements that address @needs for this audience."
@@ -1046,7 +1046,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Please analyze the @industry market trends for the past 2-3 years and forecast the @financial-metric for the next 2-3 years. Based on this analysis, what recommendations do you have for my company: @company to improve their @financial-performance?
         `,
@@ -1107,7 +1107,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - How to determine the @tax-rules that apply to your @income-sources, taking into account @legal-provisions, and understand how they impact your @taxable-income?
         `,
@@ -1166,7 +1166,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context:
         You are Startup Recognition Architect GPT, a specialist in designing and implementing effective recognition and reward systems in startup environments. Your expertise revolves around creating innovative and motivational recognition programs that cater to the unique dynamics of startups, focusing on boosting morale, employee engagement, and retention.
@@ -1241,7 +1241,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         "Can you suggest some @industry questions that I can ask during my interview with @position, specifically relating to @aspect-job?"
         `,
@@ -1308,7 +1308,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
          - I need to hire a @job-title that possesses @qualification-skill. Can you provide me with a job description that highlights the key @job-title responsibilities, qualifications, [e.g., HARD SKILLS/SOFT SKILLS], @education-certifications, and @experience that align with our @company culture?
          `,
@@ -1359,7 +1359,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - How can we design training programs that cater to different @learning-styles, and what @technologies should we consider for each style? How can we tailor the training programs to the needs of our @employee-demographics and e.g., ENSURE THEIR ENGAGEMENT AND PARTICIPATION in the training?
         `,
@@ -1418,7 +1418,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context:
         You are Startup Career Advancement GPT, a specialized consultant for career growth within startup environments. Your expertise lies in creating pathways for employee advancement in settings where traditional hierarchical structures are limited. Your focus is on identifying innovative and practical methods to offer career progression opportunities to employees in startups.
@@ -1487,7 +1487,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you help me draft a rejection email to a candidate who @reason-rejected? The position has been filled by @filled-position. Please provide a message that is professional yet empathetic and includes a thank you for their time and effort."      
         `,
@@ -1530,7 +1530,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I received a job offer from @company, can you help me draft a response that @specific-goals`,
         attributes: {},
@@ -1572,7 +1572,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are the key e.g., indicators/factors/data points to look for when trying to identify and capitalize on current market trends in the industry: @industry, and how can I use this information to improve/optimize my @product-service offerings?"
         `,
@@ -1615,7 +1615,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you provide examples of successful data visualizations that were used for @industry, and explain why they were effective?
         - What are the most effective data visualization tools or software for @data-type, and how can I use them to create more compelling visualizations?
@@ -1659,7 +1659,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What is the best way to break down expenses by @category, and how should I document them for @time-period? Can you provide more information on how to categorize these expenses and any tips or best practices for documentation?
         `,
@@ -1734,7 +1734,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What steps should I take to schedule an appointment with @name for a @type-appointment on @date at @time at @location? Also, I need @additional-requests.
         `,
@@ -1777,7 +1777,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you suggest some strategies for addressing potential biases or stereotypes that may influence the performance evaluation process, particularly with respect to @employee-name 's gender, race, or other personal characteristics?
         - Can you provide guidance on how to evaluate @employee-name 's performance in @area when there are no objective metrics or performance data available?
@@ -1821,7 +1821,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Design a crisis management plan for @industry that addresses a wide range of potential crises, incorporates best practices from @similiar-organizations, and includes a communication strategy for e.g. media outreach/internal communication/crisis monitoring. Also, include protocols for e.g. financial recovery/business continuity/reputation management."
         `,
@@ -1864,7 +1864,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you create a career development plan that takes into account my current skills: @current-skills and identifies areas of improvement needed to advance in @industry?
         `,
@@ -1899,7 +1899,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you help me condense my cv: @resume-cv to fit onto one page without losing any key information? I'm having trouble deciding what to cut and what to keep. Can you also suggest some adjectives that describe me in a positive light?
         `,
@@ -1958,7 +1958,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you help me create a leadership development plan for @plan-for? I would like to focus on improving @skill-area, which I believe will help me achieve @goal-outcome. Some of the challenges I've faced in this area include @challenge, and I would appreciate any guidance or resources you can offer to help me overcome these obstacles.
         `,
@@ -2017,7 +2017,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context:
         You are Adaptive Leadership Coach GPT, a specialized AI mentor focused on enhancing leaders' abilities to adapt their styles to diverse teams and situations. You possess a deep understanding of various leadership models and how they apply to different cultural, generational, and professional contexts.
@@ -2084,7 +2084,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are the key components of a comprehensive project plan for @project-type, and how can I ensure that I have adequately addressed each component, such as @components?
         `,
@@ -2127,7 +2127,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are the key factors that influence the @project-name budget, and how can I improve them? Specifically, how can I account for @factors in my budget plan?
         `,
@@ -2178,7 +2178,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are some effective methods that I can use to generate ideas for @problem-topic? I'm looking for ways to @outcome, but I'm open to @suggestions.
         `,
@@ -2221,7 +2221,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are the factors that are shaping the @industry-market, and how can we develop an innovation strategy that aligns with these trends while anticipating future @disruptors?
         `,
@@ -2272,7 +2272,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - How can @company-organization foster a culture of innovation to consistently identify and capitalize on new @product-service opportunities in @industry-niche, and what are some best practices for doing so?
         `,
@@ -2323,7 +2323,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I need help crafting a response to @employee-name 's feedback about @issue. They mentioned @feedback and I want to ensure that I address their concerns in a thoughtful way. Can you assist me in drafting an appropriate response?
         `,
@@ -2358,7 +2358,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are some effective ways to improve a company culture that aligns with our @core-values and supports talented employees, including but not limited to culture audits/employee workflows/leadership workshops and transparent communications?
         `,
@@ -2417,7 +2417,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context:
         You are Hybrid Culture Harmonizer GPT, an AI expert specializing in blending remote and in-office work cultures into a cohesive and productive environment. Your expertise includes fostering inclusive communication, collaboration strategies, and creating a sense of unity among all employees.
@@ -2492,7 +2492,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         "How can I use AI to analyze @customer-behavior data and identify emerging sales trends in @industry? Can AI also help me identify causes/effects of these trends such as demographics of my target audience: @targe-audience?"
         `,
@@ -2543,7 +2543,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         "What are the key metrics that can be analyzed to determine business objective in industry: @industry and how can @data-segmentation and @demographic factors be used to draw insights from this analysis?"
         `,
@@ -2578,7 +2578,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - How can I conduct a comprehensive competitive analysis to identify my main competitors in the @industry and analyze their strengths/weaknesses/opportunities/threats in terms of market share/revenue growth/customer retention?
         `,
@@ -2629,7 +2629,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - How do I use AI to find the market size of @product-service in @country-region and analyze the growth potential in @market-segment ?
         `,
@@ -2672,7 +2672,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are some potential growth opportunities for my @company in the @industry industry considering current market trends, customer behavior and competitor strategies?
         `,
@@ -2723,7 +2723,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you provide multiple examples/suggestions on how to conduct user research for web design, specifically for @target-audience , using @tool to @goal?
         `,
@@ -2766,7 +2766,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you provide examples of successful web usability testing methods that have been used to @website-goals for industry: @industry, and what specific metrics were used to measure the results?
         `,
@@ -2809,7 +2809,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         I'm designing a website for my business and I need help selecting a primary/secondary color scheme. Can you suggest a palette that aligns with my brand's values?
         - Business: @business
@@ -2864,7 +2864,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         "What are some effective color schemes for a @website-type that caters to @target-audience and emphasizes brand identity? How can I ensure that the colors are appropiate for the content and do not compromise accessibility?
         Can you suggest some design elements to enhance the user experience of my @website-type, while incorporating trendy features and avoiding common mistakes? How can I ensure that the design is consistent with our brand guidelines: @brand-guidelines and resonates with our @target-audience?"
@@ -2908,7 +2908,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are the key elements of a successful @content-type campaign for the industry: @industry  audience, and how can AI assist with their execution and optimization?
         `,
@@ -2975,7 +2975,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Create me a content marketing strategy for @industry that targets @demographic audience, and includes @content-type content with @tone-voice. Additionally, please suggest ways to optimize the content for @channel and improve the SEO ranking.
         `,
@@ -3026,7 +3026,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you help me brainstorm ideas for my next content marketing campaign? I'm targeting @target-audience and want to create content around @topic. Specifically, I'm interested in the following topics: @keywords.
         `,
@@ -3085,7 +3085,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I am struggling with @challenge in creating my video content on @topic, and I need some advice on how to overcome this challenge while keeping the @target-audience and @goal in mind. Can you help me out?
         `,
@@ -3136,7 +3136,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - How can I create a video production strategy that aligns with my @brand-voice, while still being engaging and relevant for @target-audience on @platform?
         `,
@@ -3195,7 +3195,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context:
         You are Content Innovator GPT, an AI consultant specializing in podcast and video production. Your expertise lies in generating unique, engaging content ideas tailored to specific audience demographics and trends.
@@ -3254,7 +3254,7 @@ export const startupTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you suggest some podcast topic ideas related to @topic? Additionally, could you provide some potential subtopics or guest speakers that could be featured?
         - What are some common mistakes to avoid when producing a podcast? How can I remediate these mistakes and improve the overall quality of my podcast?

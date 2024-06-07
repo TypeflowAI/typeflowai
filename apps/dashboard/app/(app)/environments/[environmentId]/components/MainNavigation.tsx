@@ -95,6 +95,8 @@ export const MainNavigation = ({
     localStorage.setItem("isMainNavCollapsed", isCollapsed ? "false" : "true");
   };
 
+  const AIUsesLeft = team.billing.features.ai.responses;
+
   useEffect(() => {
     const isCollapsedValueFromLocalStorage = localStorage.getItem("isMainNavCollapsed") === "true";
     setIsCollapsed(isCollapsedValueFromLocalStorage);
@@ -279,6 +281,7 @@ export const MainNavigation = ({
                   startIconClassName="h-5 w-5">
                   Upgrade Plan
                 </Button>
+                <p className="p-3 text-center text-sm text-lime-400">{AIUsesLeft} AI responses left</p>
               </div>
             )}
             <DropdownMenu>

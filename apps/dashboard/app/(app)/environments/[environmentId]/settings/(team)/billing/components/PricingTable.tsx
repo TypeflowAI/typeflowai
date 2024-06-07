@@ -115,10 +115,10 @@ export default function PricingTableComponent({
     }
   };
 
-  const handleReactivateSubscription = async () => {
+  const handleReactivateSubscription = async (lookupKey) => {
     try {
       await reactivateSubscriptionAction(team.id, environmentId);
-      capturePosthogEvent("PlanReactivated", { plan: capitalizeFirstLetter(activeLookupKey) });
+      capturePosthogEvent("PlanReactivated", { plan: capitalizeFirstLetter(lookupKey) });
       router.refresh();
       toast.success("Subscription re-activated successfully");
     } catch (err) {
@@ -235,7 +235,7 @@ export default function PricingTableComponent({
                   onUnsubscribe={(e) =>
                     handleUnsubscribe(e, ProductSubscriptionTypes[ProductSubscriptionTypes.basic])
                   }
-                  onReactivate={() => handleReactivateSubscription()}
+                  onReactivate={() => handleReactivateSubscription(StripePriceLookupKeys.basic)}
                 />
 
                 <PlanCard
@@ -257,7 +257,7 @@ export default function PricingTableComponent({
                   onUnsubscribe={(e) =>
                     handleUnsubscribe(e, ProductSubscriptionTypes[ProductSubscriptionTypes.pro])
                   }
-                  onReactivate={() => handleReactivateSubscription()}
+                  onReactivate={() => handleReactivateSubscription(StripePriceLookupKeys.pro)}
                 />
               </>
             )}
@@ -277,7 +277,7 @@ export default function PricingTableComponent({
               onUnsubscribe={(e) =>
                 handleUnsubscribe(e, ProductSubscriptionTypes[ProductSubscriptionTypes.enterprise])
               }
-              onReactivate={() => handleReactivateSubscription()}
+              onReactivate={() => handleReactivateSubscription(StripePriceLookupKeys.enterprise)}
             />
           </div>
         ) : (

@@ -89,7 +89,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         As Market Researcher GPT, your role is to aid entrepreneurs in pinpointing and exploiting shifts and trends in the market: @market. Your expertise lies in uncovering market dynamics that are often unnoticed by typical market researchers.         
@@ -148,7 +148,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT: 
         You are engaged as Marketing Funnel GPT, specializing in guiding Solopreneurs to structure their marketing funnels. Your expertise lies in effectively implementing the AIDA framework for practical business applications.
@@ -211,7 +211,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT: 
         You are the Value Ladder Strategist, a seasoned marketing consultant dedicated to assisting entrepreneurs in crafting tailored product portfolios that align with their business goals. Your expertise revolves around effectively applying the Value Ladder framework to actual business scenarios.
@@ -330,7 +330,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         SCENARIO:
         You hold the role of Community Engagement Strategist, specializing in aiding Solopreneurs to cultivate vibrant and active digital communities that drive growth for their businesses. Your forte lies in devising innovative strategies to foster engagement within these communities.
@@ -380,7 +380,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT: As Marketing Problem-Solving GPT, your expertise lies in aiding Solopreneurs with digital marketing challenges. Your skillset revolves around creating highly effective and innovative marketing strategies.
 
@@ -444,7 +444,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT: As Value Proposition GPT, my expertise lies in assisting entrepreneurs to enhance their value propositions through the integration of essential product features. I am recognized for my ability to identify product features that significantly improve Conversion Rates.
 
@@ -532,7 +532,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you please write a B2B proposal for @client-company that highlights the benefits of using our @product-service and how it can help them achieve their @client-business-goal?
         - Can you draft a B2B proposal for @client-company that explains how our @product-service can improve their @client-business-goal and increase their @specific-metric?
@@ -602,7 +602,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are the key features of @product-name?
         - What are the benefits of using @product-name for @target-audience / @customer-needs?
@@ -647,7 +647,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are the key elements of the marketing strategies in @industry and how could we improve our own approach?
         - Identify key trends and changes in @industry and how they are affecting our @competitors performance.
@@ -693,7 +693,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - In order to reach my goal of @specific-goal, I need to set performance targets for myself. Can you help me with that? Based on this: @business-vision`,
         attributes: {},
@@ -752,7 +752,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT: You are Facebook Ads GPT, an experienced advertising specialist with deep knowledge of psychological triggers and visual design in Facebook ads. You excel at creating ads that not only grab attention but also strengthen brand identity and lead to target conversions.
 
@@ -825,7 +825,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context: 
         I am a highly experienced Cold Email Outreach specialist in digital marketing, dedicated to assisting Solopreneurs in optimizing their cold email campaigns for enhanced results. My expertise lies in crafting personalized and engaging cold email templates.
@@ -903,7 +903,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context: I specialize in crafting compelling email subject lines to boost open rates for Solopreneurs. As an expert in this field, my goal is to provide you with 20 unique subject lines that will significantly increase your email open rates for your Product Hunt launch.
 
@@ -978,7 +978,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         You are E-Mail Marketing Optimization GPT, an expert in enhancing email campaign effectiveness. Your specialty is identifying and solving unique challenges in email marketing, especially for small to medium-sized businesses.
@@ -1058,7 +1058,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         You are E-Mail Marketing Compliance GPT, an expert in navigating the legal and ethical aspects of email marketing. Your expertise lies in ensuring that email campaigns comply with global regulations like GDPR, CAN-SPAM Act, and others.
@@ -1121,7 +1121,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context:
         In the realm of digital marketing, you have honed your expertise as a Maestro of Persuasion. Your specialty lies in the art of crafting captivating welcome email sequences that seamlessly guide users towards embracing your product, all while maintaining a respectful and non-intrusive approach. Your mission is to design a 14-day email sequence that respects user preferences and subtly promotes your product.
@@ -1198,7 +1198,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - How can I set up an email automation for @goal-event using @email-tool
         - What are some best practices for designing an email automation for @target-audience?
@@ -1292,7 +1292,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you help me generate some email lead magnet ideas for @target-audience, who are primarily interested in @primary-interest and also interested in @secondary-interest, related to @topic?
         - I'm struggling to come up with new email lead magnet ideas that would appeal to @target-audience, specifically those who are @demographic-descriptor and interested in @topic. Could you suggest some creative ideas that align with target audience's @interests-hobbies-needs, and help me grow my email list, ChatGPT?
@@ -1379,7 +1379,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I'm looking for your help with crafting a follow-up email sequence for @client-company in the @client-industry industry. They've shown interest in our product @product-service-name and I would like to provide them with more information on the unique features and benefits. Could you suggest some creative ways to structure the sequence, taking into account their specific needs and preferences, and the latest industry trends in @client-industry?
         - I recently sent an email to @client-company inviting them to an upcoming event, but I haven't received a response yet. Could you assist me in drafting a follow-up sequence that gently reminds them of the event and encourages them to attend? I would like the emails to sound friendly and professional, while highlighting the value of attending the event. Please also consider including @offer-incentive, to further entice them to attend.
@@ -1432,7 +1432,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTENT CALENDAR STRUCTURE:
 
@@ -1500,7 +1500,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT: You are Crisis Management GPT, a specialist in navigating social media crises for niche and sensitive businesses. You provide expert advice on how to manage and mitigate the impact of negative publicity or events on social media.
 
@@ -1575,7 +1575,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         You are Social Media Strategy GPT, an expert in crafting unique and effective social media strategies for niche markets. You specialize in helping businesses in obscure or highly specialized industries stand out on social media.
@@ -1649,7 +1649,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         I am Content Enhancement Specialist GPT, a professional dedicated to helping individuals and businesses improve their written content for better engagement and effectiveness. My expertise lies in evaluating and enhancing various types of content, including blog posts, articles, and marketing materials.
@@ -1756,7 +1756,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Write a blog post about the impact of @event-news on @industry-community.
         - Write a blog post of what are the key takeaways from @book-article and how can they be applied to @industry-fiel?
@@ -1843,7 +1843,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I need help creating a meta description for my web page on @topic. It should be @length characters long and include @keywords, which are related to @aspect-topic. Additionally, I want to highlight @value-proposition in the meta description. Can you help me craft one that's both descriptive and persuasive?
         - I'm having trouble coming up with a compelling meta description for my website about @topic. Can you provide me with @meta-number options that are @length characters long and include @keywords, as well as @additional-feature that sets my content apart? It's important to me that the meta descriptions are both informative and engaging.       
@@ -1895,7 +1895,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context:
         You are Long-Tail Keyword GPT, an expert in uncovering valuable long-tail keywords that are highly relevant but underutilized.
@@ -1955,7 +1955,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         You are Article Title GPT, an expert content marketer specializing in crafting attention-grabbing blog article titles. Your expertise lies in significantly boosting click-through rates (CTR) for articles.
@@ -2037,7 +2037,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         You are Brand Storytelling GPT, an expert in crafting compelling narratives for brands. Your skill lies in weaving brand values and product features into engaging stories that resonate with the target audience.
@@ -2109,7 +2109,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context:
         You are Content Strategy Expert GPT, a seasoned content marketer with a specialization in helping Solopreneurs create comprehensive content plans. Your expertise lies in crafting unique and impactful content strategies tailored to specific channels.
@@ -2186,7 +2186,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         You are Content Brainstorm GPT, an expert content marketer specializing in assisting Solopreneurs in achieving sales through content marketing. Your unique skill lies in dissecting the customer journey and transforming it into potential content marketing concepts.
@@ -2259,7 +2259,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I want to create a YouTube video about @topic. Can you help me write a script that will engage my audience and provide valuable information?
         - I am planning to launch a new @product-service and want to create a YouTube video to promote it. Can you help me write a script that will showcase its features and benefits in an interesting way?
@@ -2318,7 +2318,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         You are a YouTube Branding Visionary, an expert in crafting compelling brand identities for YouTube channels across diverse niches. Your profound understanding of visual aesthetics, storytelling techniques, and brand consistency sets you apart in the world of creative branding.
@@ -2387,7 +2387,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         In my role as a Hook Generator GPT, I specialize in crafting engaging hook tweets for Twitter threads that captivate and engage the audience, particularly aiding Solopreneurs in building their online presence.
@@ -2471,7 +2471,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         You find yourself in the role of a Personal Branding Virtuoso, specializing in crafting tweet ideas catered to the needs of Digital Creators. Your mission is to generate a compendium of tweet ideas that seamlessly align with the aspirations and goals of your audience while staying true to your personal positioning. These tweet ideas should reflect a high degree of creativity and complexity, offering a blend of thought-provoking and insightful content.
@@ -2529,7 +2529,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         You are the Niche Twitter Trends Analyzer, an AI expert in the art of identifying and dissecting emerging Twitter trends, particularly within specialized market segments. Your unique skillset revolves around comprehending the intricacies of niche communities and their dynamics on social media platforms.
@@ -2612,7 +2612,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I want to create a FAQ section for my @business-website-product-service. Can you help me come up with a list of frequently asked questions and answers that will provide helpful information for my customers?
         - I want to improve the user experience on my website by creating an FAQ section for @business-website-product-service. Can you help me come up with a list of frequently asked questions and answers that will be easily accessible and provide quick solutions for my customers?
@@ -2682,7 +2682,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         You are TikTok Strategy GPT, a specialized AI consultant for social media marketing with a focus on TikTok. Your expertise lies in identifying niche markets and developing targeted marketing strategies for them on TikTok.
@@ -2762,7 +2762,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         You are TikTok Trends Analyst GPT, an expert in identifying and analyzing the latest trends on TikTok. Your insights help content creators, marketers, and businesses to leverage these trends to increase their online presence and audience engagement.
@@ -2849,7 +2849,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Create a compelling product description for a @product-category that entices customers to purchase, using a maximum of 100 words.
         - Write a product description for a @product-name that emphasizes its unique selling points and differentiates it from similar products on the market.
@@ -2896,7 +2896,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Generate a headline that summarizes the benefits of @product-service for @target-audience.
         - Write a headline that conveys the unique value proposition of @product-service compared to similar offerings.
@@ -2935,7 +2935,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you provide a comprehensive review of the @product-service, including its features, performance, and value for money?
         - Write what are possible likes and dislikes about the @product-service and why?  Write a review based on that info.
@@ -2974,7 +2974,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you write me a testimonial about what makes @product-service a unique solution in the commerce industry?
         - Can you write me a testimonial about why you would recommend @product-service to others?
@@ -3045,7 +3045,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you provide a translation of the following text from @source-language to @target-language: [specific text to be translated]
         - Translate the following sentence from @source-language to @target-language: @sentence
@@ -3100,7 +3100,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are some effective strategies for creating a CTA that stands out on [a website/a landing page/an email campaign] and encourages users to take action for @product-service?
         - Can you give some advice on how to write a persuasive CTA that specifically targets @target-audience?
@@ -3150,7 +3150,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context:
         I am your Title Artisan AI, a copywriting aficionado with a knack for crafting captivating Headings 1. My forte lies in fashioning attention-grabbing and persuasive Headings 1 that can elevate landing page conversions. 
@@ -3222,7 +3222,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context:
         You are Landing Page Structure Maestro, an expert in crafting landing page designs that convert for Solopreneurs. Your forte lies in creating persuasive and engaging landing page structures that drive action.
@@ -3315,7 +3315,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Our @brand-name needs to create brand messaging that will resonate with @target-audience and convey our unique selling proposition, which is @selling-proposition. Can you provide writing prompts that highlight our core values of @core-values while still being persuasive and attention-grabbing?
         - As part of our rebranding efforts, we're looking to create a fresh and modern PR message for our @brand-name. We want to convey our brand personality and unique features that differentiate us from our competitors, such as @differentiating-features. Can you help us with writing prompts that strike the right tone and capture our brand essence?
@@ -3382,7 +3382,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I need to create a press release for our product: @product-service launch. Can you help me craft a compelling opening paragraph/body text/closing paragraph that highlights @features-benefits of our offering?
         - I'm struggling to come up with an attention-grabbing headline for our product: @product-service launch. Can you suggest some powerful adjectives/descriptive phrases/emotional triggers that will make it stand out from the competition?
@@ -3450,7 +3450,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you suggest some lead magnet ideas related to:
         - topic:@topic
@@ -3492,7 +3492,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context:
         You are Local Business Outreach GPT, an expert in identifying and connecting with local businesses for B2B lead generation. Your specialty is in creating personalized outreach strategies that resonate with small to medium-sized local businesses.
@@ -3574,7 +3574,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         I am Strategy Maven GPT, a specialist in developing winning marketing strategies for Solopreneurs. My expertise revolves around crafting tailored marketing plans that drive results.
@@ -3642,7 +3642,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         You are an Influencer Marketing Guru, an expert in designing influencer marketing campaigns that resonate with Solopreneurs. Your specialty lies in creating innovative strategies to promote products seamlessly through influential voices.
@@ -3731,7 +3731,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Offer an in-depth manual outlining the process of streamlining B2B LinkedIn expansion tailored to a company within the @industry, employing specialized tools such as @tools, and implementing a targeted approach.
         - Develop a systematic blueprint for automating B2B LinkedIn growth catered to a company focused on @jobs-industries, utilizing precise automation techniques.
@@ -3794,7 +3794,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         You are a LinkedIn Outreach Specialist AI, proficient in crafting effective LinkedIn connection strategies. Your forte lies in personalized connection requests and follow-up messages, optimizing network growth and professional opportunities.
@@ -3857,7 +3857,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         You are Affiliate Network Navigator GPT, adept at navigating and leveraging affiliate networks for maximum benefit. Your expertise lies in selecting the best networks and maximizing their potential.
@@ -3928,7 +3928,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         CONTEXT:
         You are Amazon Optimization GPT, an AI expert in enhancing Amazon store performance. You specialize in optimizing product listings, improving customer engagement, and increasing overall sales for Amazon sellers.
@@ -4033,7 +4033,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Create a compelling script for a TikTok video about @topic and @concept . 
         The target audience, meaning @gender + @age-range + @city , should only be used as context. 
@@ -4172,7 +4172,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Write a LinkedIn post about a these specific topic: @topic , and concept: @concept , targeting professionals holding the title of @role within the @industry sector. The focus is on @city-country, using the "[Structure Name]" @structure. Here are all the structures, choose the correct: 
         
@@ -4345,7 +4345,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Create a list of 10 innovative content marketing campaign ideas tailored specifically for a unique audience. Your task involves the following elements:
 
@@ -4484,7 +4484,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Create a compelling search ad to promote @product-service by @brand targeting @gender aged @age in @city-country . Incorporate the following keywords: @main-keyword , @secondary-keyword . The primary competitor is @competitor-url , while our website is @your-url .
         
@@ -4613,7 +4613,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Write a post about @theme for Twitter (X) using this URL for context @url . Use the structure @structure . The message I want to convey is @message .
 
@@ -4650,8 +4650,7 @@ export const marketingTemplates: TTemplate[] = [
     icon: "BuyerPersonaIcon",
     category: "Marketing",
     subcategory: "",
-    description:
-      "Create a detailed buyer persona covering demographics, psychographics, and purchasing habits.",
+    description: "Create a detailed buyer persona covering demographics, psychographics,habits...",
     objectives: ["improve_business_strategy", "other"],
     isPremium: true,
     preset: {
@@ -4681,7 +4680,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Your task is to create a detailed user profile for a @product-service business, targeting a specific market @market . This profile should be structured into four distinct tables, each covering different aspects of the user. The collected information must be relevant to the @market in question.
         
@@ -4811,7 +4810,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         You are a @profession and you want to offer your clients a dynamic lead magnet that provides @target with different results according to their @objective .
 
@@ -4899,7 +4898,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         @business-name specializes in the @industry industry and offers the following product categories @product-service-categories . The main competitors of @business-name are: @competitor-url-1 , @competitor-url-2 , @competitor-url-3 . Use the competitor URLs to conduct research to identify potential keywords (including longtail) that can be used for positioning and have high traffic potential.      
         `,
@@ -4990,7 +4989,7 @@ export const marketingTemplates: TTemplate[] = [
   //     prompt: {
   //       enabled: true,
   //       id: "prompt",
-  //       description: "Prompt",
+  //
   //       message: `
   //       Create an image based on this context:
 
@@ -5044,7 +5043,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Based on the book "The 1-page Marketing Plan", create a one-page marketing plan tailored to this target market @target-market , taking into account that the company offers these products or services @product .
 
@@ -5124,7 +5123,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Develop a one-page digital marketing plan based on this target market @target-market taking into account that the company offers these products or services @product and the goal is @objectives.
 
@@ -5207,7 +5206,7 @@ export const marketingTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Video Sales Copy Structure:
 

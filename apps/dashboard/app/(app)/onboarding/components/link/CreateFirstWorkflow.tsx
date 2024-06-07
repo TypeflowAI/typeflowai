@@ -1,9 +1,9 @@
 "use client";
 
 import OnboardingTitle from "@/app/(app)/onboarding/components/OnboardingTitle";
-import ChurnImage from "@/images/onboarding-churn.png";
-import FeedbackImage from "@/images/onboarding-collect-feedback.png";
-import NPSImage from "@/images/onboarding-nps.png";
+import BuyerPersonaImage from "@/images/onboarding-buyer-persona.png";
+import ColdEmailImage from "@/images/onboarding-cold-email-generator.png";
+import LinkedInImage from "@/images/onboarding-linkedin-post-generator.png";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -11,6 +11,7 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 
 import { customWorkflow, templates } from "@typeflowai/ee/prompt-templates/templates";
+import { TTeam } from "@typeflowai/types/teams";
 import { TTemplate } from "@typeflowai/types/templates";
 import { Button } from "@typeflowai/ui/Button";
 import { OptionCard } from "@typeflowai/ui/OptionCard";
@@ -20,16 +21,17 @@ import { createWorkflowFromTemplate, finishOnboardingAction } from "../../action
 
 interface CreateFirstWorkflowProps {
   environmentId: string;
+  team: TTeam;
 }
 
-export function CreateFirstWorkflow({ environmentId }: CreateFirstWorkflowProps) {
+export function CreateFirstWorkflow({ environmentId, team }: CreateFirstWorkflowProps) {
   const router = useRouter();
   const [loadingTemplate, setLoadingTemplate] = useState<string | null>(null);
-  const templateOrder = ["Collect Feedback", "Net Promoter Score (NPS)", "Churn Workflow"];
+  const templateOrder = ["Buyer Persona Generator", "LinkedIn Post Generator", "Cold Email Generator"];
   const templateImages = {
-    "Collect Feedback": FeedbackImage,
-    "Net Promoter Score (NPS)": NPSImage,
-    "Churn Workflow": ChurnImage,
+    "Buyer Persona Generator": BuyerPersonaImage,
+    "LinkedIn Post Generator": LinkedInImage,
+    "Cold Email Generator": ColdEmailImage,
   };
 
   const filteredTemplates = templates
@@ -42,7 +44,7 @@ export function CreateFirstWorkflow({ environmentId }: CreateFirstWorkflowProps)
       localStorage.removeItem("onboardingPathway");
       localStorage.removeItem("onboardingCurrentStep");
     }
-    await finishOnboardingAction();
+    await finishOnboardingAction(team);
     try {
       const workflow = await createWorkflowFromTemplate(template, environmentId);
       capturePosthogEvent("WorkflowCreated", { isTemplate: true, template: template.name });
@@ -52,9 +54,11 @@ export function CreateFirstWorkflow({ environmentId }: CreateFirstWorkflowProps)
     }
   };
 
+  console.log("Pasando por aqui");
+
   return (
     <div className="flex flex-col items-center space-y-16">
-      <OnboardingTitle title="Create your first workflow" subtitle="Pick a template or start from scratch." />
+      <OnboardingTitle title="Create your first AI tool" subtitle="Pick a template or start from scratch." />
       <div className="grid w-11/12 max-w-6xl grid-cols-3 grid-rows-1 gap-6">
         {filteredTemplates.map((template) => {
           const TemplateImage = templateImages[template.name];

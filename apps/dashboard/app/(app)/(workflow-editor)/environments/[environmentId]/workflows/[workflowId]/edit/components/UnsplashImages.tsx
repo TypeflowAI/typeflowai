@@ -183,7 +183,7 @@ export const ImageFromUnsplashWorkflowBg = ({ handleBgChange }: ImageFromUnsplas
         <Input
           value={query}
           onChange={handleChange}
-          placeholder="Try 'lollipop' or 'mountain'..."
+          placeholder="Try 'cat' or 'mountain'..."
           className="pl-8"
           ref={inputFocus}
           aria-label="Search for images"

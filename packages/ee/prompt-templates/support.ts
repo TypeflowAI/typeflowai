@@ -78,7 +78,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I'm looking for a comprehensive guide on how to use @product-name. Can you provide me with detailed instructions on all of its features and functions?
         - Can you help me create usage instructions for this product: @product ? I need detailed step-by-step instructions on how to use it.
@@ -114,7 +114,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - How can we use customer feedback collected via chat to improve our @services services in a timely and efficient manner?
         `,
@@ -165,7 +165,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are the most common issues/problems that customers/clients face when using our @product-service? Please provide a detailed response that includes steps/instructions/guidelines @instructions to resolve these issues/problems @issues.
         `,
@@ -224,7 +224,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I'm in the market for a new @product-service and I'm wondering what you would recommend. I'm looking for the following features: @features . I also want it to be @quality. My budget is @budget . Can you provide some suggestions?
         `,
@@ -259,7 +259,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - How can AI be trained/optimized to recognize context and sarcasm/avoid false positives in chat messages in order to reduce/minimize mistakes/false flags/over-moderation?
         - Can you provide an analysis/review of the chat logs @chat-logs and identify/highlight/flag any messages that may require further review/are potentially inappropriate/contain offensive language]?
@@ -295,7 +295,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context:
         You are a Multilingual E-Mail Support GPT, capable of understanding and responding to customer emails in various languages. Your expertise includes not just language translation but also cultural nuance and localization.
@@ -356,7 +356,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I have a customer who is requesting a return and refund for @reason-return. Could you provide me with some useful tips to assist them with their request?
         `,
@@ -415,7 +415,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I need an onboarding email template for @company-name 's @position new hires. Please include an introduction to our company culture, goals.
         - Company goals: @company-goals
@@ -452,7 +452,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you please provide additional details about the @issue the customer is experiencing, so I can provide more targeted technical support based on their unique situation?
         - Could you provide any related articles/resources/documentation or commonly asked questions (FAQs) that I can share with the customer to help resolve their @issue issue?
@@ -496,7 +496,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you provide me with some strategies or techniques to handle @complaint that is common in my industry or business, and any tips for effectively implementing these strategies based on my @circumstance?
         `,
@@ -547,7 +547,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - We've been getting a lot of questions about @issue. Can you generate a detailed support article that covers @topic and provides step-by-step instructions on how to @action?
         `,
@@ -582,7 +582,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are some common reasons for return requests for @product? We want to address these issues and improve the quality of our products.
         - Can you give me some tips on handling return requests for @product? We've been experiencing a higher-than-average rate of returns and want to prevent them in the future.
@@ -618,7 +618,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I received a payment notification/email from customer, but it @reason. How can I resolve this issue/receive the correct payment?
         `,
@@ -661,7 +661,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Please generate an order confirmation for @customer-name for their recent purchase of @product-name. Please include the order number, delivery date, and any relevant discount codes.        `,
         attributes: {},
@@ -727,7 +727,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I need a @type-document that outlines the @terms-conditions of my @business-organization. Please generate a document that includes the following clauses related to @topics: @clauses.
         `,
@@ -770,7 +770,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Who can provide me with a list of all the social media platform(s) where @brand-name has been mentioned in the past @time-frame?
         `,
@@ -805,7 +805,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Please analyze the sentiment of the following comment and categorize it as either positive, negative, or neutral. If negative, provide potential reasons for the negative sentiment and suggest appropriate actions to address them.
         - Comment: @comment
@@ -842,7 +842,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are some effective ways to personalize my interactions with customers/clients, based on their previous purchases/interactions and reviews? How can I use this information to tailor my @product-service to their preferences/needs?
         - How can I use social media/digital platforms to connect with customers/clients and build a strong online mpresence? What are some best practices/strategies for engaging with customers/clients through these channels/platforms?
@@ -886,7 +886,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are the steps to update the chatbot/virtual assistant for @product-service? Can you provide guidance on how to @task ?
         `,
@@ -921,7 +921,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - I need to create/improve a comprehensive training workflow for new users to effectively use @product-service chatbot and virtual assistant. Can you guide me throug the best practices] for designing/implementing/evaluating this training program using advanced AI technology?
         `,
@@ -956,7 +956,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - When a customer asks how to resolve an issue with their billing for @product-service, what should I ask for to verify their account and how should I provide instructions to resolve the issue?
         `,
@@ -992,7 +992,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are the best practices for designing a sales chatbot that can answer customer questions/provide product recommendations/close sales, and how can we tailor the chatbot's responses to meet the unique needs and preferences of our @target-audience?
         `,
@@ -1036,7 +1036,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Can you provide guidance on how to generate chatbot responses/answers that address @inquiries related to @topic?
         `,
@@ -1071,7 +1071,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What programming languages and tools should I use to create a virtual assistant for @onboarding-process ?
         `,
@@ -1106,7 +1106,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - What are the best tools/technologies for designing a chatbot that can support FAQs related to @product-service , and how can I integrate them with company's existing systems?
         What are some key considerations I should keep in mind while designing a chatbot that can handle high volume of customer queries related to @product-service, and how can I optimize its performance using data analytics/NLP techniques?
@@ -1150,7 +1150,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - How can we create a @feature to gather user feedback on @product-goal? What specific question should the chatbot ask and what response options should it provide?
         `,
@@ -1193,7 +1193,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         - Hello, @name here. Could you provide me with some guidance on how to use AI / our chatbot platform to generate responses for @warranty-inquiries ?
         `,
@@ -1228,7 +1228,7 @@ export const supportTemplates: TTemplate[] = [
       prompt: {
         enabled: true,
         id: "prompt",
-        description: "Prompt",
+
         message: `
         Context:
         I am Clarification Expert AI, an advanced conversational assistant known for my ability to handle vague or unclear user inputs with finesse. My specialty lies in guiding users to refine their requests, making them more specific and actionable while ensuring a smooth and engaging conversation.

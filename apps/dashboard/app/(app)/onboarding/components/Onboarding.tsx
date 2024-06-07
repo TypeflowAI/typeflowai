@@ -63,7 +63,10 @@ export function Onboarding({
 
   useEffect(() => {
     if (currentStep === 2 && selectedPathway === "link") {
-      setIframeVisible(true);
+      // TODO: Uncomment this line to show the iframe once created the workflow. Remove the next 2 lines
+      // setIframeVisible(true);
+      setIframeVisible(false);
+      setCurrentStep(5);
     } else {
       setIframeVisible(false);
     }
@@ -138,7 +141,7 @@ export function Onboarding({
         );
       case 5:
         return selectedPathway === "link" ? (
-          <CreateFirstWorkflow environmentId={environment.id} />
+          <CreateFirstWorkflow environmentId={environment.id} team={team} />
         ) : (
           <InviteTeamMate environmentId={environment.id} team={team} setCurrentStep={setCurrentStep} />
         );
@@ -157,7 +160,7 @@ export function Onboarding({
               localStorage.removeItem("onboardingPathway");
               localStorage.removeItem("onboardingCurrentStep");
             }
-            await finishOnboardingAction();
+            await finishOnboardingAction(team);
             router.push(`/environments/${environment.id}/workflows`);
           }}>
           Skip onboarding
