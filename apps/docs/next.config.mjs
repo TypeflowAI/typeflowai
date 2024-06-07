@@ -15,6 +15,7 @@ const withMDX = nextMDX({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  basePath: "/docs",
   pageExtensions: ["js", "jsx", "ts", "tsx", "mdx"],
   transpilePackages: ["@typeflowai/ui", "@typeflowai/lib"],
   images: {
@@ -34,7 +35,7 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: "/",
+        source: "/docs",
         destination: "/introduction/what-is-typeflowai",
         permanent: true,
       },
