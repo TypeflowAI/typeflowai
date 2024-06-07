@@ -35,7 +35,7 @@ const nextConfig = {
     return [
       {
         source: "/",
-        destination: "/introduction/what-is-typeflowai",
+        destination: "/docs/introduction/what-is-typeflowai",
         permanent: true,
       },
     ];
