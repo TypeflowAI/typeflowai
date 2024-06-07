@@ -32,15 +32,6 @@ const nextConfig = {
       },
     ],
   },
-  async redirects() {
-    return [
-      {
-        source: "/docs",
-        destination: "/introduction/what-is-typeflowai",
-        permanent: true,
-      },
-    ];
-  },
 };
 
 export default withSearch(withMDX(nextConfig));
