@@ -238,7 +238,7 @@ export function Navigation(props: React.ComponentPropsWithoutRef<"nav">) {
   return (
     <nav {...props}>
       <ul role="list">
-        <TopLevelNavItem href="/docs/introduction/what-is-typeflowai">Documentation</TopLevelNavItem>
+        <TopLevelNavItem href="/docs">Documentation</TopLevelNavItem>
         <TopLevelNavItem href="https://github.com/TypeflowAI/typeflowai">Star us on GitHub</TopLevelNavItem>
         {/* <TopLevelNavItem href="https://typeflowai.com/discord">Join our Discord</TopLevelNavItem> */}
         {navigation.map((group, groupIndex) => (
