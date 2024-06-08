@@ -29,7 +29,7 @@ const FAQ_DATA = [
         Absolutely! We provide an option for users to host TypeflowAI on their own server, ensuring even more
         control over data and compliance. And the best part? Self-hosting is available for free, always. For
         documentation on self hosting, click{" "}
-        <a href="/self-hosting/self-hosting-guide" className="text-brand-dark">
+        <a href="/docs/self-hosting/self-hosting-guide" className="text-brand-dark">
           here
         </a>
         .
