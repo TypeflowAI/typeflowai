@@ -78,7 +78,7 @@ export const EmailTemplate = ({ content }: EmailTemplateProps) => (
             </Link>{" "}
             |{" "}
             <Link
-              href="https://typeflowai.com/privacy-policy?utm_source=email_footer&utm_medium=email"
+              href="https://typeflowai.com/privacy?utm_source=email_footer&utm_medium=email"
               target="_blank">
               Privacy Policy
             </Link>
