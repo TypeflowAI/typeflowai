@@ -3,17 +3,17 @@ import { Heading } from "./Heading";
 
 const gettingStarted = [
   {
-    href: "/getting-started/quickstart",
+    href: "/docs/getting-started/quickstart",
     name: "Quickstart",
     description: "Get up and running with our cloud and JavaScript widget",
   },
   {
-    href: "/getting-started/framework-guides#next-js",
+    href: "/docs/getting-started/framework-guides#next-js",
     name: "Next.js App",
     description: "Integrate the TypeflowAI SDK into a Next.js application with the new app directory",
   },
   {
-    href: "/self-hosting/self-hosting-guide",
+    href: "/docs/self-hosting/self-hosting-guide",
     name: "Self Hosting Guide",
     description:
       "Host TypeflowAI on your own servers, check out our dedicated Self-hosted Documentation page.",
