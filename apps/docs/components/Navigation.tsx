@@ -178,7 +178,7 @@ function NavigationGroup({ group, className }: { group: NavGroup; className?: st
 export const navigation: Array<NavGroup> = [
   {
     title: "Introduction",
-    links: [{ title: "What is TypeflowAI?", href: "/introduction/what-is-typeflowai" }],
+    links: [{ title: "What is TypeflowAI?", href: "/" }],
   },
   {
     title: "Getting Started",

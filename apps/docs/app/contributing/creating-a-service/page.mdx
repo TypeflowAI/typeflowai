@@ -19,7 +19,7 @@ Let’s break down some of the jargon in that definition:
 
 **Abstraction of database calls**
 
-From our guide on [How we Code at TypeflowAI](https://typeflowai.com/contributing/how-we-code), we mention that database calls should not be made directly from components or other places other than a **service**. This means that if you need to make a request to the database to fetch some data, let’s say “get the **workflows** of the current user in the current **environment**”, you would need a function in the workflows service like `getWorkflowsByEnvironmentId`. It is also worth mentioning that we use [Prisma](https://prisma.io/) as a database abstraction layer to perform database calls.
+From our guide on [How we Code at TypeflowAI](https://typeflowai.com/docs/contributing/how-we-code), we mention that database calls should not be made directly from components or other places other than a **service**. This means that if you need to make a request to the database to fetch some data, let’s say “get the **workflows** of the current user in the current **environment**”, you would need a function in the workflows service like `getWorkflowsByEnvironmentId`. It is also worth mentioning that we use [Prisma](https://prisma.io/) as a database abstraction layer to perform database calls.
 
 **Comprises of cached functions**
 
