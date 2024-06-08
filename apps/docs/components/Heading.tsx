@@ -3,7 +3,7 @@
 import { remToPx } from "@/lib/remToPx";
 import { useInView } from "framer-motion";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+// import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
 import { useSectionStore } from "./SectionProvider";
@@ -121,10 +121,11 @@ export function HeadingContent<Level extends 2 | 3>({
 }
 
 export function Heading(props: any) {
-  const pathname = usePathname();
-  if (pathname?.startsWith("/docs")) {
-    return <HeadingDocs {...props} />;
-  } else {
-    return <HeadingContent {...props} />;
-  }
+  // const pathname = usePathname();
+  // if (pathname?.startsWith("/docs")) {
+  //   return <HeadingDocs {...props} />;
+  // } else {
+  //   return <HeadingContent {...props} />;
+  // }
+  return <HeadingDocs {...props} />;
 }
