@@ -120,7 +120,7 @@ We're here to help make your journey with TypeflowAI smooth and successful. If t
 
 Distributed under the AGPLv3 License. See [`LICENSE`](./LICENSE) for more information.
 
-This software is a fork of [Formbricks](https://github.com/formbricks/formbricks), version 1.7.1, licensed under the GNU Affero General Public License Version 3 (AGPLv3). We have extended the original software by adding several new features to enhance its functionality. These additions include a Prompt Editor, integration of Prompt Templates, a Subscription Manager, and an updated Stripe Library for improved payment processing capabilities. These modifications are intended to provide additional tools and improved user experience while maintaining the spirit of open-source collaboration as mandated by the AGPLv3 license.
+This software is a fork of [Formbricks](https://github.com/formbricks/formbricks), version 2.0.0, licensed under the GNU Affero General Public License Version 3 (AGPLv3). We have extended the original software by adding several new features to enhance its functionality. These additions include a Prompt Editor, integration of Prompt Templates, a Subscription Manager, and an updated Stripe Library for improved payment processing capabilities. These modifications are intended to provide additional tools and improved user experience while maintaining the spirit of open-source collaboration as mandated by the AGPLv3 license.
 
 <!-- SECUTIRY -->
 ## Security
