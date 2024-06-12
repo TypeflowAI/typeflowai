@@ -1,6 +1,6 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "pipeline": {
+  "tasks": {
     "@typeflowai/database#build": {
       "cache": false,
       "dependsOn": ["post-install"]
