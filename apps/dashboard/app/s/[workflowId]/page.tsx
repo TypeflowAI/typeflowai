@@ -129,7 +129,10 @@ export default async function LinkWorkflowPage({ params, searchParams }: LinkWor
     if (!langParam || !isMultiLanguageAllowed) return "default";
     else {
       const selectedLanguage = workflow.languages.find((workflowLanguage) => {
-        return workflowLanguage.language.code === langParam || workflowLanguage.language.alias === langParam;
+        return (
+          workflowLanguage.language.code === langParam.toLowerCase() ||
+          workflowLanguage.language.alias?.toLowerCase() === langParam.toLowerCase()
+        );
       });
       if (selectedLanguage?.default || !selectedLanguage?.enabled) {
         return "default";

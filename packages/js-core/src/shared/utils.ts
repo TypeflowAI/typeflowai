@@ -9,7 +9,10 @@ export const getLanguageCode = (workflow: TWorkflow, attributes: TAttributes): s
   if (!language) return "default";
   else {
     const selectedLanguage = workflow.languages.find((workflowLanguage) => {
-      return workflowLanguage.language.code === language || workflowLanguage.language.alias === language;
+      return (
+        workflowLanguage.language.code === language.toLowerCase() ||
+        workflowLanguage.language.alias?.toLowerCase() === language.toLowerCase()
+      );
     });
     if (selectedLanguage?.default) {
       return "default";
