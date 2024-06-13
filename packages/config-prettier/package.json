@@ -1,5 +1,5 @@
 {
-  "name": "@typeflowai/prettier-config",
+  "name": "@typeflowai/config-prettier",
   "version": "1.0.0",
   "private": true,
   "license": "MIT",

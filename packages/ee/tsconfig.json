@@ -1,5 +1,5 @@
 {
-  "extends": "@typeflowai/tsconfig/react-library.json",
+  "extends": "@typeflowai/config-typescript/react-library.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {

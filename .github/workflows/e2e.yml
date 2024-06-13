@@ -12,7 +12,7 @@ jobs:
       - uses: ./.github/actions/dangerous-git-checkout
 
       - name: Build & Cache Web Binaries
-        uses: ./.github/actions/cache-build-web
+        uses: ./.github/actions/cache-build-dashboard
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
@@ -38,7 +38,7 @@ jobs:
 
       - name: Run App
         run: |
-          NODE_ENV=test pnpm start --filter=web &
+          NODE_ENV=test pnpm start --filter=@typeflowai/dashboard &
           for attempt in {1..20}; do
             if [ $(curl -o /dev/null -s -w "%{http_code}" http://localhost:3000/health) -eq 200 ]; then
               echo "Ready"

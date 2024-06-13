@@ -1,5 +1,5 @@
 {
-  "extends": "@typeflowai/tsconfig/js-library.json",
+  "extends": "@typeflowai/config-typescript/js-library.json",
   "include": ["src", "package.json"],
   "compilerOptions": {
     "strict": true,

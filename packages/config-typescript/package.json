@@ -1,5 +1,5 @@
 {
-  "name": "@typeflowai/tsconfig",
+  "name": "@typeflowai/config-typescript",
   "version": "1.0.0",
   "private": true,
   "sideEffects": false,

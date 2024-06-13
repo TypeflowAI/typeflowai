@@ -1,3 +1,4 @@
 module.exports = {
-  extends: ["turbo", "prettier"],
+  extends: ["@typeflowai/eslint-config/legacy-library.js"],
+  parser: "@typescript-eslint/parser",
 };

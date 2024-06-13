@@ -24,12 +24,13 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "generate": "turbo run generate",
     "lint": "turbo run lint",
-    "release": "turbo run build --filter=@formbricks/js... && changeset publish",
+    "release": "turbo run build --filter=@typeflow/js... && changeset publish",
     "test": "turbo run test --no-cache",
     "prepare": "husky install"
   },
   "devDependencies": {
-    "eslint-config-typeflowai": "workspace:*",
+    "@typeflowai/eslint-config": "workspace:*",
+    "eslint": "^8.57.0",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "rimraf": "^5.0.5",
@@ -51,7 +52,7 @@
   "engines": {
     "node": ">=16.0.0"
   },
-  "packageManager": "pnpm@8.11.0",
+  "packageManager": "pnpm@8.15.8",
   "nextBundleAnalysis": {
     "budget": 358400,
     "budgetPercentIncreaseRed": 20,

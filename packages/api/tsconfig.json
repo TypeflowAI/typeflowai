@@ -1,6 +1,7 @@
 {
-  "extends": "@typeflowai/tsconfig/js-library.json",
-  "include": ["src", "package.json"],
+  "extends": "@typeflowai/config-typescript/js-library.json",
+  "include": ["src"],
+  "exclude": ["dist", "build", "node_modules"],
   "compilerOptions": {
     "allowImportingTsExtensions": true,
     "isolatedModules": true,

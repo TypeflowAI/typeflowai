@@ -35,14 +35,14 @@
     "build": "tsc && vite build",
     "build:dev": "tsc && vite build --mode dev",
     "go": "vite build --watch --mode dev",
-    "lint": "eslint ./src --fix",
+    "lint": "eslint . --ext .ts,.js,.tsx,.jsx",
     "clean": "rimraf .turbo node_modules dist coverage"
   },
   "author": "TypeflowAI <support@typeflowai.com>",
   "devDependencies": {
     "@typeflowai/js-core": "workspace:*",
-    "@typeflowai/tsconfig": "workspace:*",
-    "eslint-config-typeflowai": "workspace:*",
+    "@typeflowai/config-typescript": "workspace:*",
+    "@typeflowai/eslint-config": "workspace:*",
     "terser": "^5.31.0",
     "vite": "^5.2.11",
     "vite-plugin-dts": "^3.9.1"

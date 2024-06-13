@@ -68,9 +68,9 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
-    "@typeflowai/tsconfig": "workspace:*",
+    "@typeflowai/config-typescript": "workspace:*",
     "@types/dompurify": "^3.0.5",
     "@types/react-highlight-words": "^0.16.7",
-    "eslint-config-typeflowai": "workspace:*"
+    "@typeflowai/eslint-config": "workspace:*"
   }
 }

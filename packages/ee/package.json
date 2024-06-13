@@ -16,9 +16,9 @@
     "@tiptap/react": "^2.1.16",
     "@tiptap/starter-kit": "^2.1.16",
     "@typeflowai/lib": "*",
-    "@typeflowai/tsconfig": "*",
+    "@typeflowai/config-typescript": "*",
     "@typeflowai/types": "*",
-    "eslint-config-typeflowai": "workspace:*"
+    "@typeflowai/eslint-config": "workspace:*"
   },
   "dependencies": {
     "@typeflowai/lib": "workspace:*",
