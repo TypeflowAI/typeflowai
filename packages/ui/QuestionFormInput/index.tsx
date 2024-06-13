@@ -385,7 +385,7 @@ export const QuestionFormInput = ({
     <div className="w-full">
       <div className="w-full">
         <div className="mb-2 mt-3">
-          <Label htmlFor={id}>{getLabelById(id)}</Label>
+          <Label htmlFor={id}>{label || getLabelById(id)}</Label>
         </div>
 
         <div className="flex flex-col gap-4 bg-white">
@@ -440,7 +440,7 @@ export const QuestionFormInput = ({
                 placeholder={placeholder ? placeholder : getPlaceHolderById(id)}
                 id={id}
                 name={id}
-                aria-label={label ? label : getLabelById(id)}
+                aria-label={label || getLabelById(id)}
                 autoComplete={showQuestionSelect ? "off" : "on"}
                 value={
                   recallToHeadline(text, localWorkflow, false, selectedLanguageCode)[selectedLanguageCode]
