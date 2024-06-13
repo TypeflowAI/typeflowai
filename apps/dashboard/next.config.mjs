@@ -19,14 +19,11 @@ function getHostname(url) {
 const nextConfig = {
   assetPrefix: process.env.ASSET_PREFIX_URL || undefined,
   output: "standalone",
+  serverExternalPackages: ["@aws-sdk"],
   experimental: {
-    serverComponentsExternalPackages: ["@aws-sdk"],
     // instrumentationHook: true,
     outputFileTracingIncludes: {
       "app/api/packages": ["../../packages/js-core/dist/*", "../../packages/workflows/dist/*"],
-    },
-    staleTimes: {
-      dynamic: 0,
     },
   },
   transpilePackages: ["@typeflowai/database", "@typeflowai/ee", "@typeflowai/ui", "@typeflowai/lib"],

@@ -7,17 +7,11 @@ import { deleteInvite, getInvite } from "@typeflowai/lib/invite/service";
 import { verifyInviteToken } from "@typeflowai/lib/jwt";
 import { createMembership } from "@typeflowai/lib/membership/service";
 import { updateUser } from "@typeflowai/lib/user/service";
+import { Button } from "@typeflowai/ui/Button";
 
-import {
-  ExpiredContent,
-  InvitationNotFound,
-  NotLoggedInContent,
-  RightAccountContent,
-  UsedContent,
-  WrongAccountContent,
-} from "./components/InviteContentComponents";
+import { ContentLayout } from "./components/ContentLayout";
 
-export default async function InvitePage({ searchParams }) {
+const Page = async ({ searchParams }) => {
   const session = await getServerSession(authOptions);
 
   try {
@@ -26,30 +20,88 @@ export default async function InvitePage({ searchParams }) {
     const invite = await getInvite(inviteId);
 
     if (!invite) {
-      return <InvitationNotFound />;
+      return (
+        <ContentLayout
+          headline="Invite not found 😥"
+          description="The invitation code cannot be found or has already been used."
+        />
+      );
     }
 
     const isInviteExpired = new Date(invite.expiresAt) < new Date();
 
     if (isInviteExpired) {
-      return <ExpiredContent />;
+      return (
+        <ContentLayout
+          headline="Invite expired 😥"
+          description="Invites are valid for 7 days. Please request a new invite."
+        />
+      );
     } else if (invite.accepted) {
-      return <UsedContent />;
+      return (
+        <ContentLayout
+          headline="You’re already part of the squad."
+          description="This invitation has already been used.">
+          <Button variant="secondary" href="/support">
+            Contact support
+          </Button>
+          <Button variant="darkCTA" href="/">
+            Go to app
+          </Button>
+        </ContentLayout>
+      );
     } else if (!session) {
       const redirectUrl = WEBAPP_URL + "/invite?token=" + searchParams.token;
-      return <NotLoggedInContent email={email} token={searchParams.token} redirectUrl={redirectUrl} />;
+      return (
+        <ContentLayout headline="Happy to have you 🤗" description="Please create an account or login.">
+          <Button variant="secondary" href={`/auth/signup?inviteToken=${searchParams.token}&email=${email}`}>
+            Create account
+          </Button>
+          <Button variant="darkCTA" href={`/auth/login?callbackUrl=${redirectUrl}&email=${email}`}>
+            Login
+          </Button>
+        </ContentLayout>
+      );
     } else if (session.user?.email !== email) {
-      return <WrongAccountContent />;
+      return (
+        <ContentLayout
+          headline="Ooops! Wrong email 🤦"
+          description="The email in the invitation does not match yours.">
+          <Button variant="secondary" href="/support">
+            Contact support
+          </Button>
+          <Button variant="darkCTA" href="/">
+            Go to app
+          </Button>
+        </ContentLayout>
+      );
     } else {
       await createMembership(invite.teamId, session.user.id, { accepted: true, role: invite.role });
       await deleteInvite(inviteId);
 
-      sendInviteAcceptedEmail(invite.creator.name ?? "", session.user?.name ?? "", invite.creator.email);
-      updateUser(session.user.id, { onboardingCompleted: true });
-      return <RightAccountContent />;
+      await sendInviteAcceptedEmail(
+        invite.creator.name ?? "",
+        session.user?.name ?? "",
+        invite.creator.email
+      );
+      await updateUser(session.user.id, { onboardingCompleted: true });
+      return (
+        <ContentLayout headline="You’re in 🎉" description="Welcome to the team.">
+          <Button variant="darkCTA" href="/">
+            Go to app
+          </Button>
+        </ContentLayout>
+      );
     }
   } catch (e) {
     console.error(e);
-    return <InvitationNotFound />;
+    return (
+      <ContentLayout
+        headline="Invite not found 😥"
+        description="The invitation code cannot be found or has already been used."
+      />
+    );
   }
-}
+};
+
+export default Page;

@@ -20,6 +20,8 @@ import type { NextRequest } from "next/server";
 import { RATE_LIMITING_DISABLED, WEBAPP_URL } from "@typeflowai/lib/constants";
 
 export async function middleware(request: NextRequest) {
+  // issue with next auth types & Next 15; let's review when new fixes are available
+  // @ts-expect-error
   const token = await getToken({ req: request });
 
   if (isWebAppRoute(request.nextUrl.pathname) && !token) {

@@ -179,7 +179,8 @@
       "outputs": []
     },
     "clean": {
-      "outputs": []
+      "outputs": [],
+      "cache": false
     }
   }
 }

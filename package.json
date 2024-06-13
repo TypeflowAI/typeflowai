@@ -32,9 +32,9 @@
     "@typeflowai/eslint-config": "workspace:*",
     "eslint": "^8.57.0",
     "husky": "^9.0.11",
-    "lint-staged": "^15.2.2",
+    "lint-staged": "^15.2.5",
     "rimraf": "^5.0.7",
-    "tsx": "^4.10.4",
+    "tsx": "^4.11.0",
     "turbo": "^2.0.1"
   },
   "lint-staged": {
@@ -51,7 +51,7 @@
   "engines": {
     "node": ">=16.0.0"
   },
-  "packageManager": "pnpm@8.15.8",
+  "packageManager": "pnpm@9.1.3",
   "nextBundleAnalysis": {
     "budget": 358400,
     "budgetPercentIncreaseRed": 20,
@@ -59,6 +59,6 @@
     "showDetails": true
   },
   "dependencies": {
-    "@changesets/cli": "^2.27.2"
+    "@changesets/cli": "^2.27.3"
   }
 }
