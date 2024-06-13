@@ -30,6 +30,7 @@
     "@typeflowai/types": "workspace:*",
     "@typeflowai/ui": "workspace:*",
     "@typeflowai/email": "workspace:*",
+    "@hookform/resolvers": "^3.4.2",
     "@vercel/og": "^0.6.2",
     "@vercel/speed-insights": "^1.0.10",
     "bcryptjs": "^2.4.3",

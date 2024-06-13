@@ -15,8 +15,8 @@ import { SettingsId } from "@typeflowai/ui/SettingsId";
 
 import SettingsCard from "../../settings/components/SettingsCard";
 import DeleteProduct from "./components/DeleteProduct";
-import EditProductName from "./components/EditProductName";
-import EditWaitingTime from "./components/EditWaitingTime";
+import { EditProductNameForm } from "./components/EditProductNameForm";
+import { EditWaitingTimeForm } from "./components/EditWaitingTimeForm";
 
 export default async function ProfileSettingsPage({ params }: { params: { environmentId: string } }) {
   const [, product, session, team] = await Promise.all([
@@ -58,7 +58,7 @@ export default async function ProfileSettingsPage({ params }: { params: { enviro
       </PageHeader>
 
       <SettingsCard title="Product Name" description="Change your products name.">
-        <EditProductName
+        <EditProductNameForm
           environmentId={params.environmentId}
           product={product}
           isProductNameEditDisabled={isProductNameEditDisabled}
@@ -67,7 +67,7 @@ export default async function ProfileSettingsPage({ params }: { params: { enviro
       <SettingsCard
         title="Recontact Waiting Time"
         description="Control how frequently users can be workflowed across all workflows.">
-        <EditWaitingTime environmentId={params.environmentId} product={product} />
+        <EditWaitingTimeForm environmentId={params.environmentId} product={product} />
       </SettingsCard>
       <SettingsCard
         title="Delete Product"

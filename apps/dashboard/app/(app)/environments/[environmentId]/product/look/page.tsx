@@ -15,7 +15,7 @@ import { PageHeader } from "@typeflowai/ui/PageHeader";
 
 import SettingsCard from "../../settings/components/SettingsCard";
 import { EditTypeflowAIBranding } from "./components/EditBranding";
-import { EditPlacement } from "./components/EditPlacement";
+import { EditPlacementForm } from "./components/EditPlacementForm";
 import { ThemeStyling } from "./components/ThemeStyling";
 
 export default async function ProfileSettingsPage({ params }: { params: { environmentId: string } }) {
@@ -75,7 +75,7 @@ export default async function ProfileSettingsPage({ params }: { params: { enviro
       <SettingsCard
         title="In-app Workflow Placement"
         description="Change where workflows will be shown in your web app.">
-        <EditPlacement product={product} environmentId={params.environmentId} />
+        <EditPlacementForm product={product} environmentId={params.environmentId} />
       </SettingsCard>
       <SettingsCard
         title="TypeflowAI Branding"
