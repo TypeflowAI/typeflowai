@@ -1,10 +1,10 @@
-import { TWorkflowQuestionType } from "@typeflowai/types/workflows";
+import { TWorkflowQuestionTypeEnum } from "@typeflowai/types/workflows";
 
 export const TYPE_MAPPING = {
-  [TWorkflowQuestionType.CTA]: ["checkbox"],
-  [TWorkflowQuestionType.MultipleChoiceMulti]: ["multi_select"],
-  [TWorkflowQuestionType.MultipleChoiceSingle]: ["select", "status"],
-  [TWorkflowQuestionType.OpenText]: [
+  [TWorkflowQuestionTypeEnum.CTA]: ["checkbox"],
+  [TWorkflowQuestionTypeEnum.MultipleChoiceMulti]: ["multi_select"],
+  [TWorkflowQuestionTypeEnum.MultipleChoiceSingle]: ["select", "status"],
+  [TWorkflowQuestionTypeEnum.OpenText]: [
     "created_by",
     "created_time",
     "date",
@@ -17,11 +17,15 @@ export const TYPE_MAPPING = {
     "title",
     "url",
   ],
-  [TWorkflowQuestionType.NPS]: ["number"],
-  [TWorkflowQuestionType.Consent]: ["checkbox"],
-  [TWorkflowQuestionType.Rating]: ["number"],
-  [TWorkflowQuestionType.PictureSelection]: ["url"],
-  [TWorkflowQuestionType.FileUpload]: ["url"],
+  [TWorkflowQuestionTypeEnum.NPS]: ["number"],
+  [TWorkflowQuestionTypeEnum.Consent]: ["checkbox"],
+  [TWorkflowQuestionTypeEnum.Rating]: ["number"],
+  [TWorkflowQuestionTypeEnum.PictureSelection]: ["url"],
+  [TWorkflowQuestionTypeEnum.FileUpload]: ["url"],
+  [TWorkflowQuestionTypeEnum.Date]: ["date"],
+  [TWorkflowQuestionTypeEnum.Address]: ["rich_text"],
+  [TWorkflowQuestionTypeEnum.Matrix]: ["rich_text"],
+  [TWorkflowQuestionTypeEnum.Cal]: ["checkbox"],
 };
 
 export const UNSUPPORTED_TYPES_BY_NOTION = [

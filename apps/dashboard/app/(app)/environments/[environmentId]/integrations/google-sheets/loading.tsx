@@ -1,7 +1,7 @@
 import { Button } from "@typeflowai/ui/Button";
 import { GoBackButton } from "@typeflowai/ui/GoBackButton";
 
-export default function Loading() {
+const Loading = () => {
   return (
     <div className="mt-6 p-6">
       <GoBackButton />
@@ -57,4 +57,6 @@ export default function Loading() {
       </div>
     </div>
   );
-}
+};
+
+export default Loading;

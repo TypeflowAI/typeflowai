@@ -1,6 +1,7 @@
-import AirtableWrapper from "@/app/(app)/environments/[environmentId]/integrations/airtable/components/AirtableWrapper";
+import { AirtableWrapper } from "@/app/(app)/environments/[environmentId]/integrations/airtable/components/AirtableWrapper";
 
 import { getAirtableTables } from "@typeflowai/lib/airtable/service";
+import { getAttributeClasses } from "@typeflowai/lib/attributeClass/service";
 import { AIRTABLE_CLIENT_ID, WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
 import { getIntegrations } from "@typeflowai/lib/integration/service";
@@ -12,12 +13,13 @@ import { GoBackButton } from "@typeflowai/ui/GoBackButton";
 import { PageContentWrapper } from "@typeflowai/ui/PageContentWrapper";
 import { PageHeader } from "@typeflowai/ui/PageHeader";
 
-export default async function Airtable({ params }) {
-  const enabled = !!AIRTABLE_CLIENT_ID;
-  const [workflows, integrations, environment] = await Promise.all([
+const Page = async ({ params }) => {
+  const isEnabled = !!AIRTABLE_CLIENT_ID;
+  const [workflows, integrations, environment, attributeClasses] = await Promise.all([
     getWorkflows(params.environmentId),
     getIntegrations(params.environmentId),
     getEnvironment(params.environmentId),
+    getAttributeClasses(params.environmentId),
   ]);
   if (!environment) {
     throw new Error("Environment not found");
@@ -42,15 +44,18 @@ export default async function Airtable({ params }) {
       <PageHeader pageTitle="Airtable Integration" />
       <div className="h-[75vh] w-full">
         <AirtableWrapper
-          enabled={enabled}
+          isEnabled={isEnabled}
           airtableIntegration={airtableIntegration}
           airtableArray={airtableArray}
           environmentId={environment.id}
           workflows={workflows}
           environment={environment}
           webAppUrl={WEBAPP_URL}
+          attributeClasses={attributeClasses}
         />
       </div>
     </PageContentWrapper>
   );
-}
+};
+
+export default Page;

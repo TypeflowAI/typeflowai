@@ -1,5 +1,6 @@
-import NotionWrapper from "@/app/(app)/environments/[environmentId]/integrations/notion/components/NotionWrapper";
+import { NotionWrapper } from "@/app/(app)/environments/[environmentId]/integrations/notion/components/NotionWrapper";
 
+import { getAttributeClasses } from "@typeflowai/lib/attributeClass/service";
 import {
   NOTION_AUTH_URL,
   NOTION_OAUTH_CLIENT_ID,
@@ -16,17 +17,18 @@ import { GoBackButton } from "@typeflowai/ui/GoBackButton";
 import { PageContentWrapper } from "@typeflowai/ui/PageContentWrapper";
 import { PageHeader } from "@typeflowai/ui/PageHeader";
 
-export default async function Notion({ params }) {
+const Page = async ({ params }) => {
   const enabled = !!(
     NOTION_OAUTH_CLIENT_ID &&
     NOTION_OAUTH_CLIENT_SECRET &&
     NOTION_AUTH_URL &&
     NOTION_REDIRECT_URI
   );
-  const [workflows, notionIntegration, environment] = await Promise.all([
+  const [workflows, notionIntegration, environment, attributeClasses] = await Promise.all([
     getWorkflows(params.environmentId),
     getIntegrationByType(params.environmentId, "notion"),
     getEnvironment(params.environmentId),
+    getAttributeClasses(params.environmentId),
   ]);
 
   if (!environment) {
@@ -49,7 +51,10 @@ export default async function Notion({ params }) {
         notionIntegration={notionIntegration as TIntegrationNotion}
         webAppUrl={WEBAPP_URL}
         databasesArray={databasesArray}
+        attributeClasses={attributeClasses}
       />
     </PageContentWrapper>
   );
-}
+};
+
+export default Page;

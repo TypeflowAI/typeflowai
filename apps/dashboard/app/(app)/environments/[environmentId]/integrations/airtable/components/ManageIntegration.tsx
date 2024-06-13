@@ -1,34 +1,45 @@
 "use client";
 
 import { deleteIntegrationAction } from "@/app/(app)/environments/[environmentId]/integrations/actions";
-import AddIntegrationModal, {
+import {
+  AddIntegrationModal,
   IntegrationModalInputs,
 } from "@/app/(app)/environments/[environmentId]/integrations/airtable/components/AddIntegrationModal";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 
 import { timeSince } from "@typeflowai/lib/time";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TIntegrationItem } from "@typeflowai/types/integration";
 import { TIntegrationAirtable } from "@typeflowai/types/integration/airtable";
 import { TWorkflow } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
 import { DeleteDialog } from "@typeflowai/ui/DeleteDialog";
-import EmptySpaceFiller from "@typeflowai/ui/EmptySpaceFiller";
+import { EmptySpaceFiller } from "@typeflowai/ui/EmptySpaceFiller";
 
-interface handleModalProps {
+interface ManageIntegrationProps {
   airtableIntegration: TIntegrationAirtable;
   environment: TEnvironment;
   environmentId: string;
   setIsConnected: (data: boolean) => void;
   workflows: TWorkflow[];
   airtableArray: TIntegrationItem[];
+  attributeClasses: TAttributeClass[];
 }
 
 const tableHeaders = ["Workflow", "Table Name", "Questions", "Updated At"];
 
-export default function Home(props: handleModalProps) {
-  const { airtableIntegration, environment, environmentId, setIsConnected, workflows, airtableArray } = props;
+export const ManageIntegration = (props: ManageIntegrationProps) => {
+  const {
+    airtableIntegration,
+    environment,
+    environmentId,
+    setIsConnected,
+    workflows,
+    airtableArray,
+    attributeClasses,
+  } = props;
   const [isDeleting, setisDeleting] = useState(false);
   const [isDeleteIntegrationModalOpen, setIsDeleteIntegrationModalOpen] = useState(false);
   const [defaultValues, setDefaultValues] = useState<(IntegrationModalInputs & { index: number }) | null>(
@@ -141,9 +152,10 @@ export default function Home(props: handleModalProps) {
           environmentId={environmentId}
           workflows={workflows}
           airtableIntegration={airtableIntegration}
+          attributeClasses={attributeClasses}
           {...data}
         />
       )}
     </div>
   );
-}
+};

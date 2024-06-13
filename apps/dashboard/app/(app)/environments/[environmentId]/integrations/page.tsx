@@ -1,3 +1,5 @@
+import AirtableLogo from "@/images/airtableLogo.svg";
+import GoogleSheetsLogo from "@/images/googleSheetsLogo.png";
 import JsLogo from "@/images/jslogo.png";
 // import MakeLogo from "@/images/make-small.png";
 // import n8nLogo from "@/images/n8n.png";
@@ -20,9 +22,6 @@ import { Card } from "@typeflowai/ui/Card";
 import { ErrorComponent } from "@typeflowai/ui/ErrorComponent";
 import { PageContentWrapper } from "@typeflowai/ui/PageContentWrapper";
 import { PageHeader } from "@typeflowai/ui/PageHeader";
-
-import AirtableLogo from "./airtable/images/airtable.svg";
-import GoogleSheetsLogo from "./google-sheets/images/google-sheets-small.png";
 
 export default async function IntegrationsPage({ params }) {
   const environmentId = params.environmentId;

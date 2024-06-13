@@ -1,5 +1,6 @@
 "use client";
 
+import { deleteIntegrationAction } from "@/app/(app)/environments/[environmentId]/integrations/actions";
 import { Trash2Icon } from "lucide-react";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
@@ -9,11 +10,9 @@ import { TEnvironment } from "@typeflowai/types/environment";
 import { TIntegrationSlack, TIntegrationSlackConfigData } from "@typeflowai/types/integration/slack";
 import { Button } from "@typeflowai/ui/Button";
 import { DeleteDialog } from "@typeflowai/ui/DeleteDialog";
-import EmptySpaceFiller from "@typeflowai/ui/EmptySpaceFiller";
+import { EmptySpaceFiller } from "@typeflowai/ui/EmptySpaceFiller";
 
-import { deleteIntegrationAction } from "../../actions";
-
-interface HomeProps {
+interface ManageIntegrationProps {
   environment: TEnvironment;
   slackIntegration: TIntegrationSlack;
   setOpenAddIntegrationModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -24,14 +23,14 @@ interface HomeProps {
   refreshChannels: () => void;
 }
 
-export default function Home({
+export const ManageIntegration = ({
   environment,
   slackIntegration,
   setOpenAddIntegrationModal,
   setIsConnected,
   setSelectedIntegration,
   refreshChannels,
-}: HomeProps) {
+}: ManageIntegrationProps) => {
   const [isDeleteIntegrationModalOpen, setIsDeleteIntegrationModalOpen] = useState(false);
   const [isDeleting, setisDeleting] = useState(false);
   const integrationArray = slackIntegration
@@ -132,4 +131,4 @@ export default function Home({
       />
     </div>
   );
-}
+};
