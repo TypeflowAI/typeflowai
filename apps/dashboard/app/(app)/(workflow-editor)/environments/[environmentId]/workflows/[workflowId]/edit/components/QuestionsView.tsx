@@ -1,8 +1,15 @@
 "use client";
 
+import {
+  DndContext,
+  DragEndEvent,
+  PointerSensor,
+  closestCorners,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import { createId } from "@paralleldrive/cuid2";
-import { useEffect, useMemo, useState } from "react";
-import { DragDropContext } from "react-beautiful-dnd";
+import React, { SetStateAction, useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
 // import { MultiLanguageCard } from "@typeflowai/ee/multiLanguage/components/MultiLanguageCard";
@@ -19,12 +26,11 @@ import EditThankYouCard from "./EditThankYouCard";
 import EditWelcomeCard from "./EditWelcomeCard";
 import HiddenFieldsCard from "./HiddenFieldsCard";
 import PromptCard from "./PromptCard";
-import QuestionCard from "./QuestionCard";
-import { StrictModeDroppable } from "./StrictModeDroppable";
+import { QuestionsDroppable } from "./QuestionsDroppable";
 
 interface QuestionsViewProps {
   localWorkflow: TWorkflow;
-  setLocalWorkflow: (workflow: TWorkflow) => void;
+  setLocalWorkflow: React.Dispatch<SetStateAction<TWorkflow>>;
   activeQuestionId: string | null;
   setActiveQuestionId: (questionId: string | null) => void;
   product: TProduct;
@@ -238,17 +244,6 @@ export const QuestionsView = ({
     internalQuestionIdMap[question.id] = createId();
   };
 
-  const onDragEnd = (result) => {
-    if (!result.destination) {
-      return;
-    }
-    const newQuestions = Array.from(localWorkflow.questions);
-    const [reorderedQuestion] = newQuestions.splice(result.source.index, 1);
-    newQuestions.splice(result.destination.index, 0, reorderedQuestion);
-    const updatedWorkflow = { ...localWorkflow, questions: newQuestions };
-    setLocalWorkflow(updatedWorkflow);
-  };
-
   const moveQuestion = (questionIndex: number, up: boolean) => {
     const newQuestions = Array.from(localWorkflow.questions);
     const [reorderedQuestion] = newQuestions.splice(questionIndex, 1);
@@ -340,6 +335,26 @@ export const QuestionsView = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeQuestionId, setActiveQuestionId]);
 
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 5,
+      },
+    })
+  );
+
+  const onDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    const newQuestions = Array.from(localWorkflow.questions);
+    const sourceIndex = newQuestions.findIndex((question) => question.id === active.id);
+    const destinationIndex = newQuestions.findIndex((question) => question.id === over?.id);
+    const [reorderedQuestion] = newQuestions.splice(sourceIndex, 1);
+    newQuestions.splice(destinationIndex, 0, reorderedQuestion);
+    const updatedWorkflow = { ...localWorkflow, questions: newQuestions };
+    setLocalWorkflow(updatedWorkflow);
+  };
+
   const isPromptVisible = () => {
     return localWorkflow.prompt.enabled && localWorkflow.prompt.isVisible;
   };
@@ -360,38 +375,24 @@ export const QuestionsView = ({
           selectedLanguageCode={selectedLanguageCode}
         />
       </div>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <div className="mb-5 grid grid-cols-1 gap-5 ">
-          <StrictModeDroppable droppableId="questionsList">
-            {(provided) => (
-              <div className="grid w-full gap-5" ref={provided.innerRef} {...provided.droppableProps}>
-                {localWorkflow.questions.map((question, questionIdx) => (
-                  // display a question form
-                  <QuestionCard
-                    key={internalQuestionIdMap[question.id]}
-                    localWorkflow={localWorkflow}
-                    setLocalWorkflow={setLocalWorkflow}
-                    product={product}
-                    questionIdx={questionIdx}
-                    moveQuestion={moveQuestion}
-                    updateQuestion={updateQuestion}
-                    duplicateQuestion={duplicateQuestion}
-                    selectedLanguageCode={selectedLanguageCode}
-                    setSelectedLanguageCode={setSelectedLanguageCode}
-                    deleteQuestion={deleteQuestion}
-                    activeQuestionId={activeQuestionId}
-                    setActiveQuestionId={setActiveQuestionId}
-                    lastQuestion={questionIdx === localWorkflow.questions.length - 1}
-                    isPromptVisible={isPromptVisible()}
-                    isInvalid={invalidQuestions ? invalidQuestions.includes(question.id) : false}
-                  />
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </StrictModeDroppable>
-        </div>
-      </DragDropContext>
+      <DndContext sensors={sensors} onDragEnd={onDragEnd} collisionDetection={closestCorners}>
+        <QuestionsDroppable
+          localWorkflow={localWorkflow}
+          setLocalWorkflow={setLocalWorkflow}
+          product={product}
+          moveQuestion={moveQuestion}
+          updateQuestion={updateQuestion}
+          duplicateQuestion={duplicateQuestion}
+          selectedLanguageCode={selectedLanguageCode}
+          setSelectedLanguageCode={setSelectedLanguageCode}
+          deleteQuestion={deleteQuestion}
+          activeQuestionId={activeQuestionId}
+          setActiveQuestionId={setActiveQuestionId}
+          invalidQuestions={invalidQuestions}
+          internalQuestionIdMap={internalQuestionIdMap}
+          isPromptVisible={isPromptVisible()}
+        />
+      </DndContext>
       <AddQuestionButton addQuestion={addQuestion} product={product} />
       <div className="mt-5 flex flex-col gap-5">
         <PromptCard
