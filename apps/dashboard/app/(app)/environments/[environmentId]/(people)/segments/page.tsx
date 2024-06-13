@@ -11,7 +11,6 @@ import { IS_TYPEFLOWAI_CLOUD } from "@typeflowai/lib/constants";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
 import { getSegments } from "@typeflowai/lib/segment/service";
 import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
-import EmptySpaceFiller from "@typeflowai/ui/EmptySpaceFiller";
 import { PageContentWrapper } from "@typeflowai/ui/PageContentWrapper";
 import { PageHeader } from "@typeflowai/ui/PageHeader";
 
@@ -76,24 +75,15 @@ export default async function SegmentsPage({ params }) {
 
   return (
     <PageContentWrapper>
-      <PageHeader pageTitle="People" cta={renderCreateSegmentButton()}>
+      <PageHeader pageTitle="Segments" cta={renderCreateSegmentButton()}>
         <PeopleSecondaryNavigation activeId="segments" environmentId={params.environmentId} />
       </PageHeader>
-      {filteredSegments.length === 0 ? (
-        <EmptySpaceFiller
-          type="table"
-          environment={environment}
-          emptyMessage="No segments yet. Add your first one to get started."
-          noWidgetRequired={true}
-        />
-      ) : (
-        <SegmentTable
-          segments={filteredSegments}
-          actionClasses={actionClasses}
-          attributeClasses={attributeClasses}
-          isAdvancedTargetingAllowed={isAdvancedTargetingAllowed}
-        />
-      )}
+      <SegmentTable
+        segments={filteredSegments}
+        actionClasses={actionClasses}
+        attributeClasses={attributeClasses}
+        isAdvancedTargetingAllowed={isAdvancedTargetingAllowed}
+      />
     </PageContentWrapper>
   );
 }
