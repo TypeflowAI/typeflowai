@@ -2,7 +2,7 @@
 
 import { typeflowAIEnabled } from "@/app/lib/typeflowai";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 import typeflowai from "@typeflowai/js/app";
 import { env } from "@typeflowai/lib/env";
@@ -15,22 +15,23 @@ export default function TypeflowAIClient({ session }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  useEffect(() => {
-    if (typeflowAIEnabled && session?.user && typeflowai) {
-      typeflowai.init({
-        environmentId: env.NEXT_PUBLIC_TYPEFLOWAI_ENVIRONMENT_ID || "",
-        apiHost: env.NEXT_PUBLIC_TYPEFLOWAI_API_HOST || "",
-        userId: session.user.id,
-      });
-      typeflowai.setEmail(session.user.email);
-    }
-  }, [session]);
+  const initializeFTypeflowAIAndSetupRouteChanges = useCallback(async () => {
+    typeflowai.init({
+      environmentId: env.NEXT_PUBLIC_TYPEFLOWAI_ENVIRONMENT_ID || "",
+      apiHost: env.NEXT_PUBLIC_TYPEFLOWAI_API_HOST || "",
+      userId: session.user.id,
+    });
+    typeflowai.setEmail(session.user.email);
+
+    typeflowai.registerRouteChange();
+  }, [session.user.email, session.user.id]);
 
   useEffect(() => {
-    if (typeflowAIEnabled && typeflowai) {
-      typeflowai?.registerRouteChange();
+    if (typeflowAIEnabled && session?.user && typeflowai) {
+      initializeFTypeflowAIAndSetupRouteChanges();
     }
-  }, [pathname, searchParams]);
+  }, [session, pathname, searchParams, initializeFTypeflowAIAndSetupRouteChanges]);
+
   return null;
 }
 

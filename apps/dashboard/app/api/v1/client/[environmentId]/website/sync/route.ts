@@ -113,7 +113,7 @@ export async function GET(
     const noCodeActionClasses = actionClasses.filter((actionClass) => actionClass.type === "noCode");
 
     // Define 'transformedWorkflows' which can be an array of either TLegacyWorkflow or TWorkflow.
-    let transformedWorkflows: TLegacyWorkflow[] | TWorkflow[] = workflows;
+    let transformedWorkflows: TLegacyWorkflow[] | TWorkflow[] = filteredWorkflows;
     let state: TJsWebsiteStateSync | TJsWebsiteLegacyStateSync = {
       workflows: !isInAppWorkflowLimitReached ? transformedWorkflows : [],
       actionClasses,
