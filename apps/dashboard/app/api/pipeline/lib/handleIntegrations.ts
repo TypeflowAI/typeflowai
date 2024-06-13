@@ -59,8 +59,12 @@ async function handleGoogleSheetsIntegration(
   if (integration.config.data.length > 0) {
     for (const element of integration.config.data) {
       if (element.workflowId === data.workflowId) {
-        const values = await extractResponses(data, element.questionIds as string[], workflow);
-        await writeData(integration.config.key, element.spreadsheetId, values);
+        const values = await extractResponses(data, element.questionIds, workflow);
+        const integrationData = structuredClone(integration);
+        integrationData.config.data.forEach((data) => {
+          data.createdAt = new Date(data.createdAt);
+        });
+        await writeData(integrationData, element.spreadsheetId, values);
       }
     }
   }
