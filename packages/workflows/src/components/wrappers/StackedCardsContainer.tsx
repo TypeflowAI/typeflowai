@@ -134,6 +134,7 @@ export const StackedCardsContainer = ({
       <div style={{ height: cardHeight }}></div>
       {cardArrangement === "simple" ? (
         <div
+          className="w-full"
           style={{
             ...borderStyles,
           }}>

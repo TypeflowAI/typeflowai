@@ -151,7 +151,7 @@ export const WorkflowCard = ({
         key={workflow.id}
         className="relative grid w-full grid-cols-8 place-items-center gap-3 rounded-xl border border-slate-200 bg-white p-4
     shadow-sm transition-all ease-in-out hover:scale-[101%]">
-        <div className="col-span-2 mt-4 flex flex max-w-full flex-row items-center justify-self-start truncate ">
+        <div className="col-span-2 mt-4 flex flex max-w-full flex-row items-center justify-self-start ">
           {workflow.icon && (
             <TemplateIconComponent
               icon={workflow.icon}
@@ -163,7 +163,7 @@ export const WorkflowCard = ({
             />
           )}
           <div className={`mt-1 ${workflow.icon ? "ml-4" : ""}`}>
-            <p className="whitespace-nowrap text-sm font-medium text-slate-900">{workflow.name}</p>
+            <p className="w-full truncate text-sm font-medium text-slate-900">{workflow.name}</p>
           </div>
         </div>
         <div
