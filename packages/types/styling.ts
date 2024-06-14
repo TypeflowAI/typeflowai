@@ -16,11 +16,22 @@ export const ZCardArrangement = z.object({
   appWorkflows: ZCardArrangementOptions,
 });
 
-export const ZWorkflowStylingBackground = z.object({
-  bg: z.string().nullish(),
-  bgType: z.enum(["animation", "color", "image", "upload"]).nullish(),
-  brightness: z.number().nullish(),
-});
+export const ZWorkflowStylingBackground = z
+  .object({
+    bg: z.string().nullish(),
+    bgType: z.enum(["animation", "color", "image", "upload"]).nullish(),
+    brightness: z.number().nullish(),
+  })
+  .refine(
+    (workflowBackground) => {
+      if (workflowBackground.bgType === "upload") {
+        return !!workflowBackground.bg;
+      }
+
+      return true;
+    },
+    { message: "Invalid background" }
+  );
 
 export type TWorkflowStylingBackground = z.infer<typeof ZWorkflowStylingBackground>;
 
@@ -40,3 +51,5 @@ export const ZBaseStyling = z.object({
   hideProgressBar: z.boolean().nullish(),
   isLogoHidden: z.boolean().nullish(),
 });
+
+export type TBaseStyling = z.infer<typeof ZBaseStyling>;
