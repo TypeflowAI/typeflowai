@@ -11,7 +11,7 @@ import { ResponseQueue } from "@typeflowai/lib/responseQueue";
 import { WorkflowState } from "@typeflowai/lib/workflowState";
 import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TProduct } from "@typeflowai/types/product";
-import { TResponse, TResponseData, TResponseUpdate } from "@typeflowai/types/responses";
+import { TResponse, TResponseHiddenFieldValue, TResponseUpdate } from "@typeflowai/types/responses";
 import { TUploadFileConfig } from "@typeflowai/types/storage";
 import { TWorkflow } from "@typeflowai/types/workflows";
 import { ClientLogo } from "@typeflowai/ui/ClientLogo";
@@ -122,20 +122,17 @@ export default function LinkWorkflow({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const hiddenFieldsRecord = useMemo<TResponseData | undefined>(() => {
-    const fieldsRecord: TResponseData = {};
-    let fieldsSet = false;
+  const hiddenFieldsRecord = useMemo<TResponseHiddenFieldValue>(() => {
+    const fieldsRecord: TResponseHiddenFieldValue = {};
 
     workflow.hiddenFields?.fieldIds?.forEach((field) => {
       const answer = searchParams?.get(field);
       if (answer) {
         fieldsRecord[field] = answer;
-        fieldsSet = true;
       }
     });
 
-    // Only return the record if at least one field was set.
-    return fieldsSet ? fieldsRecord : undefined;
+    return fieldsRecord;
   }, [searchParams, workflow.hiddenFields?.fieldIds]);
 
   const getVerifiedEmail = useMemo<Record<string, string> | null>(() => {
@@ -267,6 +264,7 @@ export default function LinkWorkflow({
                   url: window.location.href,
                   source: sourceParam || "",
                 },
+                ...(Object.keys(hiddenFieldsRecord).length > 0 && { hiddenFields: hiddenFieldsRecord }),
               });
           }}
           onFileUpload={async (file: File, params: TUploadFileConfig) => {

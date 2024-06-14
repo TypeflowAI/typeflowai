@@ -437,14 +437,12 @@ export const QuestionsView = ({
           attributeClasses={attributeClasses}
         />
 
-        {localWorkflow.type === "link" ? (
-          <HiddenFieldsCard
-            localWorkflow={localWorkflow}
-            setLocalWorkflow={setLocalWorkflow}
-            setActiveQuestionId={setActiveQuestionId}
-            activeQuestionId={activeQuestionId}
-          />
-        ) : null}
+        <HiddenFieldsCard
+          localWorkflow={localWorkflow}
+          setLocalWorkflow={setLocalWorkflow}
+          setActiveQuestionId={setActiveQuestionId}
+          activeQuestionId={activeQuestionId}
+        />
 
         {/* <MultiLanguageCard
           localWorkflow={localWorkflow}

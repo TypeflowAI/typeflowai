@@ -277,6 +277,9 @@ export const ZResponseWithWorkflow = ZResponse.extend({
 
 export type TResponseWithWorkflow = z.infer<typeof ZResponseWithWorkflow>;
 
+export const ZResponseHiddenFieldValue = z.record(z.union([z.string(), z.number(), z.array(z.string())]));
+export type TResponseHiddenFieldValue = z.infer<typeof ZResponseHiddenFieldValue>;
+
 export const ZResponseUpdate = z.object({
   finished: z.boolean(),
   data: ZResponseData,
@@ -289,6 +292,7 @@ export const ZResponseUpdate = z.object({
       action: z.string().optional(),
     })
     .optional(),
+  hiddenFields: ZResponseHiddenFieldValue.optional(),
 });
 
 export type TResponseUpdate = z.infer<typeof ZResponseUpdate>;

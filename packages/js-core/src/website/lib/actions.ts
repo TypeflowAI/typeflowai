@@ -1,3 +1,5 @@
+import { TJsTrackProperties } from "@typeflowai/types/js";
+
 import { InvalidCodeError, NetworkError, Result, err, okVoid } from "../../shared/errors";
 import { Logger } from "../../shared/logger";
 import { WebsiteConfig } from "./config";
@@ -6,7 +8,11 @@ import { triggerWorkflow } from "./widget";
 const logger = Logger.getInstance();
 const websiteConfig = WebsiteConfig.getInstance();
 
-export const trackAction = async (name: string, alias?: string): Promise<Result<void, NetworkError>> => {
+export const trackAction = async (
+  name: string,
+  alias?: string,
+  properties?: TJsTrackProperties
+): Promise<Result<void, NetworkError>> => {
   const aliasName = alias || name;
   logger.debug(`TypeflowAI: Action "${aliasName}" tracked`);
 
@@ -17,7 +23,7 @@ export const trackAction = async (name: string, alias?: string): Promise<Result<
     for (const workflow of activeWorkflows) {
       for (const trigger of workflow.triggers) {
         if (trigger.actionClass.name === name) {
-          await triggerWorkflow(workflow, name);
+          await triggerWorkflow(workflow, name, properties);
         }
       }
     }
@@ -29,7 +35,8 @@ export const trackAction = async (name: string, alias?: string): Promise<Result<
 };
 
 export const trackCodeAction = (
-  code: string
+  code: string,
+  properties?: TJsTrackProperties
 ): Promise<Result<void, NetworkError>> | Result<void, InvalidCodeError> => {
   const {
     state: { actionClasses = [] },
@@ -45,7 +52,7 @@ export const trackCodeAction = (
     });
   }
 
-  return trackAction(action.name, code);
+  return trackAction(action.name, code, properties);
 };
 
 export const trackNoCodeAction = (name: string): Promise<Result<void, NetworkError>> => {

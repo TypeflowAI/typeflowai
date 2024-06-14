@@ -46,7 +46,6 @@ export const Workflow = ({
   responseCount,
   isPreview,
   startAtQuestionId,
-  hiddenFieldsRecord,
   clickOutside,
 }: WorkflowBaseProps) => {
   const isInIframe = window.self !== window.top;
@@ -60,7 +59,7 @@ export const Workflow = ({
   );
   const [loadingElement, setLoadingElement] = useState(false);
   const [history, setHistory] = useState<string[]>([]);
-  const [responseData, setResponseData] = useState<TResponseData>(hiddenFieldsRecord ?? {});
+  const [responseData, setResponseData] = useState<TResponseData>({});
   const [ttc, setTtc] = useState<TResponseTtc>({});
   const cardArrangement = useMemo(() => {
     if (workflow.type === "link") {
