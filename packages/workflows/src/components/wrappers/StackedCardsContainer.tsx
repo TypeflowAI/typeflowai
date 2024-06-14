@@ -10,7 +10,7 @@ interface StackedCardsContainerProps {
   cardArrangement: TCardArrangementOptions;
   currentQuestionId: string;
   workflow: TWorkflow;
-  getCardContent: (questionIdx: number, offset: number) => JSX.Element | undefined;
+  getCardContent: (questionIdxTemp: number, offset: number) => JSX.Element | undefined;
   styling: TProductStyling | TWorkflowStyling;
   setQuestionId: (questionId: string) => void;
 }
@@ -31,26 +31,42 @@ export const StackedCardsContainer = ({
   const resizeObserver = useRef<ResizeObserver | null>(null);
   const [cardHeight, setCardHeight] = useState("auto");
 
-  const cardIndexes = useMemo(() => {
-    let cardIndexTemp = workflow.questions.map((_, index) => index);
-    if (workflow.welcomeCard.enabled) {
-      cardIndexTemp.unshift(-1);
-    }
-    if (workflow.prompt.enabled) {
-      cardIndexTemp.push(workflow.questions.length);
-    }
-    if (workflow.thankYouCard.enabled) {
-      cardIndexTemp.push(workflow.questions.length + 1);
-    }
-    return cardIndexTemp;
-  }, [workflow]);
-
-  const questionIdx = useMemo(() => {
+  const questionIdxTemp = useMemo(() => {
     if (currentQuestionId === "start") return workflow.welcomeCard.enabled ? -1 : 0;
     if (currentQuestionId === "end") return workflow.thankYouCard.enabled ? workflow.questions.length : 0;
     if (currentQuestionId === "prompt") return workflow.questions.length;
     return workflow.questions.findIndex((question) => question.id === currentQuestionId);
   }, [currentQuestionId, workflow.welcomeCard.enabled, workflow.thankYouCard.enabled, workflow.questions]);
+
+  const [prevQuestionIdx, setPrevQuestionIdx] = useState(questionIdxTemp - 1);
+  const [currentQuestionIdx, setCurrentQuestionIdx] = useState(questionIdxTemp);
+  const [nextQuestionIdx, setNextQuestionIdx] = useState(questionIdxTemp + 1);
+  const [visitedQuestions, setVisitedQuestions] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (questionIdxTemp > currentQuestionIdx) {
+      // Next button is clicked
+      setPrevQuestionIdx(currentQuestionIdx);
+      setCurrentQuestionIdx(questionIdxTemp);
+      setNextQuestionIdx(questionIdxTemp + 1);
+      setVisitedQuestions((prev) => {
+        return [...prev, currentQuestionIdx];
+      });
+    } else if (questionIdxTemp < currentQuestionIdx) {
+      // Back button is clicked
+      setNextQuestionIdx(currentQuestionIdx);
+      setCurrentQuestionIdx(questionIdxTemp);
+      setPrevQuestionIdx(visitedQuestions[visitedQuestions.length - 2]);
+      setVisitedQuestions((prev) => {
+        if (prev.length > 0) {
+          const newStack = prev.slice(0, -1);
+          return newStack;
+        }
+        return prev;
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [questionIdxTemp]);
 
   const borderStyles = useMemo(() => {
     const baseStyle = {
@@ -91,7 +107,7 @@ export const StackedCardsContainer = ({
 
   // UseEffect to handle the resize of current question card and set cardHeight accordingly
   useEffect(() => {
-    const currentElement = cardRefs.current[questionIdx];
+    const currentElement = cardRefs.current[questionIdxTemp];
     if (currentElement) {
       if (resizeObserver.current) resizeObserver.current.disconnect();
       resizeObserver.current = new ResizeObserver((entries) => {
@@ -100,7 +116,7 @@ export const StackedCardsContainer = ({
       resizeObserver.current.observe(currentElement);
     }
     return () => resizeObserver.current?.disconnect();
-  }, [questionIdx, cardArrangement]);
+  }, [questionIdxTemp, cardArrangement]);
 
   // Reset question progress, when card arrangement changes
   useEffect(() => {
@@ -138,35 +154,42 @@ export const StackedCardsContainer = ({
           style={{
             ...borderStyles,
           }}>
-          {getCardContent(questionIdx, 0)}
+          {getCardContent(questionIdxTemp, 0)}
         </div>
       ) : (
-        questionIdx !== undefined &&
-        cardIndexes.map((_, idx) => {
-          const index = workflow.welcomeCard.enabled ? idx - 1 : idx;
-          const offset = index - questionIdx;
-          const isHidden = offset < 0;
-          return (
-            <div
-              ref={(el) => (cardRefs.current[index] = el)}
-              id={`questionCard-${index}`}
-              key={index}
-              style={{
-                zIndex: 1000 - index,
-                transform: `${calculateCardTransform(offset)}`,
-                opacity: isHidden ? 0 : (100 - 30 * offset) / 100,
-                height: getCardHeight(offset),
-                transitionDuration: "600ms",
-                pointerEvents: offset === 0 ? "auto" : "none",
-                ...borderStyles,
-                ...straightCardArrangementStyles(offset),
-                ...getBottomStyles(),
-              }}
-              className="pointer rounded-custom bg-workflow-bg absolute inset-x-0 backdrop-blur-md transition-all ease-in-out">
-              {getCardContent(index, offset)}
-            </div>
-          );
-        })
+        questionIdxTemp !== undefined &&
+        [prevQuestionIdx, currentQuestionIdx, nextQuestionIdx, nextQuestionIdx + 1].map(
+          (questionIdxTemp, index) => {
+            //Check for hiding extra card
+            if (workflow.thankYouCard.enabled) {
+              if (questionIdxTemp > workflow.questions.length) return;
+            } else {
+              if (questionIdxTemp > workflow.questions.length - 1) return;
+            }
+            const offset = index - 1;
+            const isHidden = offset < 0;
+            return (
+              <div
+                ref={(el) => (cardRefs.current[questionIdxTemp] = el)}
+                id={`questionCard-${questionIdxTemp}`}
+                key={questionIdxTemp}
+                style={{
+                  zIndex: 1000 - questionIdxTemp,
+                  transform: `${calculateCardTransform(offset)}`,
+                  opacity: isHidden ? 0 : (100 - 0 * offset) / 100,
+                  height: getCardHeight(offset),
+                  transitionDuration: "600ms",
+                  pointerEvents: offset === 0 ? "auto" : "none",
+                  ...borderStyles,
+                  ...straightCardArrangementStyles(offset),
+                  ...getBottomStyles(),
+                }}
+                className="pointer rounded-custom bg-workflow-bg absolute inset-x-0 backdrop-blur-md transition-all ease-in-out">
+                {getCardContent(questionIdxTemp, offset)}
+              </div>
+            );
+          }
+        )
       )}
     </div>
   );
