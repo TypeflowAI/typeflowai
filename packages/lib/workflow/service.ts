@@ -500,6 +500,7 @@ export const updateWorkflow = async (updatedWorkflow: TWorkflow): Promise<TWorkf
     // @ts-expect-error
     const modifiedWorkflow: TWorkflow = {
       ...prismaWorkflow, // Properties from prismaWorkflow
+      displayPercentage: Number(prismaWorkflow.displayPercentage) || null,
       segment: workflowSegment,
     };
 

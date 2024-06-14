@@ -509,7 +509,7 @@ export const ZWorkflow = z.object({
   verifyEmail: ZWorkflowVerifyEmail.nullable(),
   pin: z.string().nullish(),
   resultShareKey: z.string().nullable(),
-  displayPercentage: z.number().min(1).max(100).nullable(),
+  displayPercentage: z.number().min(0.01).max(100).nullable(),
   languages: z.array(ZWorkflowLanguage),
 });
 
@@ -538,7 +538,7 @@ export const ZWorkflowInput = z.object({
   verifyEmail: ZWorkflowVerifyEmail.optional(),
   pin: z.string().nullish(),
   resultShareKey: z.string().nullish(),
-  displayPercentage: z.number().min(1).max(100).nullish(),
+  displayPercentage: z.number().min(0.01).max(100).nullish(),
   triggers: z.array(z.object({ actionClass: ZActionClass })).optional(),
 });
 

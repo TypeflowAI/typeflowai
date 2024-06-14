@@ -315,7 +315,7 @@ model Workflow {
   verifyEmail       Json?
   pin               String?
   resultShareKey    String?            @unique
-  displayPercentage Int?
+  displayPercentage Decimal?
   languages         WorkflowLanguage[]
 
   @@index([environmentId, updatedAt])

@@ -104,7 +104,23 @@ export default function WhenToSendCard({
   };
 
   const handleRandomizerInput = (e) => {
-    const updatedWorkflow = { ...localWorkflow, displayPercentage: parseInt(e.target.value) };
+    let value: number | null = null;
+
+    if (e.target.value !== "") {
+      value = parseFloat(e.target.value);
+
+      if (Number.isNaN(value)) {
+        value = 1;
+      }
+
+      if (value < 0.01) value = 0.01;
+      if (value > 100) value = 100;
+
+      // Round value to two decimal places. eg: 10.555(and higher like 10.556) -> 10.56 and 10.554(and lower like 10.553) ->10.55
+      value = Math.round(value * 100) / 100;
+    }
+
+    const updatedWorkflow = { ...localWorkflow, displayPercentage: value };
     setLocalWorkflow(updatedWorkflow);
   };
 

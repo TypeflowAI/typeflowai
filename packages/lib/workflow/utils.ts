@@ -18,6 +18,7 @@ export const transformPrismaWorkflow = (workflowPrisma: any): TWorkflow => {
 
   const transformedWorkflow: TWorkflow = {
     ...workflowPrisma,
+    displayPercentage: Number(workflowPrisma.displayPercentage) || null,
     segment,
   };
 
