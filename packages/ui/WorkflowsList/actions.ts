@@ -7,6 +7,8 @@ import { prisma } from "@typeflowai/database";
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { hasUserEnvironmentAccess } from "@typeflowai/lib/environment/auth";
 import { structuredClone } from "@typeflowai/lib/pollyfills/structuredClone";
+import { segmentCache } from "@typeflowai/lib/segment/cache";
+import { createSegment } from "@typeflowai/lib/segment/service";
 import { generateWorkflowSingleUseId } from "@typeflowai/lib/utils/singleUseWorkflows";
 import { canUserAccessWorkflow, verifyUserRoleAccess } from "@typeflowai/lib/workflow/auth";
 import { workflowCache } from "@typeflowai/lib/workflow/cache";
@@ -78,6 +80,17 @@ export const copyToOtherEnvironmentAction = async (
       attributeFilters: {
         include: {
           attributeClass: true,
+        },
+      },
+      languages: {
+        select: {
+          default: true,
+          enabled: true,
+          language: {
+            select: {
+              id: true,
+            },
+          },
         },
       },
       segment: true,
@@ -160,6 +173,8 @@ export const copyToOtherEnvironmentAction = async (
     }
   }
 
+  const defaultLanguageId = existingWorkflow.languages.find((l) => l.default)?.language.id;
+
   // create new workflow with the data of the existing workflow
   const newWorkflow = await prisma.workflow.create({
     data: {
@@ -172,6 +187,12 @@ export const copyToOtherEnvironmentAction = async (
       status: "draft",
       questions: structuredClone(existingWorkflow.questions),
       thankYouCard: structuredClone(existingWorkflow.thankYouCard),
+      languages: {
+        create: existingWorkflow.languages?.map((workflowLanguage) => ({
+          languageId: workflowLanguage.language.id,
+          default: workflowLanguage.language.id === defaultLanguageId,
+        })),
+      },
       inlineTriggers: JSON.parse(JSON.stringify(existingWorkflow.inlineTriggers)),
       triggers: {
         create: targetEnvironmentTriggers.map((actionClassId) => ({
@@ -200,9 +221,58 @@ export const copyToOtherEnvironmentAction = async (
       productOverwrites: existingWorkflow.productOverwrites ?? prismaClient.JsonNull,
       verifyEmail: existingWorkflow.verifyEmail ?? prismaClient.JsonNull,
       styling: existingWorkflow.styling ?? prismaClient.JsonNull,
-      segment: existingWorkflow.segment ? { connect: { id: existingWorkflow.segment.id } } : undefined,
+      segment: undefined,
     },
   });
+
+  // if the existing workflow has an inline segment, we copy the filters and create a new inline segment and connect it to the new workflow
+  if (existingWorkflow.segment) {
+    if (existingWorkflow.segment.isPrivate) {
+      const newInlineSegment = await createSegment({
+        environmentId,
+        title: `${newWorkflow.id}`,
+        isPrivate: true,
+        workflowId: newWorkflow.id,
+        filters: existingWorkflow.segment.filters,
+      });
+
+      await prisma.workflow.update({
+        where: {
+          id: newWorkflow.id,
+        },
+        data: {
+          segment: {
+            connect: {
+              id: newInlineSegment.id,
+            },
+          },
+        },
+      });
+
+      segmentCache.revalidate({
+        id: newInlineSegment.id,
+        environmentId: newWorkflow.environmentId,
+      });
+    } else {
+      await prisma.workflow.update({
+        where: {
+          id: newWorkflow.id,
+        },
+        data: {
+          segment: {
+            connect: {
+              id: existingWorkflow.segment.id,
+            },
+          },
+        },
+      });
+
+      segmentCache.revalidate({
+        id: existingWorkflow.segment.id,
+        environmentId: newWorkflow.environmentId,
+      });
+    }
+  }
 
   workflowCache.revalidate({
     id: newWorkflow.id,

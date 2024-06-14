@@ -533,15 +533,10 @@ export async function deleteWorkflow(workflowId: string) {
       select: selectWorkflow,
     });
 
-    if (deletedWorkflow.type === "app") {
+    if (deletedWorkflow.type === "app" && deletedWorkflow.segment?.isPrivate) {
       const deletedSegment = await prisma.segment.delete({
         where: {
-          title: workflowId,
-          isPrivate: true,
-          environmentId_title: {
-            environmentId: deletedWorkflow.environmentId,
-            title: workflowId,
-          },
+          id: deletedWorkflow.segment.id,
         },
       });
 
