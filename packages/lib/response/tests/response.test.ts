@@ -6,11 +6,10 @@ import {
   mockEnvironmentId,
   mockMeta,
   mockPerson,
-  mockPersonAttributesData,
+  mockPersonId,
   mockResponse,
   mockResponseData,
   mockResponseNote,
-  mockResponsePersonAttributes,
   mockResponseWithMockPerson,
   mockSingleUseId,
   mockTags,
@@ -24,19 +23,24 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { testInputValidation } from "vitestSetup";
 
 import { DatabaseError, ResourceNotFoundError } from "@typeflowai/types/errors";
-import { TResponse, TResponseFilterCriteria, TResponseInput } from "@typeflowai/types/responses";
+import {
+  TResponse,
+  TResponseFilterCriteria,
+  TResponseInput,
+  TResponseLegacyInput,
+} from "@typeflowai/types/responses";
 import { TTag } from "@typeflowai/types/tags";
 
 import { selectPerson } from "../../person/service";
 import { mockAttributeClass, mockWorkflowOutput } from "../../workflow/tests/__mock__/workflow.mock";
 import {
   createResponse,
+  createResponseLegacy,
   deleteResponse,
   getResponse,
   getResponseBySingleUseId,
   getResponseCountByWorkflowId,
   getResponseDownloadUrl,
-  getResponsePersonAttributes,
   getResponses,
   getResponsesByEnvironmentId,
   getResponsesByPersonId,
@@ -71,6 +75,16 @@ const mockResponseInputWithUserId: TResponseInput = {
   ...mockResponseInputWithoutUserId,
   userId: mockUserId,
 };
+
+const createMockResponseLegacyInput = (personId?: string): TResponseLegacyInput => ({
+  finished: constantsForTests.boolean,
+  personId: personId ?? null,
+  workflowId: mockWorkflowId,
+  meta: mockMeta,
+  singleUseId: mockSingleUseId,
+  ttc: {},
+  data: {},
+});
 
 beforeEach(() => {
   // @ts-expect-error
@@ -248,6 +262,20 @@ describe("Tests for createResponse service", () => {
   });
 });
 
+describe("Tests for createResponseLegacy service", () => {
+  describe("Happy Path", () => {
+    it("Creates a response linked to an existing user", async () => {
+      const response = await createResponseLegacy(createMockResponseLegacyInput(mockPersonId));
+      expect(response).toEqual(expectedResponseWithPerson);
+    });
+
+    it("Creates a legacy response without an associated user ID", async () => {
+      const response = await createResponseLegacy(createMockResponseLegacyInput());
+      expect(response).toEqual(expectedResponseWithoutPerson);
+    });
+  });
+});
+
 describe("Tests for getResponse service", () => {
   describe("Happy Path", () => {
     it("Retrieves a specific response by its ID", async () => {
@@ -282,46 +310,6 @@ describe("Tests for getResponse service", () => {
       prisma.response.findUnique.mockRejectedValue(new Error(mockErrorMessage));
 
       await expect(getResponse(mockResponse.id)).rejects.toThrow(Error);
-    });
-  });
-});
-
-describe("Tests for getAttributesFromResponses service", () => {
-  describe("Happy Path", () => {
-    it("Retrieves all attributes from responses for a given workflow ID", async () => {
-      prisma.response.findMany.mockResolvedValue(mockResponsePersonAttributes);
-      const attributes = await getResponsePersonAttributes(mockWorkflowId);
-      expect(attributes).toEqual(mockPersonAttributesData);
-    });
-
-    it("Returns an empty Object when no responses with attributes are found for the given workflow ID", async () => {
-      prisma.response.findMany.mockResolvedValue([]);
-
-      const responses = await getResponsePersonAttributes(mockWorkflowId);
-      expect(responses).toEqual({});
-    });
-  });
-
-  describe("Sad Path", () => {
-    testInputValidation(getResponsePersonAttributes, "123#");
-
-    it("Throws DatabaseError on PrismaClientKnownRequestError", async () => {
-      const mockErrorMessage = "Mock error message";
-      const errToThrow = new Prisma.PrismaClientKnownRequestError(mockErrorMessage, {
-        code: "P2002",
-        clientVersion: "0.0.1",
-      });
-
-      prisma.response.findMany.mockRejectedValue(errToThrow);
-
-      await expect(getResponsePersonAttributes(mockWorkflowId)).rejects.toThrow(DatabaseError);
-    });
-
-    it("Throws a generic Error for unexpected problems", async () => {
-      const mockErrorMessage = "Mock error message";
-      prisma.response.findMany.mockRejectedValue(new Error(mockErrorMessage));
-
-      await expect(getResponsePersonAttributes(mockWorkflowId)).rejects.toThrow(Error);
     });
   });
 });

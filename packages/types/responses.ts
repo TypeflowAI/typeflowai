@@ -27,6 +27,10 @@ export const ZWorkflowMetaFieldFilter = z.record(z.array(z.string()));
 
 export type TWorkflowMetaFieldFilter = z.infer<typeof ZWorkflowMetaFieldFilter>;
 
+export const ZResponseHiddenFieldsFilter = z.record(z.array(z.string()));
+
+export type TResponseHiddenFieldsFilter = z.infer<typeof ZResponseHiddenFieldsFilter>;
+
 const ZResponseFilterCriteriaDataLessThan = z.object({
   op: z.literal(ZWorkflowLogicCondition.Values.lessThan),
   value: z.number(),

@@ -2,8 +2,7 @@
 
 import {
   getResponseCountByWorkflowId,
-  getResponseMeta,
-  getResponsePersonAttributes,
+  getResponseFilteringValues,
   getResponses,
   getWorkflowSummary,
 } from "@typeflowai/lib/response/service";
@@ -54,11 +53,10 @@ export const getWorkflowFilterDataByWorkflowSharingKeyAction = async (
   const workflowId = await getWorkflowIdByResultShareKey(sharingKey);
   if (!workflowId) throw new AuthorizationError("Not authorized");
 
-  const [tags, attributes, meta] = await Promise.all([
+  const [tags, { personAttributes: attributes, meta, hiddenFields }] = await Promise.all([
     getTagsByEnvironmentId(environmentId),
-    getResponsePersonAttributes(workflowId),
-    getResponseMeta(workflowId),
+    getResponseFilteringValues(workflowId),
   ]);
 
-  return { environmentTags: tags, attributes, meta };
+  return { environmentTags: tags, attributes, meta, hiddenFields };
 };

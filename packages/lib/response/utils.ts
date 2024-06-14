@@ -2,7 +2,14 @@ import "server-only";
 
 import { Prisma } from "@prisma/client";
 
-import { TResponse, TResponseFilterCriteria, TResponseTtc } from "@typeflowai/types/responses";
+import {
+  TResponse,
+  TResponseFilterCriteria,
+  TResponseHiddenFieldsFilter,
+  TResponseTtc,
+  TWorkflowMetaFieldFilter,
+  TWorkflowPersonAttributes,
+} from "@typeflowai/types/responses";
 import {
   TWorkflow,
   TWorkflowLanguage,
@@ -15,22 +22,22 @@ import {
   TWorkflowQuestionSummaryOpenText,
   TWorkflowQuestionSummaryPictureSelection,
   TWorkflowQuestionSummaryRating,
-  TWorkflowQuestionType,
+  TWorkflowQuestionTypeEnum,
   TWorkflowSummary,
 } from "@typeflowai/types/workflows";
 
 import { getLocalizedValue } from "../i18n/utils";
 import { processResponseData } from "../responses";
-import { sanitizeString } from "../strings";
 import { getTodaysDateTimeFormatted } from "../time";
 import { evaluateCondition } from "../utils/evaluateLogic";
+import { sanitizeString } from "../utils/strings";
 
-export function calculateTtcTotal(ttc: TResponseTtc) {
+export const calculateTtcTotal = (ttc: TResponseTtc) => {
   const result = { ...ttc };
   result._total = Object.values(result).reduce((acc: number, val: number) => acc + val, 0);
 
   return result;
-}
+};
 
 export const buildWhereClause = (filterCriteria?: TResponseFilterCriteria) => {
   const whereClause: Prisma.ResponseWhereInput["AND"] = [];
@@ -383,9 +390,7 @@ export const getResponsesFileName = (workflowName: string, extension: string) =>
   const sanitizedWorkflowName = sanitizeString(workflowName);
 
   const formattedDateString = getTodaysDateTimeFormatted("-");
-  return `export-${sanitizedWorkflowName
-    .split(" ")
-    .join("-")}-${formattedDateString}.${extension}`.toLocaleLowerCase();
+  return `export-${sanitizedWorkflowName.split(" ").join("-")}-${formattedDateString}.${extension}`.toLocaleLowerCase();
 };
 
 export const extracMetadataKeys = (obj: TResponse["meta"]) => {
@@ -698,7 +703,7 @@ export const getQuestionWiseSummary = (
 
   workflow.questions.forEach((question, idx) => {
     switch (question.type) {
-      case TWorkflowQuestionType.OpenText: {
+      case TWorkflowQuestionTypeEnum.OpenText: {
         let values: TWorkflowQuestionSummaryOpenText["samples"] = [];
         responses.forEach((response) => {
           const answer = response.data[question.id];
@@ -723,8 +728,8 @@ export const getQuestionWiseSummary = (
         values = [];
         break;
       }
-      case TWorkflowQuestionType.MultipleChoiceSingle:
-      case TWorkflowQuestionType.MultipleChoiceMulti: {
+      case TWorkflowQuestionTypeEnum.MultipleChoiceSingle:
+      case TWorkflowQuestionTypeEnum.MultipleChoiceMulti: {
         let values: TWorkflowQuestionSummaryMultipleChoice["choices"] = [];
         // check last choice is others or not
         const lastChoice = question.choices[question.choices.length - 1];
@@ -805,7 +810,7 @@ export const getQuestionWiseSummary = (
         values = [];
         break;
       }
-      case TWorkflowQuestionType.PictureSelection: {
+      case TWorkflowQuestionTypeEnum.PictureSelection: {
         let values: TWorkflowQuestionSummaryPictureSelection["choices"] = [];
         const choiceCountMap: Record<string, number> = {};
 
@@ -846,7 +851,7 @@ export const getQuestionWiseSummary = (
         values = [];
         break;
       }
-      case TWorkflowQuestionType.Rating: {
+      case TWorkflowQuestionTypeEnum.Rating: {
         let values: TWorkflowQuestionSummaryRating["choices"] = [];
         const choiceCountMap: Record<number, number> = {};
         const range = question.range;
@@ -896,7 +901,7 @@ export const getQuestionWiseSummary = (
         values = [];
         break;
       }
-      case TWorkflowQuestionType.NPS: {
+      case TWorkflowQuestionTypeEnum.NPS: {
         const data = {
           promoters: 0,
           passives: 0,
@@ -953,7 +958,7 @@ export const getQuestionWiseSummary = (
         });
         break;
       }
-      case TWorkflowQuestionType.CTA: {
+      case TWorkflowQuestionTypeEnum.CTA: {
         const data = {
           clicked: 0,
           dismissed: 0,
@@ -985,7 +990,7 @@ export const getQuestionWiseSummary = (
         });
         break;
       }
-      case TWorkflowQuestionType.Consent: {
+      case TWorkflowQuestionTypeEnum.Consent: {
         const data = {
           accepted: 0,
           dismissed: 0,
@@ -1020,7 +1025,7 @@ export const getQuestionWiseSummary = (
 
         break;
       }
-      case TWorkflowQuestionType.Date: {
+      case TWorkflowQuestionTypeEnum.Date: {
         let values: TWorkflowQuestionSummaryDate["samples"] = [];
         responses.forEach((response) => {
           const answer = response.data[question.id];
@@ -1045,7 +1050,7 @@ export const getQuestionWiseSummary = (
         values = [];
         break;
       }
-      case TWorkflowQuestionType.FileUpload: {
+      case TWorkflowQuestionTypeEnum.FileUpload: {
         let values: TWorkflowQuestionSummaryFileUpload["files"] = [];
         responses.forEach((response) => {
           const answer = response.data[question.id];
@@ -1070,7 +1075,7 @@ export const getQuestionWiseSummary = (
         values = [];
         break;
       }
-      case TWorkflowQuestionType.Cal: {
+      case TWorkflowQuestionTypeEnum.Cal: {
         const data = {
           booked: 0,
           skipped: 0,
@@ -1103,7 +1108,7 @@ export const getQuestionWiseSummary = (
 
         break;
       }
-      case TWorkflowQuestionType.Matrix: {
+      case TWorkflowQuestionTypeEnum.Matrix: {
         const rows = question.rows.map((row) => getLocalizedValue(row, "default"));
         const columns = question.columns.map((column) => getLocalizedValue(column, "default"));
         let totalResponseCount = 0;
@@ -1160,7 +1165,7 @@ export const getQuestionWiseSummary = (
         });
         break;
       }
-      case TWorkflowQuestionType.Address: {
+      case TWorkflowQuestionTypeEnum.Address: {
         let values: TWorkflowQuestionSummaryAddress["samples"] = [];
         responses.forEach((response) => {
           const answer = response.data[question.id];
@@ -1213,4 +1218,111 @@ export const getQuestionWiseSummary = (
   });
 
   return summary;
+};
+
+export const getResponsePersonAttributes = (
+  responses: Pick<TResponse, "personAttributes" | "data" | "meta">[]
+): TWorkflowPersonAttributes => {
+  try {
+    let attributes: TWorkflowPersonAttributes = {};
+
+    responses.forEach((response) => {
+      Object.keys(response.personAttributes ?? {}).forEach((key) => {
+        if (response.personAttributes && attributes[key]) {
+          attributes[key].push(response.personAttributes[key].toString());
+        } else if (response.personAttributes) {
+          attributes[key] = [response.personAttributes[key].toString()];
+        }
+      });
+    });
+
+    Object.keys(attributes).forEach((key) => {
+      attributes[key] = Array.from(new Set(attributes[key]));
+    });
+
+    return attributes;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getResponseMeta = (
+  responses: Pick<TResponse, "personAttributes" | "data" | "meta">[]
+): TWorkflowMetaFieldFilter => {
+  try {
+    const meta: { [key: string]: Set<string> } = {};
+
+    responses.forEach((response) => {
+      Object.entries(response.meta).forEach(([key, value]) => {
+        // skip url
+        if (key === "url") return;
+
+        // Handling nested objects (like userAgent)
+        if (typeof value === "object" && value !== null) {
+          Object.entries(value).forEach(([nestedKey, nestedValue]) => {
+            if (typeof nestedValue === "string" && nestedValue) {
+              if (!meta[nestedKey]) {
+                meta[nestedKey] = new Set();
+              }
+              meta[nestedKey].add(nestedValue);
+            }
+          });
+        } else if (typeof value === "string" && value) {
+          if (!meta[key]) {
+            meta[key] = new Set();
+          }
+          meta[key].add(value);
+        }
+      });
+    });
+
+    // Convert Set to Array
+    const result = Object.fromEntries(
+      Object.entries(meta).map(([key, valueSet]) => [key, Array.from(valueSet)])
+    );
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getResponseHiddenFields = (
+  workflow: TWorkflow,
+  responses: Pick<TResponse, "personAttributes" | "data" | "meta">[]
+): TResponseHiddenFieldsFilter => {
+  try {
+    const hiddenFields: { [key: string]: Set<string> } = {};
+
+    const workflowHiddenFields = workflow?.hiddenFields.fieldIds;
+    const hasHiddenFields = workflowHiddenFields && workflowHiddenFields.length > 0;
+
+    if (hasHiddenFields) {
+      // adding hidden fields to meta
+      workflow?.hiddenFields.fieldIds?.forEach((fieldId) => {
+        hiddenFields[fieldId] = new Set();
+      });
+
+      responses.forEach((response) => {
+        // Handling data fields(Hidden fields)
+        workflowHiddenFields?.forEach((fieldId) => {
+          const hiddenFieldValue = response.data[fieldId];
+          if (hiddenFieldValue) {
+            if (typeof hiddenFieldValue === "string") {
+              hiddenFields[fieldId].add(hiddenFieldValue);
+            }
+          }
+        });
+      });
+    }
+
+    // Convert Set to Array
+    const result = Object.fromEntries(
+      Object.entries(hiddenFields).map(([key, valueSet]) => [key, Array.from(valueSet)])
+    );
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
 };

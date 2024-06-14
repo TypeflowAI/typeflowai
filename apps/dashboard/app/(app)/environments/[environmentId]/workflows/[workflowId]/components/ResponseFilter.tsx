@@ -46,7 +46,7 @@ const ResponseFilter = ({ workflow }: ResponseFilterProps) => {
     // Fetch the initial data for the filter and load it into the state
     const handleInitialData = async () => {
       if (isOpen) {
-        const { attributes, meta, environmentTags } = isSharingPage
+        const { attributes, meta, environmentTags, hiddenFields } = isSharingPage
           ? await getWorkflowFilterDataByWorkflowSharingKeyAction(sharingKey, workflow.environmentId)
           : await getWorkflowFilterDataAction(workflow.id, workflow.environmentId);
 
@@ -54,7 +54,8 @@ const ResponseFilter = ({ workflow }: ResponseFilterProps) => {
           workflow,
           environmentTags,
           attributes,
-          meta
+          meta,
+          hiddenFields
         );
         setSelectedOptions({ questionFilterOptions, questionOptions });
       }
