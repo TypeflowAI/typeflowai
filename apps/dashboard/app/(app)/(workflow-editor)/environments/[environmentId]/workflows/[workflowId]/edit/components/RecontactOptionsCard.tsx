@@ -12,7 +12,7 @@ import { Label } from "@typeflowai/ui/Label";
 import { RadioGroup, RadioGroupItem } from "@typeflowai/ui/RadioGroup";
 
 interface DisplayOption {
-  id: "displayOnce" | "displayMultiple" | "respondMultiple";
+  id: "displayOnce" | "displayMultiple" | "respondMultiple" | "displaySome";
   name: string;
   description: string;
 }
@@ -22,6 +22,11 @@ const displayOptions: DisplayOption[] = [
     id: "displayOnce",
     name: "Show only once",
     description: "The workflow will be shown once, even if person doesn't respond.",
+  },
+  {
+    id: "displaySome",
+    name: "Show multiple times",
+    description: "The workflow will be shown multiple times until they respond",
   },
   {
     id: "displayMultiple",
@@ -41,16 +46,17 @@ interface RecontactOptionsCardProps {
   environmentId: string;
 }
 
-export default function RecontactOptionsCard({
+export const RecontactOptionsCard = ({
   localWorkflow,
   setLocalWorkflow,
   environmentId,
-}: RecontactOptionsCardProps) {
+}: RecontactOptionsCardProps) => {
   const [open, setOpen] = useState(false);
   const ignoreWaiting = localWorkflow.recontactDays !== null;
   const [inputDays, setInputDays] = useState(
     localWorkflow.recontactDays !== null ? localWorkflow.recontactDays : 1
   );
+  const [displayLimit, setDisplayLimit] = useState(localWorkflow.displayLimit ?? 1);
 
   const handleCheckMark = () => {
     if (ignoreWaiting) {
@@ -67,6 +73,14 @@ export default function RecontactOptionsCard({
     setInputDays(value);
 
     const updatedWorkflow = { ...localWorkflow, recontactDays: value };
+    setLocalWorkflow(updatedWorkflow);
+  };
+
+  const handleRecontactSessionDaysChange = (event) => {
+    const value = Number(event.target.value);
+    setDisplayLimit(value);
+
+    const updatedWorkflow = { ...localWorkflow, displayLimit: value } satisfies TWorkflow;
     setLocalWorkflow(updatedWorkflow);
   };
 
@@ -115,24 +129,49 @@ export default function RecontactOptionsCard({
               if (v === "displayOnce" || v === "displayMultiple" || v === "respondMultiple") {
                 const updatedWorkflow: TWorkflow = { ...localWorkflow, displayOption: v };
                 setLocalWorkflow(updatedWorkflow);
+              } else if (v === "displaySome") {
+                const updatedWorkflow: TWorkflow = {
+                  ...localWorkflow,
+                  displayOption: v,
+                  displayLimit,
+                };
+                setLocalWorkflow(updatedWorkflow);
               }
             }}>
             {displayOptions.map((option) => (
-              <Label
-                key={option.name}
-                htmlFor={option.name}
-                className="flex w-full cursor-pointer items-center rounded-lg border bg-slate-50 p-4">
-                <RadioGroupItem
-                  value={option.id}
-                  id={option.name}
-                  className="aria-checked:border-brand-dark  mx-5 disabled:border-slate-400 aria-checked:border-2"
-                />
-                <div>
-                  <p className="font-semibold text-slate-700">{option.name}</p>
+              <>
+                <Label
+                  key={option.name}
+                  htmlFor={option.name}
+                  className="flex w-full cursor-pointer items-center rounded-lg border bg-slate-50 p-4">
+                  <RadioGroupItem
+                    value={option.id}
+                    id={option.name}
+                    className="aria-checked:border-brand-dark  mx-5 disabled:border-slate-400 aria-checked:border-2"
+                  />
+                  <div>
+                    <p className="font-semibold text-slate-700">{option.name}</p>
 
-                  <p className="mt-2 text-xs font-normal text-slate-600">{option.description}</p>
-                </div>
-              </Label>
+                    <p className="mt-2 text-xs font-normal text-slate-600">{option.description}</p>
+                  </div>
+                </Label>
+                {option.id === "displaySome" && localWorkflow.displayOption === "displaySome" && (
+                  <label htmlFor="displayLimit" className="cursor-pointer p-4">
+                    <p className="text-sm font-semibold text-slate-700">
+                      Show workflow maximum of
+                      <Input
+                        type="number"
+                        min="1"
+                        id="displayLimit"
+                        value={displayLimit.toString()}
+                        onChange={(e) => handleRecontactSessionDaysChange(e)}
+                        className="mx-2 inline w-16 bg-white text-center text-sm"
+                      />
+                      times.
+                    </p>
+                  </label>
+                )}
+              </>
             ))}
           </RadioGroup>
         </div>
@@ -213,4 +252,4 @@ export default function RecontactOptionsCard({
       </Collapsible.CollapsibleContent>
     </Collapsible.Root>
   );
-}
+};

@@ -458,7 +458,12 @@ export const ZWorkflowQuestionsObject = z.object({
 
 export type TWorkflowQuestionsObject = z.infer<typeof ZWorkflowQuestionsObject>;
 
-export const ZWorkflowDisplayOption = z.enum(["displayOnce", "displayMultiple", "respondMultiple"]);
+export const ZWorkflowDisplayOption = z.enum([
+  "displayOnce",
+  "displayMultiple",
+  "respondMultiple",
+  "displaySome",
+]);
 
 export type TWorkflowDisplayOption = z.infer<typeof ZWorkflowDisplayOption>;
 
@@ -492,6 +497,7 @@ export const ZWorkflow = z.object({
   icon: z.string().nullable().optional(),
   redirectUrl: z.string().url().nullable(),
   recontactDays: z.number().nullable(),
+  displayLimit: z.number().nullable(),
   welcomeCard: ZWorkflowWelcomeCard,
   questions: ZWorkflowQuestions,
   prompt: ZWorkflowPrompt,

@@ -98,18 +98,41 @@ export const filterPublicWorkflows = (state: TJsWebsiteState): TJsWebsiteState =
     return state;
   }
 
-  // filter workflows that meet the displayOption criteria
-  let filteredWorkflows = workflows.filter((workflow) => {
-    if (workflow.displayOption === "respondMultiple") {
-      return true;
-    } else if (workflow.displayOption === "displayOnce") {
-      return displays.filter((display) => display.workflowId === workflow.id).length === 0;
-    } else if (workflow.displayOption === "displayMultiple") {
-      return (
-        displays.filter((display) => display.workflowId === workflow.id && display.responded).length === 0
-      );
-    } else {
-      throw Error("Invalid displayOption");
+  // Function to filter workflows based on displayOption criteria
+  let filteredWorkflows = workflows.filter((workflow: TWorkflow) => {
+    switch (workflow.displayOption) {
+      case "respondMultiple":
+        return true;
+      case "displayOnce":
+        return displays.filter((display) => display.workflowId === workflow.id).length === 0;
+      case "displayMultiple":
+        return (
+          displays
+            .filter((display) => display.workflowId === workflow.id)
+            .filter((display) => display.responded).length === 0
+        );
+
+      case "displaySome":
+        if (workflow.displayLimit === null) {
+          return true;
+        }
+
+        // Check if any display has responded, if so, stop here
+        if (
+          displays
+            .filter((display) => display.workflowId === workflow.id)
+            .some((display) => display.responded)
+        ) {
+          return false;
+        }
+
+        // Otherwise, check if displays length is less than displayLimit
+        return (
+          displays.filter((display) => display.workflowId === workflow.id).length < workflow.displayLimit
+        );
+
+      default:
+        throw Error("Invalid displayOption");
     }
   });
 

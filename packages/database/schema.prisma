@@ -247,6 +247,7 @@ enum WorkflowType {
 enum displayOptions {
   displayOnce
   displayMultiple
+  displaySome
   respondMultiple
 }
 
@@ -281,6 +282,7 @@ model Workflow {
   responses             Response[]
   displayOption         displayOptions            @default(displayOnce)
   recontactDays         Int?
+  displayLimit          Int?
   triggers              WorkflowTrigger[]
   /// @zod.custom(imports.ZWorkflowInlineTriggers)
   /// [WorkflowInlineTriggers]

@@ -66,6 +66,7 @@ export const selectWorkflow = {
   hiddenFields: true,
   displayOption: true,
   recontactDays: true,
+  displayLimit: true,
   autoClose: true,
   runOnDate: true,
   closeOnDate: true,
@@ -863,17 +864,36 @@ export const getSyncWorkflows = (
 
         // filter workflows that meet the displayOption criteria
         workflows = workflows.filter((workflow) => {
-          if (workflow.displayOption === "respondMultiple") {
-            return true;
-          } else if (workflow.displayOption === "displayOnce") {
-            return displays.filter((display) => display.workflowId === workflow.id).length === 0;
-          } else if (workflow.displayOption === "displayMultiple") {
-            return (
-              displays.filter((display) => display.workflowId === workflow.id && display.responseId !== null)
-                .length === 0
-            );
-          } else {
-            throw Error("Invalid displayOption");
+          switch (workflow.displayOption) {
+            case "respondMultiple":
+              return true;
+            case "displayOnce":
+              return displays.filter((display) => display.workflowId === workflow.id).length === 0;
+            case "displayMultiple":
+              return (
+                displays
+                  .filter((display) => display.workflowId === workflow.id)
+                  .filter((display) => display.responseId).length === 0
+              );
+            case "displaySome":
+              if (workflow.displayLimit === null) {
+                return true;
+              }
+
+              if (
+                displays
+                  .filter((display) => display.workflowId === workflow.id)
+                  .some((display) => display.responseId)
+              ) {
+                return false;
+              }
+
+              return (
+                displays.filter((display) => display.workflowId === workflow.id).length <
+                workflow.displayLimit
+              );
+            default:
+              throw Error("Invalid displayOption");
           }
         });
 

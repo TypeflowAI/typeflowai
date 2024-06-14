@@ -122,6 +122,7 @@ export const PREVIEW_WORKFLOW = {
   },
   displayOption: "displayOnce",
   recontactDays: null,
+  displayLimit: null,
   autoClose: null,
   runOnDate: null,
   closeOnDate: null,

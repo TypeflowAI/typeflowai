@@ -15,6 +15,7 @@ export const minimalWorkflow: TWorkflow = {
   triggers: [],
   redirectUrl: null,
   recontactDays: null,
+  displayLimit: null,
   welcomeCard: {
     enabled: false,
     headline: { default: "Welcome!" },
