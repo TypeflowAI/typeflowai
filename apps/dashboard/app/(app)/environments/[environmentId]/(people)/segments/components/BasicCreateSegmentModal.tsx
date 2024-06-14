@@ -9,11 +9,11 @@ import toast from "react-hot-toast";
 import { structuredClone } from "@typeflowai/lib/pollyfills/structuredClone";
 import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TBaseFilter, TSegment, ZSegmentFilters } from "@typeflowai/types/segment";
+import { BasicAddFilterModal } from "@typeflowai/ui/BasicAddFilterModal";
+import { BasicSegmentEditor } from "@typeflowai/ui/BasicSegmentEditor";
 import { Button } from "@typeflowai/ui/Button";
 import { Input } from "@typeflowai/ui/Input";
 import { Modal } from "@typeflowai/ui/Modal";
-import BasicAddFilterModal from "@typeflowai/ui/Targeting/BasicAddFilterModal";
-import BasicSegmentEditor from "@typeflowai/ui/Targeting/BasicSegmentEditor";
 
 import { createBasicSegmentAction } from "../actions";
 

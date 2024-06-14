@@ -1,5 +1,5 @@
-import { capitalizeFirstLetter } from "@typeflowai/lib/strings";
 import { convertDateTimeStringShort } from "@typeflowai/lib/time";
+import { capitalizeFirstLetter } from "@typeflowai/lib/utils/strings";
 import { TWebhook } from "@typeflowai/types/webhooks";
 import { TWorkflow } from "@typeflowai/types/workflows";
 import { Label } from "@typeflowai/ui/Label";

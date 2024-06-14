@@ -11,7 +11,7 @@ import { TWorkflow } from "@typeflowai/types/workflows";
 
 import { Modal } from "../Modal";
 
-type SegmentDetailProps = {
+interface SegmentDetailProps {
   segment: TSegment;
   setSegment: (segment: TSegment) => void;
   setOpen: (open: boolean) => void;
@@ -19,7 +19,7 @@ type SegmentDetailProps = {
   onSegmentLoad: (workflowId: string, segmentId: string) => Promise<TWorkflow>;
   workflowId: string;
   currentSegment: TSegment;
-};
+}
 
 const SegmentDetail = ({
   segment,
@@ -129,7 +129,7 @@ type LoadSegmentModalProps = {
   onSegmentLoad: (workflowId: string, segmentId: string) => Promise<TWorkflow>;
 };
 
-const LoadSegmentModal = ({
+export const LoadSegmentModal = ({
   open,
   workflowId,
   setOpen,
@@ -187,5 +187,3 @@ const LoadSegmentModal = ({
     </Modal>
   );
 };
-
-export default LoadSegmentModal;

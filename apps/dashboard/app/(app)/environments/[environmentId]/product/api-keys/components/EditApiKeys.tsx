@@ -4,8 +4,8 @@ import { FilesIcon, TrashIcon } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-import { capitalizeFirstLetter } from "@typeflowai/lib/strings";
 import { timeSince } from "@typeflowai/lib/time";
+import { capitalizeFirstLetter } from "@typeflowai/lib/utils/strings";
 import { TApiKey } from "@typeflowai/types/apiKeys";
 import { Button } from "@typeflowai/ui/Button";
 import { DeleteDialog } from "@typeflowai/ui/DeleteDialog";

@@ -1,9 +1,9 @@
-export function capitalizeFirstLetter(string: string | null = "") {
+export const capitalizeFirstLetter = (string: string | null = "") => {
   if (string === null) {
     return "";
   }
   return string.charAt(0).toUpperCase() + string.slice(1);
-}
+};
 
 // write a function that takes a string and truncates it to the specified length
 export const truncate = (str: string, length: number) => {
@@ -18,3 +18,5 @@ export const truncate = (str: string, length: number) => {
 export const sanitizeString = (str: string, delimiter: string = "_", length: number = 255) => {
   return str.replace(/[^0-9a-zA-Z\-._]+/g, delimiter).substring(0, length);
 };
+
+export const isCapitalized = (str: string) => str.charAt(0) === str.charAt(0).toUpperCase();

@@ -14,13 +14,13 @@ import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TBaseFilter, TSegment, TSegmentCreateInput, TSegmentUpdateInput } from "@typeflowai/types/segment";
 import { TWorkflow } from "@typeflowai/types/workflows";
 import { AlertDialog } from "@typeflowai/ui/AlertDialog";
+import { BasicAddFilterModal } from "@typeflowai/ui/BasicAddFilterModal";
+import { BasicSegmentEditor } from "@typeflowai/ui/BasicSegmentEditor";
 import { Button } from "@typeflowai/ui/Button";
-import BasicAddFilterModal from "@typeflowai/ui/Targeting/BasicAddFilterModal";
-import BasicSegmentEditor from "@typeflowai/ui/Targeting/BasicSegmentEditor";
-import LoadSegmentModal from "@typeflowai/ui/Targeting/LoadSegmentModal";
-import SaveAsNewSegmentModal from "@typeflowai/ui/Targeting/SaveAsNewSegmentModal";
-import SegmentTitle from "@typeflowai/ui/Targeting/SegmentTitle";
-import TargetingIndicator from "@typeflowai/ui/Targeting/TargetingIndicator";
+import { LoadSegmentModal } from "@typeflowai/ui/LoadSegmentModal";
+import { SaveAsNewSegmentModal } from "@typeflowai/ui/SaveAsNewSegmentModal";
+import { SegmentTitle } from "@typeflowai/ui/SegmentTitle";
+import { TargetingIndicator } from "@typeflowai/ui/TargetingIndicator";
 import { UpgradePlanNotice } from "@typeflowai/ui/UpgradePlanNotice";
 
 import {

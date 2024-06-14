@@ -1,7 +1,7 @@
 import { getAttributes } from "@typeflowai/lib/attribute/service";
 import { getPerson } from "@typeflowai/lib/person/service";
 import { getResponsesByPersonId } from "@typeflowai/lib/response/service";
-import { capitalizeFirstLetter } from "@typeflowai/lib/strings";
+import { capitalizeFirstLetter } from "@typeflowai/lib/utils/strings";
 
 export default async function AttributesSection({ personId }: { personId: string }) {
   const [person, attributes] = await Promise.all([getPerson(personId), getAttributes(personId)]);

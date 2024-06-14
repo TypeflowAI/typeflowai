@@ -1,7 +1,7 @@
 import { TypeflowAIAPI } from "@typeflowai/api";
 import { TResponseUpdate } from "@typeflowai/types/responses";
 
-import { delay } from "./utils";
+import { delay } from "./utils/promises";
 import WorkflowState from "./workflowState";
 
 interface QueueConfig {

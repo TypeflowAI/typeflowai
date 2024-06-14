@@ -1,7 +1,3 @@
-export const delay = (ms: number) => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
-
 export const hexToRGBA = (hex: string | undefined, opacity: number): string | undefined => {
   // return undefined if hex is undefined, this is important for adding the default values to the CSS variables
   // TODO: find a better way to handle this
@@ -66,7 +62,7 @@ export const mixColor = (hexColor: string, mixWithHex: string, weight: number): 
   return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
 };
 
-export function isLight(color: string) {
+export const isLight = (color: string) => {
   let r: number | undefined, g: number | undefined, b: number | undefined;
 
   if (color.length === 4) {
@@ -82,4 +78,4 @@ export function isLight(color: string) {
     throw new Error("Invalid color");
   }
   return r * 0.299 + g * 0.587 + b * 0.114 > 128;
-}
+};

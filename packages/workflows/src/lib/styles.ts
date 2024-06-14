@@ -3,7 +3,7 @@ import preflight from "@/styles/preflight.css?inline";
 import calendarCss from "react-calendar/dist/Calendar.css?inline";
 import datePickerCss from "react-date-picker/dist/DatePicker.css?inline";
 
-import { isLight, mixColor } from "@typeflowai/lib/utils";
+import { isLight, mixColor } from "@typeflowai/lib/utils/colors";
 import { TProductStyling } from "@typeflowai/types/product";
 import { TWorkflowStyling } from "@typeflowai/types/workflows";
 

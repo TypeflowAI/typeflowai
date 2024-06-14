@@ -16,7 +16,7 @@ import React from "react";
 import { cn } from "@typeflowai/lib/cn";
 import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
 import { COLOR_DEFAULTS } from "@typeflowai/lib/styling/constants";
-import { isLight, mixColor } from "@typeflowai/lib/utils";
+import { isLight, mixColor } from "@typeflowai/lib/utils/colors";
 import { TWorkflow, TWorkflowQuestionType, TWorkflowStyling } from "@typeflowai/types/workflows";
 import { RatingSmiley } from "@typeflowai/ui/RatingSmiley";
 

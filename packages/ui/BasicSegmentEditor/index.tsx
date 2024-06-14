@@ -3,25 +3,25 @@ import { deleteResource, isResourceFilter, moveResource } from "@typeflowai/lib/
 import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TBaseFilters, TSegment } from "@typeflowai/types/segment";
 
-import BasicSegmentFilter from "./BasicSegmentFilter";
+import { BasicSegmentFilter } from "./components/BasicSegmentFilter";
 
-type TBasicSegmentEditorProps = {
+interface BasicSegmentEditorProps {
   group: TBaseFilters;
   environmentId: string;
   segment: TSegment;
   attributeClasses: TAttributeClass[];
   setSegment: React.Dispatch<React.SetStateAction<TSegment>>;
   viewOnly?: boolean;
-};
+}
 
-const BasicSegmentEditor = ({
+export const BasicSegmentEditor = ({
   group,
   environmentId,
   setSegment,
   segment,
   attributeClasses,
   viewOnly,
-}: TBasicSegmentEditorProps) => {
+}: BasicSegmentEditorProps) => {
   const handleMoveResource = (resourceId: string, direction: "up" | "down") => {
     const localSegmentCopy = structuredClone(segment);
     if (localSegmentCopy.filters) {
@@ -70,5 +70,3 @@ const BasicSegmentEditor = ({
     </div>
   );
 };
-
-export default BasicSegmentEditor;

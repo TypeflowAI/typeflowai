@@ -1,7 +1,7 @@
 "use client";
 
 import { UsersIcon } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
@@ -12,7 +12,7 @@ import { Button } from "../Button";
 import { Input } from "../Input";
 import { Modal } from "../Modal";
 
-type SaveAsNewSegmentModalProps = {
+interface SaveAsNewSegmentModalProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   localWorkflow: TWorkflow;
@@ -21,14 +21,14 @@ type SaveAsNewSegmentModalProps = {
   setIsSegmentEditorOpen: (isOpen: boolean) => void;
   onCreateSegment: (data: TSegmentCreateInput) => Promise<TSegment>;
   onUpdateSegment: (environmentId: string, segmentId: string, data: TSegmentUpdateInput) => Promise<TSegment>;
-};
+}
 
 type SaveAsNewSegmentModalForm = {
   title: string;
   description?: string;
 };
 
-const SaveAsNewSegmentModal: React.FC<SaveAsNewSegmentModalProps> = ({
+export const SaveAsNewSegmentModal = ({
   open,
   setOpen,
   localWorkflow,
@@ -37,7 +37,7 @@ const SaveAsNewSegmentModal: React.FC<SaveAsNewSegmentModalProps> = ({
   setIsSegmentEditorOpen,
   onCreateSegment,
   onUpdateSegment,
-}) => {
+}: SaveAsNewSegmentModalProps) => {
   const {
     register,
     formState: { errors },
@@ -197,5 +197,3 @@ const SaveAsNewSegmentModal: React.FC<SaveAsNewSegmentModalProps> = ({
     </Modal>
   );
 };
-
-export default SaveAsNewSegmentModal;
