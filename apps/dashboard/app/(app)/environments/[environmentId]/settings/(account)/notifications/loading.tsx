@@ -1,5 +1,3 @@
-import { IS_TYPEFLOWAI_CLOUD } from "@typeflowai/lib/constants";
-
 const LoadingCard = ({ title, description, skeletonLines }) => {
   return (
     <div className="my-4 w-full max-w-4xl rounded-xl border border-slate-200 bg-white py-4 shadow-sm">
@@ -8,7 +6,7 @@ const LoadingCard = ({ title, description, skeletonLines }) => {
         <p className="mt-1 text-sm text-slate-500">{description}</p>
       </div>
       <div className="w-full">
-        <div className="rounded-lg px-6">
+        <div className="rounded-lg px-6 py-5">
           {skeletonLines.map((line, index) => (
             <div key={index} className="mt-4">
               <div className={`animate-pulse rounded-full bg-slate-200 ${line.classes}`}></div>
@@ -20,33 +18,27 @@ const LoadingCard = ({ title, description, skeletonLines }) => {
   );
 };
 
-const cards = [
-  {
-    title: "Manage members",
-    description: "Add or remove members in your organization.",
-    skeletonLines: [{ classes: "h-6 w-28" }, { classes: "h-8 w-80" }, { classes: "h-8 w-80" }],
-  },
-  {
-    title: "Organization Name",
-    description: "Give your organization a descriptive name.",
-    skeletonLines: [{ classes: "h-6 w-28" }, { classes: "h-8 w-80" }],
-  },
-  {
-    title: "Delete Organization",
-    description:
-      "Delete organization with all its products including all surveys, responses, people, actions and attributes",
-    skeletonLines: [{ classes: "h-6 w-28" }, { classes: "h-8 w-80" }],
-  },
-];
-
-const pages = ["Members", IS_TYPEFLOWAI_CLOUD ? "Billing & Plan" : "Enterprise License"];
-
 const Loading = () => {
+  const cards = [
+    {
+      title: "Email alerts (Surveys)",
+      description: "Set up an alert to get an email on new responses.",
+      skeletonLines: [{ classes: "h-6 w-28" }, { classes: "h-10 w-128" }, { classes: "h-10 w-128" }],
+    },
+    {
+      title: "Weekly summary (Products)",
+      description: "Stay up-to-date with a Weekly every Monday.",
+      skeletonLines: [{ classes: "h-6 w-28" }, { classes: "h-10 w-128" }, { classes: "h-10 w-128" }],
+    },
+  ];
+
+  const pages = ["Profile", "Notifications"];
+
   return (
     <div className="p-6">
       <div>
         <div className="flex items-center justify-between space-x-4 pb-4">
-          <h1 className="text-3xl font-bold text-slate-800">Organization Settings</h1>
+          <h1 className="text-3xl font-bold text-slate-800">Account Settings</h1>
         </div>
       </div>
       <div className="mb-6 border-b border-slate-200">
