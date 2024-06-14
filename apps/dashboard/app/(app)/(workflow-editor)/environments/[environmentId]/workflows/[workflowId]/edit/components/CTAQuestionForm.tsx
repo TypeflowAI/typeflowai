@@ -41,6 +41,7 @@ export const CTAQuestionForm = ({
       <QuestionFormInput
         id="headline"
         value={question.headline}
+        label={"Question*"}
         localWorkflow={localWorkflow}
         questionIdx={questionIdx}
         isInvalid={isInvalid}
@@ -92,6 +93,7 @@ export const CTAQuestionForm = ({
           <QuestionFormInput
             id="buttonLabel"
             value={question.buttonLabel}
+            label={"Question*"}
             localWorkflow={localWorkflow}
             questionIdx={questionIdx}
             maxLength={48}
@@ -107,6 +109,7 @@ export const CTAQuestionForm = ({
             <QuestionFormInput
               id="backButtonLabel"
               value={question.backButtonLabel}
+              label={`"Next" Button Label`}
               localWorkflow={localWorkflow}
               questionIdx={questionIdx}
               maxLength={48}
@@ -143,6 +146,7 @@ export const CTAQuestionForm = ({
             <QuestionFormInput
               id="dismissButtonLabel"
               value={question.dismissButtonLabel}
+              label={`"Back" Button Label`}
               localWorkflow={localWorkflow}
               questionIdx={questionIdx}
               placeholder={"skip"}

@@ -126,7 +126,7 @@ export default function EditWelcomeCard({
               <QuestionFormInput
                 id="headline"
                 value={localWorkflow.welcomeCard.headline}
-                label="Headline"
+                label="Note*"
                 localWorkflow={localWorkflow}
                 questionIdx={-1}
                 isInvalid={isInvalid}
@@ -160,6 +160,7 @@ export default function EditWelcomeCard({
                   <QuestionFormInput
                     id="buttonLabel"
                     value={localWorkflow.welcomeCard.buttonLabel}
+                    label={`"Next" Button Label`}
                     localWorkflow={localWorkflow}
                     questionIdx={-1}
                     maxLength={48}

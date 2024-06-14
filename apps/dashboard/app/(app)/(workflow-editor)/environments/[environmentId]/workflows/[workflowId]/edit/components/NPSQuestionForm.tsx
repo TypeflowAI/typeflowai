@@ -41,6 +41,7 @@ export const NPSQuestionForm = ({
       <QuestionFormInput
         id="headline"
         value={question.headline}
+        label={"Question*"}
         localWorkflow={localWorkflow}
         questionIdx={questionIdx}
         isInvalid={isInvalid}
@@ -57,6 +58,7 @@ export const NPSQuestionForm = ({
               <QuestionFormInput
                 id="subheader"
                 value={question.subheader}
+                label={"Description"}
                 localWorkflow={localWorkflow}
                 questionIdx={questionIdx}
                 isInvalid={isInvalid}
@@ -100,6 +102,7 @@ export const NPSQuestionForm = ({
           <QuestionFormInput
             id="lowerLabel"
             value={question.lowerLabel}
+            label={"Lower Label"}
             localWorkflow={localWorkflow}
             questionIdx={questionIdx}
             isInvalid={isInvalid}
@@ -113,6 +116,7 @@ export const NPSQuestionForm = ({
           <QuestionFormInput
             id="upperLabel"
             value={question.upperLabel}
+            label={"Upper Label"}
             localWorkflow={localWorkflow}
             questionIdx={questionIdx}
             isInvalid={isInvalid}
@@ -129,6 +133,7 @@ export const NPSQuestionForm = ({
           <QuestionFormInput
             id="buttonLabel"
             value={question.buttonLabel}
+            label={`"Next" Button Label`}
             localWorkflow={localWorkflow}
             questionIdx={questionIdx}
             maxLength={48}

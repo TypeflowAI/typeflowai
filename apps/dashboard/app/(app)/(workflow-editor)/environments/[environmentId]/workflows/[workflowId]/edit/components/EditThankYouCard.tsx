@@ -113,7 +113,7 @@ export default function EditThankYouCard({
           <form>
             <QuestionFormInput
               id="headline"
-              label="Headline"
+              label="Note*"
               value={localWorkflow?.thankYouCard?.headline}
               localWorkflow={localWorkflow}
               questionIdx={localWorkflow.questions.length}
@@ -127,6 +127,7 @@ export default function EditThankYouCard({
             <QuestionFormInput
               id="subheader"
               value={localWorkflow.thankYouCard.subheader}
+              label={"Description"}
               localWorkflow={localWorkflow}
               questionIdx={localWorkflow.questions.length}
               isInvalid={isInvalid}

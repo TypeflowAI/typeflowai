@@ -107,6 +107,7 @@ export const MatrixQuestionForm = ({
       <QuestionFormInput
         id="headline"
         value={question.headline}
+        label={"Question*"}
         localWorkflow={localWorkflow}
         questionIdx={questionIdx}
         isInvalid={isInvalid}
@@ -122,6 +123,7 @@ export const MatrixQuestionForm = ({
               <QuestionFormInput
                 id="subheader"
                 value={question.subheader}
+                label={"Description"}
                 localWorkflow={localWorkflow}
                 questionIdx={questionIdx}
                 isInvalid={isInvalid}
@@ -163,6 +165,7 @@ export const MatrixQuestionForm = ({
                 <QuestionFormInput
                   key={`row-${index}`}
                   id={`row-${index}`}
+                  label={""}
                   localWorkflow={localWorkflow}
                   questionIdx={questionIdx}
                   value={question.rows[index]}
@@ -205,6 +208,7 @@ export const MatrixQuestionForm = ({
                 <QuestionFormInput
                   key={`column-${index}`}
                   id={`column-${index}`}
+                  label={""}
                   localWorkflow={localWorkflow}
                   questionIdx={questionIdx}
                   value={question.columns[index]}
