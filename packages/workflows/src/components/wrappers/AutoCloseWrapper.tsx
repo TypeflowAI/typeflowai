@@ -8,13 +8,14 @@ interface AutoCloseProps {
   workflow: TWorkflow;
   onClose: () => void;
   children: React.ReactNode;
+  offset: number;
 }
 
-export function AutoCloseWrapper({ workflow, onClose, children }: AutoCloseProps) {
+export const AutoCloseWrapper = ({ workflow, onClose, children, offset }: AutoCloseProps) => {
   const [countDownActive, setCountDownActive] = useState(true);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isAppWorkflow = workflow.type === "app" || workflow.type === "website";
-  const showAutoCloseProgressBar = countDownActive && isAppWorkflow;
+  const showAutoCloseProgressBar = countDownActive && isAppWorkflow && offset === 0;
 
   const startCountdown = () => {
     if (!workflow.autoClose) return;
@@ -53,4 +54,4 @@ export function AutoCloseWrapper({ workflow, onClose, children }: AutoCloseProps
       </div>
     </div>
   );
-}
+};

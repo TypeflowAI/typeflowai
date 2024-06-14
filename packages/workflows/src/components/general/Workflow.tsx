@@ -439,7 +439,7 @@ export const Workflow = ({
     };
 
     return (
-      <AutoCloseWrapper workflow={workflow} onClose={onClose}>
+      <AutoCloseWrapper workflow={workflow} onClose={onClose} offset={offset}>
         {getShowWorkflowCloseButton(offset) && <WorkflowCloseButton onClose={onClose} />}
         <div
           className={cn(
