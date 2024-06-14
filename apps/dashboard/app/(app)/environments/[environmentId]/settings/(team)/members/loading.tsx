@@ -23,18 +23,18 @@ const LoadingCard = ({ title, description, skeletonLines }) => {
 const cards = [
   {
     title: "Manage members",
-    description: "Add or remove members in your organization.",
+    description: "Add or remove members in your team.",
     skeletonLines: [{ classes: "h-6 w-28" }, { classes: "h-8 w-80" }, { classes: "h-8 w-80" }],
   },
   {
-    title: "Organization Name",
-    description: "Give your organization a descriptive name.",
+    title: "Team Name",
+    description: "Give your team a descriptive name.",
     skeletonLines: [{ classes: "h-6 w-28" }, { classes: "h-8 w-80" }],
   },
   {
-    title: "Delete Organization",
+    title: "Delete Team",
     description:
-      "Delete organization with all its products including all surveys, responses, people, actions and attributes",
+      "Delete team with all its products including all surveys, responses, people, actions and attributes",
     skeletonLines: [{ classes: "h-6 w-28" }, { classes: "h-8 w-80" }],
   },
 ];
@@ -46,7 +46,7 @@ const Loading = () => {
     <div className="p-6">
       <div>
         <div className="flex items-center justify-between space-x-4 pb-4">
-          <h1 className="text-3xl font-bold text-slate-800">Organization Settings</h1>
+          <h1 className="text-3xl font-bold text-slate-800">Team Settings</h1>
         </div>
       </div>
       <div className="mb-6 border-b border-slate-200">

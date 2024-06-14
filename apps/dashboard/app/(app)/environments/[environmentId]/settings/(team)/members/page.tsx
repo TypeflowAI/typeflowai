@@ -16,7 +16,7 @@ import { SettingsId } from "@typeflowai/ui/SettingsId";
 import { SettingsCard } from "../../components/SettingsCard";
 import DeleteTeam from "./components/DeleteTeam";
 import { EditMemberships } from "./components/EditMemberships";
-import EditTeamName from "./components/EditTeamName";
+import { EditTeamNameForm } from "./components/EditTeamNameForm";
 
 const MembersLoading = () => (
   <div className="px-2">
@@ -86,7 +86,7 @@ export default async function MembersSettingsPage({ params }: { params: { enviro
         )}
       </SettingsCard>
       <SettingsCard title="Team Name" description="Give your team a descriptive name.">
-        <EditTeamName
+        <EditTeamNameForm
           team={team}
           environmentId={params.environmentId}
           membershipRole={currentUserMembership?.role}

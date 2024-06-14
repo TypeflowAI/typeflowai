@@ -5,8 +5,8 @@ import { sendNoLiveWorkflowNotificationEmail, sendWeeklySummaryNotificationEmail
 import { CRON_SECRET } from "@typeflowai/lib/constants";
 
 import { getNotificationResponse } from "./lib/notificationResponse";
-import { getTeamIds } from "./lib/organization";
 import { getProductsByTeamId } from "./lib/product";
+import { getTeamIds } from "./lib/team";
 
 const BATCH_SIZE = 500;
 
