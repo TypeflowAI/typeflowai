@@ -451,7 +451,10 @@ export const ZWorkflowQuestions = z.array(ZWorkflowQuestion);
 
 export type TWorkflowQuestions = z.infer<typeof ZWorkflowQuestions>;
 
-export const ZWorkflowQuestionsObject = z.object({ questions: ZWorkflowQuestions });
+export const ZWorkflowQuestionsObject = z.object({
+  questions: ZWorkflowQuestions,
+  hiddenFields: ZWorkflowHiddenFields,
+});
 
 export type TWorkflowQuestionsObject = z.infer<typeof ZWorkflowQuestionsObject>;
 
@@ -896,3 +899,11 @@ const ZSortOption = z.object({
 
 export type TSortOption = z.infer<typeof ZSortOption>;
 export type TWorkflowSummary = z.infer<typeof ZWorkflowSummary>;
+
+export const ZWorkflowRecallItem = z.object({
+  id: z.string(),
+  label: z.string(),
+  type: z.enum(["question", "hiddenField", "attributeClass"]),
+});
+
+export type TWorkflowRecallItem = z.infer<typeof ZWorkflowRecallItem>;

@@ -4,12 +4,13 @@ import { headers } from "next/headers";
 
 import { prisma } from "@typeflowai/database";
 import { sendResponseFinishedEmail } from "@typeflowai/email";
+import { getAttributeClasses } from "@typeflowai/lib/attributeClass/service";
 import { INTERNAL_SECRET } from "@typeflowai/lib/constants";
 import { getIntegrations } from "@typeflowai/lib/integration/service";
 import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
 import { getResponseCountByWorkflowId } from "@typeflowai/lib/response/service";
 import { convertDatesInObject } from "@typeflowai/lib/time";
-import { checkForRecallInHeadline } from "@typeflowai/lib/utils/recall";
+import { replaceHeadlineRecall } from "@typeflowai/lib/utils/recall";
 import { getWorkflow, updateWorkflow } from "@typeflowai/lib/workflow/service";
 import { ZPipelineInput } from "@typeflowai/types/pipelines";
 import { TUserNotificationSettings } from "@typeflowai/types/user";
@@ -38,6 +39,7 @@ export async function POST(request: Request) {
 
   const { environmentId, workflowId, event, response } = inputValidation.data;
   const product = await getProductByEnvironmentId(environmentId);
+  const attributeClasses = await getAttributeClasses(environmentId);
   if (!product) return;
 
   // get all webhooks of this environment where event in triggers
@@ -106,7 +108,9 @@ export async function POST(request: Request) {
       getIntegrations(environmentId),
       getWorkflow(workflowId),
     ]);
-    const workflow = workflowData ? checkForRecallInHeadline(workflowData, "default") : undefined;
+    const workflow = workflowData
+      ? replaceHeadlineRecall(workflowData, "default", attributeClasses)
+      : undefined;
 
     if (integrations.length > 0 && workflow) {
       handleIntegrations(integrations, inputValidation.data, workflow);

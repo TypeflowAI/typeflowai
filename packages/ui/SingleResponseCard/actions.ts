@@ -20,7 +20,6 @@ import { TResponse } from "@typeflowai/types/responses";
 
 export const createTagAction = async (environmentId: string, tagName: string) => {
   const session = await getServerSession(authOptions);
-
   if (!session) throw new AuthorizationError("Not authorized");
 
   const isAuthorized = await hasUserEnvironmentAccess(session.user!.id, environmentId);
@@ -34,7 +33,6 @@ export const createTagAction = async (environmentId: string, tagName: string) =>
 
 export const createTagToResponeAction = async (responseId: string, tagId: string) => {
   const session = await getServerSession(authOptions);
-
   if (!session) throw new AuthorizationError("Not authorized");
 
   const isAuthorized = await canUserAccessTagOnResponse(session.user!.id, tagId, responseId);
@@ -49,7 +47,6 @@ export const createTagToResponeAction = async (responseId: string, tagId: string
 
 export const deleteTagOnResponseAction = async (responseId: string, tagId: string) => {
   const session = await getServerSession(authOptions);
-
   if (!session) throw new AuthorizationError("Not authorized");
 
   const isAuthorized = await canUserAccessTagOnResponse(session.user!.id, tagId, responseId);
@@ -64,7 +61,6 @@ export const deleteTagOnResponseAction = async (responseId: string, tagId: strin
 
 export const deleteResponseAction = async (responseId: string) => {
   const session = await getServerSession(authOptions);
-
   if (!session) throw new AuthorizationError("Not authorized");
   const isAuthorized = await canUserAccessResponse(session.user!.id, responseId);
   if (!isAuthorized) throw new AuthorizationError("Not authorized");
@@ -74,7 +70,6 @@ export const deleteResponseAction = async (responseId: string) => {
 
 export const updateResponseNoteAction = async (responseNoteId: string, text: string) => {
   const session = await getServerSession(authOptions);
-
   if (!session) throw new AuthorizationError("Not authorized");
 
   const isAuthorized = await canUserModifyResponseNote(session.user!.id, responseNoteId);
@@ -85,7 +80,6 @@ export const updateResponseNoteAction = async (responseNoteId: string, text: str
 
 export const resolveResponseNoteAction = async (responseId: string, responseNoteId: string) => {
   const session = await getServerSession(authOptions);
-
   if (!session) throw new AuthorizationError("Not authorized");
 
   const isAuthorized = await canUserResolveResponseNote(session.user!.id, responseId, responseNoteId);
@@ -96,7 +90,6 @@ export const resolveResponseNoteAction = async (responseId: string, responseNote
 
 export const createResponseNoteAction = async (responseId: string, userId: string, text: string) => {
   const session = await getServerSession(authOptions);
-
   if (!session) throw new AuthorizationError("Not authorized");
   const authotized = await canUserAccessResponse(session.user!.id, responseId);
   if (!authotized) throw new AuthorizationError("Not authorized");

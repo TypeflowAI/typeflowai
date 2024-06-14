@@ -2,6 +2,7 @@
 
 import { DndContext } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { TAttributeClass } from "@formbricks/types/attributeClasses";
 import { createId } from "@paralleldrive/cuid2";
 import { PlusIcon, TrashIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -31,6 +32,7 @@ interface OpenQuestionFormProps {
   selectedLanguageCode: string;
   setSelectedLanguageCode: (language: string) => void;
   isInvalid: boolean;
+  attributeClasses: TAttributeClass[];
 }
 
 export const MultipleChoiceQuestionForm = ({
@@ -41,6 +43,7 @@ export const MultipleChoiceQuestionForm = ({
   localWorkflow,
   selectedLanguageCode,
   setSelectedLanguageCode,
+  attributeClasses,
 }: OpenQuestionFormProps): JSX.Element => {
   const lastChoiceRef = useRef<HTMLInputElement>(null);
   const [isNew, setIsNew] = useState(true);
@@ -190,6 +193,7 @@ export const MultipleChoiceQuestionForm = ({
         updateQuestion={updateQuestion}
         selectedLanguageCode={selectedLanguageCode}
         setSelectedLanguageCode={setSelectedLanguageCode}
+        attributeClasses={attributeClasses}
       />
 
       <div>
@@ -205,6 +209,7 @@ export const MultipleChoiceQuestionForm = ({
                 updateQuestion={updateQuestion}
                 selectedLanguageCode={selectedLanguageCode}
                 setSelectedLanguageCode={setSelectedLanguageCode}
+                attributeClasses={attributeClasses}
               />
             </div>
 
@@ -283,6 +288,7 @@ export const MultipleChoiceQuestionForm = ({
                       question={question}
                       updateQuestion={updateQuestion}
                       workflowLanguageCodes={workflowLanguageCodes}
+                      attributeClasses={attributeClasses}
                     />
                   ))}
               </div>

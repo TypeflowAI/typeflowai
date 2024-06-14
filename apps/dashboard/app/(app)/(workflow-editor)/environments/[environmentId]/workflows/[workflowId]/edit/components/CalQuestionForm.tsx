@@ -2,6 +2,7 @@ import { PlusIcon, TrashIcon } from "lucide-react";
 import { useState } from "react";
 
 import { createI18nString, extractLanguageCodes } from "@typeflowai/lib/i18n/utils";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TWorkflow, TWorkflowCalQuestion } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
 import { Input } from "@typeflowai/ui/Input";
@@ -17,6 +18,7 @@ interface CalQuestionFormProps {
   selectedLanguageCode: string;
   setSelectedLanguageCode: (language: string) => void;
   isInvalid: boolean;
+  attributeClasses: TAttributeClass[];
 }
 
 export const CalQuestionForm = ({
@@ -27,6 +29,7 @@ export const CalQuestionForm = ({
   selectedLanguageCode,
   setSelectedLanguageCode,
   isInvalid,
+  attributeClasses,
 }: CalQuestionFormProps): JSX.Element => {
   const [showSubheader, setShowSubheader] = useState(!!question.subheader);
   const workflowLanguageCodes = extractLanguageCodes(localWorkflow.languages);
@@ -42,6 +45,7 @@ export const CalQuestionForm = ({
         updateQuestion={updateQuestion}
         selectedLanguageCode={selectedLanguageCode}
         setSelectedLanguageCode={setSelectedLanguageCode}
+        attributeClasses={attributeClasses}
       />
       <div>
         {showSubheader && (
@@ -56,6 +60,7 @@ export const CalQuestionForm = ({
                 updateQuestion={updateQuestion}
                 selectedLanguageCode={selectedLanguageCode}
                 setSelectedLanguageCode={setSelectedLanguageCode}
+                attributeClasses={attributeClasses}
               />
             </div>
 

@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 
 import { useMembershipRole } from "@typeflowai/lib/membership/hooks/useMembershipRole";
 import { getAccessFlags } from "@typeflowai/lib/membership/utils";
-import { checkForRecallInHeadline } from "@typeflowai/lib/utils/recall";
+import { replaceHeadlineRecall } from "@typeflowai/lib/utils/recall";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TResponse } from "@typeflowai/types/responses";
 import { TTag } from "@typeflowai/types/tags";
@@ -13,19 +14,23 @@ import { TWorkflow } from "@typeflowai/types/workflows";
 import EmptySpaceFiller from "@typeflowai/ui/EmptySpaceFiller";
 import SingleResponseCard from "@typeflowai/ui/SingleResponseCard";
 
-export default function ResponseFeed({
+interface ResponseTimelineProps {
+  workflows: TWorkflow[];
+  user: TUser;
+  responses: TResponse[];
+  environment: TEnvironment;
+  environmentTags: TTag[];
+  attributeClasses: TAttributeClass[];
+}
+
+export const ResponseFeed = ({
   responses,
   environment,
   workflows,
   user,
   environmentTags,
-}: {
-  responses: TResponse[];
-  environment: TEnvironment;
-  workflows: TWorkflow[];
-  user: TUser;
-  environmentTags: TTag[];
-}) {
+  attributeClasses,
+}: ResponseTimelineProps) => {
   const [fetchedResponses, setFetchedResponses] = useState(responses);
 
   useEffect(() => {
@@ -57,12 +62,13 @@ export default function ResponseFeed({
             environment={environment}
             deleteResponse={deleteResponse}
             updateResponse={updateResponse}
+            attributeClasses={attributeClasses}
           />
         ))
       )}
     </>
   );
-}
+};
 
 const ResponseWorkflowCard = ({
   response,
@@ -72,6 +78,7 @@ const ResponseWorkflowCard = ({
   environment,
   deleteResponse,
   updateResponse,
+  attributeClasses,
 }: {
   response: TResponse;
   workflows: TWorkflow[];
@@ -80,6 +87,7 @@ const ResponseWorkflowCard = ({
   environment: TEnvironment;
   deleteResponse: (responseId: string) => void;
   updateResponse: (responseId: string, response: TResponse) => void;
+  attributeClasses: TAttributeClass[];
 }) => {
   const workflow = workflows.find((workflow) => {
     return workflow.id === response.workflowId;
@@ -93,7 +101,7 @@ const ResponseWorkflowCard = ({
       {workflow && (
         <SingleResponseCard
           response={response}
-          workflow={checkForRecallInHeadline(workflow, "default")}
+          workflow={replaceHeadlineRecall(workflow, "default", attributeClasses)}
           user={user}
           pageType="people"
           environmentTags={environmentTags}

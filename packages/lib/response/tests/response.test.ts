@@ -28,7 +28,7 @@ import { TResponse, TResponseFilterCriteria, TResponseInput } from "@typeflowai/
 import { TTag } from "@typeflowai/types/tags";
 
 import { selectPerson } from "../../person/service";
-import { mockWorkflowOutput } from "../../workflow/tests/__mock__/workflow.mock";
+import { mockAttributeClass, mockWorkflowOutput } from "../../workflow/tests/__mock__/workflow.mock";
 import {
   createResponse,
   deleteResponse,
@@ -441,6 +441,7 @@ describe("Tests for getWorkflowSummary service", () => {
     it("Returns a summary of the workflow responses", async () => {
       prisma.workflow.findUnique.mockResolvedValue(mockWorkflowOutput);
       prisma.response.findMany.mockResolvedValue([mockResponse]);
+      prisma.attributeClass.findMany.mockResolvedValueOnce([mockAttributeClass]);
 
       const summary = await getWorkflowSummary(mockWorkflowId);
       expect(summary).toEqual(mockWorkflowSummaryOutput);
@@ -459,6 +460,7 @@ describe("Tests for getWorkflowSummary service", () => {
 
       prisma.workflow.findUnique.mockResolvedValue(mockWorkflowOutput);
       prisma.response.findMany.mockRejectedValue(errToThrow);
+      prisma.attributeClass.findMany.mockResolvedValueOnce([mockAttributeClass]);
 
       await expect(getWorkflowSummary(mockWorkflowId)).rejects.toThrow(DatabaseError);
     });
@@ -468,6 +470,7 @@ describe("Tests for getWorkflowSummary service", () => {
 
       prisma.workflow.findUnique.mockResolvedValue(mockWorkflowOutput);
       prisma.response.findMany.mockRejectedValue(new Error(mockErrorMessage));
+      prisma.attributeClass.findMany.mockResolvedValueOnce([mockAttributeClass]);
 
       await expect(getWorkflowSummary(mockWorkflowId)).rejects.toThrow(Error);
     });

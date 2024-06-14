@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import { extractLanguageCodes } from "@typeflowai/lib/i18n/utils";
 import { createI18nString } from "@typeflowai/lib/i18n/utils";
 import { useGetBillingInfo } from "@typeflowai/lib/team/hooks/useGetBillingInfo";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TAllowedFileExtension, ZAllowedFileExtension } from "@typeflowai/types/common";
 import { TProduct } from "@typeflowai/types/product";
 import { TWorkflow, TWorkflowFileUploadQuestion } from "@typeflowai/types/workflows";
@@ -25,6 +26,7 @@ interface FileUploadFormProps {
   selectedLanguageCode: string;
   setSelectedLanguageCode: (languageCode: string) => void;
   isInvalid: boolean;
+  attributeClasses: TAttributeClass[];
 }
 
 export const FileUploadQuestionForm = ({
@@ -36,6 +38,7 @@ export const FileUploadQuestionForm = ({
   product,
   selectedLanguageCode,
   setSelectedLanguageCode,
+  attributeClasses,
 }: FileUploadFormProps): JSX.Element => {
   const [showSubheader, setShowSubheader] = useState(!!question.subheader);
   const [extension, setExtension] = useState("");
@@ -121,6 +124,7 @@ export const FileUploadQuestionForm = ({
         updateQuestion={updateQuestion}
         selectedLanguageCode={selectedLanguageCode}
         setSelectedLanguageCode={setSelectedLanguageCode}
+        attributeClasses={attributeClasses}
       />
       <div>
         {showSubheader && (
@@ -135,6 +139,7 @@ export const FileUploadQuestionForm = ({
                 updateQuestion={updateQuestion}
                 selectedLanguageCode={selectedLanguageCode}
                 setSelectedLanguageCode={setSelectedLanguageCode}
+                attributeClasses={attributeClasses}
               />
             </div>
 

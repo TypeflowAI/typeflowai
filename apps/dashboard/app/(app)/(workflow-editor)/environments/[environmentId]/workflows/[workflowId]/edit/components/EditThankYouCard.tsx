@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { cn } from "@typeflowai/lib/cn";
 import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TWorkflow } from "@typeflowai/types/workflows";
 import { Input } from "@typeflowai/ui/Input";
 import { Label } from "@typeflowai/ui/Label";
@@ -19,6 +20,7 @@ interface EditThankYouCardProps {
   isInvalid: boolean;
   selectedLanguageCode: string;
   setSelectedLanguageCode: (languageCode: string) => void;
+  attributeClasses: TAttributeClass[];
 }
 
 export default function EditThankYouCard({
@@ -29,6 +31,7 @@ export default function EditThankYouCard({
   isInvalid,
   selectedLanguageCode,
   setSelectedLanguageCode,
+  attributeClasses,
 }: EditThankYouCardProps) {
   // const [open, setOpen] = useState(false);
   let open = activeQuestionId == "end";
@@ -118,6 +121,7 @@ export default function EditThankYouCard({
               updateWorkflow={updateWorkflow}
               selectedLanguageCode={selectedLanguageCode}
               setSelectedLanguageCode={setSelectedLanguageCode}
+              attributeClasses={attributeClasses}
             />
 
             <QuestionFormInput
@@ -129,6 +133,7 @@ export default function EditThankYouCard({
               updateWorkflow={updateWorkflow}
               selectedLanguageCode={selectedLanguageCode}
               setSelectedLanguageCode={setSelectedLanguageCode}
+              attributeClasses={attributeClasses}
             />
             <div className="mt-4">
               <div className="flex items-center space-x-1">
@@ -171,6 +176,7 @@ export default function EditThankYouCard({
                       updateWorkflow={updateWorkflow}
                       selectedLanguageCode={selectedLanguageCode}
                       setSelectedLanguageCode={setSelectedLanguageCode}
+                      attributeClasses={attributeClasses}
                     />
                   </div>
                   <div className="space-y-2">

@@ -2,6 +2,7 @@
 
 // import { useState } from "react";
 // import { LocalizedEditor } from "@typeflowai/ee/multiLanguage/components/LocalizedEditor";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TWorkflow, TWorkflowCTAQuestion } from "@typeflowai/types/workflows";
 import { Input } from "@typeflowai/ui/Input";
 import { Label } from "@typeflowai/ui/Label";
@@ -18,6 +19,7 @@ interface CTAQuestionFormProps {
   selectedLanguageCode: string;
   setSelectedLanguageCode: (languageCode: string) => void;
   isInvalid: boolean;
+  attributeClasses: TAttributeClass[];
 }
 
 export const CTAQuestionForm = ({
@@ -30,6 +32,7 @@ export const CTAQuestionForm = ({
   localWorkflow,
   selectedLanguageCode,
   setSelectedLanguageCode,
+  attributeClasses,
 }: CTAQuestionFormProps): JSX.Element => {
   // const [firstRender, setFirstRender] = useState(true);
 
@@ -44,6 +47,7 @@ export const CTAQuestionForm = ({
         updateQuestion={updateQuestion}
         selectedLanguageCode={selectedLanguageCode}
         setSelectedLanguageCode={setSelectedLanguageCode}
+        attributeClasses={attributeClasses}
       />
 
       <div className="mt-3">
@@ -96,6 +100,7 @@ export const CTAQuestionForm = ({
             updateQuestion={updateQuestion}
             selectedLanguageCode={selectedLanguageCode}
             setSelectedLanguageCode={setSelectedLanguageCode}
+            attributeClasses={attributeClasses}
           />
 
           {questionIdx !== 0 && (
@@ -110,6 +115,7 @@ export const CTAQuestionForm = ({
               updateQuestion={updateQuestion}
               selectedLanguageCode={selectedLanguageCode}
               setSelectedLanguageCode={setSelectedLanguageCode}
+              attributeClasses={attributeClasses}
             />
           )}
         </div>
@@ -144,6 +150,7 @@ export const CTAQuestionForm = ({
               updateQuestion={updateQuestion}
               selectedLanguageCode={selectedLanguageCode}
               setSelectedLanguageCode={setSelectedLanguageCode}
+              attributeClasses={attributeClasses}
             />
           </div>
         </div>

@@ -4,25 +4,30 @@ import ResponseFeed from "@/app/(app)/environments/[environmentId]/(people)/peop
 import { ArrowDownUpIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TResponse } from "@typeflowai/types/responses";
 import { TTag } from "@typeflowai/types/tags";
 import { TUser } from "@typeflowai/types/user";
 import { TWorkflow } from "@typeflowai/types/workflows";
 
-export default function ResponseTimeline({
-  workflows,
-  user,
-  environment,
-  responses,
-  environmentTags,
-}: {
+interface ResponseTimelineProps {
   workflows: TWorkflow[];
   user: TUser;
   responses: TResponse[];
   environment: TEnvironment;
   environmentTags: TTag[];
-}) {
+  attributeClasses: TAttributeClass[];
+}
+
+export const ResponseTimeline = ({
+  workflows,
+  user,
+  environment,
+  responses,
+  environmentTags,
+  attributeClasses,
+}: ResponseTimelineProps) => {
   const [sortedResponses, setSortedResponses] = useState(responses);
   const toggleSortResponses = () => {
     setSortedResponses([...sortedResponses].reverse());
@@ -51,7 +56,8 @@ export default function ResponseTimeline({
         workflows={workflows}
         user={user}
         environmentTags={environmentTags}
+        attributeClasses={attributeClasses}
       />
     </div>
   );
-}
+};

@@ -1,10 +1,11 @@
 import ActivitySection from "@/app/(app)/environments/[environmentId]/(people)/people/[personId]/components/ActivitySection";
 import AttributesSection from "@/app/(app)/environments/[environmentId]/(people)/people/[personId]/components/AttributesSection";
 import { DeletePersonButton } from "@/app/(app)/environments/[environmentId]/(people)/people/[personId]/components/DeletePersonButton";
-import ResponseSection from "@/app/(app)/environments/[environmentId]/(people)/people/[personId]/components/ResponseSection";
+import { ResponseSection } from "@/app/(app)/environments/[environmentId]/(people)/people/[personId]/components/ResponseSection";
 import { getServerSession } from "next-auth";
 
 import { getAttributes } from "@typeflowai/lib/attribute/service";
+import { getAttributeClasses } from "@typeflowai/lib/attributeClass/service";
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
 import { getMembershipByUserIdTeamId } from "@typeflowai/lib/membership/service";
@@ -18,15 +19,17 @@ import { PageContentWrapper } from "@typeflowai/ui/PageContentWrapper";
 import { PageHeader } from "@typeflowai/ui/PageHeader";
 
 export default async function PersonPage({ params }) {
-  const [environment, environmentTags, product, session, team, person, attributes] = await Promise.all([
-    getEnvironment(params.environmentId),
-    getTagsByEnvironmentId(params.environmentId),
-    getProductByEnvironmentId(params.environmentId),
-    getServerSession(authOptions),
-    getTeamByEnvironmentId(params.environmentId),
-    getPerson(params.personId),
-    getAttributes(params.personId),
-  ]);
+  const [environment, environmentTags, product, session, team, person, attributes, attributeClasses] =
+    await Promise.all([
+      getEnvironment(params.environmentId),
+      getTagsByEnvironmentId(params.environmentId),
+      getProductByEnvironmentId(params.environmentId),
+      getServerSession(authOptions),
+      getTeamByEnvironmentId(params.environmentId),
+      getPerson(params.personId),
+      getAttributes(params.personId),
+      getAttributeClasses(params.environmentId),
+    ]);
 
   if (!product) {
     throw new Error("Product not found");
@@ -67,6 +70,7 @@ export default async function PersonPage({ params }) {
             environment={environment}
             personId={params.personId}
             environmentTags={environmentTags}
+            attributeClasses={attributeClasses}
           />
           <ActivitySection environmentId={params.environmentId} personId={params.personId} />
         </div>

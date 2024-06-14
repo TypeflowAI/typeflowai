@@ -94,18 +94,18 @@ const HiddenFieldsCard: FC<HiddenFieldsCardProps> = ({
         <Collapsible.CollapsibleContent className="px-4 pb-6">
           <div className="flex gap-2">
             {localWorkflow.hiddenFields?.fieldIds && localWorkflow.hiddenFields?.fieldIds?.length > 0 ? (
-              localWorkflow.hiddenFields?.fieldIds?.map((question) => {
+              localWorkflow.hiddenFields?.fieldIds?.map((fieldId) => {
                 return (
                   <Tag
-                    key={question}
+                    key={fieldId}
                     onDelete={() => {
                       updateWorkflow({
                         enabled: true,
-                        fieldIds: localWorkflow.hiddenFields?.fieldIds?.filter((q) => q !== question),
+                        fieldIds: localWorkflow.hiddenFields?.fieldIds?.filter((q) => q !== fieldId),
                       });
                     }}
-                    tagId={question}
-                    tagName={question}
+                    tagId={fieldId}
+                    tagName={fieldId}
                   />
                 );
               })

@@ -26,6 +26,7 @@ import { useState } from "react";
 
 import { cn } from "@typeflowai/lib/cn";
 import { recallToHeadline } from "@typeflowai/lib/utils/recall";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TProduct } from "@typeflowai/types/product";
 import {
   TI18nString,
@@ -69,6 +70,7 @@ interface QuestionCardProps {
   selectedLanguageCode: string;
   setSelectedLanguageCode: (language: string) => void;
   isInvalid: boolean;
+  attributeClasses: TAttributeClass[];
 }
 
 export default function QuestionCard({
@@ -88,6 +90,7 @@ export default function QuestionCard({
   selectedLanguageCode,
   setSelectedLanguageCode,
   isInvalid,
+  attributeClasses,
 }: QuestionCardProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: question.id,
@@ -222,13 +225,21 @@ export default function QuestionCard({
               </div>
               <div>
                 <p className="text-sm font-semibold">
-                  {recallToHeadline(question.headline, localWorkflow, true, selectedLanguageCode)[
-                    selectedLanguageCode
-                  ]
+                  {recallToHeadline(
+                    question.headline,
+                    localWorkflow,
+                    true,
+                    selectedLanguageCode,
+                    attributeClasses
+                  )[selectedLanguageCode]
                     ? formatTextWithSlashes(
-                        recallToHeadline(question.headline, localWorkflow, true, selectedLanguageCode)[
-                          selectedLanguageCode
-                        ] ?? ""
+                        recallToHeadline(
+                          question.headline,
+                          localWorkflow,
+                          true,
+                          selectedLanguageCode,
+                          attributeClasses
+                        )[selectedLanguageCode] ?? ""
                       )
                     : getTWorkflowQuestionTypeName(question.type)}
                 </p>
@@ -260,6 +271,7 @@ export default function QuestionCard({
               selectedLanguageCode={selectedLanguageCode}
               setSelectedLanguageCode={setSelectedLanguageCode}
               isInvalid={isInvalid}
+              attributeClasses={attributeClasses}
             />
           ) : question.type === TWorkflowQuestionType.MultipleChoiceSingle ? (
             <MultipleChoiceQuestionForm
@@ -271,6 +283,7 @@ export default function QuestionCard({
               selectedLanguageCode={selectedLanguageCode}
               setSelectedLanguageCode={setSelectedLanguageCode}
               isInvalid={isInvalid}
+              attributeClasses={attributeClasses}
             />
           ) : question.type === TWorkflowQuestionType.MultipleChoiceMulti ? (
             <MultipleChoiceQuestionForm
@@ -282,6 +295,7 @@ export default function QuestionCard({
               selectedLanguageCode={selectedLanguageCode}
               setSelectedLanguageCode={setSelectedLanguageCode}
               isInvalid={isInvalid}
+              attributeClasses={attributeClasses}
             />
           ) : question.type === TWorkflowQuestionType.NPS ? (
             <NPSQuestionForm
@@ -294,6 +308,7 @@ export default function QuestionCard({
               selectedLanguageCode={selectedLanguageCode}
               setSelectedLanguageCode={setSelectedLanguageCode}
               isInvalid={isInvalid}
+              attributeClasses={attributeClasses}
             />
           ) : question.type === TWorkflowQuestionType.CTA ? (
             <CTAQuestionForm
@@ -306,6 +321,7 @@ export default function QuestionCard({
               selectedLanguageCode={selectedLanguageCode}
               setSelectedLanguageCode={setSelectedLanguageCode}
               isInvalid={isInvalid}
+              attributeClasses={attributeClasses}
             />
           ) : question.type === TWorkflowQuestionType.Rating ? (
             <RatingQuestionForm
@@ -317,6 +333,7 @@ export default function QuestionCard({
               selectedLanguageCode={selectedLanguageCode}
               setSelectedLanguageCode={setSelectedLanguageCode}
               isInvalid={isInvalid}
+              attributeClasses={attributeClasses}
             />
           ) : question.type === TWorkflowQuestionType.Consent ? (
             <ConsentQuestionForm
@@ -327,6 +344,7 @@ export default function QuestionCard({
               selectedLanguageCode={selectedLanguageCode}
               setSelectedLanguageCode={setSelectedLanguageCode}
               isInvalid={isInvalid}
+              attributeClasses={attributeClasses}
             />
           ) : question.type === TWorkflowQuestionType.Date ? (
             <DateQuestionForm
@@ -338,6 +356,7 @@ export default function QuestionCard({
               selectedLanguageCode={selectedLanguageCode}
               setSelectedLanguageCode={setSelectedLanguageCode}
               isInvalid={isInvalid}
+              attributeClasses={attributeClasses}
             />
           ) : question.type === TWorkflowQuestionType.PictureSelection ? (
             <PictureSelectionForm
@@ -349,6 +368,7 @@ export default function QuestionCard({
               selectedLanguageCode={selectedLanguageCode}
               setSelectedLanguageCode={setSelectedLanguageCode}
               isInvalid={isInvalid}
+              attributeClasses={attributeClasses}
             />
           ) : question.type === TWorkflowQuestionType.FileUpload ? (
             <FileUploadQuestionForm
@@ -361,6 +381,7 @@ export default function QuestionCard({
               selectedLanguageCode={selectedLanguageCode}
               setSelectedLanguageCode={setSelectedLanguageCode}
               isInvalid={isInvalid}
+              attributeClasses={attributeClasses}
             />
           ) : question.type === TWorkflowQuestionType.Cal ? (
             <CalQuestionForm
@@ -372,6 +393,7 @@ export default function QuestionCard({
               selectedLanguageCode={selectedLanguageCode}
               setSelectedLanguageCode={setSelectedLanguageCode}
               isInvalid={isInvalid}
+              attributeClasses={attributeClasses}
             />
           ) : question.type === TWorkflowQuestionType.Matrix ? (
             <MatrixQuestionForm
@@ -383,6 +405,7 @@ export default function QuestionCard({
               selectedLanguageCode={selectedLanguageCode}
               setSelectedLanguageCode={setSelectedLanguageCode}
               isInvalid={isInvalid}
+              attributeClasses={attributeClasses}
             />
           ) : question.type === TWorkflowQuestionType.Address ? (
             <AddressQuestionForm
@@ -394,6 +417,7 @@ export default function QuestionCard({
               selectedLanguageCode={selectedLanguageCode}
               setSelectedLanguageCode={setSelectedLanguageCode}
               isInvalid={isInvalid}
+              attributeClasses={attributeClasses}
             />
           ) : null}
           <div className="mt-4">
@@ -434,6 +458,7 @@ export default function QuestionCard({
                           if (questionIdx === localWorkflow.questions.length - 1) return;
                           updateEmptyNextButtonLabels(translatedNextButtonLabel);
                         }}
+                        attributeClasses={attributeClasses}
                       />
                     </div>
                     {questionIdx !== 0 && (
@@ -448,6 +473,7 @@ export default function QuestionCard({
                         updateQuestion={updateQuestion}
                         selectedLanguageCode={selectedLanguageCode}
                         setSelectedLanguageCode={setSelectedLanguageCode}
+                        attributeClasses={attributeClasses}
                       />
                     )}
                   </div>
@@ -467,6 +493,7 @@ export default function QuestionCard({
                         updateQuestion={updateQuestion}
                         selectedLanguageCode={selectedLanguageCode}
                         setSelectedLanguageCode={setSelectedLanguageCode}
+                        attributeClasses={attributeClasses}
                       />
                     </div>
                   )}
@@ -477,6 +504,7 @@ export default function QuestionCard({
                   localWorkflow={localWorkflow}
                   setLocalWorkflow={setLocalWorkflow}
                   updateQuestion={updateQuestion}
+                  attributeClasses={attributeClasses}
                 />
               </Collapsible.CollapsibleContent>
             </Collapsible.Root>

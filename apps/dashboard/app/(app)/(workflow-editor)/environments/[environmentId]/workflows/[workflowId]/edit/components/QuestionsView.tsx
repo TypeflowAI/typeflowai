@@ -16,6 +16,7 @@ import toast from "react-hot-toast";
 import { extractLanguageCodes, getLocalizedValue, translateQuestion } from "@typeflowai/lib/i18n/utils";
 import { structuredClone } from "@typeflowai/lib/pollyfills/structuredClone";
 import { checkForEmptyFallBackValue, extractRecallInfo } from "@typeflowai/lib/utils/recall";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TProduct } from "@typeflowai/types/product";
 import { TWorkflow, TWorkflowQuestion } from "@typeflowai/types/workflows";
 import { capturePosthogEvent } from "@typeflowai/ui/PostHogClient";
@@ -46,6 +47,7 @@ interface QuestionsViewProps {
   isMultiLanguageAllowed?: boolean;
   isTypeflowAICloud: boolean;
   isEngineLimited: boolean;
+  attributeClasses: TAttributeClass[];
 }
 
 export const QuestionsView = ({
@@ -61,6 +63,7 @@ export const QuestionsView = ({
   // isMultiLanguageAllowed,
   // isTypeflowAICloud,
   isEngineLimited,
+  attributeClasses,
 }: QuestionsViewProps) => {
   const internalQuestionIdMap = useMemo(() => {
     return localWorkflow.questions.reduce((acc, question) => {
@@ -382,6 +385,7 @@ export const QuestionsView = ({
           isInvalid={invalidQuestions ? invalidQuestions.includes("start") : false}
           setSelectedLanguageCode={setSelectedLanguageCode}
           selectedLanguageCode={selectedLanguageCode}
+          attributeClasses={attributeClasses}
         />
       </div>
       <DndContext sensors={sensors} onDragEnd={onDragEnd} collisionDetection={closestCorners}>
@@ -400,6 +404,7 @@ export const QuestionsView = ({
           invalidQuestions={invalidQuestions}
           internalQuestionIdMap={internalQuestionIdMap}
           isPromptVisible={isPromptVisible()}
+          attributeClasses={attributeClasses}
         />
       </DndContext>
       <AddQuestionButton addQuestion={addQuestion} product={product} />
@@ -422,6 +427,7 @@ export const QuestionsView = ({
           isInvalid={invalidQuestions ? invalidQuestions.includes("end") : false}
           setSelectedLanguageCode={setSelectedLanguageCode}
           selectedLanguageCode={selectedLanguageCode}
+          attributeClasses={attributeClasses}
         />
 
         {localWorkflow.type === "link" ? (

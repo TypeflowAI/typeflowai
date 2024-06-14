@@ -16,7 +16,6 @@ import {
 import { useParams, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { checkForRecallInHeadline } from "@typeflowai/lib/utils/recall";
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TResponse } from "@typeflowai/types/responses";
 import { TTag } from "@typeflowai/types/tags";
@@ -64,10 +63,6 @@ const ResponsePage = ({
   );
 
   const searchParams = useSearchParams();
-
-  workflow = useMemo(() => {
-    return checkForRecallInHeadline(workflow, "default");
-  }, [workflow]);
 
   const fetchNextPage = useCallback(async () => {
     const newPage = page + 1;

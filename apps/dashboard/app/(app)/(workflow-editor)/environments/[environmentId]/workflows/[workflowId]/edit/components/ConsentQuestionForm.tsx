@@ -2,6 +2,7 @@
 
 // import { useState } from "react";
 // import { LocalizedEditor } from "@typeflowai/ee/multiLanguage/components/LocalizedEditor";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TWorkflow, TWorkflowConsentQuestion } from "@typeflowai/types/workflows";
 import { Label } from "@typeflowai/ui/Label";
 import { QuestionFormInput } from "@typeflowai/ui/QuestionFormInput";
@@ -14,6 +15,7 @@ interface ConsentQuestionFormProps {
   selectedLanguageCode: string;
   setSelectedLanguageCode: (languageCode: string) => void;
   isInvalid: boolean;
+  attributeClasses: TAttributeClass[];
 }
 
 export const ConsentQuestionForm = ({
@@ -24,6 +26,7 @@ export const ConsentQuestionForm = ({
   localWorkflow,
   selectedLanguageCode,
   setSelectedLanguageCode,
+  attributeClasses,
 }: ConsentQuestionFormProps): JSX.Element => {
   // const [firstRender, setFirstRender] = useState(true);
 
@@ -38,6 +41,7 @@ export const ConsentQuestionForm = ({
         updateQuestion={updateQuestion}
         selectedLanguageCode={selectedLanguageCode}
         setSelectedLanguageCode={setSelectedLanguageCode}
+        attributeClasses={attributeClasses}
       />
 
       <div className="mt-3">
@@ -69,6 +73,7 @@ export const ConsentQuestionForm = ({
         updateQuestion={updateQuestion}
         selectedLanguageCode={selectedLanguageCode}
         setSelectedLanguageCode={setSelectedLanguageCode}
+        attributeClasses={attributeClasses}
       />
     </form>
   );

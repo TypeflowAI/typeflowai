@@ -375,7 +375,7 @@ export const updateWorkflow = async (updatedWorkflow: TWorkflow): Promise<TWorkf
         : [];
       const updatedLanguageIds =
         languages.length > 1 ? updatedWorkflow.languages.map((l) => l.language.id) : [];
-      const enabledLangaugeIds = languages.map((language) => {
+      const enabledLanguageIds = languages.map((language) => {
         if (language.enabled) return language.language.id;
       });
 
@@ -393,7 +393,7 @@ export const updateWorkflow = async (updatedWorkflow: TWorkflow): Promise<TWorkf
         where: { languageId: workflowLanguage.language.id },
         data: {
           default: workflowLanguage.language.id === defaultLanguageId,
-          enabled: enabledLangaugeIds.includes(workflowLanguage.language.id),
+          enabled: enabledLanguageIds.includes(workflowLanguage.language.id),
         },
       }));
 
@@ -402,7 +402,7 @@ export const updateWorkflow = async (updatedWorkflow: TWorkflow): Promise<TWorkf
         data.languages.create = languagesToAdd.map((languageId) => ({
           languageId: languageId,
           default: languageId === defaultLanguageId,
-          enabled: enabledLangaugeIds.includes(languageId),
+          enabled: enabledLanguageIds.includes(languageId),
         }));
       }
 
@@ -410,7 +410,7 @@ export const updateWorkflow = async (updatedWorkflow: TWorkflow): Promise<TWorkf
       if (languagesToRemove.length > 0) {
         data.languages.deleteMany = languagesToRemove.map((languageId) => ({
           languageId: languageId,
-          enabled: enabledLangaugeIds.includes(languageId),
+          enabled: enabledLanguageIds.includes(languageId),
         }));
       }
     }

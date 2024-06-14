@@ -18,6 +18,7 @@
     "@typeflowai/lib": "*",
     "@typeflowai/config-typescript": "*",
     "@typeflowai/types": "*",
+    "@typeflowai/ui": "*",
     "@typeflowai/eslint-config": "workspace:*"
   },
   "dependencies": {

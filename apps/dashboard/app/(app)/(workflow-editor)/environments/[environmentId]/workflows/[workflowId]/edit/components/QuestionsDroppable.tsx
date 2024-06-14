@@ -1,5 +1,6 @@
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TProduct } from "@typeflowai/types/product";
 import { TWorkflow } from "@typeflowai/types/workflows";
 
@@ -20,6 +21,7 @@ interface QuestionsDraggableProps {
   invalidQuestions: string[] | null;
   internalQuestionIdMap: Record<string, string>;
   isPromptVisible: boolean;
+  attributeClasses: TAttributeClass[];
 }
 
 export const QuestionsDroppable = ({
@@ -37,6 +39,7 @@ export const QuestionsDroppable = ({
   updateQuestion,
   internalQuestionIdMap,
   isPromptVisible,
+  attributeClasses,
 }: QuestionsDraggableProps) => {
   return (
     <div className="group mb-5 grid w-full gap-5">
@@ -60,6 +63,7 @@ export const QuestionsDroppable = ({
             lastQuestion={questionIdx === localWorkflow.questions.length - 1}
             isInvalid={invalidQuestions ? invalidQuestions.includes(question.id) : false}
             isPromptVisible={isPromptVisible}
+            attributeClasses={attributeClasses}
           />
         ))}
       </SortableContext>

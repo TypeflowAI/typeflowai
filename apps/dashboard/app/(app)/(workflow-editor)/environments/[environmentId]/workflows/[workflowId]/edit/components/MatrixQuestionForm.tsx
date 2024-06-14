@@ -5,6 +5,7 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 
 import { createI18nString, extractLanguageCodes, getLocalizedValue } from "@typeflowai/lib/i18n/utils";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TI18nString, TWorkflow, TWorkflowMatrixQuestion } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
 import { Label } from "@typeflowai/ui/Label";
@@ -21,6 +22,7 @@ interface MatrixQuestionFormProps {
   selectedLanguageCode: string;
   setSelectedLanguageCode: (language: string) => void;
   isInvalid: boolean;
+  attributeClasses: TAttributeClass[];
 }
 
 export const MatrixQuestionForm = ({
@@ -31,6 +33,7 @@ export const MatrixQuestionForm = ({
   localWorkflow,
   selectedLanguageCode,
   setSelectedLanguageCode,
+  attributeClasses,
 }: MatrixQuestionFormProps): JSX.Element => {
   const [showSubheader, setShowSubheader] = useState(!!question.subheader);
   const languageCodes = extractLanguageCodes(localWorkflow.languages);
@@ -110,6 +113,7 @@ export const MatrixQuestionForm = ({
         updateQuestion={updateQuestion}
         selectedLanguageCode={selectedLanguageCode}
         setSelectedLanguageCode={setSelectedLanguageCode}
+        attributeClasses={attributeClasses}
       />
       <div>
         {showSubheader && (
@@ -124,6 +128,7 @@ export const MatrixQuestionForm = ({
                 updateQuestion={updateQuestion}
                 selectedLanguageCode={selectedLanguageCode}
                 setSelectedLanguageCode={setSelectedLanguageCode}
+                attributeClasses={attributeClasses}
               />
             </div>
 
@@ -168,6 +173,7 @@ export const MatrixQuestionForm = ({
                   isInvalid={
                     isInvalid && !isLabelValidForAllLanguages(question.rows[index], localWorkflow.languages)
                   }
+                  attributeClasses={attributeClasses}
                 />
                 {question.rows.length > 2 && (
                   <TrashIcon
@@ -210,6 +216,7 @@ export const MatrixQuestionForm = ({
                     isInvalid &&
                     !isLabelValidForAllLanguages(question.columns[index], localWorkflow.languages)
                   }
+                  attributeClasses={attributeClasses}
                 />
                 {question.columns.length > 2 && (
                   <TrashIcon

@@ -11,7 +11,8 @@ import { toast } from "react-hot-toast";
 
 import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
 import { structuredClone } from "@typeflowai/lib/pollyfills/structuredClone";
-import { checkForRecallInHeadline } from "@typeflowai/lib/utils/recall";
+import { replaceHeadlineRecall } from "@typeflowai/lib/utils/recall";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import {
   TWorkflow,
   TWorkflowLogic,
@@ -36,6 +37,7 @@ interface LogicEditorProps {
   questionIdx: number;
   question: TWorkflowQuestion;
   updateQuestion: (questionIdx: number, updatedAttributes: any) => void;
+  attributeClasses: TAttributeClass[];
 }
 
 type LogicConditions = {
@@ -52,11 +54,12 @@ export default function LogicEditor({
   question,
   questionIdx,
   updateQuestion,
+  attributeClasses,
 }: LogicEditorProps): JSX.Element {
   const [searchValue, setSearchValue] = useState<string>("");
   localWorkflow = useMemo(() => {
-    return checkForRecallInHeadline(localWorkflow, "default");
-  }, [localWorkflow]);
+    return replaceHeadlineRecall(localWorkflow, "default", attributeClasses);
+  }, [localWorkflow, attributeClasses]);
 
   const questionValues = useMemo(() => {
     if ("choices" in question) {

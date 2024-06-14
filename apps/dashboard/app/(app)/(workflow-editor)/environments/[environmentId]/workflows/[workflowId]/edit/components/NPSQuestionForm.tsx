@@ -4,6 +4,7 @@ import { PlusIcon, TrashIcon } from "lucide-react";
 import { useState } from "react";
 
 import { createI18nString, extractLanguageCodes } from "@typeflowai/lib/i18n/utils";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TWorkflow, TWorkflowNPSQuestion } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
 import { QuestionFormInput } from "@typeflowai/ui/QuestionFormInput";
@@ -18,6 +19,7 @@ interface NPSQuestionFormProps {
   selectedLanguageCode: string;
   setSelectedLanguageCode: (languageCode: string) => void;
   isInvalid: boolean;
+  attributeClasses: TAttributeClass[];
 }
 
 export const NPSQuestionForm = ({
@@ -30,6 +32,7 @@ export const NPSQuestionForm = ({
   localWorkflow,
   selectedLanguageCode,
   setSelectedLanguageCode,
+  attributeClasses,
 }: NPSQuestionFormProps): JSX.Element => {
   const [showSubheader, setShowSubheader] = useState(!!question.subheader);
   const workflowLanguageCodes = extractLanguageCodes(localWorkflow.languages);
@@ -44,6 +47,7 @@ export const NPSQuestionForm = ({
         updateQuestion={updateQuestion}
         selectedLanguageCode={selectedLanguageCode}
         setSelectedLanguageCode={setSelectedLanguageCode}
+        attributeClasses={attributeClasses}
       />
 
       <div>
@@ -59,6 +63,7 @@ export const NPSQuestionForm = ({
                 updateQuestion={updateQuestion}
                 selectedLanguageCode={selectedLanguageCode}
                 setSelectedLanguageCode={setSelectedLanguageCode}
+                attributeClasses={attributeClasses}
               />
             </div>
 
@@ -101,6 +106,7 @@ export const NPSQuestionForm = ({
             updateQuestion={updateQuestion}
             selectedLanguageCode={selectedLanguageCode}
             setSelectedLanguageCode={setSelectedLanguageCode}
+            attributeClasses={attributeClasses}
           />
         </div>
         <div className="w-full">
@@ -113,6 +119,7 @@ export const NPSQuestionForm = ({
             updateQuestion={updateQuestion}
             selectedLanguageCode={selectedLanguageCode}
             setSelectedLanguageCode={setSelectedLanguageCode}
+            attributeClasses={attributeClasses}
           />
         </div>
       </div>
@@ -130,6 +137,7 @@ export const NPSQuestionForm = ({
             updateQuestion={updateQuestion}
             selectedLanguageCode={selectedLanguageCode}
             setSelectedLanguageCode={setSelectedLanguageCode}
+            attributeClasses={attributeClasses}
           />
         </div>
       )}

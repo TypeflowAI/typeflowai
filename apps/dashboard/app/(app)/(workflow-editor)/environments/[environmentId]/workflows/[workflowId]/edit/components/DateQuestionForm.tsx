@@ -2,6 +2,7 @@ import { PlusIcon, TrashIcon } from "lucide-react";
 import { useState } from "react";
 
 import { createI18nString, extractLanguageCodes } from "@typeflowai/lib/i18n/utils";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TWorkflow, TWorkflowDateQuestion } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
 import { Label } from "@typeflowai/ui/Label";
@@ -17,6 +18,7 @@ interface IDateQuestionFormProps {
   selectedLanguageCode: string;
   setSelectedLanguageCode: (language: string) => void;
   isInvalid: boolean;
+  attributeClasses: TAttributeClass[];
 }
 
 const dateOptions = [
@@ -42,6 +44,7 @@ export const DateQuestionForm = ({
   localWorkflow,
   selectedLanguageCode,
   setSelectedLanguageCode,
+  attributeClasses,
 }: IDateQuestionFormProps): JSX.Element => {
   const [showSubheader, setShowSubheader] = useState(!!question.subheader);
   const workflowLanguageCodes = extractLanguageCodes(localWorkflow.languages);
@@ -57,6 +60,7 @@ export const DateQuestionForm = ({
         updateQuestion={updateQuestion}
         selectedLanguageCode={selectedLanguageCode}
         setSelectedLanguageCode={setSelectedLanguageCode}
+        attributeClasses={attributeClasses}
       />
       <div>
         {showSubheader && (
@@ -71,6 +75,7 @@ export const DateQuestionForm = ({
                 updateQuestion={updateQuestion}
                 selectedLanguageCode={selectedLanguageCode}
                 setSelectedLanguageCode={setSelectedLanguageCode}
+                attributeClasses={attributeClasses}
               />
             </div>
 

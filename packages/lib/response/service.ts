@@ -23,6 +23,7 @@ import { TTag } from "@typeflowai/types/tags";
 import { TWorkflowSummary } from "@typeflowai/types/workflows";
 
 import { getAttributes } from "../attribute/service";
+import { getAttributeClasses } from "../attributeClass/service";
 import { cache } from "../cache";
 import { ITEMS_PER_PAGE, WEBAPP_URL } from "../constants";
 import { displayCache } from "../display/cache";
@@ -33,7 +34,7 @@ import { getResponseNotes } from "../responseNote/service";
 import { putFile } from "../storage/service";
 import { captureTelemetry } from "../telemetry";
 import { convertToCsv, convertToXlsxBuffer } from "../utils/fileConversion";
-import { checkForRecallInHeadline } from "../utils/recall";
+import { replaceHeadlineRecall } from "../utils/recall";
 import { validateInputs } from "../utils/validate";
 import { getWorkflow } from "../workflow/service";
 import { responseCache } from "./cache";
@@ -486,6 +487,8 @@ export const getWorkflowSummary = (
           throw new ResourceNotFoundError("Workflow", workflowId);
         }
 
+        const attributeClasses = await getAttributeClasses(workflow.environmentId);
+
         const batchSize = 3000;
         const responseCount = await getResponseCountByWorkflowId(workflowId, filterCriteria);
         const pages = Math.ceil(responseCount / batchSize);
@@ -504,7 +507,7 @@ export const getWorkflowSummary = (
         const dropOff = getWorkflowSummaryDropOff(workflow, responses, displayCount);
         const meta = getWorkflowSummaryMeta(responses, displayCount);
         const questionWiseSummary = getQuestionWiseSummary(
-          checkForRecallInHeadline(workflow, "default"),
+          replaceHeadlineRecall(workflow, "default", attributeClasses),
           responses,
           dropOff
         );

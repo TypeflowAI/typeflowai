@@ -8,6 +8,7 @@ import type { NextPage } from "next";
 import { useCallback, useEffect, useState } from "react";
 
 import { cn } from "@typeflowai/lib/cn";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TProduct } from "@typeflowai/types/product";
 import { TResponse } from "@typeflowai/types/responses";
 import { TWorkflow } from "@typeflowai/types/workflows";
@@ -27,6 +28,7 @@ interface LinkWorkflowPinScreenProps {
   IS_TYPEFLOWAI_CLOUD: boolean;
   verifiedEmail?: string;
   languageCode: string;
+  attributeClasses: TAttributeClass[];
 }
 
 const LinkWorkflowPinScreen: NextPage<LinkWorkflowPinScreenProps> = (props) => {
@@ -43,6 +45,7 @@ const LinkWorkflowPinScreen: NextPage<LinkWorkflowPinScreenProps> = (props) => {
     IS_TYPEFLOWAI_CLOUD,
     verifiedEmail,
     languageCode,
+    attributeClasses,
   } = props;
 
   const [localPinEntry, setLocalPinEntry] = useState<string>("");
@@ -123,6 +126,7 @@ const LinkWorkflowPinScreen: NextPage<LinkWorkflowPinScreenProps> = (props) => {
           webAppUrl={webAppUrl}
           verifiedEmail={verifiedEmail}
           languageCode={languageCode}
+          attributeClasses={attributeClasses}
         />
       </MediaBackground>
       <LegalFooter

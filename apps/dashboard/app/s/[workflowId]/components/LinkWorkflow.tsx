@@ -9,8 +9,9 @@ import { useEffect, useMemo, useState } from "react";
 import { TypeflowAIAPI } from "@typeflowai/api";
 import { ResponseQueue } from "@typeflowai/lib/responseQueue";
 import { WorkflowState } from "@typeflowai/lib/workflowState";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TProduct } from "@typeflowai/types/product";
-import { TResponse, TResponseUpdate } from "@typeflowai/types/responses";
+import { TResponse, TResponseData, TResponseUpdate } from "@typeflowai/types/responses";
 import { TUploadFileConfig } from "@typeflowai/types/storage";
 import { TWorkflow } from "@typeflowai/types/workflows";
 import { ClientLogo } from "@typeflowai/ui/ClientLogo";
@@ -32,6 +33,7 @@ interface LinkWorkflowProps {
   responseCount?: number;
   verifiedEmail?: string;
   languageCode: string;
+  attributeClasses: TAttributeClass[];
 }
 
 export default function LinkWorkflow({
@@ -45,6 +47,7 @@ export default function LinkWorkflow({
   responseCount,
   verifiedEmail,
   languageCode,
+  attributeClasses,
 }: LinkWorkflowProps) {
   const responseId = singleUseResponse?.id;
   const searchParams = useSearchParams();
@@ -119,8 +122,8 @@ export default function LinkWorkflow({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const hiddenFieldsRecord = useMemo<Record<string, string | number | string[]> | null>(() => {
-    const fieldsRecord: Record<string, string | number | string[]> = {};
+  const hiddenFieldsRecord = useMemo<TResponseData | undefined>(() => {
+    const fieldsRecord: TResponseData = {};
     let fieldsSet = false;
 
     workflow.hiddenFields?.fieldIds?.forEach((field) => {
@@ -132,7 +135,7 @@ export default function LinkWorkflow({
     });
 
     // Only return the record if at least one field was set.
-    return fieldsSet ? fieldsRecord : null;
+    return fieldsSet ? fieldsRecord : undefined;
   }, [searchParams, workflow.hiddenFields?.fieldIds]);
 
   const getVerifiedEmail = useMemo<Record<string, string> | null>(() => {
@@ -159,6 +162,7 @@ export default function LinkWorkflow({
           isErrorComponent={true}
           languageCode={languageCode}
           styling={product.styling}
+          attributeClasses={attributeClasses}
         />
       );
     }
@@ -169,6 +173,7 @@ export default function LinkWorkflow({
         workflow={workflow}
         languageCode={languageCode}
         styling={product.styling}
+        attributeClasses={attributeClasses}
       />
     );
   }
@@ -280,6 +285,7 @@ export default function LinkWorkflow({
             setQuestionId = f;
           }}
           startAtQuestionId={startAt && isStartAtValid ? startAt : undefined}
+          hiddenFieldsRecord={hiddenFieldsRecord}
         />
       </div>
     </div>

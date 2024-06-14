@@ -8,6 +8,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { getIsPaidSubscription } from "@typeflowai/ee/subscription/lib/service";
+import { getAttributeClasses } from "@typeflowai/lib/attributeClass/service";
 import { IMPRINT_URL, IS_TYPEFLOWAI_CLOUD, PRIVACY_URL, WEBAPP_URL } from "@typeflowai/lib/constants";
 import { createPerson, getPersonByUserId } from "@typeflowai/lib/person/service";
 import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
@@ -125,6 +126,8 @@ export default async function LinkWorkflowPage({ params, searchParams }: LinkWor
     throw new Error("Product not found");
   }
 
+  const attributeClasses = await getAttributeClasses(survey.environmentId);
+
   const getLanguageCode = (): string => {
     if (!langParam || !isMultiLanguageAllowed) return "default";
     else {
@@ -170,6 +173,7 @@ export default async function LinkWorkflowPage({ params, searchParams }: LinkWor
         IS_TYPEFLOWAI_CLOUD={IS_TYPEFLOWAI_CLOUD}
         verifiedEmail={verifiedEmail}
         languageCode={languageCode}
+        attributeClasses={attributeClasses}
       />
     );
   }
@@ -188,6 +192,7 @@ export default async function LinkWorkflowPage({ params, searchParams }: LinkWor
           responseCount={workflow.welcomeCard.showResponseCount ? responseCount : undefined}
           verifiedEmail={verifiedEmail}
           languageCode={languageCode}
+          attributeClasses={attributeClasses}
         />
         <LegalFooter
           IMPRINT_URL={IMPRINT_URL}

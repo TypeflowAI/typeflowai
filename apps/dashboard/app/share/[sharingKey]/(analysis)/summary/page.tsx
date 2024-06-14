@@ -2,6 +2,7 @@ import { WorkflowAnalysisNavigation } from "@/app/(app)/environments/[environmen
 import SummaryPage from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/SummaryPage";
 import { notFound } from "next/navigation";
 
+import { getAttributeClasses } from "@typeflowai/lib/attributeClass/service";
 import { WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
 import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
@@ -17,18 +18,21 @@ export default async function Page({ params }) {
     return notFound();
   }
 
-  const workflow = await getWorkflow(workflowId);
+  const [workflow, environment, attributeClasses, product] = await Promise.all([
+    getWorkflow(params.workflowId),
+    getEnvironment(params.environmentId),
+    getAttributeClasses(params.environmentId),
+    getProductByEnvironmentId(params.environmentId),
+  ]);
 
   if (!workflow) {
     throw new Error("Workflow not found");
   }
-  const environment = await getEnvironment(workflow.environmentId);
 
   if (!environment) {
     throw new Error("Environment not found");
   }
 
-  const product = await getProductByEnvironmentId(environment.id);
   if (!product) {
     throw new Error("Product not found");
   }
@@ -52,6 +56,7 @@ export default async function Page({ params }) {
           workflowId={workflow.id}
           webAppUrl={WEBAPP_URL}
           totalResponseCount={totalResponseCount}
+          attributeClasses={attributeClasses}
         />
       </PageContentWrapper>
     </div>

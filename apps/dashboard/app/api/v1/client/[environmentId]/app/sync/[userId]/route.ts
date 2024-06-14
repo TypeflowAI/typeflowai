@@ -1,10 +1,14 @@
 import { sendFreeLimitReachedEventToPosthogBiWeekly } from "@/app/api/v1/client/[environmentId]/app/sync/lib/posthog";
+import {
+  replaceAttributeRecall,
+  replaceAttributeRecallInLegacyWorkflows,
+} from "@/app/api/v1/client/[environmentId]/app/sync/lib/utils";
 import { responses } from "@/app/lib/api/response";
 import { transformErrorToDetails } from "@/app/lib/api/validator";
 import { NextRequest, userAgent } from "next/server";
 
 import { getActionClasses } from "@typeflowai/lib/actionClass/service";
-import { getAttribute } from "@typeflowai/lib/attribute/service";
+import { getAttributes } from "@typeflowai/lib/attribute/service";
 import {
   IS_TYPEFLOWAI_CLOUD,
   PRICING_APPWORKFLOWS_FREE_RESPONSES,
@@ -152,8 +156,8 @@ export async function GET(
         highlightBorderColor: product.styling.highlightBorderColor.light,
       }),
     };
-
-    const language = await getAttribute("language", person.id);
+    const attributes = await getAttributes(person.id);
+    const language = attributes["language"];
     const noCodeActionClasses = actionClasses.filter((actionClass) => actionClass.type === "noCode");
 
     // Scenario 1: Multi language and updated trigger action classes supported.
@@ -162,7 +166,9 @@ export async function GET(
 
     // creating state object
     let state: TJsAppStateSync | TJsAppLegacyStateSync = {
-      workflows: !isInAppWorkflowLimitReached ? transformedWorkflows : [],
+      workflows: !isInAppWorkflowLimitReached
+        ? transformedWorkflows.map((workflow) => replaceAttributeRecall(workflow, attributes))
+        : [],
       actionClasses,
       language,
       product: updatedProduct,
@@ -181,7 +187,11 @@ export async function GET(
       );
 
       state = {
-        workflows: !isInAppWorkflowLimitReached ? transformedWorkflows : [],
+        workflows: !isInAppWorkflowLimitReached
+          ? transformedWorkflows.map((workflow) =>
+              replaceAttributeRecallInLegacyWorkflows(workflow, attributes)
+            )
+          : [],
         person,
         noCodeActionClasses,
         language,

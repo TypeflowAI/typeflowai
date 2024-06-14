@@ -18,23 +18,25 @@ export default async function Page({ params }) {
     return notFound();
   }
 
-  const workflow = await getWorkflow(workflowId);
+  const [workflow, environment, product, tags] = await Promise.all([
+    getWorkflow(params.workflowId),
+    getEnvironment(params.environmentId),
+    getProductByEnvironmentId(params.environmentId),
+    getTagsByEnvironmentId(params.environmentId),
+  ]);
 
   if (!workflow) {
     throw new Error("Workflow not found");
   }
 
-  const environment = await getEnvironment(workflow.environmentId);
-
   if (!environment) {
     throw new Error("Environment not found");
   }
-  const product = await getProductByEnvironmentId(environment.id);
+
   if (!product) {
     throw new Error("Product not found");
   }
 
-  const tags = await getTagsByEnvironmentId(environment.id);
   const totalResponseCount = await getResponseCountByWorkflowId(workflowId);
 
   return (

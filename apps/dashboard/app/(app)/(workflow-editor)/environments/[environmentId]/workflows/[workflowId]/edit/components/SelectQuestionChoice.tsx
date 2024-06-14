@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 
 import { cn } from "@typeflowai/lib/cn";
 import { createI18nString } from "@typeflowai/lib/i18n/utils";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import {
   TI18nString,
   TWorkflow,
@@ -35,6 +36,7 @@ interface ChoiceProps {
   question: TWorkflowMultipleChoiceQuestion;
   updateQuestion: (questionIdx: number, updatedAttributes: Partial<TWorkflowMultipleChoiceQuestion>) => void;
   workflowLanguageCodes: string[];
+  attributeClasses: TAttributeClass[];
 }
 
 export const SelectQuestionChoice = ({
@@ -54,6 +56,7 @@ export const SelectQuestionChoice = ({
   question,
   workflowLanguageCodes,
   updateQuestion,
+  attributeClasses,
 }: ChoiceProps) => {
   const isDragDisabled = choice.id === "other";
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
@@ -100,6 +103,7 @@ export const SelectQuestionChoice = ({
             isInvalid && !isLabelValidForAllLanguages(question.choices[choiceIdx].label, workflowLanguages)
           }
           className={`${choice.id === "other" ? "border border-dashed" : ""} mt-0`}
+          attributeClasses={attributeClasses}
         />
         {choice.id === "other" && (
           <QuestionFormInput
@@ -119,6 +123,7 @@ export const SelectQuestionChoice = ({
               isInvalid && !isLabelValidForAllLanguages(question.choices[choiceIdx].label, workflowLanguages)
             }
             className="border border-dashed"
+            attributeClasses={attributeClasses}
           />
         )}
       </div>

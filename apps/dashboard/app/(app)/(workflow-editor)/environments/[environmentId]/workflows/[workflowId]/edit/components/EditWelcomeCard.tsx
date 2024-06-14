@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 // import { useState } from "react";
 // import { LocalizedEditor } from "@typeflowai/ee/multiLanguage/components/LocalizedEditor";
 import { cn } from "@typeflowai/lib/cn";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TWorkflow } from "@typeflowai/types/workflows";
 import { FileInput } from "@typeflowai/ui/FileInput";
 import { Label } from "@typeflowai/ui/Label";
@@ -20,6 +21,7 @@ interface EditWelcomeCardProps {
   isInvalid: boolean;
   selectedLanguageCode: string;
   setSelectedLanguageCode: (languageCode: string) => void;
+  attributeClasses: TAttributeClass[];
 }
 
 export default function EditWelcomeCard({
@@ -30,6 +32,7 @@ export default function EditWelcomeCard({
   isInvalid,
   selectedLanguageCode,
   setSelectedLanguageCode,
+  attributeClasses,
 }: EditWelcomeCardProps) {
   // const [firstRender, setFirstRender] = useState(true);
   const path = usePathname();
@@ -130,6 +133,7 @@ export default function EditWelcomeCard({
                 updateWorkflow={updateWorkflow}
                 selectedLanguageCode={selectedLanguageCode}
                 setSelectedLanguageCode={setSelectedLanguageCode}
+                attributeClasses={attributeClasses}
               />
             </div>
             <div className="mt-3">
@@ -164,6 +168,7 @@ export default function EditWelcomeCard({
                     updateWorkflow={updateWorkflow}
                     selectedLanguageCode={selectedLanguageCode}
                     setSelectedLanguageCode={setSelectedLanguageCode}
+                    attributeClasses={attributeClasses}
                   />
                 </div>
               </div>
