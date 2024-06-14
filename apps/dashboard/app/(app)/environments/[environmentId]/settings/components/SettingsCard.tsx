@@ -1,7 +1,7 @@
 import { cn } from "@typeflowai/lib/cn";
 import { Badge } from "@typeflowai/ui/Badge";
 
-export default function SettingsCard({
+export const SettingsCard = ({
   title,
   description,
   children,
@@ -17,7 +17,7 @@ export default function SettingsCard({
   noPadding?: boolean;
   beta?: boolean;
   className?: string;
-}) {
+}) => {
   return (
     <div className={cn("my-4 w-full max-w-4xl bg-white shadow sm:rounded-lg", className)} id={title}>
       <div className="border-b border-slate-200 bg-slate-100 px-6 py-5">
@@ -33,4 +33,4 @@ export default function SettingsCard({
       <div className={cn(noPadding ? "" : "px-6 py-5")}>{children} </div>
     </div>
   );
-}
+};
