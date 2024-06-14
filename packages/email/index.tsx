@@ -77,7 +77,7 @@ export const sendEmail = async (emailData: SendEmailDataProps) => {
       debug: DEBUG,
     } as SMTPTransport.Options);
     const emailDefaults = {
-      from: `Formbricks <${MAIL_FROM || "noreply@formbricks.com"}>`,
+      from: `TypeflowAI <${MAIL_FROM || "noreply@typeflowai.com"}>`,
     };
     await transporter.sendMail({ ...emailDefaults, ...emailData });
   } else {
