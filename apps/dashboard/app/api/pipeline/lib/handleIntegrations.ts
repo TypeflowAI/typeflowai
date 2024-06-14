@@ -10,7 +10,7 @@ import { TIntegrationGoogleSheets } from "@typeflowai/types/integration/googleSh
 import { TIntegrationNotion, TIntegrationNotionConfigData } from "@typeflowai/types/integration/notion";
 import { TIntegrationSlack } from "@typeflowai/types/integration/slack";
 import { TPipelineInput } from "@typeflowai/types/pipelines";
-import { TWorkflow, TWorkflowQuestionType } from "@typeflowai/types/workflows";
+import { TWorkflow, TWorkflowQuestionTypeEnum } from "@typeflowai/types/workflows";
 
 export async function handleIntegrations(
   integrations: TIntegration[],
@@ -103,7 +103,7 @@ async function extractResponses(
 
     if (responseValue !== undefined) {
       let answer: typeof responseValue;
-      if (question.type === TWorkflowQuestionType.PictureSelection) {
+      if (question.type === TWorkflowQuestionTypeEnum.PictureSelection) {
         const selectedChoiceIds = responseValue as string[];
         answer = question?.choices
           .filter((choice) => selectedChoiceIds.includes(choice.id))
@@ -147,7 +147,7 @@ function buildNotionPayloadProperties(
   const responses = data.response.data;
 
   const mappingQIds = mapping
-    .filter((m) => m.question.type === TWorkflowQuestionType.PictureSelection)
+    .filter((m) => m.question.type === TWorkflowQuestionTypeEnum.PictureSelection)
     .map((m) => m.question.id);
 
   Object.keys(responses).forEach((resp) => {

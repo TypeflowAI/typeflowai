@@ -6,7 +6,6 @@ import { AlertTriangleIcon, ArrowLeftIcon, SettingsIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
-
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TProduct } from "@typeflowai/types/product";
 import { TSegment } from "@typeflowai/types/segment";
@@ -15,8 +14,7 @@ import { AlertDialog } from "@typeflowai/ui/AlertDialog";
 import { Button } from "@typeflowai/ui/Button";
 import { Input } from "@typeflowai/ui/Input";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@typeflowai/ui/Tooltip";
-
-// import { createSegmentAction } from "@typeflowai/ee/advancedTargeting/lib/actions";
+// import { createSegmentAction } from "@typeflowai/ee/advanced-targeting/lib/actions";
 import { createBasicSegmentAction, updateWorkflowAction } from "../actions";
 import { isWorkflowValid } from "../lib/validation";
 

@@ -1,13 +1,12 @@
-// import { AdvancedTargetingCard } from "@typeflowai/ee/advancedTargeting/components/AdvancedTargetingCard";
+// import { AdvancedTargetingCard } from "@typeflowai/ee/advanced-targeting/components/advanced-targeting-card";
 import { TActionClass } from "@typeflowai/types/actionClasses";
 import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TMembershipRole } from "@typeflowai/types/memberships";
 import { TSegment } from "@typeflowai/types/segment";
 import { TWorkflow } from "@typeflowai/types/workflows";
-
 import HowToSendCard from "./HowToSendCard";
-import RecontactOptionsCard from "./RecontactOptionsCard";
+import { RecontactOptionsCard } from "./RecontactOptionsCard";
 import ResponseOptionsCard from "./ResponseOptionsCard";
 import TargetingCard from "./TargetingCard";
 import WhenToSendCard from "./WhenToSendCard";

@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
-
 import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
 import { structuredClone } from "@typeflowai/lib/pollyfills/structuredClone";
 import { replaceHeadlineRecall } from "@typeflowai/lib/utils/recall";
@@ -18,7 +17,7 @@ import {
   TWorkflowLogic,
   TWorkflowLogicCondition,
   TWorkflowQuestion,
-  TWorkflowQuestionType,
+  TWorkflowQuestionTypeEnum,
 } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
 import {
@@ -66,7 +65,7 @@ export default function LogicEditor({
       return question.choices.map((choice) => getLocalizedValue(choice.label, "default"));
     } else if ("range" in question) {
       return Array.from({ length: question.range ? question.range : 0 }, (_, i) => (i + 1).toString());
-    } else if (question.type === TWorkflowQuestionType.NPS) {
+    } else if (question.type === TWorkflowQuestionTypeEnum.NPS) {
       return Array.from({ length: 11 }, (_, i) => (i + 0).toString());
     }
     return [];

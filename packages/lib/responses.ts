@@ -1,6 +1,5 @@
 import { TResponse } from "@typeflowai/types/responses";
-import { TWorkflow, TWorkflowQuestion, TWorkflowQuestionType } from "@typeflowai/types/workflows";
-
+import { TWorkflow, TWorkflowQuestion, TWorkflowQuestionTypeEnum } from "@typeflowai/types/workflows";
 import { getLocalizedValue } from "./i18n/utils";
 
 // function to convert response value of type string | number | string[] or Record<string, string> to string | string[]
@@ -35,11 +34,11 @@ export const convertResponseValue = (
 export const getQuestionResponseMapping = (
   workflow: TWorkflow,
   response: TResponse
-): { question: string; response: string | string[]; type: TWorkflowQuestionType }[] => {
+): { question: string; response: string | string[]; type: TWorkflowQuestionTypeEnum }[] => {
   const questionResponseMapping: {
     question: string;
     response: string | string[];
-    type: TWorkflowQuestionType;
+    type: TWorkflowQuestionTypeEnum;
   }[] = [];
 
   for (const question of workflow.questions) {

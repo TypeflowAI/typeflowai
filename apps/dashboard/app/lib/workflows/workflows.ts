@@ -9,7 +9,6 @@ import {
   QuestionOptions,
 } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/components/QuestionsComboBox";
 import { QuestionFilterOptions } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/components/ResponseFilter";
-
 import {
   TResponseFilterCriteria,
   TResponseHiddenFieldsFilter,
@@ -17,7 +16,7 @@ import {
   TWorkflowPersonAttributes,
 } from "@typeflowai/types/responses";
 import { TTag } from "@typeflowai/types/tags";
-import { TWorkflowQuestionType } from "@typeflowai/types/workflows";
+import { TWorkflowQuestionTypeEnum } from "@typeflowai/types/workflows";
 import { TWorkflow } from "@typeflowai/types/workflows";
 
 const conditionOptions = {
@@ -75,8 +74,8 @@ export const generateQuestionAndFilterOptions = (
   workflow.questions.forEach((q) => {
     if (Object.keys(conditionOptions).includes(q.type)) {
       if (
-        q.type === TWorkflowQuestionType.MultipleChoiceMulti ||
-        q.type === TWorkflowQuestionType.MultipleChoiceSingle
+        q.type === TWorkflowQuestionTypeEnum.MultipleChoiceMulti ||
+        q.type === TWorkflowQuestionTypeEnum.MultipleChoiceSingle
       ) {
         questionFilterOptions.push({
           type: q.type,
@@ -86,14 +85,14 @@ export const generateQuestionAndFilterOptions = (
             : [""],
           id: q.id,
         });
-      } else if (q.type === TWorkflowQuestionType.PictureSelection) {
+      } else if (q.type === TWorkflowQuestionTypeEnum.PictureSelection) {
         questionFilterOptions.push({
           type: q.type,
           filterOptions: conditionOptions[q.type],
           filterComboBoxOptions: q?.choices ? q?.choices?.map((_, idx) => `Picture ${idx + 1}`) : [""],
           id: q.id,
         });
-      } else if (q.type === TWorkflowQuestionType.Matrix) {
+      } else if (q.type === TWorkflowQuestionTypeEnum.Matrix) {
         questionFilterOptions.push({
           type: q.type,
           filterOptions: q.rows.flatMap((row) => Object.values(row)),
@@ -268,8 +267,8 @@ export const getFormattedFilters = (
     questions.forEach(({ filterType, questionType }) => {
       if (!filters.data) filters.data = {};
       switch (questionType.questionType) {
-        case TWorkflowQuestionType.OpenText:
-        case TWorkflowQuestionType.Address: {
+        case TWorkflowQuestionTypeEnum.OpenText:
+        case TWorkflowQuestionTypeEnum.Address: {
           if (filterType.filterComboBoxValue === "Filled out") {
             filters.data[questionType.id ?? ""] = {
               op: "submitted",
@@ -280,8 +279,8 @@ export const getFormattedFilters = (
             };
           }
         }
-        case TWorkflowQuestionType.MultipleChoiceSingle:
-        case TWorkflowQuestionType.MultipleChoiceMulti: {
+        case TWorkflowQuestionTypeEnum.MultipleChoiceSingle:
+        case TWorkflowQuestionTypeEnum.MultipleChoiceMulti: {
           if (filterType.filterValue === "Includes either") {
             filters.data[questionType.id ?? ""] = {
               op: "includesOne",
@@ -294,8 +293,8 @@ export const getFormattedFilters = (
             };
           }
         }
-        case TWorkflowQuestionType.NPS:
-        case TWorkflowQuestionType.Rating: {
+        case TWorkflowQuestionTypeEnum.NPS:
+        case TWorkflowQuestionTypeEnum.Rating: {
           if (filterType.filterValue === "Is equal to") {
             filters.data[questionType.id ?? ""] = {
               op: "equals",
@@ -321,7 +320,7 @@ export const getFormattedFilters = (
             };
           }
         }
-        case TWorkflowQuestionType.CTA: {
+        case TWorkflowQuestionTypeEnum.CTA: {
           if (filterType.filterComboBoxValue === "Clicked") {
             filters.data[questionType.id ?? ""] = {
               op: "clicked",
@@ -332,7 +331,7 @@ export const getFormattedFilters = (
             };
           }
         }
-        case TWorkflowQuestionType.Consent: {
+        case TWorkflowQuestionTypeEnum.Consent: {
           if (filterType.filterComboBoxValue === "Accepted") {
             filters.data[questionType.id ?? ""] = {
               op: "accepted",
@@ -343,12 +342,12 @@ export const getFormattedFilters = (
             };
           }
         }
-        case TWorkflowQuestionType.PictureSelection: {
+        case TWorkflowQuestionTypeEnum.PictureSelection: {
           const questionId = questionType.id ?? "";
           const question = workflow.questions.find((q) => q.id === questionId);
 
           if (
-            question?.type !== TWorkflowQuestionType.PictureSelection ||
+            question?.type !== TWorkflowQuestionTypeEnum.PictureSelection ||
             !Array.isArray(filterType.filterComboBoxValue)
           ) {
             return;
@@ -371,7 +370,7 @@ export const getFormattedFilters = (
             };
           }
         }
-        case TWorkflowQuestionType.Matrix: {
+        case TWorkflowQuestionTypeEnum.Matrix: {
           if (
             filterType.filterValue &&
             filterType.filterComboBoxValue &&

@@ -2,7 +2,7 @@ import { OpenAIModel } from "@typeflowai/types/openai";
 import { TTemplate } from "@typeflowai/types/templates";
 import {
   TWorkflowHiddenFields,
-  TWorkflowQuestionType,
+  TWorkflowQuestionTypeEnum,
   TWorkflowThankYouCard,
   TWorkflowWelcomeCard,
 } from "@typeflowai/types/workflows";
@@ -106,7 +106,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "industry-segment",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the industry or segment?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -114,7 +114,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "competitors-products",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Name some top competitors or products" },
           subheader: { default: "" },
           required: true,
@@ -122,7 +122,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Could you tell us what is your product or service?" },
           subheader: { default: "E.g. Actionable DIY marketing guides and video courses." },
           required: true,
@@ -157,7 +157,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your product or service about?" },
           subheader: { default: "E.g. Actionable DIY marketing guides and video courses." },
           required: true,
@@ -165,7 +165,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "customer-segment",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What segment of customers do you want to target?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -173,7 +173,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "pain-point",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Detail a pain point of your clients." },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -181,7 +181,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "metric",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What metric would you like to measure?" },
           subheader: {
             default:
@@ -219,7 +219,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Could you tell us what is your product or service?" },
           subheader: { default: "E.g. Actionable DIY marketing guides and video courses." },
           required: true,
@@ -227,7 +227,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "unique-value-proposition",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your unique value proposition?" },
           subheader: { default: "E.g. One-of-a-kind, customizable jewelry pieces" },
           required: true,
@@ -235,7 +235,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "target-audience",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your target audience?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -270,7 +270,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "position",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your position in your company?" },
           subheader: { default: "E.g. Sales Manager, Human Resources Specialist, Financial Analyst..." },
           required: true,
@@ -278,7 +278,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "company",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your company about?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -286,7 +286,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "number",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "How many numbers would you like to create?" },
           subheader: { default: "Set a number between 1 and 4" },
           required: true,
@@ -294,7 +294,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the industry of your company?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -329,7 +329,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "company",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your company about?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -337,7 +337,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Could you tell us what is your product or service?" },
           subheader: { default: "E.g. Actionable DIY marketing guides and video courses." },
           required: true,
@@ -345,7 +345,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "improvement",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "How would you like to improve your product/service?" },
           subheader: { default: "Increase, boost, expand etc." },
           required: true,
@@ -353,7 +353,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "target-audience",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your target audience?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -361,7 +361,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "brand-goals",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Tell us a bit more about your company" },
           subheader: { default: "Brand identity, mission statement, business goals..." },
           required: true,
@@ -396,7 +396,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Could you tell us what is your product or service?" },
           subheader: { default: "E.g. Actionable DIY marketing guides and video courses." },
           required: true,
@@ -404,7 +404,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the industry of your company?" },
           subheader: { default: "Please be as specific as possible.." },
           required: true,
@@ -412,7 +412,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "demographic",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What kind of demographic would you like to impact?" },
           subheader: { default: "Please be as specific as possible.." },
           required: true,
@@ -447,7 +447,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Could you tell us what is your product or service?" },
           subheader: { default: "E.g. Actionable DIY marketing guides and video courses." },
           required: true,
@@ -455,7 +455,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "values",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Name some values of your company?" },
           subheader: { default: "Please be as specific as possible.." },
           required: true,
@@ -463,7 +463,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "needs",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Name some need of your target audience" },
           subheader: { default: "Please be as specific as possible.." },
           required: true,
@@ -498,7 +498,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Could you tell us what is your new product/service/company?" },
           subheader: { default: "E.g. Actionable DIY marketing guides and video courses." },
           required: true,
@@ -506,7 +506,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "keywords",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Tell us some keywords to include" },
           subheader: { default: "" },
           required: true,
@@ -514,7 +514,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "tone",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What tone would you like to use" },
           subheader: { default: "Please be as specific as possible.." },
           required: true,
@@ -522,7 +522,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "demographic",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What kind of demographic would you like to impact?" },
           subheader: { default: "Please be as specific as possible.." },
           required: true,
@@ -557,7 +557,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Could you tell us what is your new product/service/company?" },
           subheader: { default: "E.g. Actionable DIY marketing guides and video courses." },
           required: true,
@@ -565,7 +565,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "demographic",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What kind of demographic would you like to impact?" },
           subheader: { default: "Please be as specific as possible.." },
           required: true,
@@ -600,7 +600,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Could you tell us what is your new product/service/company?" },
           subheader: { default: "E.g. Actionable DIY marketing guides and video courses." },
           required: true,
@@ -608,7 +608,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "target-audience",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your target audience?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -616,7 +616,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "marketing-channels",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What marketing channels would you like to use?" },
           subheader: { default: "E.g. Social Media, ads, etc." },
           required: true,
@@ -651,7 +651,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Could you tell us what is your new product/service/company?" },
           subheader: { default: "E.g. Actionable DIY marketing guides and video courses." },
           required: true,
@@ -659,7 +659,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "target-audience",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your target audience?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -667,7 +667,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "needs",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are the needs or problems of your audience?" },
           subheader: { default: "" },
           required: true,
@@ -702,7 +702,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Could you tell us what is your product / service about?" },
           subheader: { default: "E.g. Actionable DIY marketing guides and video courses." },
           required: true,
@@ -710,7 +710,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "user-group",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What user group do you want to focus on?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -745,7 +745,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Could you tell us what is your product / service about?" },
           subheader: { default: "E.g. Actionable DIY marketing guides and video courses." },
           required: true,
@@ -753,7 +753,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the industry or niche of your business?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -761,7 +761,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "target-audience",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your target audience?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -796,7 +796,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Could you tell us what is your product / service about?" },
           subheader: { default: "E.g. Actionable DIY marketing guides and video courses." },
           required: true,
@@ -804,7 +804,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the industry or niche of your business?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -812,7 +812,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "aspects",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What aspects do you want to address with these features?" },
           subheader: { default: "e.g., customer need/ pain point/ market gap" },
           required: true,
@@ -820,7 +820,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "metric",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What metric would you like to improve?" },
           subheader: { default: "e.g., metric, such as customer retention or sales" },
           required: true,
@@ -828,7 +828,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "percentage",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Type a potential percentage to increase" },
           subheader: { default: "Try to be realistic" },
           required: true,
@@ -863,7 +863,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "ideas",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "List of product ideas" },
           subheader: { default: "" },
           required: true,
@@ -871,7 +871,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "description",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Brief description of each idea" },
           subheader: { default: "" },
           required: true,
@@ -879,7 +879,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "resources",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Current resources and capabilities" },
           subheader: { default: "" },
           required: true,
@@ -887,7 +887,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "goals",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are your business goals?" },
           subheader: { default: "" },
           required: true,
@@ -895,7 +895,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "target-market",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are your target market?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -952,7 +952,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "key-features",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Name some key features of your product" },
           subheader: { default: "" },
           required: true,
@@ -960,7 +960,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "target-audience",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your target audience?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -968,7 +968,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "demographic",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What kind of demographic would you like to impact?" },
           subheader: { default: "Please be as specific as possible.." },
           required: true,
@@ -976,7 +976,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "needs",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are the needs or problems of your audience?" },
           subheader: { default: "" },
           required: true,
@@ -1012,7 +1012,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What industry would you like to analyze?" },
           subheader: { default: "Please be as specific as possible.." },
           required: true,
@@ -1020,7 +1020,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "financial-metric",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Tell us the financial metric would you like to forecast" },
           subheader: { default: "Please be as specific as possible.." },
           required: true,
@@ -1028,7 +1028,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "company",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Tell us what is your company about" },
           subheader: { default: "E.g. Actionable DIY marketing guides and video courses." },
           required: true,
@@ -1036,7 +1036,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "financial-performance",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What financial performance would you like to improve?" },
           subheader: { default: "" },
           required: true,
@@ -1071,7 +1071,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "tax-rules",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Name the specific tax rules/regulations" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -1079,7 +1079,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "income-sources",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Tell us income sources/situation" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -1087,7 +1087,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "legal-provisions",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: {
             default: "What legal provisions or recent changes would you like to take into account?",
           },
@@ -1097,7 +1097,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "taxable-income",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What specific tax bracket/taxable income?" },
           subheader: { default: "" },
           required: true,
@@ -1132,7 +1132,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the industry of your company?" },
           subheader: { default: "E.g. E-commerce and Digital Marketing" },
           required: true,
@@ -1140,7 +1140,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "team-size",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the size of your team?" },
           subheader: { default: "E.g. 25 employees" },
           required: true,
@@ -1148,7 +1148,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "stage",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What stage is your company in?" },
           subheader: { default: "E.g. Growth-stage, exploring new markets" },
           required: true,
@@ -1156,7 +1156,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "recognition-system",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your current recognition system?" },
           subheader: { default: "E.g. Occasional verbal praise, lack of formal recognition program" },
           required: true,
@@ -1215,7 +1215,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the industry of your company?" },
           subheader: { default: "Please be as specific as possible.." },
           required: true,
@@ -1223,7 +1223,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "position",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What position would you like to interview?" },
           subheader: { default: "Please be as specific as possible.." },
           required: true,
@@ -1231,7 +1231,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "aspect-job",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Name some aspect of job or company to ask about" },
           subheader: { default: "Please be as specific as possible.." },
           required: true,
@@ -1266,7 +1266,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "company",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Tell us what is your company about" },
           subheader: { default: "E.g. Actionable DIY marketing guides and video courses." },
           required: true,
@@ -1274,7 +1274,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "job-title",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Write the job title you want to hire" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -1282,7 +1282,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "qualification-skill",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What qualification or skill are you looking for?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -1290,7 +1290,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "education-certifications",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What education or certificates should the applicant have?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -1298,7 +1298,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "experience",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What should the applicant have experience in?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -1333,7 +1333,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "learning-styles",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Name some learning styles" },
           subheader: { default: "" },
           required: true,
@@ -1341,7 +1341,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "technologies",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Name some training methodologies or technologies" },
           subheader: { default: "" },
           required: true,
@@ -1349,7 +1349,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "employee-demographics",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are your employees demographics?" },
           subheader: { default: "" },
           required: true,
@@ -1384,7 +1384,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the industry of your company?" },
           subheader: { default: "E.g. Fintech" },
           required: true,
@@ -1392,7 +1392,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "team-size",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the size of your team?" },
           subheader: { default: "E.g. 30 employees" },
           required: true,
@@ -1400,7 +1400,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "stage",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What stage is your company in?" },
           subheader: { default: "E.g. Series A funded, rapidly scaling" },
           required: true,
@@ -1408,7 +1408,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "advancement-structure",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your current advancement structure?" },
           subheader: { default: "E.g. Informal and ad hoc, lacking clear advancement pathways" },
           required: true,
@@ -1427,7 +1427,7 @@ export const startupTemplates: TTemplate[] = [
         Develop and suggest actionable strategies that will enable us to offer clear and meaningful advancement opportunities for our team members. Your solutions should help us in retaining talent by providing them with a sense of progression and achievement within our startup.
         
         Advancement Opportunities Challenge:
-        - Creating Role Progression Paths (How can we structure role progression in a flat organizational hierarchy?)
+        - Creating Role Progression Paths (How can we structure role progression in a flat teamal hierarchy?)
         - Skill-Based Advancement (What frameworks can we implement for advancement based on skill and competency development?)
         - Project Leadership Opportunities (How can we provide leadership opportunities through project management and team lead roles?)
         - Cross-functional growth (What strategies can we use to facilitate cross-functional movement and growth within the company?)
@@ -1467,7 +1467,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "reason-rejected",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Tell us the reason for the rejection" },
           subheader: {
             default: "e.g., Applied for a senior management position but lacks the required experience",
@@ -1477,7 +1477,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "filled-position",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What filled the position?" },
           subheader: { default: "E.g. A candidate who had more experience and better fit with the team" },
           required: true,
@@ -1512,7 +1512,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "company",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What company sent you the offer?" },
           subheader: { default: "" },
           required: true,
@@ -1520,7 +1520,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "specific-goals",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific goals" },
           subheader: { default: "Such as expresses gratitude, clarifies details, negotiates salary, etc." },
           required: true,
@@ -1554,7 +1554,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the industry or niche of your business?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -1562,7 +1562,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Could you tell us what is your product or service?" },
           subheader: { default: "E.g. Actionable DIY marketing guides and video courses." },
           required: true,
@@ -1597,7 +1597,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the industry of your business?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -1605,7 +1605,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "data-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What type of data do you want to know about?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -1641,7 +1641,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "category",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What category of expenses?" },
           subheader: { default: "Such as e.g. meals/lodging/transportation" },
           required: true,
@@ -1649,7 +1649,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "time-period",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What time of period?" },
           subheader: { default: "E.g. Daily, monthly, quarterly..." },
           required: true,
@@ -1684,7 +1684,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Name of the person for the appointment" },
           subheader: { default: "" },
           required: true,
@@ -1692,7 +1692,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "type-appointment",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What type of appontment?" },
           subheader: { default: "" },
           required: true,
@@ -1700,7 +1700,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "date",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the date?" },
           subheader: { default: "E.g. Daily, monthly, quarterly..." },
           required: true,
@@ -1708,7 +1708,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "time",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the time?" },
           subheader: { default: "" },
           required: true,
@@ -1716,7 +1716,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "location",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the location?" },
           subheader: { default: "" },
           required: true,
@@ -1724,7 +1724,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "additional-requests",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Write additional requests" },
           subheader: { default: "" },
           required: true,
@@ -1759,7 +1759,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "employee-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Name of the employee" },
           subheader: { default: "" },
           required: true,
@@ -1767,7 +1767,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "area",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What area is this employee in?" },
           subheader: { default: "" },
           required: true,
@@ -1803,16 +1803,16 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the industry of your company?" },
           subheader: { default: "Please be as specific as possible.." },
           required: true,
           inputType: "text",
         },
         {
-          id: "similiar-organizations",
-          type: TWorkflowQuestionType.OpenText,
-          headline: { default: "Name a few of similar organizations" },
+          id: "similiar-teams",
+          type: TWorkflowQuestionTypeEnum.OpenText,
+          headline: { default: "Name a few of similar teams" },
           subheader: { default: "" },
           required: true,
           inputType: "text",
@@ -1823,7 +1823,7 @@ export const startupTemplates: TTemplate[] = [
         id: "prompt",
 
         message: `
-        - Design a crisis management plan for @industry that addresses a wide range of potential crises, incorporates best practices from @similiar-organizations, and includes a communication strategy for e.g. media outreach/internal communication/crisis monitoring. Also, include protocols for e.g. financial recovery/business continuity/reputation management."
+        - Design a crisis management plan for @industry that addresses a wide range of potential crises, incorporates best practices from @similiar-teams, and includes a communication strategy for e.g. media outreach/internal communication/crisis monitoring. Also, include protocols for e.g. financial recovery/business continuity/reputation management."
         `,
         attributes: {},
         isVisible: true,
@@ -1846,7 +1846,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "current-skills",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are your current skills?" },
           subheader: { default: "Please be as specific as possible.." },
           required: true,
@@ -1854,7 +1854,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What industry would you like to improve in?" },
           subheader: { default: "" },
           required: true,
@@ -1889,7 +1889,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "resume-cv",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Write here your CV" },
           subheader: { default: "Please be as specific as possible.." },
           required: true,
@@ -1924,7 +1924,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "plan-for",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Who is the plan for?" },
           subheader: { default: "E.g. myself/employee/team member" },
           required: true,
@@ -1932,7 +1932,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "skill-area",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What skill or area of weakness would you like to focus on?" },
           subheader: { default: "E.g. specific skill/area of weakness" },
           required: true,
@@ -1940,7 +1940,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "goal-outcome",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What goal or outcome would you like achieve?" },
           subheader: { default: "Specific goal/outcome" },
           required: true,
@@ -1948,7 +1948,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "challenge",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the main challenge?" },
           subheader: { default: "" },
           required: true,
@@ -1983,7 +1983,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "team-composition",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe the team composition" },
           subheader: { default: "Details about the diversity in their team" },
           required: true,
@@ -1991,7 +1991,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "leadership-style",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Description of their current leadership approach" },
           subheader: { default: "" },
           required: true,
@@ -1999,7 +1999,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "challenges",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe the challenges" },
           subheader: { default: "Specific challenges encountered in managing diverse teams or situations" },
           required: true,
@@ -2007,7 +2007,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "objectives",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are the objectives?" },
           subheader: { default: "Goals for improving their adaptability as a leader" },
           required: true,
@@ -2066,7 +2066,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "project-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What type of project are you working on?" },
           subheader: { default: "" },
           required: true,
@@ -2074,7 +2074,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "components",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Name addressed 3 components" },
           subheader: { default: "" },
           required: true,
@@ -2109,7 +2109,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "project-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What type of project are you working on?" },
           subheader: { default: "" },
           required: true,
@@ -2117,7 +2117,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "factors",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What key factors would you like to improve?" },
           subheader: { default: "" },
           required: true,
@@ -2152,7 +2152,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "problem-topic",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What topic or problem would you want to solve?" },
           subheader: { default: "Specific problem or topic" },
           required: true,
@@ -2160,7 +2160,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "outcome",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your desired outcome?" },
           subheader: { default: "" },
           required: true,
@@ -2168,7 +2168,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "suggestions",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Write some suggestions to complement" },
           subheader: { default: "" },
           required: true,
@@ -2203,7 +2203,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "industry-market",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the industry of your company?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2211,7 +2211,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "disruptors",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Name some disruptors or uncertainties" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2245,16 +2245,16 @@ export const startupTemplates: TTemplate[] = [
       icon: "CompassIcon",
       questions: [
         {
-          id: "company-organization",
-          type: TWorkflowQuestionType.OpenText,
-          headline: { default: "What is your company/organization about?" },
+          id: "company-team",
+          type: TWorkflowQuestionTypeEnum.OpenText,
+          headline: { default: "What is your company/team about?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
           inputType: "text",
         },
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Tell us more about your new product/service" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2262,7 +2262,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the industry or niche of your business?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2274,7 +2274,7 @@ export const startupTemplates: TTemplate[] = [
         id: "prompt",
 
         message: `
-        - How can @company-organization foster a culture of innovation to consistently identify and capitalize on new @product-service opportunities in @industry-niche, and what are some best practices for doing so?
+        - How can @company-team foster a culture of innovation to consistently identify and capitalize on new @product-service opportunities in @industry-niche, and what are some best practices for doing so?
         `,
         attributes: {},
         isVisible: true,
@@ -2297,7 +2297,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "employee-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the employee's name?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2305,7 +2305,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "issue",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the feedback issue about?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2313,7 +2313,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "feedback",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Paste here the feedback" },
           subheader: { default: "" },
           required: true,
@@ -2348,7 +2348,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "core-values",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are the company core values/strategic goals?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2383,7 +2383,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "cultural-dynamics",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Description of existing remote and in-office work culture" },
           subheader: { default: "" },
           required: true,
@@ -2391,7 +2391,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "challenges",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Specific issues faced in integrating the two cultures" },
           subheader: { default: "" },
           required: true,
@@ -2399,7 +2399,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "core-values",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Core values and objectives for the company culture" },
           subheader: { default: "" },
           required: true,
@@ -2407,7 +2407,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "employee-feedback",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Previous feedback from employees about the work culture" },
           subheader: { default: "" },
           required: true,
@@ -2466,7 +2466,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "customer-behavior",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What type of customer behavior do you want to know more about?" },
           subheader: { default: "" },
           required: true,
@@ -2474,7 +2474,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the industry of your company?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2482,7 +2482,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "target-audience",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your target audience?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2517,7 +2517,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the industry of your company?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2525,7 +2525,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "data-segmentation",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Write specific data segmentation to take into account" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2533,7 +2533,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "demographic",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Write specific demographic factors to take into account" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2568,7 +2568,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the industry of your company?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2603,7 +2603,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Tell us the product or service you want to know about" },
           subheader: { default: "" },
           required: true,
@@ -2611,7 +2611,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "country-region",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What country or region would you like to analyze this product?" },
           subheader: { default: "" },
           required: true,
@@ -2619,7 +2619,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "market-segment",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What market segment do you want to know?" },
           subheader: { default: "" },
           required: true,
@@ -2654,7 +2654,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "company",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your company about?" },
           subheader: { default: "E.g. Actionable DIY marketing guides and video courses." },
           required: true,
@@ -2662,7 +2662,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the industry of your company?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2697,7 +2697,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "target-audience",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the target audience?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2705,7 +2705,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "tool",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Name specific tool/method/technique you would like to use" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2713,7 +2713,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "goal",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What objective/goal would you like to achieve?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2748,7 +2748,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "website-goals",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are the website goals?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2756,7 +2756,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the industry of the website?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2791,7 +2791,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "business",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your business about?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2799,7 +2799,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "values",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are the values of your brand?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2838,7 +2838,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "website-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What type of website are you developing?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2846,7 +2846,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "target-audience",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the target audience for this website?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2854,7 +2854,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "brand-guidelines",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe your brand guidelines" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2890,7 +2890,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "content-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What type of content would you like to use for the campaign?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2898,7 +2898,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the industry?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2933,7 +2933,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the industry?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2941,7 +2941,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "demographic",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What kind of demographic would you like to impact?" },
           subheader: { default: "Please be as specific as possible.." },
           required: true,
@@ -2949,7 +2949,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "content-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What type of content would you like to use for the campaign?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2957,7 +2957,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "tone-voice",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What tone/voice would you like to use" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -2965,7 +2965,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "channel",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What channel would you like to use" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -3000,7 +3000,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "target-audience",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the target audience?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -3008,7 +3008,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "topic",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the main topic?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -3016,7 +3016,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "keywords",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Name some keywords related to the main topic" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -3051,7 +3051,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "challenge",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the challenge of your video production?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -3059,7 +3059,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "topic",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the main topic of your video production?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -3067,7 +3067,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "target-audience",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the main topic?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -3075,7 +3075,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "goal",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What goal would you like to achieve?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -3110,7 +3110,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "brand-voice",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the brand voice?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -3118,7 +3118,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "target-audience",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the main topic?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,
@@ -3126,7 +3126,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "platform",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What platform are you focus on?" },
           subheader: { default: "" },
           required: true,
@@ -3161,7 +3161,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "audience-profile",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your audience profile?" },
           subheader: { default: "Detailed description of the target audience’s demographics and interests" },
           required: true,
@@ -3169,7 +3169,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "content-history",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Overview of past content and any known engagement metrics" },
           subheader: { default: "" },
           required: true,
@@ -3177,7 +3177,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "production",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Information on available resources and production limitations" },
           subheader: { default: "" },
           required: true,
@@ -3185,7 +3185,7 @@ export const startupTemplates: TTemplate[] = [
         },
         {
           id: "goals",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Specific objectives for audience engagement and growth" },
           subheader: { default: "" },
           required: true,
@@ -3244,7 +3244,7 @@ export const startupTemplates: TTemplate[] = [
       questions: [
         {
           id: "topic",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the main topic?" },
           subheader: { default: "Please be as specific as possible." },
           required: true,

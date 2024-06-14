@@ -14,16 +14,14 @@ import { TrashIcon } from "lucide-react";
 import { ChevronDown, ChevronUp, Plus } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-
-import { TWorkflow, TWorkflowQuestionType } from "@typeflowai/types/workflows";
+import { TWorkflow, TWorkflowQuestionTypeEnum } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
 import { Checkbox } from "@typeflowai/ui/Checkbox";
 import { Popover, PopoverContent, PopoverTrigger } from "@typeflowai/ui/Popover";
-
 import QuestionsComboBox, { OptionsType, QuestionOption } from "./QuestionsComboBox";
 
 export type QuestionFilterOptions = {
-  type: TWorkflowQuestionType | "Attributes" | "Tags" | "Languages";
+  type: TWorkflowQuestionTypeEnum | "Attributes" | "Tags" | "Languages";
   filterOptions: string[];
   filterComboBoxOptions: string[];
   id: string;

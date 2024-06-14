@@ -1,12 +1,11 @@
 "use client";
 
-import { QUESTIONS_ICON_MAP, getTWorkflowQuestionTypeName } from "@/app/lib/questions";
+import { QUESTIONS_ICON_MAP, getTWorkflowQuestionTypeEnumName } from "@/app/lib/questions";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import * as Collapsible from "@radix-ui/react-collapsible";
 import { ChevronDownIcon, ChevronRightIcon, GripIcon } from "lucide-react";
 import { useState } from "react";
-
 import { cn } from "@typeflowai/lib/cn";
 import { recallToHeadline } from "@typeflowai/lib/utils/recall";
 import { TAttributeClass } from "@typeflowai/types/attributeClasses";
@@ -15,12 +14,11 @@ import {
   TI18nString,
   TWorkflow,
   TWorkflowQuestion,
-  TWorkflowQuestionType,
+  TWorkflowQuestionTypeEnum,
 } from "@typeflowai/types/workflows";
 import { Label } from "@typeflowai/ui/Label";
 import { QuestionFormInput } from "@typeflowai/ui/QuestionFormInput";
 import { Switch } from "@typeflowai/ui/Switch";
-
 import { AddressQuestionForm } from "./AddressQuestionForm";
 import { AdvancedSettings } from "./AdvancedSettings";
 import { CTAQuestionForm } from "./CTAQuestionForm";
@@ -201,7 +199,7 @@ export default function QuestionCard({
                           attributeClasses
                         )[selectedLanguageCode] ?? ""
                       )
-                    : getTWorkflowQuestionTypeName(question.type)}
+                    : getTWorkflowQuestionTypeEnumName(question.type)}
                 </p>
                 {!open && question?.required && (
                   <p className="mt-1 truncate text-xs text-slate-500">{question?.required && "Required"}</p>
@@ -225,7 +223,7 @@ export default function QuestionCard({
           </div>
         </Collapsible.CollapsibleTrigger>
         <Collapsible.CollapsibleContent className="px-4 pb-4">
-          {question.type === TWorkflowQuestionType.OpenText ? (
+          {question.type === TWorkflowQuestionTypeEnum.OpenText ? (
             <OpenQuestionForm
               localWorkflow={localWorkflow}
               question={question}
@@ -237,7 +235,7 @@ export default function QuestionCard({
               isInvalid={isInvalid}
               attributeClasses={attributeClasses}
             />
-          ) : question.type === TWorkflowQuestionType.MultipleChoiceSingle ? (
+          ) : question.type === TWorkflowQuestionTypeEnum.MultipleChoiceSingle ? (
             <MultipleChoiceQuestionForm
               localWorkflow={localWorkflow}
               question={question}
@@ -249,7 +247,7 @@ export default function QuestionCard({
               isInvalid={isInvalid}
               attributeClasses={attributeClasses}
             />
-          ) : question.type === TWorkflowQuestionType.MultipleChoiceMulti ? (
+          ) : question.type === TWorkflowQuestionTypeEnum.MultipleChoiceMulti ? (
             <MultipleChoiceQuestionForm
               localWorkflow={localWorkflow}
               question={question}
@@ -261,7 +259,7 @@ export default function QuestionCard({
               isInvalid={isInvalid}
               attributeClasses={attributeClasses}
             />
-          ) : question.type === TWorkflowQuestionType.NPS ? (
+          ) : question.type === TWorkflowQuestionTypeEnum.NPS ? (
             <NPSQuestionForm
               localWorkflow={localWorkflow}
               question={question}
@@ -274,7 +272,7 @@ export default function QuestionCard({
               isInvalid={isInvalid}
               attributeClasses={attributeClasses}
             />
-          ) : question.type === TWorkflowQuestionType.CTA ? (
+          ) : question.type === TWorkflowQuestionTypeEnum.CTA ? (
             <CTAQuestionForm
               localWorkflow={localWorkflow}
               question={question}
@@ -287,7 +285,7 @@ export default function QuestionCard({
               isInvalid={isInvalid}
               attributeClasses={attributeClasses}
             />
-          ) : question.type === TWorkflowQuestionType.Rating ? (
+          ) : question.type === TWorkflowQuestionTypeEnum.Rating ? (
             <RatingQuestionForm
               localWorkflow={localWorkflow}
               question={question}
@@ -299,7 +297,7 @@ export default function QuestionCard({
               isInvalid={isInvalid}
               attributeClasses={attributeClasses}
             />
-          ) : question.type === TWorkflowQuestionType.Consent ? (
+          ) : question.type === TWorkflowQuestionTypeEnum.Consent ? (
             <ConsentQuestionForm
               localWorkflow={localWorkflow}
               question={question}
@@ -310,7 +308,7 @@ export default function QuestionCard({
               isInvalid={isInvalid}
               attributeClasses={attributeClasses}
             />
-          ) : question.type === TWorkflowQuestionType.Date ? (
+          ) : question.type === TWorkflowQuestionTypeEnum.Date ? (
             <DateQuestionForm
               localWorkflow={localWorkflow}
               question={question}
@@ -322,7 +320,7 @@ export default function QuestionCard({
               isInvalid={isInvalid}
               attributeClasses={attributeClasses}
             />
-          ) : question.type === TWorkflowQuestionType.PictureSelection ? (
+          ) : question.type === TWorkflowQuestionTypeEnum.PictureSelection ? (
             <PictureSelectionForm
               localWorkflow={localWorkflow}
               question={question}
@@ -334,7 +332,7 @@ export default function QuestionCard({
               isInvalid={isInvalid}
               attributeClasses={attributeClasses}
             />
-          ) : question.type === TWorkflowQuestionType.FileUpload ? (
+          ) : question.type === TWorkflowQuestionTypeEnum.FileUpload ? (
             <FileUploadQuestionForm
               localWorkflow={localWorkflow}
               product={product}
@@ -347,7 +345,7 @@ export default function QuestionCard({
               isInvalid={isInvalid}
               attributeClasses={attributeClasses}
             />
-          ) : question.type === TWorkflowQuestionType.Cal ? (
+          ) : question.type === TWorkflowQuestionTypeEnum.Cal ? (
             <CalQuestionForm
               localWorkflow={localWorkflow}
               question={question}
@@ -359,7 +357,7 @@ export default function QuestionCard({
               isInvalid={isInvalid}
               attributeClasses={attributeClasses}
             />
-          ) : question.type === TWorkflowQuestionType.Matrix ? (
+          ) : question.type === TWorkflowQuestionTypeEnum.Matrix ? (
             <MatrixQuestionForm
               localWorkflow={localWorkflow}
               question={question}
@@ -371,7 +369,7 @@ export default function QuestionCard({
               isInvalid={isInvalid}
               attributeClasses={attributeClasses}
             />
-          ) : question.type === TWorkflowQuestionType.Address ? (
+          ) : question.type === TWorkflowQuestionTypeEnum.Address ? (
             <AddressQuestionForm
               localWorkflow={localWorkflow}
               question={question}
@@ -396,9 +394,9 @@ export default function QuestionCard({
               </Collapsible.CollapsibleTrigger>
 
               <Collapsible.CollapsibleContent className="space-y-4">
-                {question.type !== TWorkflowQuestionType.NPS &&
-                question.type !== TWorkflowQuestionType.Rating &&
-                question.type !== TWorkflowQuestionType.CTA ? (
+                {question.type !== TWorkflowQuestionTypeEnum.NPS &&
+                question.type !== TWorkflowQuestionTypeEnum.Rating &&
+                question.type !== TWorkflowQuestionTypeEnum.CTA ? (
                   <div className="mt-2 flex space-x-2">
                     <div className="w-full">
                       <QuestionFormInput
@@ -444,8 +442,8 @@ export default function QuestionCard({
                     )}
                   </div>
                 ) : null}
-                {(question.type === TWorkflowQuestionType.Rating ||
-                  question.type === TWorkflowQuestionType.NPS) &&
+                {(question.type === TWorkflowQuestionTypeEnum.Rating ||
+                  question.type === TWorkflowQuestionTypeEnum.NPS) &&
                   questionIdx !== 0 && (
                     <div className="mt-4">
                       <QuestionFormInput

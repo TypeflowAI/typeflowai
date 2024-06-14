@@ -14,9 +14,8 @@ import {
   Rows3Icon,
   StarIcon,
 } from "lucide-react";
-
 import {
-  TWorkflowQuestionType as QuestionId,
+  TWorkflowQuestionTypeEnum as QuestionId,
   TWorkflowAddressQuestion,
   TWorkflowCTAQuestion,
   TWorkflowCalQuestion,
@@ -28,10 +27,9 @@ import {
   TWorkflowNPSQuestion,
   TWorkflowOpenTextQuestion,
   TWorkflowPictureSelectionQuestion,
-  TWorkflowQuestionType,
+  TWorkflowQuestionTypeEnum,
   TWorkflowRatingQuestion,
 } from "@typeflowai/types/workflows";
-
 import { replaceQuestionPresetPlaceholders } from "./templates";
 
 export type TQuestion = {
@@ -232,7 +230,7 @@ export const QUESTIONS_NAME_MAP = questionTypes.reduce(
     [curr.id]: curr.label,
   }),
   {}
-) as Record<TWorkflowQuestionType, string>;
+) as Record<TWorkflowQuestionTypeEnum, string>;
 
 export const universalQuestionPresets = {
   required: true,
@@ -243,7 +241,7 @@ export const getQuestionDefaults = (id: string, product: any) => {
   return replaceQuestionPresetPlaceholders(questionType?.preset, product);
 };
 
-export const getTWorkflowQuestionTypeName = (id: string) => {
+export const getTWorkflowQuestionTypeEnumName = (id: string) => {
   const questionType = questionTypes.find((questionType) => questionType.id === id);
   return questionType?.label;
 };

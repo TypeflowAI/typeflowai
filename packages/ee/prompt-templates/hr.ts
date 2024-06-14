@@ -2,7 +2,7 @@ import { OpenAIModel } from "@typeflowai/types/openai";
 import { TTemplate } from "@typeflowai/types/templates";
 import {
   TWorkflowHiddenFields,
-  TWorkflowQuestionType,
+  TWorkflowQuestionTypeEnum,
   TWorkflowThankYouCard,
   TWorkflowWelcomeCard,
 } from "@typeflowai/types/workflows";
@@ -60,7 +60,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "hr-need",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's your Hr need?" },
           subheader: { default: "" },
           required: true,
@@ -68,7 +68,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "benefit",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What benefit do you need?" },
           subheader: { default: "" },
           required: true,
@@ -102,7 +102,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "job-title",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the job title?" },
           subheader: { default: "" },
           required: true,
@@ -110,7 +110,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "required-qualifications",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe the required qualifications" },
           subheader: { default: "" },
           required: true,
@@ -144,7 +144,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "areas",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "In what areas are you going to implement automation?" },
           subheader: { default: "" },
           required: true,
@@ -178,7 +178,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "department",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What department would you like to focus on?" },
           subheader: { default: "" },
           required: true,
@@ -186,7 +186,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "industry-niche",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the goal?" },
           subheader: { default: "E.g. improving communication, trust, or problem-solving skills" },
           required: true,
@@ -220,7 +220,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "department",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What department would you like to focus on?" },
           subheader: { default: "" },
           required: true,
@@ -254,7 +254,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "skill",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What skill are you evaluating?" },
           subheader: { default: "" },
           required: true,
@@ -262,7 +262,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "position",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What position are you looking for?" },
           subheader: { default: "" },
           required: true,
@@ -296,7 +296,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "job-title",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the job title?" },
           subheader: { default: "" },
           required: true,
@@ -304,7 +304,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the industry for this context?" },
           subheader: { default: "" },
           required: true,
@@ -312,7 +312,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "company-size",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the company size?" },
           subheader: { default: "E.g. Small/Medium/Large" },
           required: true,
@@ -320,7 +320,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "location",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the location?" },
           subheader: { default: "E.g. Remote/On-site/Hybrid" },
           required: true,
@@ -328,7 +328,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "experience-level",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the experience level?" },
           subheader: { default: "E.g. ntry-Level/Mid-Level/Senior" },
           required: true,
@@ -392,7 +392,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the industry for this context?" },
           subheader: { default: "" },
           required: true,
@@ -426,7 +426,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "employee-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the of the employee?" },
           subheader: { default: "" },
           required: true,
@@ -434,7 +434,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "job-title",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the job title?" },
           subheader: { default: "" },
           required: true,
@@ -442,7 +442,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "hire-date",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the hire date?" },
           subheader: { default: "" },
           required: true,
@@ -450,7 +450,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "document-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What document they provided?" },
           subheader: { default: "" },
           required: true,
@@ -458,7 +458,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "issue-date",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the issue date?" },
           subheader: { default: "" },
           required: true,
@@ -466,7 +466,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "expiration-date",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the expiration date?" },
           subheader: { default: "" },
           required: true,
@@ -500,23 +500,23 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "role-department",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the role/department for this context?" },
           subheader: { default: "" },
           required: true,
           inputType: "text",
         },
         {
-          id: "organization-type",
-          type: TWorkflowQuestionType.OpenText,
-          headline: { default: "What's the organization type?" },
+          id: "team-type",
+          type: TWorkflowQuestionTypeEnum.OpenText,
+          headline: { default: "What's the team type?" },
           subheader: { default: "" },
           required: true,
           inputType: "text",
         },
         {
           id: "location",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the location?" },
           subheader: { default: "" },
           required: true,
@@ -524,7 +524,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "demographic",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe the demographic" },
           subheader: { default: "" },
           required: true,
@@ -532,7 +532,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "barrier-entry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the barrier to entry?" },
           subheader: { default: "" },
           required: true,
@@ -543,7 +543,7 @@ export const hrTemplates: TTemplate[] = [
         enabled: true,
         id: "prompt",
         message: `
-        What are some strategies that @role-department can implement to ensure compliance with OFCCP guidelines for @organization-type in @location that also take into account the unique challenges of @demographic candidates, such as @barrier-entry ?
+        What are some strategies that @role-department can implement to ensure compliance with OFCCP guidelines for @team-type in @location that also take into account the unique challenges of @demographic candidates, such as @barrier-entry ?
         `,
         attributes: {},
         isVisible: true,
@@ -566,7 +566,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "company-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the company type?" },
           subheader: { default: "" },
           required: true,
@@ -574,7 +574,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the industry for this context?" },
           subheader: { default: "" },
           required: true,
@@ -582,7 +582,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "metrics",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What metrics are you looking to track?" },
           subheader: { default: "" },
           required: true,
@@ -615,7 +615,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "metric",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's metric are you looking to track?" },
           subheader: { default: "" },
           required: true,
@@ -623,7 +623,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "employee-group",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the employee group?" },
           subheader: { default: "" },
           required: true,
@@ -631,7 +631,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "criteria",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Add some criteria to take nto account?" },
           subheader: { default: "" },
           required: true,
@@ -639,7 +639,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "additional-information",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Tell us additional information" },
           subheader: { default: "" },
           required: true,
@@ -674,7 +674,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "department-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the department name?" },
           subheader: { default: "" },
           required: true,
@@ -682,7 +682,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "period",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the period for this context?" },
           subheader: { default: "E.g. quarter/semester/year" },
           required: true,
@@ -690,7 +690,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "event",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Add some event or circumstance to take into account?" },
           subheader: { default: "" },
           required: true,
@@ -698,7 +698,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "timeframe",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Next timeframe" },
           subheader: { default: "" },
           required: true,
@@ -732,7 +732,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "department-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific department or team" },
           subheader: { default: "" },
           required: true,
@@ -740,7 +740,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the industry for this context?" },
           subheader: { default: "" },
           required: true,
@@ -748,7 +748,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "goal",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific goal or outcome" },
           subheader: { default: "" },
           required: true,
@@ -756,7 +756,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "challenge",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific challenge or constraint" },
           subheader: { default: "" },
           required: true,
@@ -764,7 +764,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "kpi",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific performance metric or KPI" },
           subheader: { default: "" },
           required: true,
@@ -798,7 +798,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "job-title",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the job title?" },
           subheader: { default: "" },
           required: true,
@@ -806,7 +806,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "competencies",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are the required compentecies?" },
           subheader: { default: "" },
           required: true,
@@ -814,7 +814,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "goal",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific goal or outcome" },
           subheader: { default: "" },
           required: true,
@@ -822,7 +822,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "skills",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What soft skills or attributes would you like to assess?" },
           subheader: { default: "" },
           required: true,
@@ -856,7 +856,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "employee-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the name of the employee?" },
           subheader: { default: "" },
           required: true,
@@ -864,7 +864,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "improvement-area",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific area of improvement" },
           subheader: { default: "" },
           required: true,
@@ -872,7 +872,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "performance",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific examples of poor performance" },
           subheader: { default: "" },
           required: true,
@@ -880,7 +880,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "metrics",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific goals or metrics" },
           subheader: { default: "" },
           required: true,
@@ -888,7 +888,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "timeframe",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific timeframe" },
           subheader: { default: "" },
           required: true,
@@ -922,7 +922,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "kpis",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert key performance indicators (KPIs)" },
           subheader: { default: "" },
           required: true,
@@ -930,7 +930,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "team",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the name of the team?" },
           subheader: { default: "" },
           required: true,
@@ -938,7 +938,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "period",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert period" },
           subheader: { default: "E.g. quarter/year" },
           required: true,
@@ -971,7 +971,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the industry for this context?" },
           subheader: { default: "Such as healthcare or finance" },
           required: true,
@@ -979,7 +979,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "concerns",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific concerns or regulations" },
           subheader: { default: "Such as data privacy or HIPAA compliance" },
           required: true,
@@ -987,7 +987,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "company-size",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert company size or structure" },
           subheader: { default: "Such as a small clinic or a large hospital" },
           required: true,
@@ -1021,7 +1021,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "data",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific data/feedback/employee input" },
           subheader: { default: "" },
           required: true,
@@ -1029,7 +1029,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "goals",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific goals/challenges" },
           subheader: { default: "" },
           required: true,
@@ -1037,7 +1037,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "policies",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific policies/resources" },
           subheader: { default: "" },
           required: true,
@@ -1071,7 +1071,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "employee-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the employee name" },
           subheader: { default: "" },
           required: true,
@@ -1079,7 +1079,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "issue",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific issue" },
           subheader: { default: "" },
           required: true,
@@ -1113,7 +1113,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the industry for this context?" },
           subheader: { default: "Such as healthcare or finance" },
           required: true,
@@ -1121,7 +1121,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "focus",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your focus?" },
           subheader: { default: "E.g. customer service/innovation/diversity" },
           required: true,
@@ -1155,7 +1155,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "company-size",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the company-size?" },
           subheader: { default: "E.g. Small/medium/large" },
           required: true,
@@ -1163,7 +1163,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the industry for this context?" },
           subheader: { default: "" },
           required: true,
@@ -1171,7 +1171,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "team-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the team type?" },
           subheader: { default: "E.g. multi-national/cross-functional/remote" },
           required: true,
@@ -1205,7 +1205,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "situation",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe the situation for this context" },
           subheader: { default: "" },
           required: true,
@@ -1213,7 +1213,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "regulation",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific law or regulation" },
           subheader: { default: "" },
           required: true,
@@ -1221,7 +1221,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "scenario",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Specific scenario to include provisions" },
           subheader: { default: "" },
           required: true,
@@ -1255,7 +1255,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "job-title",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the job title?" },
           subheader: { default: "" },
           required: true,
@@ -1263,7 +1263,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the industry for this context?" },
           subheader: { default: "" },
           required: true,
@@ -1271,7 +1271,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "scenario",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Specific scenario to include provisions" },
           subheader: { default: "" },
           required: true,
@@ -1282,7 +1282,7 @@ export const hrTemplates: TTemplate[] = [
         enabled: true,
         id: "prompt",
         message: `
-        - How do different job responsibilities/competencies/experience levels impact the salary range/compensation package/benefits for @job-title in @industry , and what strategies/tactics can we implement to improve the compensation/job description for our organization?
+        - How do different job responsibilities/competencies/experience levels impact the salary range/compensation package/benefits for @job-title in @industry , and what strategies/tactics can we implement to improve the compensation/job description for our team?
         `,
         attributes: {},
         isVisible: true,
@@ -1305,7 +1305,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "audience",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the audience for this context?" },
           subheader: { default: "" },
           required: true,
@@ -1313,7 +1313,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "health-issue",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific health issue for this context" },
           subheader: { default: "" },
           required: true,
@@ -1321,7 +1321,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "activity",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific activity or behavior" },
           subheader: { default: "" },
           required: true,
@@ -1329,7 +1329,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "interventions-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific activity or behavior for this context" },
           subheader: { default: "" },
           required: true,
@@ -1363,7 +1363,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "company-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the company name?" },
           subheader: { default: "" },
           required: true,
@@ -1371,7 +1371,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the industry for this context?" },
           subheader: { default: "" },
           required: true,
@@ -1379,7 +1379,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "work-aspect",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific aspect of work to consider on" },
           subheader: { default: "" },
           required: true,
@@ -1387,7 +1387,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "demographics",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert demographics of your employees" },
           subheader: { default: "" },
           required: true,
@@ -1421,7 +1421,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "job-title",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the job title?" },
           subheader: { default: "" },
           required: true,
@@ -1429,7 +1429,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "location",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the geographic location?" },
           subheader: { default: "" },
           required: true,
@@ -1437,7 +1437,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the industry for this context?" },
           subheader: { default: "" },
           required: true,
@@ -1445,7 +1445,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "experience",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert number of years of experience" },
           subheader: { default: "" },
           required: true,
@@ -1453,7 +1453,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "criteria",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert additional criteria to take into account" },
           subheader: { default: "" },
           required: true,
@@ -1487,7 +1487,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "company-size",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific company size" },
           subheader: { default: "" },
           required: true,
@@ -1495,7 +1495,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the industry for this context?" },
           subheader: { default: "" },
           required: true,
@@ -1503,7 +1503,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "job-role",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert job role(s) for this context" },
           subheader: { default: "" },
           required: true,
@@ -1511,7 +1511,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "experience",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific experience or tenure" },
           subheader: { default: "" },
           required: true,
@@ -1519,7 +1519,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "action",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert specific action or behavior" },
           subheader: { default: "" },
           required: true,
@@ -1553,7 +1553,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "benefits",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are the benefits?" },
           subheader: { default: "" },
           required: true,
@@ -1561,7 +1561,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "employees-number",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the size of workforce" },
           subheader: { default: "Number of employees" },
           required: true,
@@ -1569,7 +1569,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "demographic",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What demographic are you trying to attract and retain" },
           subheader: { default: "" },
           required: true,
@@ -1577,7 +1577,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "amount",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Insert the budget amount per employee" },
           subheader: { default: "" },
           required: true,
@@ -1611,7 +1611,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "sector",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What sector do you work in?" },
           subheader: { default: "" },
           required: true,
@@ -1669,7 +1669,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "sector",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What sector do you work in?" },
           subheader: { default: "" },
           required: true,
@@ -1723,7 +1723,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "plan",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Is a plan for individual or group?" },
           subheader: { default: "" },
           required: true,
@@ -1731,7 +1731,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "issue",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Specific the issue/behavior who is struggling with" },
           subheader: { default: "" },
           required: true,
@@ -1739,7 +1739,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "preference",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Specific learning style/behavioral preference" },
           subheader: { default: "" },
           required: true,
@@ -1763,7 +1763,7 @@ export const hrTemplates: TTemplate[] = [
     icon: "PlanIcon",
     category: "Human Resources",
     subcategory: "Training & Development",
-    description: "Design employee development plans aligned with organizational and individual goals.",
+    description: "Design employee development plans aligned with teamal and individual goals.",
     objectives: ["improve_customer_and_employee_experience", "innovate_and_develop"],
     isPremium: false,
     preset: {
@@ -1773,7 +1773,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "employee-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the employee name?" },
           subheader: { default: "" },
           required: true,
@@ -1781,7 +1781,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "skill",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What skill needs to improve" },
           subheader: { default: "" },
           required: true,
@@ -1792,7 +1792,7 @@ export const hrTemplates: TTemplate[] = [
         enabled: true,
         id: "prompt",
         message: `
-        - I'm designing an employee development plan for @employee-name who needs to improve their @skill . Can you suggest 5 learning opportunities that align with their career goals and our organizational needs?
+        - I'm designing an employee development plan for @employee-name who needs to improve their @skill . Can you suggest 5 learning opportunities that align with their career goals and our teamal needs?
         `,
         attributes: {},
         isVisible: true,
@@ -1819,7 +1819,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "program",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Specific type of course/training program" },
           subheader: { default: "" },
           required: true,
@@ -1827,7 +1827,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "topic",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What skill needs to improve" },
           subheader: { default: "" },
           required: true,
@@ -1835,7 +1835,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "objectives",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Specific learning outcomes/objectives" },
           subheader: { default: "" },
           required: true,
@@ -1843,7 +1843,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the industry for this context?" },
           subheader: { default: "" },
           required: true,
@@ -1851,7 +1851,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "target-audience",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the target audience?" },
           subheader: { default: "" },
           required: true,
@@ -1886,7 +1886,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "sector",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What sector do you work in?" },
           subheader: { default: "" },
           required: true,
@@ -1914,7 +1914,7 @@ export const hrTemplates: TTemplate[] = [
         
         PROMPT CRITERIA:
         1. Offer 3 distinct and innovative approaches for each step of developing personalized learning paths.
-        2. Ensure that each suggestion is actionable and feasible within various organizational structures.
+        2. Ensure that each suggestion is actionable and feasible within various teamal structures.
         3. Emphasize creative and engaging learning methods to enhance employee participation and retention.
         4. Include strategies that can be scaled and adapted for different team sizes and industry sectors.
         `,
@@ -1939,7 +1939,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "job-title",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's your job title?" },
           subheader: { default: "" },
           required: true,
@@ -1947,7 +1947,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "company",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Which company are you applying to?" },
           subheader: { default: "" },
           required: true,
@@ -1955,7 +1955,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "salary-range",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's your desired salary range?" },
           subheader: { default: "" },
           required: true,
@@ -1989,7 +1989,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "job-role",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the job role?" },
           subheader: { default: "" },
           required: true,
@@ -1997,7 +1997,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "company-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the company type?" },
           subheader: { default: "" },
           required: true,
@@ -2031,7 +2031,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "use-ats",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "How do you want to use the ATS?" },
           subheader: { default: "E.g. machine learning algorithms" },
           required: true,
@@ -2065,7 +2065,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "employee-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the name of the new employee?" },
           subheader: { default: "" },
           required: true,
@@ -2073,7 +2073,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "job-title",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's their job title?" },
           subheader: { default: "" },
           required: true,
@@ -2081,7 +2081,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "department",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's their department?" },
           subheader: { default: "" },
           required: true,
@@ -2089,7 +2089,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "start-date",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the start date?" },
           subheader: { default: "" },
           required: true,
@@ -2097,7 +2097,7 @@ export const hrTemplates: TTemplate[] = [
         },
         {
           id: "responsibility",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Specific task/duty/responsibility" },
           subheader: { default: "" },
           required: true,
@@ -2131,7 +2131,7 @@ export const hrTemplates: TTemplate[] = [
       questions: [
         {
           id: "sector",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What sector do your work in?" },
           subheader: { default: "" },
           required: true,

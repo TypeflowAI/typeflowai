@@ -22,10 +22,9 @@ import {
   User,
 } from "lucide-react";
 import * as React from "react";
-
 import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
 import { useClickOutside } from "@typeflowai/lib/utils/hooks/useClickOutside";
-import { TWorkflowQuestionType } from "@typeflowai/types/workflows";
+import { TWorkflowQuestionTypeEnum } from "@typeflowai/types/workflows";
 import {
   Command,
   CommandEmpty,
@@ -47,7 +46,7 @@ export enum OptionsType {
 
 export type QuestionOption = {
   label: string;
-  questionType?: TWorkflowQuestionType;
+  questionType?: TWorkflowQuestionTypeEnum;
   type: OptionsType;
   id: string;
 };
@@ -67,25 +66,25 @@ const SelectedCommandItem = ({ label, questionType, type }: Partial<QuestionOpti
     switch (type) {
       case OptionsType.QUESTIONS:
         switch (questionType) {
-          case TWorkflowQuestionType.OpenText:
+          case TWorkflowQuestionTypeEnum.OpenText:
             return <MessageSquareTextIcon width={18} height={18} className="text-white" />;
-          case TWorkflowQuestionType.Rating:
+          case TWorkflowQuestionTypeEnum.Rating:
             return <StarIcon width={18} height={18} className="text-white" />;
-          case TWorkflowQuestionType.CTA:
+          case TWorkflowQuestionTypeEnum.CTA:
             return <MousePointerClickIcon width={18} height={18} className="text-white" />;
-          case TWorkflowQuestionType.OpenText:
+          case TWorkflowQuestionTypeEnum.OpenText:
             return <HelpCircleIcon width={18} height={18} className="text-white" />;
-          case TWorkflowQuestionType.MultipleChoiceMulti:
+          case TWorkflowQuestionTypeEnum.MultipleChoiceMulti:
             return <ListIcon width={18} height={18} className="text-white" />;
-          case TWorkflowQuestionType.MultipleChoiceSingle:
+          case TWorkflowQuestionTypeEnum.MultipleChoiceSingle:
             return <Rows3Icon width={18} height={18} className="text-white" />;
-          case TWorkflowQuestionType.NPS:
+          case TWorkflowQuestionTypeEnum.NPS:
             return <NetPromoterScoreIcon width={18} height={18} className="text-white" />;
-          case TWorkflowQuestionType.Consent:
+          case TWorkflowQuestionTypeEnum.Consent:
             return <CheckIcon width={18} height={18} className="text-white" />;
-          case TWorkflowQuestionType.PictureSelection:
+          case TWorkflowQuestionTypeEnum.PictureSelection:
             return <ImageIcon width={18} className="text-white" />;
-          case TWorkflowQuestionType.Matrix:
+          case TWorkflowQuestionTypeEnum.Matrix:
             return <GridIcon width={18} className="text-white" />;
         }
       case OptionsType.ATTRIBUTES:

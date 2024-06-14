@@ -5,8 +5,7 @@ import * as Collapsible from "@radix-ui/react-collapsible";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-
-import PromptEditor from "@typeflowai/ee/prompt-editor/components/PromptEditor";
+import PromptEditor from "@typeflowai/ee/prompt-editor/components/prompt-editor";
 import { cn } from "@typeflowai/lib/cn";
 import { OpenAIModel } from "@typeflowai/types/openai";
 import {

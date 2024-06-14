@@ -1,5 +1,4 @@
 import { z } from "zod";
-
 import { ZActionClass, ZNoCodeConfig } from "./actionClasses";
 import { ZAttributes } from "./attributes";
 import { ZAllowedFileExtension, ZColor, ZPlacement } from "./common";
@@ -26,7 +25,7 @@ export const ZWorkflowThankYouCard = z.object({
   videoUrl: z.string().optional(),
 });
 
-export enum TWorkflowQuestionType {
+export enum TWorkflowQuestionTypeEnum {
   FileUpload = "fileUpload",
   OpenText = "openText",
   MultipleChoiceSingle = "multipleChoiceSingle",
@@ -284,7 +283,7 @@ export const ZWorkflowOpenTextQuestionInputType = z.enum(["text", "email", "url"
 export type TWorkflowOpenTextQuestionInputType = z.infer<typeof ZWorkflowOpenTextQuestionInputType>;
 
 export const ZWorkflowOpenTextQuestion = ZWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.OpenText),
+  type: z.literal(TWorkflowQuestionTypeEnum.OpenText),
   placeholder: ZI18nString.optional(),
   longAnswer: z.boolean().optional(),
   logic: z.array(ZWorkflowOpenTextLogic).optional(),
@@ -294,7 +293,7 @@ export const ZWorkflowOpenTextQuestion = ZWorkflowQuestionBase.extend({
 export type TWorkflowOpenTextQuestion = z.infer<typeof ZWorkflowOpenTextQuestion>;
 
 export const ZWorkflowConsentQuestion = ZWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.Consent),
+  type: z.literal(TWorkflowQuestionTypeEnum.Consent),
   html: ZI18nString.optional(),
   label: ZI18nString,
   placeholder: z.string().optional(),
@@ -309,8 +308,8 @@ export type TShuffleOption = z.infer<typeof ZShuffleOption>;
 
 export const ZWorkflowMultipleChoiceQuestion = ZWorkflowQuestionBase.extend({
   type: z.union([
-    z.literal(TWorkflowQuestionType.MultipleChoiceSingle),
-    z.literal(TWorkflowQuestionType.MultipleChoiceMulti),
+    z.literal(TWorkflowQuestionTypeEnum.MultipleChoiceSingle),
+    z.literal(TWorkflowQuestionTypeEnum.MultipleChoiceMulti),
   ]),
   choices: z.array(ZWorkflowChoice),
   logic: z.array(ZWorkflowMultipleChoiceLogic).optional(),
@@ -320,7 +319,7 @@ export const ZWorkflowMultipleChoiceQuestion = ZWorkflowQuestionBase.extend({
   (question) => {
     const { logic, type } = question;
 
-    if (type === TWorkflowQuestionType.MultipleChoiceSingle) {
+    if (type === TWorkflowQuestionTypeEnum.MultipleChoiceSingle) {
       // The single choice question should not have 'includesAll' logic
       return !logic?.some((l) => l.condition === "includesAll");
     } else {
@@ -337,7 +336,7 @@ export const ZWorkflowMultipleChoiceQuestion = ZWorkflowQuestionBase.extend({
 export type TWorkflowMultipleChoiceQuestion = z.infer<typeof ZWorkflowMultipleChoiceQuestion>;
 
 export const ZWorkflowNPSQuestion = ZWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.NPS),
+  type: z.literal(TWorkflowQuestionTypeEnum.NPS),
   lowerLabel: ZI18nString.optional(),
   upperLabel: ZI18nString.optional(),
   logic: z.array(ZWorkflowNPSLogic).optional(),
@@ -346,7 +345,7 @@ export const ZWorkflowNPSQuestion = ZWorkflowQuestionBase.extend({
 export type TWorkflowNPSQuestion = z.infer<typeof ZWorkflowNPSQuestion>;
 
 export const ZWorkflowCTAQuestion = ZWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.CTA),
+  type: z.literal(TWorkflowQuestionTypeEnum.CTA),
   html: ZI18nString.optional(),
   buttonUrl: z.string().optional(),
   buttonExternal: z.boolean(),
@@ -357,7 +356,7 @@ export const ZWorkflowCTAQuestion = ZWorkflowQuestionBase.extend({
 export type TWorkflowCTAQuestion = z.infer<typeof ZWorkflowCTAQuestion>;
 
 export const ZWorkflowRatingQuestion = ZWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.Rating),
+  type: z.literal(TWorkflowQuestionTypeEnum.Rating),
   scale: z.enum(["number", "smiley", "star"]),
   range: z.union([z.literal(5), z.literal(3), z.literal(4), z.literal(7), z.literal(10)]),
   lowerLabel: ZI18nString.optional(),
@@ -366,7 +365,7 @@ export const ZWorkflowRatingQuestion = ZWorkflowQuestionBase.extend({
 });
 
 export const ZWorkflowDateQuestion = ZWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.Date),
+  type: z.literal(TWorkflowQuestionTypeEnum.Date),
   html: ZI18nString.optional(),
   format: z.enum(["M-d-y", "d-M-y", "y-M-d"]),
 });
@@ -376,7 +375,7 @@ export type TWorkflowDateQuestion = z.infer<typeof ZWorkflowDateQuestion>;
 export type TWorkflowRatingQuestion = z.infer<typeof ZWorkflowRatingQuestion>;
 
 export const ZWorkflowPictureSelectionQuestion = ZWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.PictureSelection),
+  type: z.literal(TWorkflowQuestionTypeEnum.PictureSelection),
   allowMulti: z.boolean().optional().default(false),
   choices: z.array(ZWorkflowPictureChoice),
   logic: z.array(ZWorkflowPictureSelectionLogic).optional(),
@@ -385,7 +384,7 @@ export const ZWorkflowPictureSelectionQuestion = ZWorkflowQuestionBase.extend({
 export type TWorkflowPictureSelectionQuestion = z.infer<typeof ZWorkflowPictureSelectionQuestion>;
 
 export const ZWorkflowFileUploadQuestion = ZWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.FileUpload),
+  type: z.literal(TWorkflowQuestionTypeEnum.FileUpload),
   allowMultipleFiles: z.boolean(),
   maxSizeInMB: z.number().optional(),
   allowedFileExtensions: z.array(ZAllowedFileExtension).optional(),
@@ -395,7 +394,7 @@ export const ZWorkflowFileUploadQuestion = ZWorkflowQuestionBase.extend({
 export type TWorkflowFileUploadQuestion = z.infer<typeof ZWorkflowFileUploadQuestion>;
 
 export const ZWorkflowCalQuestion = ZWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.Cal),
+  type: z.literal(TWorkflowQuestionTypeEnum.Cal),
   calUserName: z.string(),
   logic: z.array(ZWorkflowCalLogic).optional(),
 });
@@ -403,7 +402,7 @@ export const ZWorkflowCalQuestion = ZWorkflowQuestionBase.extend({
 export type TWorkflowCalQuestion = z.infer<typeof ZWorkflowCalQuestion>;
 
 export const ZWorkflowMatrixQuestion = ZWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.Matrix),
+  type: z.literal(TWorkflowQuestionTypeEnum.Matrix),
   rows: z.array(ZI18nString),
   columns: z.array(ZI18nString),
   logic: z.array(ZWorkflowMatrixLogic).optional(),
@@ -412,7 +411,7 @@ export const ZWorkflowMatrixQuestion = ZWorkflowQuestionBase.extend({
 export type TWorkflowMatrixQuestion = z.infer<typeof ZWorkflowMatrixQuestion>;
 
 export const ZWorkflowAddressQuestion = ZWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.Address),
+  type: z.literal(TWorkflowQuestionTypeEnum.Address),
   isAddressLine1Required: z.boolean().default(false),
   isAddressLine2Required: z.boolean().default(false),
   isCityRequired: z.boolean().default(false),
@@ -437,6 +436,30 @@ export const ZWorkflowQuestion = z.union([
   ZWorkflowAddressQuestion,
 ]);
 
+export type TWorkflowQuestion = z.infer<typeof ZWorkflowQuestion>;
+
+export const ZWorkflowQuestions = z.array(ZWorkflowQuestion);
+
+export type TWorkflowQuestions = z.infer<typeof ZWorkflowQuestions>;
+
+export const ZWorkflowQuestionType = z.enum([
+  TWorkflowQuestionTypeEnum.Address,
+  TWorkflowQuestionTypeEnum.CTA,
+  TWorkflowQuestionTypeEnum.Consent,
+  TWorkflowQuestionTypeEnum.Date,
+  TWorkflowQuestionTypeEnum.FileUpload,
+  TWorkflowQuestionTypeEnum.Matrix,
+  TWorkflowQuestionTypeEnum.MultipleChoiceMulti,
+  TWorkflowQuestionTypeEnum.MultipleChoiceSingle,
+  TWorkflowQuestionTypeEnum.NPS,
+  TWorkflowQuestionTypeEnum.OpenText,
+  TWorkflowQuestionTypeEnum.PictureSelection,
+  TWorkflowQuestionTypeEnum.Rating,
+  TWorkflowQuestionTypeEnum.Cal,
+]);
+
+export type TWorkflowQuestionType = z.infer<typeof ZWorkflowQuestionType>;
+
 export const ZWorkflowLanguage = z.object({
   language: ZLanguage,
   default: z.boolean(),
@@ -444,12 +467,6 @@ export const ZWorkflowLanguage = z.object({
 });
 
 export type TWorkflowLanguage = z.infer<typeof ZWorkflowLanguage>;
-
-export type TWorkflowQuestion = z.infer<typeof ZWorkflowQuestion>;
-
-export const ZWorkflowQuestions = z.array(ZWorkflowQuestion);
-
-export type TWorkflowQuestions = z.infer<typeof ZWorkflowQuestions>;
 
 export const ZWorkflowQuestionsObject = z.object({
   questions: ZWorkflowQuestions,

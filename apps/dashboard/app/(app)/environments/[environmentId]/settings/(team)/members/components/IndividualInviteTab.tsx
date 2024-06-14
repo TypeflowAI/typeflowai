@@ -1,12 +1,10 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-
-// import { AddMemberRole } from "@typeflowai/ee/roleManagement/components/AddMemberRole";
+// import { AddMemberRole } from "@typeflowai/ee/role-management/components/add-member-role";
 import { Button } from "@typeflowai/ui/Button";
 import { Input } from "@typeflowai/ui/Input";
 import { Label } from "@typeflowai/ui/Label";
-
 // import { UpgradePlanNotice } from "@typeflowai/ui/UpgradePlanNotice";
 import { MembershipRole } from "./AddMemberModal";
 

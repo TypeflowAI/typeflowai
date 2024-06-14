@@ -1,7 +1,7 @@
 "use client";
 
 // import { useState } from "react";
-// import { LocalizedEditor } from "@typeflowai/ee/multiLanguage/components/LocalizedEditor";
+// import { LocalizedEditor } from "@typeflowai/ee/multi-language/components/localized-editor";
 import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TWorkflow, TWorkflowConsentQuestion } from "@typeflowai/types/workflows";
 import { Label } from "@typeflowai/ui/Label";

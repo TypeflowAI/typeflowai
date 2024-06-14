@@ -1,6 +1,6 @@
 import React from "react";
 
-export const SurveyIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+export const WorkflowIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48">
     <path
       fill="#455a64"

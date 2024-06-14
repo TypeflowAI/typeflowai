@@ -2,7 +2,7 @@ import { OpenAIModel } from "@typeflowai/types/openai";
 import { TTemplate } from "@typeflowai/types/templates";
 import {
   TWorkflowHiddenFields,
-  TWorkflowQuestionType,
+  TWorkflowQuestionTypeEnum,
   TWorkflowThankYouCard,
   TWorkflowWelcomeCard,
 } from "@typeflowai/types/workflows";
@@ -60,7 +60,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "team-member",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the name of the team member?" },
           subheader: { default: "" },
           required: true,
@@ -68,7 +68,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "area",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What area would you like to improve?" },
           subheader: { default: "" },
           required: true,
@@ -76,7 +76,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "problem",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What problem would you like to solve?" },
           subheader: { default: "" },
           required: true,
@@ -112,7 +112,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "deadline",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "When is the deadline?" },
           subheader: { default: "" },
           required: true,
@@ -120,7 +120,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "tasks",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are the tasks?" },
           subheader: { default: "" },
           required: true,
@@ -155,7 +155,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "client-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the client name?" },
           subheader: { default: "" },
           required: true,
@@ -163,7 +163,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is their industry?" },
           subheader: { default: "Please be as specific as possible.." },
           required: true,
@@ -171,7 +171,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "specifics",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe specifics" },
           subheader: { default: "Such as project scope, deliverables, and stakeholder" },
           required: true,
@@ -206,7 +206,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "team-member",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the name of the team member?" },
           subheader: { default: "" },
           required: true,
@@ -214,7 +214,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "information",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Add more information for the report " },
           subheader: { default: "" },
           required: true,
@@ -249,7 +249,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "team-size",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "How many members do you have in your team?" },
           subheader: { default: "E.g. 15 members" },
           required: true,
@@ -257,7 +257,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the industry of your business?" },
           subheader: { default: "Please be as specific as possible.." },
           required: true,
@@ -265,7 +265,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "productivity-challenges",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are the current productivity challenges?" },
           subheader: {
             default: "Inconsistent productivity levels, frequent overtime, poor task prioritization",
@@ -325,7 +325,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "length-trip",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the length of the trip?" },
           subheader: { default: "E.g. 15 days" },
           required: true,
@@ -333,7 +333,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "destination",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the destination?" },
           subheader: { default: "E.g. Paris" },
           required: true,
@@ -341,7 +341,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "number-people",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "How many people are going to the trip?" },
           subheader: { default: "" },
           required: true,
@@ -376,7 +376,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "destination",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the destination?" },
           subheader: { default: "E.g. Paris" },
           required: true,
@@ -384,7 +384,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "number-people",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "How many people are going to the trip?" },
           subheader: { default: "" },
           required: true,
@@ -392,7 +392,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "month",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What month would you like to travel?" },
           subheader: { default: "" },
           required: true,
@@ -400,7 +400,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "activity",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What kind of activity do you like to research?" },
           subheader: { default: "E.g. 15 days" },
           required: true,
@@ -435,7 +435,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "client-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the client name?" },
           subheader: { default: "" },
           required: true,
@@ -443,7 +443,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "client-gender",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the gender of your client?" },
           subheader: { default: "" },
           required: true,
@@ -451,7 +451,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "muscle-group",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What muscle group do you want to focus the plan on?" },
           subheader: { default: "" },
           required: true,
@@ -459,7 +459,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "health-condition",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe the health condition of your client" },
           subheader: { default: "" },
           required: true,
@@ -467,7 +467,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "workout-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What type of workout does your client prefer" },
           subheader: { default: "E.g. Cardio/strength/flexibility" },
           required: true,
@@ -475,7 +475,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "client-level",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your client's fitness level?" },
           subheader: { default: "E.g. beginner/intermediate/advanced" },
           required: true,
@@ -483,7 +483,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "equipment",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Do you want to recommend exercises with or without equipment?" },
           subheader: { default: "" },
           required: true,
@@ -520,7 +520,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "source-language",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "E.g., English" },
           subheader: { default: "" },
           required: true,
@@ -528,7 +528,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "target-language",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the gender of your client?" },
           subheader: { default: "E.g., Japanese" },
           required: true,
@@ -536,7 +536,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "industry-context",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your industry or context?" },
           subheader: { default: "E.g., Software Development" },
           required: true,
@@ -544,7 +544,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "tones",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Specific Nuances/Tones" },
           subheader: { default: "E.g. formal, persuasive" },
           required: true,
@@ -552,7 +552,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "original-text",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Paste here the original text" },
           subheader: { default: "" },
           required: true,
@@ -611,7 +611,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "source-language",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "E.g., English" },
           subheader: { default: "" },
           required: true,
@@ -619,7 +619,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "target-language",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the gender of your client?" },
           subheader: { default: "E.g., Japanese" },
           required: true,
@@ -627,7 +627,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "message",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Paste here the text to translate" },
           subheader: { default: "" },
           required: true,
@@ -663,7 +663,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "source-language",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "E.g., English" },
           subheader: { default: "" },
           required: true,
@@ -671,7 +671,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "target-language",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the gender of your client?" },
           subheader: { default: "E.g., Japanese" },
           required: true,
@@ -679,7 +679,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "document-info",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Paste here the document info to translate" },
           subheader: { default: "" },
           required: true,
@@ -715,7 +715,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "source-language",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "E.g., English" },
           subheader: { default: "" },
           required: true,
@@ -723,7 +723,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "target-language",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the gender of your client?" },
           subheader: { default: "E.g., Japanese" },
           required: true,
@@ -731,7 +731,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "text",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Paste here the text to translate" },
           subheader: { default: "" },
           required: true,
@@ -767,7 +767,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "source-language",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "E.g., English" },
           subheader: { default: "" },
           required: true,
@@ -775,7 +775,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "target-language",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the gender of your client?" },
           subheader: { default: "E.g., Japanese" },
           required: true,
@@ -783,7 +783,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "text",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Paste here the text to translate" },
           subheader: { default: "" },
           required: true,
@@ -819,7 +819,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "subnets",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "How many subnets would you like to create?" },
           subheader: { default: "" },
           required: true,
@@ -854,7 +854,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "software",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your software about?" },
           subheader: { default: "" },
           required: true,
@@ -862,7 +862,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "features",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Name some features of your software" },
           subheader: { default: "E.g. features,functions,components" },
           required: true,
@@ -870,7 +870,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "information",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Add some extra information that should be included" },
           subheader: { default: "" },
           required: true,
@@ -907,7 +907,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "source",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the source?" },
           subheader: { default: "" },
           required: true,
@@ -915,7 +915,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "destinaion",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the destination" },
           subheader: { default: "" },
           required: true,
@@ -923,7 +923,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "company-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the name of your company?" },
           subheader: { default: "" },
           required: true,
@@ -958,7 +958,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "event-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What type of event is?" },
           subheader: { default: "E.g. International Business Conference" },
           required: true,
@@ -966,7 +966,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "expected-attendance",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the expected attendace?" },
           subheader: { default: "E.g. 1000 in-person, 2000+ virtual attendees" },
           required: true,
@@ -974,7 +974,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "location",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the location" },
           subheader: { default: "E.g. Major convention center with advanced tech facilities" },
           required: true,
@@ -982,7 +982,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "budget",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are the budget contrains?" },
           subheader: { default: "E.g. High, with a focus on innovative and impactful solutions" },
           required: true,
@@ -1041,7 +1041,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "event-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What type of event is?" },
           subheader: { default: "E.g. Corporate Conference" },
           required: true,
@@ -1049,7 +1049,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "expected-attendance",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the expected attendace?" },
           subheader: { default: "E.g. Approximately 500 people" },
           required: true,
@@ -1057,7 +1057,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "location",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the location" },
           subheader: { default: "E.g. Urban area with access to public transportation" },
           required: true,
@@ -1065,7 +1065,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "budget",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are the budget contrains?" },
           subheader: { default: "E.g. Moderate, with a focus on cost-effective sustainability" },
           required: true,
@@ -1124,7 +1124,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "number-words",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "How many words should have the post?" },
           subheader: { default: "" },
           required: true,
@@ -1132,7 +1132,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "location",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What city/neighborhood is the property in?" },
           subheader: { default: "" },
           required: true,
@@ -1140,7 +1140,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "features",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe some features of the property" },
           subheader: { default: "" },
           required: true,
@@ -1175,7 +1175,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "property-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Type of property" },
           subheader: { default: "" },
           required: true,
@@ -1183,7 +1183,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "city",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What city/neighborhood is the property in?" },
           subheader: { default: "" },
           required: true,
@@ -1191,7 +1191,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "state",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What state is the property in?" },
           subheader: { default: "" },
           required: true,
@@ -1199,7 +1199,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "bedrooms",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "How many bedrooms?" },
           subheader: { default: "" },
           required: true,
@@ -1207,7 +1207,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "bathrooms",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "How many bathrooms?" },
           subheader: { default: "" },
           required: true,
@@ -1215,7 +1215,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "features",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe some features of the property" },
           subheader: { default: "" },
           required: true,
@@ -1250,7 +1250,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "property-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Type of property" },
           subheader: { default: "" },
           required: true,
@@ -1258,7 +1258,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "features",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe some features of the property" },
           subheader: { default: "" },
           required: true,
@@ -1293,7 +1293,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "number-words",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "How many words should have the post?" },
           subheader: { default: "" },
           required: true,
@@ -1301,7 +1301,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "property-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Type of property" },
           subheader: { default: "" },
           required: true,
@@ -1309,7 +1309,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "location",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the location of the property?" },
           subheader: { default: "" },
           required: true,
@@ -1317,7 +1317,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "features",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe some features of the property" },
           subheader: { default: "" },
           required: true,
@@ -1325,7 +1325,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "benefits",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe some benefits of the property" },
           subheader: { default: "" },
           required: true,
@@ -1360,7 +1360,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "number-words",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "How many words should have the letters?" },
           subheader: { default: "" },
           required: true,
@@ -1368,7 +1368,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "property-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Type of property" },
           subheader: { default: "" },
           required: true,
@@ -1376,7 +1376,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "city",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the city of the property?" },
           subheader: { default: "" },
           required: true,
@@ -1384,7 +1384,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "key-selling-points",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe some key selling points of the property" },
           subheader: { default: "" },
           required: true,
@@ -1419,7 +1419,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "property-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Type of property" },
           subheader: { default: "" },
           required: true,
@@ -1427,7 +1427,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "location",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the location of the property?" },
           subheader: { default: "" },
           required: true,
@@ -1435,7 +1435,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "target-audience",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the target audience for the listing?" },
           subheader: { default: "" },
           required: true,
@@ -1443,7 +1443,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "features",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe some features of the property" },
           subheader: { default: "" },
           required: true,
@@ -1451,7 +1451,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "amenities",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe some amenities of the property" },
           subheader: { default: "" },
           required: true,
@@ -1486,7 +1486,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "nationality",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your nationality?" },
           subheader: { default: "" },
           required: true,
@@ -1494,7 +1494,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "destination",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the destination?" },
           subheader: { default: "" },
           required: true,
@@ -1502,7 +1502,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "visa-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What type of visa do you need?" },
           subheader: { default: "" },
           required: true,
@@ -1537,7 +1537,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "duration",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "How many days are you travelling?" },
           subheader: { default: "" },
           required: true,
@@ -1545,7 +1545,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "destination",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the destination?" },
           subheader: { default: "" },
           required: true,
@@ -1553,7 +1553,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "deaperture-city",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the deaperture city?" },
           subheader: { default: "" },
           required: true,
@@ -1561,7 +1561,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "start-date",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Start date of the travel" },
           subheader: { default: "" },
           required: true,
@@ -1596,7 +1596,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "activity",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What type of activity would you like to do?" },
           subheader: { default: "" },
           required: true,
@@ -1604,7 +1604,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "city",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the destination city?" },
           subheader: { default: "" },
           required: true,
@@ -1639,7 +1639,7 @@ export const vaTemplates: TTemplate[] = [
       questions: [
         {
           id: "review-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Do you want to create a positive or negative review?" },
           subheader: { default: "" },
           required: true,
@@ -1647,7 +1647,7 @@ export const vaTemplates: TTemplate[] = [
         },
         {
           id: "hotel-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the name of the hotel that you recently stayed at?" },
           subheader: { default: "" },
           required: true,

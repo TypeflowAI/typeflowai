@@ -1,8 +1,7 @@
 import { z } from "zod";
-
 import { ZAllowedFileExtension } from "./common";
 import {
-  TWorkflowQuestionType,
+  TWorkflowQuestionTypeEnum,
   ZWorkflow,
   ZWorkflowCTALogic,
   ZWorkflowCalLogic,
@@ -26,7 +25,7 @@ const ZLegacyWorkflowQuestionBase = ZWorkflowQuestionBase.extend({
 });
 
 export const ZLegacyWorkflowOpenTextQuestion = ZLegacyWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.OpenText),
+  type: z.literal(TWorkflowQuestionTypeEnum.OpenText),
   placeholder: z.string().optional(),
   longAnswer: z.boolean().optional(),
   logic: z.array(ZWorkflowOpenTextLogic).optional(),
@@ -36,7 +35,7 @@ export const ZLegacyWorkflowOpenTextQuestion = ZLegacyWorkflowQuestionBase.exten
 export type TLegacyWorkflowOpenTextQuestion = z.infer<typeof ZLegacyWorkflowOpenTextQuestion>;
 
 export const ZLegacyWorkflowConsentQuestion = ZLegacyWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.Consent),
+  type: z.literal(TWorkflowQuestionTypeEnum.Consent),
   html: z.string().optional(),
   label: z.string(),
   placeholder: z.string().optional(),
@@ -53,7 +52,7 @@ export const ZLegacyWorkflowChoice = z.object({
 export type TLegacyWorkflowChoice = z.infer<typeof ZLegacyWorkflowChoice>;
 
 export const ZLegacyWorkflowMultipleChoiceSingleQuestion = ZLegacyWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.MultipleChoiceSingle),
+  type: z.literal(TWorkflowQuestionTypeEnum.MultipleChoiceSingle),
   choices: z.array(ZLegacyWorkflowChoice),
   logic: z.array(ZWorkflowMultipleChoiceLogic).optional(),
   shuffleOption: z.enum(["none", "all", "exceptLast"]).optional(),
@@ -65,7 +64,7 @@ export type TLegacyWorkflowMultipleChoiceSingleQuestion = z.infer<
 >;
 
 export const ZLegacyWorkflowMultipleChoiceMultiQuestion = ZLegacyWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.MultipleChoiceMulti),
+  type: z.literal(TWorkflowQuestionTypeEnum.MultipleChoiceMulti),
   choices: z.array(ZLegacyWorkflowChoice),
   logic: z.array(ZWorkflowMultipleChoiceLogic).optional(),
   shuffleOption: z.enum(["none", "all", "exceptLast"]).optional(),
@@ -77,7 +76,7 @@ export type TLegacyWorkflowMultipleChoiceMultiQuestion = z.infer<
 >;
 
 export const ZLegacyWorkflowNPSQuestion = ZLegacyWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.NPS),
+  type: z.literal(TWorkflowQuestionTypeEnum.NPS),
   lowerLabel: z.string(),
   upperLabel: z.string(),
   logic: z.array(ZWorkflowNPSLogic).optional(),
@@ -86,7 +85,7 @@ export const ZLegacyWorkflowNPSQuestion = ZLegacyWorkflowQuestionBase.extend({
 export type TLegacyWorkflowNPSQuestion = z.infer<typeof ZLegacyWorkflowNPSQuestion>;
 
 export const ZLegacyWorkflowCTAQuestion = ZLegacyWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.CTA),
+  type: z.literal(TWorkflowQuestionTypeEnum.CTA),
   html: z.string().optional(),
   buttonUrl: z.string().optional(),
   buttonExternal: z.boolean(),
@@ -97,7 +96,7 @@ export const ZLegacyWorkflowCTAQuestion = ZLegacyWorkflowQuestionBase.extend({
 export type TLegacyWorkflowCTAQuestion = z.infer<typeof ZLegacyWorkflowCTAQuestion>;
 
 export const ZLegacyWorkflowRatingQuestion = ZLegacyWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.Rating),
+  type: z.literal(TWorkflowQuestionTypeEnum.Rating),
   scale: z.enum(["number", "smiley", "star"]),
   range: z.union([z.literal(5), z.literal(3), z.literal(4), z.literal(7), z.literal(10)]),
   lowerLabel: z.string(),
@@ -106,7 +105,7 @@ export const ZLegacyWorkflowRatingQuestion = ZLegacyWorkflowQuestionBase.extend(
 });
 
 export const ZLegacyWorkflowDateQuestion = ZLegacyWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.Date),
+  type: z.literal(TWorkflowQuestionTypeEnum.Date),
   html: z.string().optional(),
   format: z.enum(["M-d-y", "d-M-y", "y-M-d"]),
 });
@@ -116,7 +115,7 @@ export type TLegacyWorkflowDateQuestion = z.infer<typeof ZLegacyWorkflowDateQues
 export type TLegacyWorkflowRatingQuestion = z.infer<typeof ZLegacyWorkflowRatingQuestion>;
 
 export const ZLegacyWorkflowPictureSelectionQuestion = ZLegacyWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.PictureSelection),
+  type: z.literal(TWorkflowQuestionTypeEnum.PictureSelection),
   allowMulti: z.boolean().optional().default(false),
   choices: z.array(ZWorkflowPictureChoice),
   logic: z.array(ZWorkflowPictureSelectionLogic).optional(),
@@ -125,7 +124,7 @@ export const ZLegacyWorkflowPictureSelectionQuestion = ZLegacyWorkflowQuestionBa
 export type TLegacyWorkflowPictureSelectionQuestion = z.infer<typeof ZLegacyWorkflowPictureSelectionQuestion>;
 
 export const ZLegacyWorkflowFileUploadQuestion = ZLegacyWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.FileUpload),
+  type: z.literal(TWorkflowQuestionTypeEnum.FileUpload),
   allowMultipleFiles: z.boolean(),
   maxSizeInMB: z.number().optional(),
   allowedFileExtensions: z.array(ZAllowedFileExtension).optional(),
@@ -135,7 +134,7 @@ export const ZLegacyWorkflowFileUploadQuestion = ZLegacyWorkflowQuestionBase.ext
 export type TLegacyWorkflowFileUploadQuestion = z.infer<typeof ZLegacyWorkflowFileUploadQuestion>;
 
 export const ZLegacyWorkflowCalQuestion = ZLegacyWorkflowQuestionBase.extend({
-  type: z.literal(TWorkflowQuestionType.Cal),
+  type: z.literal(TWorkflowQuestionTypeEnum.Cal),
   calUserName: z.string(),
   logic: z.array(ZWorkflowCalLogic).optional(),
 });

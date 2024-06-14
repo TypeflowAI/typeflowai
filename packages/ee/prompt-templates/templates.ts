@@ -1,5 +1,4 @@
 import { createId } from "@paralleldrive/cuid2";
-
 import { TActionClass } from "@typeflowai/types/actionClasses";
 import { OpenAIModel } from "@typeflowai/types/openai";
 import { TTemplate } from "@typeflowai/types/templates";
@@ -9,13 +8,12 @@ import {
   TWorkflowHiddenFields,
   TWorkflowInput,
   TWorkflowOpenTextQuestion,
-  TWorkflowQuestionType,
+  TWorkflowQuestionTypeEnum,
   TWorkflowStatus,
   TWorkflowThankYouCard,
   TWorkflowType,
   TWorkflowWelcomeCard,
 } from "@typeflowai/types/workflows";
-
 import { agencyTemplates } from "./agency";
 import { hrTemplates } from "./hr";
 import { marketingTemplates } from "./marketing";
@@ -72,7 +70,7 @@ export const testTemplate: TTemplate = {
     questions: [
       {
         id: createId(),
-        type: TWorkflowQuestionType.OpenText,
+        type: TWorkflowQuestionTypeEnum.OpenText,
         headline: { default: "This is an open text question" },
         subheader: { default: "Please enter some text:" },
         required: true,
@@ -80,7 +78,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.OpenText,
+        type: TWorkflowQuestionTypeEnum.OpenText,
         headline: { default: "This is an open text question" },
         subheader: { default: "Please enter some text:" },
         required: false,
@@ -88,7 +86,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.OpenText,
+        type: TWorkflowQuestionTypeEnum.OpenText,
         headline: { default: "This is an open text question" },
         subheader: { default: "Please enter an email" },
         required: true,
@@ -96,7 +94,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.OpenText,
+        type: TWorkflowQuestionTypeEnum.OpenText,
         headline: { default: "This is an open text question" },
         subheader: { default: "Please enter an email" },
         required: false,
@@ -104,7 +102,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.OpenText,
+        type: TWorkflowQuestionTypeEnum.OpenText,
         headline: { default: "This is an open text question" },
         subheader: { default: "Please enter a number" },
         required: true,
@@ -112,7 +110,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.OpenText,
+        type: TWorkflowQuestionTypeEnum.OpenText,
         headline: { default: "This is an open text question" },
         subheader: { default: "Please enter a number" },
         required: false,
@@ -120,7 +118,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.OpenText,
+        type: TWorkflowQuestionTypeEnum.OpenText,
         headline: { default: "This is an open text question" },
         subheader: { default: "Please enter a phone number" },
         required: true,
@@ -128,7 +126,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.OpenText,
+        type: TWorkflowQuestionTypeEnum.OpenText,
         headline: { default: "This is an open text question" },
         subheader: { default: "Please enter a phone number" },
         required: false,
@@ -136,7 +134,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.OpenText,
+        type: TWorkflowQuestionTypeEnum.OpenText,
         headline: { default: "This is an open text question" },
         subheader: { default: "Please enter a url" },
         required: true,
@@ -144,7 +142,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.OpenText,
+        type: TWorkflowQuestionTypeEnum.OpenText,
         headline: { default: "This is an open text question" },
         subheader: { default: "Please enter a url" },
         required: false,
@@ -152,7 +150,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.MultipleChoiceSingle,
+        type: TWorkflowQuestionTypeEnum.MultipleChoiceSingle,
         headline: { default: "This ia a Multiple choice Single question" },
         subheader: { default: "Please select one of the following" },
         required: true,
@@ -170,7 +168,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.MultipleChoiceSingle,
+        type: TWorkflowQuestionTypeEnum.MultipleChoiceSingle,
         headline: { default: "This ia a Multiple choice Single question" },
         subheader: { default: "Please select one of the following" },
         required: false,
@@ -188,7 +186,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.MultipleChoiceMulti,
+        type: TWorkflowQuestionTypeEnum.MultipleChoiceMulti,
         headline: { default: "This ia a Multiple choice Multiple question" },
         subheader: { default: "Please select some from the following" },
         required: true,
@@ -206,7 +204,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.MultipleChoiceMulti,
+        type: TWorkflowQuestionTypeEnum.MultipleChoiceMulti,
         headline: { default: "This ia a Multiple choice Multiple question" },
         subheader: { default: "Please select some from the following" },
         required: false,
@@ -224,7 +222,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.Rating,
+        type: TWorkflowQuestionTypeEnum.Rating,
         headline: { default: "This is a rating question" },
         required: true,
         lowerLabel: { default: "Low" },
@@ -234,7 +232,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.Rating,
+        type: TWorkflowQuestionTypeEnum.Rating,
         headline: { default: "This is a rating question" },
         required: false,
         lowerLabel: { default: "Low" },
@@ -244,7 +242,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.Rating,
+        type: TWorkflowQuestionTypeEnum.Rating,
         headline: { default: "This is a rating question" },
         required: true,
         lowerLabel: { default: "Low" },
@@ -254,7 +252,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.Rating,
+        type: TWorkflowQuestionTypeEnum.Rating,
         headline: { default: "This is a rating question" },
         required: false,
         lowerLabel: { default: "Low" },
@@ -264,7 +262,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.Rating,
+        type: TWorkflowQuestionTypeEnum.Rating,
         headline: { default: "This is a rating question" },
         required: true,
         lowerLabel: { default: "Low" },
@@ -274,7 +272,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.Rating,
+        type: TWorkflowQuestionTypeEnum.Rating,
         headline: { default: "This is a rating question" },
         required: false,
         lowerLabel: { default: "Low" },
@@ -284,7 +282,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.CTA,
+        type: TWorkflowQuestionTypeEnum.CTA,
         headline: { default: "This is a CTA question" },
         html: { default: "This is a test CTA" },
         buttonLabel: { default: "Click" },
@@ -295,7 +293,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.CTA,
+        type: TWorkflowQuestionTypeEnum.CTA,
         headline: { default: "This is a CTA question" },
         html: { default: "This is a test CTA" },
         buttonLabel: { default: "Click" },
@@ -306,7 +304,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.PictureSelection,
+        type: TWorkflowQuestionTypeEnum.PictureSelection,
         headline: { default: "This is a Picture select" },
         allowMulti: true,
         required: true,
@@ -323,7 +321,7 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.PictureSelection,
+        type: TWorkflowQuestionTypeEnum.PictureSelection,
         headline: { default: "This is a Picture select" },
         allowMulti: true,
         required: false,
@@ -340,14 +338,14 @@ export const testTemplate: TTemplate = {
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.Consent,
+        type: TWorkflowQuestionTypeEnum.Consent,
         headline: { default: "This is a Consent question" },
         required: true,
         label: { default: "I agree to the terms and conditions" },
       },
       {
         id: createId(),
-        type: TWorkflowQuestionType.Consent,
+        type: TWorkflowQuestionTypeEnum.Consent,
         headline: { default: "This is a Consent question" },
         required: false,
         label: { default: "I agree to the terms and conditions" },
@@ -385,7 +383,7 @@ export const customWorkflow: TTemplate = {
     questions: [
       {
         id: createId(),
-        type: TWorkflowQuestionType.OpenText,
+        type: TWorkflowQuestionTypeEnum.OpenText,
         headline: { default: "What would you like to know?" },
         subheader: { default: "This is an example workflow." },
         placeholder: { default: "Type your answer here..." },
@@ -410,7 +408,7 @@ export const getExampleWorkflowTemplate = (webAppUrl: string, trigger: TActionCl
     (question) =>
       ({
         ...question,
-        type: TWorkflowQuestionType.CTA,
+        type: TWorkflowQuestionTypeEnum.CTA,
         headline: { default: "You did it 🎉" },
         html: {
           default: "You're all set up. Create your own workflow to gather exactly the feedback you need :)",

@@ -4,9 +4,8 @@ import { QUESTIONS_ICON_MAP, QUESTIONS_NAME_MAP, getQuestionDefaults } from "@/a
 import { createId } from "@paralleldrive/cuid2";
 import { ArrowDownIcon, ArrowUpIcon, CopyIcon, EllipsisIcon, TrashIcon } from "lucide-react";
 import React, { useState } from "react";
-
 import { TProduct } from "@typeflowai/types/product";
-import { TWorkflowQuestion, TWorkflowQuestionType } from "@typeflowai/types/workflows";
+import { TWorkflowQuestion, TWorkflowQuestionTypeEnum } from "@typeflowai/types/workflows";
 import { ConfirmationModal } from "@typeflowai/ui/ConfirmationModal";
 import {
   DropdownMenu,
@@ -44,7 +43,7 @@ export const QuestionMenu = ({
   const [logicWarningModal, setLogicWarningModal] = useState(false);
   const [changeToType, setChangeToType] = useState(question.type);
 
-  const changeQuestionType = (type: TWorkflowQuestionType) => {
+  const changeQuestionType = (type: TWorkflowQuestionTypeEnum) => {
     const { headline, required, subheader, imageUrl, videoUrl, buttonLabel, backButtonLabel } = question;
 
     const questionDefaults = getQuestionDefaults(type, product);
@@ -52,10 +51,10 @@ export const QuestionMenu = ({
     // if going from single select to multi select or vice versa, we need to keep the choices as well
 
     if (
-      (type === TWorkflowQuestionType.MultipleChoiceSingle &&
-        question.type === TWorkflowQuestionType.MultipleChoiceMulti) ||
-      (type === TWorkflowQuestionType.MultipleChoiceMulti &&
-        question.type === TWorkflowQuestionType.MultipleChoiceSingle)
+      (type === TWorkflowQuestionTypeEnum.MultipleChoiceSingle &&
+        question.type === TWorkflowQuestionTypeEnum.MultipleChoiceMulti) ||
+      (type === TWorkflowQuestionTypeEnum.MultipleChoiceMulti &&
+        question.type === TWorkflowQuestionTypeEnum.MultipleChoiceSingle)
     ) {
       updateQuestion(questionIdx, {
         choices: question.choices,
@@ -80,7 +79,7 @@ export const QuestionMenu = ({
     });
   };
 
-  const addQuestionBelow = (type: TWorkflowQuestionType) => {
+  const addQuestionBelow = (type: TWorkflowQuestionTypeEnum) => {
     const questionDefaults = getQuestionDefaults(type, product);
 
     addQuestion(
@@ -142,15 +141,15 @@ export const QuestionMenu = ({
                       key={type}
                       className="min-h-8 cursor-pointer text-slate-500"
                       onClick={() => {
-                        setChangeToType(type as TWorkflowQuestionType);
+                        setChangeToType(type as TWorkflowQuestionTypeEnum);
                         if (question.logic) {
                           setLogicWarningModal(true);
                           return;
                         }
 
-                        changeQuestionType(type as TWorkflowQuestionType);
+                        changeQuestionType(type as TWorkflowQuestionTypeEnum);
                       }}>
-                      {QUESTIONS_ICON_MAP[type as TWorkflowQuestionType]}
+                      {QUESTIONS_ICON_MAP[type as TWorkflowQuestionTypeEnum]}
                       <span className="ml-2">{name}</span>
                     </DropdownMenuItem>
                   );
@@ -175,9 +174,9 @@ export const QuestionMenu = ({
                       className="min-h-8 cursor-pointer text-slate-500"
                       onClick={(e) => {
                         e.stopPropagation();
-                        addQuestionBelow(type as TWorkflowQuestionType);
+                        addQuestionBelow(type as TWorkflowQuestionTypeEnum);
                       }}>
-                      {QUESTIONS_ICON_MAP[type as TWorkflowQuestionType]}
+                      {QUESTIONS_ICON_MAP[type as TWorkflowQuestionTypeEnum]}
                       <span className="ml-2">{name}</span>
                     </DropdownMenuItem>
                   );

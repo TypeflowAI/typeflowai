@@ -1,7 +1,5 @@
 import { mockSegment } from "segment/tests/__mocks__/segment.mock";
-
 import { mockWorkflowLanguages } from "workflow/tests/__mock__/workflow.mock";
-
 import {
   TWorkflow,
   TWorkflowCTAQuestion,
@@ -13,7 +11,7 @@ import {
   TWorkflowNPSQuestion,
   TWorkflowOpenTextQuestion,
   TWorkflowPictureSelectionQuestion,
-  TWorkflowQuestionType,
+  TWorkflowQuestionTypeEnum,
   TWorkflowRatingQuestion,
   TWorkflowThankYouCard,
   TWorkflowWelcomeCard,
@@ -34,7 +32,7 @@ export const mockWelcomeCard: TWorkflowWelcomeCard = {
 
 export const mockOpenTextQuestion: TWorkflowOpenTextQuestion = {
   id: "lqht9sj5s6andjkmr9k1n54q",
-  type: TWorkflowQuestionType.OpenText,
+  type: TWorkflowQuestionTypeEnum.OpenText,
   headline: {
     default: "What would you like to know?",
   },
@@ -51,7 +49,7 @@ export const mockOpenTextQuestion: TWorkflowOpenTextQuestion = {
 
 export const mockSingleSelectQuestion: TWorkflowMultipleChoiceQuestion = {
   id: "mvqx8t90np6isb6oel9eamzc",
-  type: TWorkflowQuestionType.MultipleChoiceSingle,
+  type: TWorkflowQuestionTypeEnum.MultipleChoiceSingle,
   choices: [
     {
       id: "r52sul8ag19upaicit0fyqzo",
@@ -104,7 +102,7 @@ export const mockMultiSelectQuestion: TWorkflowMultipleChoiceQuestion = {
   ],
   shuffleOption: "none",
   id: "cpydxgsmjg8q9iwfa8wj4ida",
-  type: TWorkflowQuestionType.MultipleChoiceMulti,
+  type: TWorkflowQuestionTypeEnum.MultipleChoiceMulti,
   isDraft: true,
 };
 
@@ -128,7 +126,7 @@ export const mockPictureSelectQuestion: TWorkflowPictureSelectionQuestion = {
     },
   ],
   id: "a8monbe8hq0mivh3irfhd3i5",
-  type: TWorkflowQuestionType.PictureSelection,
+  type: TWorkflowQuestionTypeEnum.PictureSelection,
   isDraft: true,
 };
 
@@ -149,7 +147,7 @@ export const mockRatingQuestion: TWorkflowRatingQuestion = {
     default: "Very good",
   },
   id: "waldsboahjtgqhg5p18d1awz",
-  type: TWorkflowQuestionType.Rating,
+  type: TWorkflowQuestionTypeEnum.Rating,
   isDraft: true,
 };
 
@@ -165,7 +163,7 @@ export const mockNpsQuestion: TWorkflowNPSQuestion = {
     default: "Extremely likely",
   },
   id: "m9pemgdih2p4exvkmeeqq6jf",
-  type: TWorkflowQuestionType.NPS,
+  type: TWorkflowQuestionTypeEnum.NPS,
   isDraft: true,
 };
 
@@ -182,7 +180,7 @@ export const mockCtaQuestion: TWorkflowCTAQuestion = {
     default: "Skip",
   },
   id: "gwn15urom4ffnhfimwbz3vgc",
-  type: TWorkflowQuestionType.CTA,
+  type: TWorkflowQuestionTypeEnum.CTA,
   isDraft: true,
 };
 
@@ -195,7 +193,7 @@ export const mockConsentQuestion: TWorkflowConsentQuestion = {
     default: "I agree to the terms and conditions",
   },
   id: "av561aoif3i2hjlsl6krnsfm",
-  type: TWorkflowQuestionType.Consent,
+  type: TWorkflowQuestionTypeEnum.Consent,
   isDraft: true,
 };
 
@@ -206,7 +204,7 @@ export const mockDateQuestion: TWorkflowDateQuestion = {
   },
   format: "M-d-y",
   id: "ts2f6v2oo9jfmfli9kk6lki9",
-  type: TWorkflowQuestionType.Date,
+  type: TWorkflowQuestionTypeEnum.Date,
   isDraft: true,
 };
 
@@ -217,7 +215,7 @@ export const mockFileUploadQuestion: TWorkflowFileUploadQuestion = {
   },
   allowMultipleFiles: false,
   id: "ozzxo2jj1s6mj56c79q8pbef",
-  type: TWorkflowQuestionType.FileUpload,
+  type: TWorkflowQuestionTypeEnum.FileUpload,
   isDraft: true,
 };
 
@@ -231,7 +229,7 @@ export const mockCalQuestion: TWorkflowCalQuestion = {
   },
   calUserName: "rick/get-rick-rolled",
   id: "o3bnux6p42u9ew9d02l14r26",
-  type: TWorkflowQuestionType.Cal,
+  type: TWorkflowQuestionTypeEnum.Cal,
   isDraft: true,
 };
 

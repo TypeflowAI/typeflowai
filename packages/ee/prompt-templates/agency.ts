@@ -2,7 +2,7 @@ import { OpenAIModel } from "@typeflowai/types/openai";
 import { TTemplate } from "@typeflowai/types/templates";
 import {
   TWorkflowHiddenFields,
-  TWorkflowQuestionType,
+  TWorkflowQuestionTypeEnum,
   TWorkflowThankYouCard,
   TWorkflowWelcomeCard,
 } from "@typeflowai/types/workflows";
@@ -60,7 +60,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "invoice-number",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Invoice Number" },
           subheader: { default: "" },
           required: true,
@@ -68,7 +68,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the product/service on the invoice?" },
           subheader: { default: "" },
           required: true,
@@ -76,7 +76,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "company",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What company is billed on the invoice?" },
           subheader: { default: "" },
           required: true,
@@ -84,7 +84,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "number-days",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Number of days since the payment was due" },
           subheader: { default: "" },
           required: true,
@@ -118,7 +118,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "client-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's your client name?" },
           subheader: { default: "" },
           required: true,
@@ -126,7 +126,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's your product/service about?" },
           subheader: { default: "" },
           required: true,
@@ -160,7 +160,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "client-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's your client name?" },
           subheader: { default: "" },
           required: true,
@@ -168,7 +168,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "project",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What project has been done?" },
           subheader: { default: "" },
           required: true,
@@ -176,7 +176,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "details",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Write some details to add to the email" },
           subheader: { default: "" },
           required: true,
@@ -184,7 +184,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "data",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Relevant data/statistics that show your impact" },
           subheader: { default: "" },
           required: true,
@@ -222,7 +222,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "client-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's your client name?" },
           subheader: { default: "" },
           required: true,
@@ -230,7 +230,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "project-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the project name?" },
           subheader: { default: "" },
           required: true,
@@ -238,7 +238,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "data-points",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe data points to include on the report" },
           subheader: { default: "" },
           required: true,
@@ -272,7 +272,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "company-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the company name?" },
           subheader: { default: "" },
           required: true,
@@ -280,7 +280,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "issue",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the complaint about?" },
           subheader: { default: "" },
           required: true,
@@ -314,7 +314,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "project-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe the type of project" },
           subheader: { default: "" },
           required: true,
@@ -322,7 +322,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "area",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the area of expertise?" },
           subheader: { default: "" },
           required: true,
@@ -330,7 +330,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "company-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the company name?" },
           subheader: { default: "" },
           required: true,
@@ -364,7 +364,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "project-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the project name" },
           subheader: { default: "" },
           required: true,
@@ -372,7 +372,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "company-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the company name?" },
           subheader: { default: "" },
           required: true,
@@ -380,7 +380,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "area",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the area of the project?" },
           subheader: { default: "" },
           required: true,
@@ -414,7 +414,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "employee-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the employee name?" },
           subheader: { default: "" },
           required: true,
@@ -422,7 +422,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "period",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Period of time over the past" },
           subheader: { default: "E.g. Month, Day..." },
           required: true,
@@ -456,7 +456,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "company-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the company name?" },
           subheader: { default: "" },
           required: true,
@@ -464,7 +464,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "year",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What year " },
           subheader: { default: "" },
           required: true,
@@ -498,7 +498,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "company",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's your company about?" },
           subheader: { default: "" },
           required: true,
@@ -532,7 +532,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "report-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the name of the report?" },
           subheader: { default: "" },
           required: true,
@@ -540,7 +540,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "policies-guidelines",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the expense item?" },
           subheader: { default: "" },
           required: true,
@@ -548,7 +548,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "policies-guidelines",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Paste here you policies & guidelines" },
           subheader: { default: "" },
           required: true,
@@ -586,7 +586,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "amount",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Refund amount" },
           subheader: { default: "" },
           required: true,
@@ -594,7 +594,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "customer-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the customer name?" },
           subheader: { default: "" },
           required: true,
@@ -602,7 +602,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "product-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the product name?" },
           subheader: { default: "" },
           required: true,
@@ -610,7 +610,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "date",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Date of refund" },
           subheader: { default: "" },
           required: true,
@@ -618,7 +618,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "reason",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the reason for the refund?" },
           subheader: { default: "" },
           required: true,
@@ -656,7 +656,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "client-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the client name?" },
           subheader: { default: "" },
           required: true,
@@ -664,7 +664,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "timeframe",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Timeframe for the payment schedule" },
           subheader: { default: "" },
           required: true,
@@ -672,7 +672,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "number",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Number of installments" },
           subheader: { default: "" },
           required: true,
@@ -680,7 +680,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "amount",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Amount of each installment" },
           subheader: { default: "" },
           required: true,
@@ -714,7 +714,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "company-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the company name?" },
           subheader: { default: "" },
           required: true,
@@ -722,7 +722,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "revenue",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Revenue by product/service category" },
           subheader: { default: "" },
           required: true,
@@ -730,7 +730,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "period",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Period for this revenue" },
           subheader: { default: "" },
           required: true,
@@ -768,7 +768,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "company-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the company name?" },
           subheader: { default: "" },
           required: true,
@@ -776,7 +776,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "campaign-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the campaign name?" },
           subheader: { default: "" },
           required: true,
@@ -784,7 +784,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "date",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What date are you launching the campaign?" },
           subheader: { default: "" },
           required: true,
@@ -792,7 +792,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "goals",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are the goals for the campaign?" },
           subheader: { default: "" },
           required: true,
@@ -830,7 +830,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "company-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the company name?" },
           subheader: { default: "" },
           required: true,
@@ -838,7 +838,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "marketing-plan",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's your marketing plan?" },
           subheader: { default: "" },
           required: true,
@@ -872,7 +872,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What industry do you want to research?" },
           subheader: { default: "" },
           required: true,
@@ -906,7 +906,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What type of product/service do you want to research?" },
           subheader: { default: "" },
           required: true,
@@ -914,7 +914,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "location",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What country/region would you like to research?" },
           subheader: { default: "" },
           required: true,
@@ -948,7 +948,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's industry of your business?" },
           subheader: { default: "" },
           required: true,
@@ -982,7 +982,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's industry of your business?" },
           subheader: { default: "" },
           required: true,
@@ -1016,7 +1016,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "company-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the company name?" },
           subheader: { default: "" },
           required: true,
@@ -1024,7 +1024,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "industry",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's industry of your business?" },
           subheader: { default: "" },
           required: true,
@@ -1058,7 +1058,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "company-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the company name?" },
           subheader: { default: "" },
           required: true,
@@ -1066,7 +1066,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "product-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the product name?" },
           subheader: { default: "" },
           required: true,
@@ -1074,7 +1074,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "features",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe features/benefits of the product" },
           subheader: { default: "" },
           required: true,
@@ -1108,7 +1108,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "company-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the company name?" },
           subheader: { default: "" },
           required: true,
@@ -1116,7 +1116,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "current-sale",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the current sale?" },
           subheader: { default: "E.g. Operating nationally, planning to expand internationally" },
           required: true,
@@ -1124,7 +1124,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "key-challenges",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are your key challenges?" },
           subheader: { default: "E.g. Generating new Customers" },
           required: true,
@@ -1181,7 +1181,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your service/product about?" },
           subheader: { default: "" },
           required: true,
@@ -1189,7 +1189,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "target-audience",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the target audience of your business" },
           subheader: { default: "" },
           required: true,
@@ -1223,7 +1223,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "topic",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What topic do you want to cover in the lead magnet?" },
           subheader: { default: "" },
           required: true,
@@ -1231,7 +1231,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "target-audience",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is the target audience of your business?" },
           subheader: { default: "" },
           required: true,
@@ -1265,7 +1265,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "client-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's your client name?" },
           subheader: { default: "" },
           required: true,
@@ -1273,7 +1273,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's your product/service about?" },
           subheader: { default: "" },
           required: true,
@@ -1281,7 +1281,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "agency-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the agency name?" },
           subheader: { default: "" },
           required: true,
@@ -1289,7 +1289,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "results",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe the results of the case study" },
           subheader: { default: "" },
           required: true,
@@ -1297,7 +1297,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "key-metrics",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Name some key metrics" },
           subheader: { default: "" },
           required: true,
@@ -1331,7 +1331,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "topics",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Name and describe some topics for the meeting" },
           subheader: { default: "" },
           required: true,
@@ -1365,7 +1365,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "project-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the project name?" },
           subheader: { default: "" },
           required: true,
@@ -1373,7 +1373,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "deadline",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the deadline of the project?" },
           subheader: { default: "" },
           required: true,
@@ -1407,7 +1407,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "task",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What task has to be done?" },
           subheader: { default: "" },
           required: true,
@@ -1415,7 +1415,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "skill-experience",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What skill/experience is necessary for the task?" },
           subheader: { default: "" },
           required: true,
@@ -1423,7 +1423,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "deadline",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the deadline of the task?" },
           subheader: { default: "" },
           required: true,
@@ -1461,7 +1461,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "project-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the name of the project?" },
           subheader: { default: "" },
           required: true,
@@ -1469,7 +1469,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "goals",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are the goals of the project?" },
           subheader: { default: "" },
           required: true,
@@ -1503,7 +1503,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "companyt-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's your company name?" },
           subheader: { default: "" },
           required: true,
@@ -1511,7 +1511,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "objectives",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are the objective of the project?" },
           subheader: { default: "" },
           required: true,
@@ -1545,7 +1545,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "company-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's your company name?" },
           subheader: { default: "" },
           required: true,
@@ -1553,7 +1553,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "objectives",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are the objective of the project?" },
           subheader: { default: "" },
           required: true,
@@ -1587,7 +1587,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "project",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your project about?" },
           subheader: { default: "" },
           required: true,
@@ -1621,7 +1621,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "project",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What is your task/project about?" },
           subheader: { default: "" },
           required: true,
@@ -1629,7 +1629,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "data",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Provide some information to take into account" },
           subheader: { default: "" },
           required: true,
@@ -1664,7 +1664,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "expenses",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Provide information about the project expenses" },
           subheader: { default: "" },
           required: true,
@@ -1672,7 +1672,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "timeframe",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What time frame would you like to analize?" },
           subheader: { default: "E.g. Month, Quarter..." },
           required: true,
@@ -1706,7 +1706,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "company-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the company name?" },
           subheader: { default: "" },
           required: true,
@@ -1714,7 +1714,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "project-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the project name?" },
           subheader: { default: "" },
           required: true,
@@ -1748,7 +1748,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "project-assumptions",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are your project assumptions?" },
           subheader: { default: "" },
           required: true,
@@ -1756,7 +1756,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "project-description",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe the project" },
           subheader: { default: "" },
           required: true,
@@ -1790,7 +1790,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "project-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the project name?" },
           subheader: { default: "" },
           required: true,
@@ -1798,7 +1798,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "data",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Provide data to ensure the project stays on track" },
           subheader: { default: "" },
           required: true,
@@ -1832,7 +1832,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "project-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the project name?" },
           subheader: { default: "" },
           required: true,
@@ -1840,7 +1840,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "schedule",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Provide information about the current schedule" },
           subheader: { default: "" },
           required: true,
@@ -1874,7 +1874,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "project-type",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Describe the type of project" },
           subheader: { default: "" },
           required: true,
@@ -1882,7 +1882,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "team-size",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the time size?" },
           subheader: { default: "E.g. 20 members, cross-functional" },
           required: true,
@@ -1890,7 +1890,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "current-challenges",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What are the challenges?" },
           subheader: {
             default:
@@ -1950,7 +1950,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's your product/service about?" },
           subheader: { default: "" },
           required: true,
@@ -1958,7 +1958,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "metrics",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What metrics would you like to take into account?" },
           subheader: { default: "Customer engagement metrics" },
           required: true,
@@ -1966,7 +1966,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "time-period",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What time period?" },
           subheader: { default: "" },
           required: true,
@@ -2000,7 +2000,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "product-service",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's your product/service about?" },
           subheader: { default: "" },
           required: true,
@@ -2008,7 +2008,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "company-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's your company name?" },
           subheader: { default: "" },
           required: true,
@@ -2042,7 +2042,7 @@ export const agencyTemplates: TTemplate[] = [
       questions: [
         {
           id: "customer-feedback",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "Paste here the customer feedback" },
           subheader: { default: "" },
           required: true,
@@ -2050,7 +2050,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "company-name",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's your company name?" },
           subheader: { default: "" },
           required: true,
@@ -2058,7 +2058,7 @@ export const agencyTemplates: TTemplate[] = [
         },
         {
           id: "date-range",
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
           headline: { default: "What's the date range?" },
           subheader: { default: "" },
           required: true,

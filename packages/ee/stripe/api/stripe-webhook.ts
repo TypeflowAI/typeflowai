@@ -1,27 +1,27 @@
 import Stripe from "stripe";
-
 import { STRIPE_API_VERSION } from "@typeflowai/lib/constants";
 import { env } from "@typeflowai/lib/env";
-
 // Import individual handlers for different types of webhook events
-import { handleCheckoutSessionCompleted } from "../handlers/checkoutSessionCompleted";
-import { handleCustomerDeleted } from "../handlers/customerDeleted";
-import { handleSubscriptionCreated } from "../handlers/subscriptionCreated";
-import { handleSubscriptionDeleted } from "../handlers/subscriptionDeleted";
-import { handleSubscriptionUpdated } from "../handlers/subscriptionUpdated";
-
-// Initialize Stripe with your secret key and specify the API version
-const stripe = new Stripe(env.STRIPE_SECRET_KEY!, {
-  apiVersion: STRIPE_API_VERSION,
-});
-
-const webhookSecret: string = env.STRIPE_WEBHOOK_SECRET!;
+import { handleCheckoutSessionCompleted } from "../handlers/checkout-session-completed";
+import { handleCustomerDeleted } from "../handlers/customer-deleted";
+import { handleSubscriptionCreated } from "../handlers/subscription-created";
+import { handleSubscriptionDeleted } from "../handlers/subscription-deleted";
+import { handleSubscriptionUpdated } from "../handlers/subscription-updated";
 
 const webhookHandler = async (requestBody: string, stripeSignature: string) => {
   let event: Stripe.Event;
 
+  if (!env.STRIPE_SECRET_KEY || !env.STRIPE_WEBHOOK_SECRET) {
+    console.error("Stripe is not enabled, skipping webhook");
+    return { status: 400, message: "Stripe is not enabled, skipping webhook" };
+  }
+
+  const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
+    apiVersion: STRIPE_API_VERSION,
+  });
+
   try {
-    event = stripe.webhooks.constructEvent(requestBody, stripeSignature, webhookSecret);
+    event = stripe.webhooks.constructEvent(requestBody, stripeSignature, env.STRIPE_WEBHOOK_SECRET);
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : "Unknown error";
     if (err! instanceof Error) console.error(err);

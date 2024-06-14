@@ -1,3 +1,3 @@
 module.exports = {
-  extends: ["@typeflowai/eslint-config/legacy-next.js"],
+  extends: ["@typeflowai/eslint-config/react.js"],
 };

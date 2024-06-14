@@ -1,5 +1,5 @@
 import { TResponseData } from "@typeflowai/types/responses";
-import { TWorkflowQuestionType } from "@typeflowai/types/workflows";
+import { TWorkflowQuestionTypeEnum } from "@typeflowai/types/workflows";
 import { TWorkflow, TWorkflowQuestion } from "@typeflowai/types/workflows";
 
 export const getPrefillValue = (
@@ -32,10 +32,10 @@ export const checkValidity = (question: TWorkflowQuestion, answer: string, langu
   if (question.required && (!answer || answer === "")) return false;
   try {
     switch (question.type) {
-      case TWorkflowQuestionType.OpenText: {
+      case TWorkflowQuestionTypeEnum.OpenText: {
         return true;
       }
-      case TWorkflowQuestionType.MultipleChoiceSingle: {
+      case TWorkflowQuestionTypeEnum.MultipleChoiceSingle: {
         const hasOther = question.choices[question.choices.length - 1].id === "other";
         if (!hasOther) {
           if (!question.choices.find((choice) => choice.label[language] === answer)) return false;
@@ -48,7 +48,7 @@ export const checkValidity = (question: TWorkflowQuestion, answer: string, langu
 
         return true;
       }
-      case TWorkflowQuestionType.MultipleChoiceMulti: {
+      case TWorkflowQuestionTypeEnum.MultipleChoiceMulti: {
         const answerChoices = answer.split(",");
         const hasOther = question.choices[question.choices.length - 1].id === "other";
         if (!hasOther) {
@@ -62,7 +62,7 @@ export const checkValidity = (question: TWorkflowQuestion, answer: string, langu
         }
         return true;
       }
-      case TWorkflowQuestionType.NPS: {
+      case TWorkflowQuestionTypeEnum.NPS: {
         answer = answer.replace(/&/g, ";");
         const answerNumber = Number(JSON.parse(answer));
 
@@ -70,23 +70,23 @@ export const checkValidity = (question: TWorkflowQuestion, answer: string, langu
         if (answerNumber < 0 || answerNumber > 10) return false;
         return true;
       }
-      case TWorkflowQuestionType.CTA: {
+      case TWorkflowQuestionTypeEnum.CTA: {
         if (question.required && answer === "dismissed") return false;
         if (answer !== "clicked" && answer !== "dismissed") return false;
         return true;
       }
-      case TWorkflowQuestionType.Consent: {
+      case TWorkflowQuestionTypeEnum.Consent: {
         if (question.required && answer === "dismissed") return false;
         if (answer !== "accepted" && answer !== "dismissed") return false;
         return true;
       }
-      case TWorkflowQuestionType.Rating: {
+      case TWorkflowQuestionTypeEnum.Rating: {
         answer = answer.replace(/&/g, ";");
         const answerNumber = Number(JSON.parse(answer));
         if (answerNumber < 1 || answerNumber > question.range) return false;
         return true;
       }
-      case TWorkflowQuestionType.PictureSelection: {
+      case TWorkflowQuestionTypeEnum.PictureSelection: {
         const answerChoices = answer.split(",");
         return answerChoices.every((ans: string) => !isNaN(Number(ans)));
       }
@@ -104,20 +104,20 @@ export const transformAnswer = (
   language: string
 ): string | number | string[] => {
   switch (question.type) {
-    case TWorkflowQuestionType.OpenText:
-    case TWorkflowQuestionType.MultipleChoiceSingle:
-    case TWorkflowQuestionType.Consent:
-    case TWorkflowQuestionType.CTA: {
+    case TWorkflowQuestionTypeEnum.OpenText:
+    case TWorkflowQuestionTypeEnum.MultipleChoiceSingle:
+    case TWorkflowQuestionTypeEnum.Consent:
+    case TWorkflowQuestionTypeEnum.CTA: {
       return answer;
     }
 
-    case TWorkflowQuestionType.Rating:
-    case TWorkflowQuestionType.NPS: {
+    case TWorkflowQuestionTypeEnum.Rating:
+    case TWorkflowQuestionTypeEnum.NPS: {
       answer = answer.replace(/&/g, ";");
       return Number(JSON.parse(answer));
     }
 
-    case TWorkflowQuestionType.PictureSelection: {
+    case TWorkflowQuestionTypeEnum.PictureSelection: {
       const answerChoicesIdx = answer.split(",");
       const answerArr: string[] = [];
 
@@ -130,7 +130,7 @@ export const transformAnswer = (
       return answerArr.slice(0, 1);
     }
 
-    case TWorkflowQuestionType.MultipleChoiceMulti: {
+    case TWorkflowQuestionTypeEnum.MultipleChoiceMulti: {
       let ansArr = answer.split(",");
       const hasOthers = question.choices[question.choices.length - 1].id === "other";
       if (!hasOthers) return ansArr;

@@ -1,7 +1,6 @@
 import Image from "next/image";
 import React from "react";
-
-import iconMap from "./components/IconMap";
+import iconMap from "./components/icon-map";
 
 interface TemplateIconComponentProps extends React.ComponentPropsWithoutRef<"div"> {
   icon: string;

@@ -1,7 +1,6 @@
 // extend this object in order to add more validation rules
 import { isEqual } from "lodash";
 import { toast } from "react-hot-toast";
-
 import { extractLanguageCodes, getLocalizedValue } from "@typeflowai/lib/i18n/utils";
 import { checkForEmptyFallBackValue } from "@typeflowai/lib/utils/recall";
 import { ZSegmentFilters } from "@typeflowai/types/segment";
@@ -16,7 +15,7 @@ import {
   TWorkflowOpenTextQuestion,
   TWorkflowPictureSelectionQuestion,
   TWorkflowQuestion,
-  TWorkflowQuestionType,
+  TWorkflowQuestionTypeEnum,
   TWorkflowQuestions,
   TWorkflowThankYouCard,
   TWorkflowWelcomeCard,
@@ -372,8 +371,8 @@ export const isWorkflowValid = (
     existingQuestionIds.add(question.id);
 
     if (
-      question.type === TWorkflowQuestionType.MultipleChoiceSingle ||
-      question.type === TWorkflowQuestionType.MultipleChoiceMulti
+      question.type === TWorkflowQuestionTypeEnum.MultipleChoiceSingle ||
+      question.type === TWorkflowQuestionTypeEnum.MultipleChoiceMulti
     ) {
       const haveSameChoices =
         question.choices.some((element) => element.label[selectedLanguageCode]?.trim() === "") ||

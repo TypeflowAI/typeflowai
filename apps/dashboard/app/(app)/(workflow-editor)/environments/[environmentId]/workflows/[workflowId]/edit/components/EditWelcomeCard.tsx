@@ -2,9 +2,8 @@
 
 import * as Collapsible from "@radix-ui/react-collapsible";
 import { usePathname } from "next/navigation";
-
 // import { useState } from "react";
-// import { LocalizedEditor } from "@typeflowai/ee/multiLanguage/components/LocalizedEditor";
+// import { LocalizedEditor } from "@typeflowai/ee/multi-language/components/localized-editor";
 import { cn } from "@typeflowai/lib/cn";
 import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TWorkflow } from "@typeflowai/types/workflows";

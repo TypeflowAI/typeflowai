@@ -11,8 +11,7 @@ import {
 import { createId } from "@paralleldrive/cuid2";
 import React, { SetStateAction, useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
-
-// import { MultiLanguageCard } from "@typeflowai/ee/multiLanguage/components/MultiLanguageCard";
+// import { MultiLanguageCard } from "@typeflowai/ee/multi-language/components/multi-language-card";
 import { extractLanguageCodes, getLocalizedValue, translateQuestion } from "@typeflowai/lib/i18n/utils";
 import { structuredClone } from "@typeflowai/lib/pollyfills/structuredClone";
 import { checkForEmptyFallBackValue, extractRecallInfo } from "@typeflowai/lib/utils/recall";
@@ -20,7 +19,6 @@ import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TProduct } from "@typeflowai/types/product";
 import { TWorkflow, TWorkflowQuestion } from "@typeflowai/types/workflows";
 import { capturePosthogEvent } from "@typeflowai/ui/PostHogClient";
-
 import {
   findQuestionsWithCyclicLogic,
   isCardValid,

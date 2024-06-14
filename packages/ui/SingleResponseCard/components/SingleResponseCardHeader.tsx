@@ -1,15 +1,16 @@
-import { LanguagesIcon, TrashIcon } from "lucide-react";
+import {
+  // LanguagesIcon,
+  TrashIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
-
-import { getLanguageLabel } from "@typeflowai/lib/i18n/utils";
+// import { getLanguageLabel } from "../../../ee/multi-language/lib/iso-languages";
 import { getPersonIdentifier } from "@typeflowai/lib/person/utils";
 import { timeSince } from "@typeflowai/lib/time";
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TResponse } from "@typeflowai/types/responses";
 import { TUser } from "@typeflowai/types/user";
 import { TWorkflow } from "@typeflowai/types/workflows";
-
 import { PersonAvatar } from "../../Avatars";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../Tooltip";
 import { WorkflowStatusIndicator } from "../../WorkflowStatusIndicator";
@@ -161,12 +162,12 @@ export const SingleResponseCardHeader = ({
               </Link>
             </div>
           )}
-          {response.language && response.language !== "default" && (
+          {/* {response.language && response.language !== "default" && (
             <div className="flex space-x-2 rounded-full bg-slate-700 px-2 py-1 text-xs text-white">
               <div>{getLanguageLabel(response.language)}</div>
               <LanguagesIcon className="h-4 w-4" />
             </div>
-          )}
+          )} */}
         </div>
 
         <div className="flex items-center space-x-4 text-sm">

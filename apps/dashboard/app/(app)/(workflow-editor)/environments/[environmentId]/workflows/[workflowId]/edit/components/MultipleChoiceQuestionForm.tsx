@@ -5,7 +5,6 @@ import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { createId } from "@paralleldrive/cuid2";
 import { PlusIcon, TrashIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-
 import { createI18nString, extractLanguageCodes } from "@typeflowai/lib/i18n/utils";
 import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
 import { TAttributeClass } from "@typeflowai/types/attributeClasses";
@@ -14,13 +13,12 @@ import {
   TShuffleOption,
   TWorkflow,
   TWorkflowMultipleChoiceQuestion,
-  TWorkflowQuestionType,
+  TWorkflowQuestionTypeEnum,
 } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
 import { Label } from "@typeflowai/ui/Label";
 import { QuestionFormInput } from "@typeflowai/ui/QuestionFormInput";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@typeflowai/ui/Select";
-
 import { SelectQuestionChoice } from "./SelectQuestionChoice";
 
 interface OpenQuestionFormProps {
@@ -309,13 +307,14 @@ export const MultipleChoiceQuestionForm = ({
               onClick={() => {
                 updateQuestion(questionIdx, {
                   type:
-                    question.type === TWorkflowQuestionType.MultipleChoiceMulti
-                      ? TWorkflowQuestionType.MultipleChoiceSingle
-                      : TWorkflowQuestionType.MultipleChoiceMulti,
+                    question.type === TWorkflowQuestionTypeEnum.MultipleChoiceMulti
+                      ? TWorkflowQuestionTypeEnum.MultipleChoiceSingle
+                      : TWorkflowQuestionTypeEnum.MultipleChoiceMulti,
                 });
               }}>
               Convert to{" "}
-              {question.type === TWorkflowQuestionType.MultipleChoiceSingle ? "Multiple" : "Single"} Select
+              {question.type === TWorkflowQuestionTypeEnum.MultipleChoiceSingle ? "Multiple" : "Single"}
+              Select
             </Button>
 
             <div className="flex flex-1 items-center justify-end gap-2">

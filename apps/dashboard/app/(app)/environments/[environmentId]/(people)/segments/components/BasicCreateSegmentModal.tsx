@@ -1,11 +1,10 @@
 "use client";
 
-// import { createSegmentAction } from "@typeflowai/ee/advancedTargeting/lib/actions";
+// import { createSegmentAction } from "@typeflowai/ee/advanced-targeting/lib/actions";
 import { FilterIcon, PlusIcon, UsersIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import toast from "react-hot-toast";
-
 import { structuredClone } from "@typeflowai/lib/pollyfills/structuredClone";
 import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TBaseFilter, TSegment, ZSegmentFilters } from "@typeflowai/types/segment";
@@ -14,7 +13,6 @@ import { BasicSegmentEditor } from "@typeflowai/ui/BasicSegmentEditor";
 import { Button } from "@typeflowai/ui/Button";
 import { Input } from "@typeflowai/ui/Input";
 import { Modal } from "@typeflowai/ui/Modal";
-
 import { createBasicSegmentAction } from "../actions";
 
 // import { UpgradePlanNotice } from "@typeflowai/ui/UpgradePlanNotice";

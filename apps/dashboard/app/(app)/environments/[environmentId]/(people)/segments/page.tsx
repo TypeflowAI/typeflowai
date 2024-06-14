@@ -1,9 +1,8 @@
 import { PeopleSecondaryNavigation } from "@/app/(app)/environments/[environmentId]/(people)/people/components/PeopleSecondaryNavigation";
 import BasicCreateSegmentModal from "@/app/(app)/environments/[environmentId]/(people)/segments/components/BasicCreateSegmentModal";
 import SegmentTable from "@/app/(app)/environments/[environmentId]/(people)/segments/components/SegmentTable";
-
-// import CreateSegmentModal from "@typeflowai/ee/advancedTargeting/components/CreateSegmentModal";
-// import { ACTIONS_TO_EXCLUDE } from "@typeflowai/ee/advancedTargeting/lib/constants";
+// import CreateSegmentModal from "@typeflowai/ee/advanced-targeting/components/create-segment-modal";
+// import { ACTIONS_TO_EXCLUDE } from "@typeflowai/ee/advanced-targeting/lib/constants";
 import { getIsPaidSubscription } from "@typeflowai/ee/subscription/lib/service";
 import { getActionClasses } from "@typeflowai/lib/actionClass/service";
 import { getAttributeClasses } from "@typeflowai/lib/attributeClass/service";
