@@ -22,6 +22,7 @@ interface QuestionsDraggableProps {
   internalQuestionIdMap: Record<string, string>;
   isPromptVisible: boolean;
   attributeClasses: TAttributeClass[];
+  addQuestion: (question: any, index?: number) => void;
 }
 
 export const QuestionsDroppable = ({
@@ -40,6 +41,7 @@ export const QuestionsDroppable = ({
   internalQuestionIdMap,
   isPromptVisible,
   attributeClasses,
+  addQuestion,
 }: QuestionsDraggableProps) => {
   return (
     <div className="group mb-5 grid w-full gap-5">
@@ -64,6 +66,7 @@ export const QuestionsDroppable = ({
             isInvalid={invalidQuestions ? invalidQuestions.includes(question.id) : false}
             isPromptVisible={isPromptVisible}
             attributeClasses={attributeClasses}
+            addQuestion={addQuestion}
           />
         ))}
       </SortableContext>

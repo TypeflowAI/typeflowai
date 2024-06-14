@@ -237,14 +237,19 @@ export const QuestionsView = ({
     toast.success("Question duplicated.");
   };
 
-  const addQuestion = (question: any) => {
+  const addQuestion = (question: any, index?: number) => {
     const updatedWorkflow = { ...localWorkflow };
     if (backButtonLabel) {
       question.backButtonLabel = backButtonLabel;
     }
     const languageSymbols = extractLanguageCodes(localWorkflow.languages);
     const translatedQuestion = translateQuestion(question, languageSymbols);
-    updatedWorkflow.questions.push({ ...translatedQuestion, isDraft: true });
+
+    if (index) {
+      updatedWorkflow.questions.splice(index, 0, { ...translatedQuestion, isDraft: true });
+    } else {
+      updatedWorkflow.questions.push({ ...translatedQuestion, isDraft: true });
+    }
 
     capturePosthogEvent("QuestionAdded2Workflow", {
       type: capitalizeFirstLetter(question.type),
@@ -405,6 +410,7 @@ export const QuestionsView = ({
           internalQuestionIdMap={internalQuestionIdMap}
           isPromptVisible={isPromptVisible()}
           attributeClasses={attributeClasses}
+          addQuestion={addQuestion}
         />
       </DndContext>
       <AddQuestionButton addQuestion={addQuestion} product={product} />

@@ -1,6 +1,6 @@
 import { createId } from "@paralleldrive/cuid2";
 import {
-  ArrowUpFromLine,
+  ArrowUpFromLineIcon,
   CalendarDaysIcon,
   CheckIcon,
   Grid3X3Icon,
@@ -28,12 +28,13 @@ import {
   TWorkflowNPSQuestion,
   TWorkflowOpenTextQuestion,
   TWorkflowPictureSelectionQuestion,
+  TWorkflowQuestionType,
   TWorkflowRatingQuestion,
 } from "@typeflowai/types/workflows";
 
 import { replaceQuestionPresetPlaceholders } from "./templates";
 
-export type TWorkflowQuestionType = {
+export type TQuestion = {
   id: string;
   label: string;
   description: string;
@@ -41,7 +42,7 @@ export type TWorkflowQuestionType = {
   preset: any;
 };
 
-export const questionTypes: TWorkflowQuestionType[] = [
+export const questionTypes: TQuestion[] = [
   {
     id: QuestionId.OpenText,
     label: "Free text",
@@ -172,7 +173,7 @@ export const questionTypes: TWorkflowQuestionType[] = [
     id: QuestionId.FileUpload,
     label: "File Upload",
     description: "Allow respondents to upload a file",
-    icon: ArrowUpFromLine,
+    icon: ArrowUpFromLineIcon,
     preset: {
       headline: { default: "File Upload" },
       allowMultipleFiles: false,
@@ -216,6 +217,22 @@ export const questionTypes: TWorkflowQuestionType[] = [
     } as Partial<TWorkflowAddressQuestion>,
   },
 ];
+
+export const QUESTIONS_ICON_MAP = questionTypes.reduce(
+  (prev, curr) => ({
+    ...prev,
+    [curr.id]: <curr.icon className="h-5 w-5" />,
+  }),
+  {}
+);
+
+export const QUESTIONS_NAME_MAP = questionTypes.reduce(
+  (prev, curr) => ({
+    ...prev,
+    [curr.id]: curr.label,
+  }),
+  {}
+) as Record<TWorkflowQuestionType, string>;
 
 export const universalQuestionPresets = {
   required: true,

@@ -1,27 +1,10 @@
 "use client";
 
-import { getTWorkflowQuestionTypeName } from "@/app/lib/questions";
+import { QUESTIONS_ICON_MAP, getTWorkflowQuestionTypeName } from "@/app/lib/questions";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import * as Collapsible from "@radix-ui/react-collapsible";
-import {
-  ArrowUpFromLineIcon,
-  CalendarDaysIcon,
-  CheckIcon,
-  ChevronDownIcon,
-  ChevronRightIcon,
-  Grid3X3Icon,
-  GripIcon,
-  HomeIcon,
-  ImageIcon,
-  ListIcon,
-  MessageSquareTextIcon,
-  MousePointerClickIcon,
-  PhoneIcon,
-  PresentationIcon,
-  Rows3Icon,
-  StarIcon,
-} from "lucide-react";
+import { ChevronDownIcon, ChevronRightIcon, GripIcon } from "lucide-react";
 import { useState } from "react";
 
 import { cn } from "@typeflowai/lib/cn";
@@ -50,7 +33,7 @@ import { MultipleChoiceQuestionForm } from "./MultipleChoiceQuestionForm";
 import { NPSQuestionForm } from "./NPSQuestionForm";
 import { OpenQuestionForm } from "./OpenQuestionForm";
 import { PictureSelectionForm } from "./PictureSelectionForm";
-import { QuestionDropdown } from "./QuestionMenu";
+import { QuestionMenu } from "./QuestionMenu";
 import { RatingQuestionForm } from "./RatingQuestionForm";
 
 interface QuestionCardProps {
@@ -71,6 +54,7 @@ interface QuestionCardProps {
   setSelectedLanguageCode: (language: string) => void;
   isInvalid: boolean;
   attributeClasses: TAttributeClass[];
+  addQuestion: (question: any, index?: number) => void;
 }
 
 export default function QuestionCard({
@@ -91,6 +75,7 @@ export default function QuestionCard({
   setSelectedLanguageCode,
   isInvalid,
   attributeClasses,
+  addQuestion,
 }: QuestionCardProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: question.id,
@@ -163,7 +148,8 @@ export default function QuestionCard({
         "flex flex-row rounded-lg bg-white transition-all duration-300 ease-in-out"
       )}
       ref={setNodeRef}
-      style={style}>
+      style={style}
+      id={question.id}>
       <div
         {...listeners}
         {...attributes}
@@ -195,33 +181,7 @@ export default function QuestionCard({
           <div>
             <div className="inline-flex">
               <div className="-ml-0.5 mr-3 h-6 min-w-[1.5rem] text-slate-400">
-                {question.type === TWorkflowQuestionType.FileUpload ? (
-                  <ArrowUpFromLineIcon className="h-5 w-5" />
-                ) : question.type === TWorkflowQuestionType.OpenText ? (
-                  <MessageSquareTextIcon className="h-5 w-5" />
-                ) : question.type === TWorkflowQuestionType.MultipleChoiceSingle ? (
-                  <Rows3Icon className="h-5 w-5" />
-                ) : question.type === TWorkflowQuestionType.MultipleChoiceMulti ? (
-                  <ListIcon className="h-5 w-5" />
-                ) : question.type === TWorkflowQuestionType.NPS ? (
-                  <PresentationIcon className="h-5 w-5" />
-                ) : question.type === TWorkflowQuestionType.CTA ? (
-                  <MousePointerClickIcon className="h-5 w-5" />
-                ) : question.type === TWorkflowQuestionType.Rating ? (
-                  <StarIcon className="h-5 w-5" />
-                ) : question.type === TWorkflowQuestionType.Consent ? (
-                  <CheckIcon className="h-5 w-5" />
-                ) : question.type === TWorkflowQuestionType.PictureSelection ? (
-                  <ImageIcon className="h-5 w-5" />
-                ) : question.type === TWorkflowQuestionType.Date ? (
-                  <CalendarDaysIcon className="h-5 w-5" />
-                ) : question.type === TWorkflowQuestionType.Cal ? (
-                  <PhoneIcon className="h-5 w-5" />
-                ) : question.type === TWorkflowQuestionType.Matrix ? (
-                  <Grid3X3Icon className="h-5 w-5" />
-                ) : question.type === TWorkflowQuestionType.Address ? (
-                  <HomeIcon className="h-5 w-5" />
-                ) : null}
+                {QUESTIONS_ICON_MAP[question.type]}
               </div>
               <div>
                 <p className="text-sm font-semibold">
@@ -250,12 +210,16 @@ export default function QuestionCard({
             </div>
 
             <div className="flex items-center space-x-2">
-              <QuestionDropdown
+              <QuestionMenu
                 questionIdx={questionIdx}
                 lastQuestion={lastQuestion}
                 duplicateQuestion={duplicateQuestion}
                 deleteQuestion={deleteQuestion}
                 moveQuestion={moveQuestion}
+                question={question}
+                product={product}
+                updateQuestion={updateQuestion}
+                addQuestion={addQuestion}
               />
             </div>
           </div>
@@ -440,6 +404,7 @@ export default function QuestionCard({
                       <QuestionFormInput
                         id="buttonLabel"
                         value={question.buttonLabel}
+                        label={`"Next" Button Label`}
                         localWorkflow={localWorkflow}
                         questionIdx={questionIdx}
                         maxLength={48}
@@ -465,6 +430,7 @@ export default function QuestionCard({
                       <QuestionFormInput
                         id="backButtonLabel"
                         value={question.backButtonLabel}
+                        label={`"Back" Button Label`}
                         localWorkflow={localWorkflow}
                         questionIdx={questionIdx}
                         maxLength={48}
@@ -485,6 +451,7 @@ export default function QuestionCard({
                       <QuestionFormInput
                         id="backButtonLabel"
                         value={question.backButtonLabel}
+                        label={`"Back" Button Label`}
                         localWorkflow={localWorkflow}
                         questionIdx={questionIdx}
                         maxLength={48}
