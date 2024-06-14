@@ -1,9 +1,7 @@
 import { responses } from "@/app/lib/api/response";
 import { headers } from "next/headers";
-
 import { sendNoLiveWorkflowNotificationEmail, sendWeeklySummaryNotificationEmail } from "@typeflowai/email";
 import { CRON_SECRET } from "@typeflowai/lib/constants";
-
 import { getNotificationResponse } from "./lib/notificationResponse";
 import { getProductsByTeamId } from "./lib/product";
 import { getTeamIds } from "./lib/team";

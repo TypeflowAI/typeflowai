@@ -12,10 +12,9 @@ import { getFormattedFilters } from "@/app/lib/workflows/workflows";
 import {
   getResponseCountByWorkflowSharingKeyAction,
   getResponsesByWorkflowSharingKeyAction,
-} from "@/app/share/[sharingKey]/action";
+} from "@/app/share/[sharingKey]/actions";
 import { useParams, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
-
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TResponse } from "@typeflowai/types/responses";
 import { TTag } from "@typeflowai/types/tags";
