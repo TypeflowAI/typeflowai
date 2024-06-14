@@ -81,8 +81,8 @@ export const ShareWorkflowResults = ({
                 You are about to release these workflow results to the public.
               </p>
               <p className="text-balanced mt-2 text-sm text-slate-500">
-                Your workflow results will be public. Anyone outside your team can access them if they have
-                the link.
+                Your workflow results will be public. Anyone outside your organization can access them if they
+                have the link.
               </p>
             </div>
             <Button

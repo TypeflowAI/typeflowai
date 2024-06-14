@@ -12,9 +12,9 @@ import { Button } from "@typeflowai/ui/Button";
 import { Dialog, DialogContent } from "@typeflowai/ui/Dialog";
 import { ShareWorkflowLink } from "@typeflowai/ui/ShareWorkflowLink";
 
-import EmailTab from "./shareEmbedTabs/EmailTab";
-import LinkTab from "./shareEmbedTabs/LinkTab";
-import WebpageTab from "./shareEmbedTabs/WebpageTab";
+import { EmailTab } from "./shareEmbedTabs/EmailTab";
+import { LinkTab } from "./shareEmbedTabs/LinkTab";
+import { WebpageTab } from "./shareEmbedTabs/WebpageTab";
 
 interface ShareEmbedWorkflowProps {
   workflow: TWorkflow;

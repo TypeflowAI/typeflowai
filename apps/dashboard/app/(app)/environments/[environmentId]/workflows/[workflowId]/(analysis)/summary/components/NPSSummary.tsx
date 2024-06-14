@@ -1,4 +1,5 @@
-import { TWorkflowQuestionSummaryNps } from "@typeflowai/types/workflows";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
+import { TWorkflow, TWorkflowQuestionSummaryNps } from "@typeflowai/types/workflows";
 import { HalfCircle, ProgressBar } from "@typeflowai/ui/ProgressBar";
 
 import { convertFloatToNDecimal } from "../lib/utils";
@@ -6,12 +7,18 @@ import { QuestionSummaryHeader } from "./QuestionSummaryHeader";
 
 interface NPSSummaryProps {
   questionSummary: TWorkflowQuestionSummaryNps;
+  workflow: TWorkflow;
+  attributeClasses: TAttributeClass[];
 }
 
-export const NPSSummary = ({ questionSummary }: NPSSummaryProps) => {
+export const NPSSummary = ({ questionSummary, workflow, attributeClasses }: NPSSummaryProps) => {
   return (
     <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
-      <QuestionSummaryHeader questionSummary={questionSummary} />
+      <QuestionSummaryHeader
+        questionSummary={questionSummary}
+        workflow={workflow}
+        attributeClasses={attributeClasses}
+      />
       <div className="space-y-5 px-4 pb-6 pt-4 text-sm md:px-6 md:text-base">
         {["promoters", "passives", "detractors"].map((group) => (
           <div key={group}>

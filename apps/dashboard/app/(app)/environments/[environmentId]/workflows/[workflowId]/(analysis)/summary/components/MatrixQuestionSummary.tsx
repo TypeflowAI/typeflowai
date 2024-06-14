@@ -1,13 +1,20 @@
-import { TWorkflowQuestionSummaryMatrix } from "@typeflowai/types/workflows";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
+import { TWorkflow, TWorkflowQuestionSummaryMatrix } from "@typeflowai/types/workflows";
 import { TooltipRenderer } from "@typeflowai/ui/Tooltip";
 
 import { QuestionSummaryHeader } from "./QuestionSummaryHeader";
 
 interface MatrixQuestionSummaryProps {
   questionSummary: TWorkflowQuestionSummaryMatrix;
+  workflow: TWorkflow;
+  attributeClasses: TAttributeClass[];
 }
 
-export const MatrixQuestionSummary = ({ questionSummary }: MatrixQuestionSummaryProps) => {
+export const MatrixQuestionSummary = ({
+  questionSummary,
+  workflow,
+  attributeClasses,
+}: MatrixQuestionSummaryProps) => {
   const getOpacityLevel = (percentage: number): string => {
     const parsedPercentage = percentage;
     const opacity = parsedPercentage * 0.75 + 15;
@@ -27,13 +34,17 @@ export const MatrixQuestionSummary = ({ questionSummary }: MatrixQuestionSummary
 
   return (
     <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
-      <QuestionSummaryHeader questionSummary={questionSummary} />
+      <QuestionSummaryHeader
+        questionSummary={questionSummary}
+        workflow={workflow}
+        attributeClasses={attributeClasses}
+      />
       <div className="overflow-x-auto p-6">
         {/* Summary Table  */}
         <table className="mx-auto border-collapse cursor-default text-left">
           <thead>
             <tr>
-              <th className="p-4 pb-3 pt-0 font-medium text-slate-400"></th>
+              <th className="p-4 pb-3 pt-0 font-medium text-slate-400 dark:border-slate-600 dark:text-slate-200"></th>
               {columns.map((column) => (
                 <th key={column} className="text-center font-medium ">
                   <TooltipRenderer tooltipContent={getTooltipContent(column)} shouldRender={true}>
@@ -52,7 +63,9 @@ export const MatrixQuestionSummary = ({ questionSummary }: MatrixQuestionSummary
                   </TooltipRenderer>
                 </td>
                 {Object.entries(columnPercentages).map(([column, percentage]) => (
-                  <td key={column} className="text-center text-slate-500">
+                  <td
+                    key={column}
+                    className="text-center text-slate-500 dark:border-slate-700 dark:text-slate-400">
                     <TooltipRenderer
                       shouldRender={true}
                       tooltipContent={getTooltipContent(

@@ -7,7 +7,7 @@ import {
 import { getWorkflowFilterDataAction } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/actions";
 import QuestionFilterComboBox from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/components/QuestionFilterComboBox";
 import { generateQuestionAndFilterOptions } from "@/app/lib/workflows/workflows";
-import { getWorkflowFilterDataByWorkflowSharingKeyAction } from "@/app/share/[sharingKey]/action";
+import { getWorkflowFilterDataByWorkflowSharingKeyAction } from "@/app/share/[sharingKey]/actions";
 import clsx from "clsx";
 import { isEqual } from "lodash";
 import { TrashIcon } from "lucide-react";

@@ -12,7 +12,7 @@ import { getFormattedFilters } from "@/app/lib/workflows/workflows";
 import {
   getResponseCountByWorkflowSharingKeyAction,
   getSummaryByWorkflowSharingKeyAction,
-} from "@/app/share/[sharingKey]/action";
+} from "@/app/share/[sharingKey]/actions";
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
@@ -50,7 +50,7 @@ interface SummaryPageProps {
   attributeClasses: TAttributeClass[];
 }
 
-const SummaryPage = ({
+export const SummaryPage = ({
   environment,
   workflow,
   workflowId,
@@ -138,9 +138,8 @@ const SummaryPage = ({
         environment={environment}
         fetchingSummary={isFetchingSummary}
         totalResponseCount={totalResponseCount}
+        attributeClasses={attributeClasses}
       />
     </>
   );
 };
-
-export default SummaryPage;
