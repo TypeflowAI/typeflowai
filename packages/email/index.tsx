@@ -30,8 +30,7 @@ import { EmbedWorkflowPreviewEmail } from "./components/workflow/EmbedWorkflowPr
 import { LinkWorkflowEmail } from "./components/workflow/LinkWorkflowEmail";
 import { ResponseFinishedEmail } from "./components/workflow/ResponseFinishedEmail";
 
-export const IS_SMTP_CONFIGURED: boolean =
-  SMTP_HOST && SMTP_PORT && SMTP_USER && SMTP_PASSWORD ? true : false;
+export const IS_SMTP_CONFIGURED: boolean = SMTP_HOST && SMTP_PORT ? true : false;
 
 interface sendEmailData {
   to: string;
