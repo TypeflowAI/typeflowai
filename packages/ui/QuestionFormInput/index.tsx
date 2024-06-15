@@ -4,8 +4,10 @@ import { PencilIcon, TrashIcon } from "lucide-react";
 import { ImagePlusIcon } from "lucide-react";
 import { RefObject, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
-
-import { extractLanguageCodes, getEnabledLanguages, getLocalizedValue } from "@typeflowai/lib/i18n/utils";
+import {
+  extractLanguageCodes, // getEnabledLanguages,
+  getLocalizedValue,
+} from "@typeflowai/lib/i18n/utils";
 import { structuredClone } from "@typeflowai/lib/pollyfills/structuredClone";
 import { useSyncScroll } from "@typeflowai/lib/utils/hooks/useSyncScroll";
 import {
@@ -26,8 +28,7 @@ import {
   TWorkflowQuestion,
   TWorkflowRecallItem,
 } from "@typeflowai/types/workflows";
-
-import { LanguageIndicator } from "../../ee/multi-language/components/language-indicator";
+// import { LanguageIndicator } from "../../ee/multi-language/components/language-indicator";
 import { createI18nString } from "../../lib/i18n/utils";
 import { FileInput } from "../FileInput";
 import { Input } from "../Input";
@@ -96,10 +97,10 @@ export const QuestionFormInput = ({
     return isWelcomeCard ? "start" : isThankYouCard ? "end" : question.id;
   }, [isWelcomeCard, isThankYouCard, question?.id]);
 
-  const enabledLanguages = useMemo(
-    () => getEnabledLanguages(localWorkflow.languages ?? []),
-    [localWorkflow.languages]
-  );
+  // const enabledLanguages = useMemo(
+  //   () => getEnabledLanguages(localWorkflow.languages ?? []),
+  //   [localWorkflow.languages]
+  // );
 
   const workflowLanguageCodes = useMemo(
     () => extractLanguageCodes(localWorkflow.languages),
@@ -483,13 +484,13 @@ export const QuestionFormInput = ({
                   isTranslationIncomplete
                 }
               />
-              {enabledLanguages.length > 1 && (
+              {/* {enabledLanguages.length > 1 && (
                 <LanguageIndicator
                   selectedLanguageCode={selectedLanguageCode}
                   workflowLanguages={enabledLanguages}
                   setSelectedLanguageCode={setSelectedLanguageCode}
                 />
-              )}
+              )} */}
               {!showRecallItemSelect && showFallbackInput && recallItems.length > 0 && (
                 <FallbackInput
                   filteredRecallItems={filteredRecallItems}
