@@ -59,7 +59,7 @@ export const ScrollableContainer = ({ children }: ScrollableContainerProps) => {
           scrollbarGutter: "stable both-edges",
           maxHeight: isWorkflowPreview ? "40dvh" : "60dvh",
         }}
-        className={cn("overflow-auto px-4 pb-1", isOverflowHidden ? "no-scrollbar" : "bg-survey-bg")}
+        className={cn("overflow-auto px-4 pb-1", isOverflowHidden ? "no-scrollbar" : "bg-workflow-bg")}
         onMouseEnter={() => toggleOverflow(false)}
         onMouseLeave={() => toggleOverflow(true)}>
         {children}

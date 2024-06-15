@@ -34,7 +34,7 @@ const cards = [
   {
     title: "Delete Team",
     description:
-      "Delete team with all its products including all surveys, responses, people, actions and attributes",
+      "Delete team with all its products including all workflows, responses, people, actions and attributes",
     skeletonLines: [{ classes: "h-6 w-28" }, { classes: "h-8 w-80" }],
   },
 ];

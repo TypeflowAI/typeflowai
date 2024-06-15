@@ -6,7 +6,6 @@ import WorkflowInactive from "@/app/s/[workflowId]/components/WorkflowInactive";
 import { getMetadataForLinkWorkflow } from "@/app/s/[workflowId]/metadata";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-
 import { getIsPaidSubscription } from "@typeflowai/ee/subscription/lib/service";
 import { getAttributeClasses } from "@typeflowai/lib/attributeClass/service";
 import { IMPRINT_URL, IS_TYPEFLOWAI_CLOUD, PRIVACY_URL, WEBAPP_URL } from "@typeflowai/lib/constants";
@@ -18,7 +17,6 @@ import { getWorkflow } from "@typeflowai/lib/workflow/service";
 import { ZId } from "@typeflowai/types/environment";
 import { TResponse } from "@typeflowai/types/responses";
 import { MediaBackground } from "@typeflowai/ui/MediaBackground";
-
 import { getEmailVerificationDetails } from "./lib/helpers";
 
 interface LinkWorkflowPageProps {
@@ -126,7 +124,7 @@ export default async function LinkWorkflowPage({ params, searchParams }: LinkWor
     throw new Error("Product not found");
   }
 
-  const attributeClasses = await getAttributeClasses(survey.environmentId);
+  const attributeClasses = await getAttributeClasses(workflow.environmentId);
 
   const getLanguageCode = (): string => {
     if (!langParam || !isMultiLanguageAllowed) return "default";

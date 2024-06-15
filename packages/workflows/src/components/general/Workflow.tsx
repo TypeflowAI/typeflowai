@@ -15,7 +15,6 @@ import { processPromptMessage } from "@/lib/parsePrompt";
 import { getUpdatedTtc } from "@/lib/ttc";
 import { cn } from "@/lib/utils";
 import { useEffect, useMemo, useRef, useState } from "preact/hooks";
-
 import { TypeflowAIAPI } from "@typeflowai/api";
 import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
 import { structuredClone } from "@typeflowai/lib/pollyfills/structuredClone";
@@ -443,7 +442,7 @@ export const Workflow = ({
         <div
           className={cn(
             "no-scrollbar md:rounded-custom rounded-t-custom bg-workflow-bg flex h-full w-full flex-col justify-between overflow-hidden transition-all duration-1000 ease-in-out",
-            cardArrangement === "simple" ? "fb-survey-shadow" : "",
+            cardArrangement === "simple" ? "fb-workflow-shadow" : "",
             offset === 0 || cardArrangement === "simple" ? "opacity-100" : "opacity-0"
           )}>
           <div ref={contentRef} className={cn(loadingElement ? "animate-pulse opacity-60" : "", "my-auto")}>

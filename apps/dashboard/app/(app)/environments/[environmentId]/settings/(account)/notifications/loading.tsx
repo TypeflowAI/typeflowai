@@ -21,7 +21,7 @@ const LoadingCard = ({ title, description, skeletonLines }) => {
 const Loading = () => {
   const cards = [
     {
-      title: "Email alerts (Surveys)",
+      title: "Email alerts (Workflows)",
       description: "Set up an alert to get an email on new responses.",
       skeletonLines: [{ classes: "h-6 w-28" }, { classes: "h-10 w-128" }, { classes: "h-10 w-128" }],
     },
