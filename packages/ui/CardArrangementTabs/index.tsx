@@ -1,10 +1,9 @@
 import { TCardArrangementOptions } from "@typeflowai/types/styling";
 import { TWorkflowType } from "@typeflowai/types/workflows";
-
+import { CasualCardArrangementIcon } from "../Icons/CasualCardArrangementIcon";
+import { SimpleCardsArrangementIcon } from "../Icons/SimpleCardArrangementIcon";
+import { StraightCardArrangementIcon } from "../Icons/StraightCardArrangementIcon";
 import { Tabs } from "../Tabs";
-import { CasualCardArrangementIcon } from "../icons/CasualCardArrangementIcon";
-import { SimpleCardsArrangementIcon } from "../icons/SimpleCardArrangementIcon";
-import { StraightCardArrangementIcon } from "../icons/StraightCardArrangementIcon";
 
 interface CardArrangementTabsProps {
   workflowType: TWorkflowType;
