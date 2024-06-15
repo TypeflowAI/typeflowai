@@ -1,8 +1,7 @@
-import { TWorkflow } from "@typeflowai/types/Workflows";
 import { TAttributes } from "@typeflowai/types/attributes";
 import { TJsTrackProperties } from "@typeflowai/types/js";
 import { TResponseHiddenFieldValue } from "@typeflowai/types/responses";
-
+import { TWorkflow, TWorkflowLanguage } from "@typeflowai/types/workflows";
 import { Logger } from "../shared/logger";
 
 const logger = Logger.getInstance();
@@ -11,10 +10,12 @@ export const getIsDebug = () => window.location.search.includes("typeflowaiDebug
 
 export const getLanguageCode = (workflow: TWorkflow, attributes: TAttributes): string | undefined => {
   const language = attributes.language;
-  const availableLanguageCodes = workflow.languages.map((workflowLanguage) => workflowLanguage.language.code);
+  const availableLanguageCodes = workflow.languages.map(
+    (workflowLanguage: TWorkflowLanguage) => workflowLanguage.language.code
+  );
   if (!language) return "default";
   else {
-    const selectedLanguage = workflow.languages.find((workflowLanguage) => {
+    const selectedLanguage = workflow.languages.find((workflowLanguage: TWorkflowLanguage) => {
       return (
         workflowLanguage.language.code === language.toLowerCase() ||
         workflowLanguage.language.alias?.toLowerCase() === language.toLowerCase()
@@ -35,7 +36,7 @@ export const getLanguageCode = (workflow: TWorkflow, attributes: TAttributes): s
 };
 
 export const getDefaultLanguageCode = (workflow: TWorkflow) => {
-  const defaultWorkflowLanguage = workflow.languages?.find((workflowLanguage) => {
+  const defaultWorkflowLanguage = workflow.languages?.find((workflowLanguage: TWorkflowLanguage) => {
     return workflowLanguage.default === true;
   });
   if (defaultWorkflowLanguage) return defaultWorkflowLanguage.language.code;
