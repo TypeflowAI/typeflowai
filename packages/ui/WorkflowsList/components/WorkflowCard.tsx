@@ -1,13 +1,11 @@
 import { Code, EarthIcon, Link2Icon } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-
-import { TemplateIconComponent } from "@typeflowai/ee/prompt-templates/template-icons";
 import { cn } from "@typeflowai/lib/cn";
 import { convertDateString, timeSince } from "@typeflowai/lib/time";
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TWorkflow } from "@typeflowai/types/workflows";
-
+import { TemplateIcon } from "../../TemplateIcon";
 import { WorkflowStatusIndicator } from "../../WorkflowStatusIndicator";
 import { generateSingleUseIdAction } from "../actions";
 import { WorkflowDropDownMenu } from "./WorkflowDropdownMenu";
@@ -115,7 +113,7 @@ export const WorkflowCard = ({
         <div>
           <div className="mt-4 flex flex-row">
             {workflow.icon && (
-              <TemplateIconComponent
+              <TemplateIcon
                 icon={workflow.icon}
                 className="h-12 w-12 "
                 style={{
@@ -153,7 +151,7 @@ export const WorkflowCard = ({
     shadow-sm transition-all ease-in-out hover:scale-[101%]">
         <div className="col-span-2 mt-4 flex flex max-w-full flex-row items-center justify-self-start ">
           {workflow.icon && (
-            <TemplateIconComponent
+            <TemplateIcon
               icon={workflow.icon}
               className="h-12 w-12 "
               style={{

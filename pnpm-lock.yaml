@@ -869,9 +869,6 @@ importers:
       '@typeflowai/database':
         specifier: workspace:*
         version: link:../database
-      '@typeflowai/ee':
-        specifier: workspace:*
-        version: link:../ee
       '@typeflowai/lib':
         specifier: workspace:*
         version: link:../lib

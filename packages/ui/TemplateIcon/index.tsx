@@ -1,13 +1,13 @@
 import Image from "next/image";
 import React from "react";
-import iconMap from "./components/icon-map";
+import iconMap from "./components/IconMap";
 
-interface TemplateIconComponentProps extends React.ComponentPropsWithoutRef<"div"> {
+interface TemplateIconProps extends React.ComponentPropsWithoutRef<"div"> {
   icon: string;
   alt?: string;
 }
 
-export const TemplateIconComponent: React.FC<TemplateIconComponentProps> = ({
+export const TemplateIcon: React.FC<TemplateIconProps> = ({
   icon,
   className,
   style,

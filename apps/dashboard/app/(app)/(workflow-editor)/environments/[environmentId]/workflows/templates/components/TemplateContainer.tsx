@@ -2,8 +2,6 @@
 
 import { MenuBar } from "@/app/(app)/(workflow-editor)/environments/[environmentId]/workflows/templates/components/MenuBar";
 import { useState } from "react";
-
-import { customWorkflow } from "@typeflowai/ee/prompt-templates/templates";
 import type { TEnvironment } from "@typeflowai/types/environment";
 import type { TProduct } from "@typeflowai/types/product";
 import type { TTemplate } from "@typeflowai/types/templates";
@@ -11,7 +9,7 @@ import { TUser } from "@typeflowai/types/user";
 import { PreviewWorkflow } from "@typeflowai/ui/PreviewWorkflow";
 import { SearchBox } from "@typeflowai/ui/SearchBox";
 import { TemplateList } from "@typeflowai/ui/TemplateList";
-
+import { customWorkflow } from "@typeflowai/ui/TemplateList/templates";
 import { minimalWorkflow } from "../../lib/minimalWorkflow";
 
 type TemplateContainerWithPreviewProps = {

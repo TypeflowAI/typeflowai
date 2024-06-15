@@ -14,13 +14,13 @@ import {
   TWorkflowType,
   TWorkflowWelcomeCard,
 } from "@typeflowai/types/workflows";
-import { agencyTemplates } from "./agency";
-import { hrTemplates } from "./hr";
-import { marketingTemplates } from "./marketing";
-import { salesTemplates } from "./sales";
-import { startupTemplates } from "./startup";
-import { supportTemplates } from "./support";
-import { vaTemplates } from "./va";
+import { agencyTemplates } from "./templates/agency";
+import { hrTemplates } from "./templates/hr";
+import { marketingTemplates } from "./templates/marketing";
+import { salesTemplates } from "./templates/sales";
+import { startupTemplates } from "./templates/startup";
+import { supportTemplates } from "./templates/support";
+import { vaTemplates } from "./templates/va";
 
 const thankYouCardDefault: TWorkflowThankYouCard = {
   enabled: true,
