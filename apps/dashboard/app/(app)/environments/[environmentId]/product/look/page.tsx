@@ -1,7 +1,6 @@
 import { ProductConfigNavigation } from "@/app/(app)/environments/[environmentId]/product/components/ProductConfigNavigation";
 import { EditLogo } from "@/app/(app)/environments/[environmentId]/product/look/components/EditLogo";
 import { getServerSession } from "next-auth";
-
 import { getIsPaidSubscription } from "@typeflowai/ee/subscription/lib/service";
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { UNSPLASH_ACCESS_KEY, WEBAPP_URL, WORKFLOW_BG_COLORS } from "@typeflowai/lib/constants";
@@ -12,8 +11,7 @@ import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
 import { ErrorComponent } from "@typeflowai/ui/ErrorComponent";
 import { PageContentWrapper } from "@typeflowai/ui/PageContentWrapper";
 import { PageHeader } from "@typeflowai/ui/PageHeader";
-
-import SettingsCard from "../../settings/components/SettingsCard";
+import { SettingsCard } from "../../settings/components/SettingsCard";
 import { EditTypeflowAIBranding } from "./components/EditBranding";
 import { EditPlacementForm } from "./components/EditPlacementForm";
 import { ThemeStyling } from "./components/ThemeStyling";

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { useMembershipRole } from "@typeflowai/lib/membership/hooks/useMembershipRole";
 import { getAccessFlags } from "@typeflowai/lib/membership/utils";
 import { replaceHeadlineRecall } from "@typeflowai/lib/utils/recall";
@@ -11,8 +10,8 @@ import { TResponse } from "@typeflowai/types/responses";
 import { TTag } from "@typeflowai/types/tags";
 import { TUser } from "@typeflowai/types/user";
 import { TWorkflow } from "@typeflowai/types/workflows";
-import EmptySpaceFiller from "@typeflowai/ui/EmptySpaceFiller";
-import SingleResponseCard from "@typeflowai/ui/SingleResponseCard";
+import { EmptySpaceFiller } from "@typeflowai/ui/EmptySpaceFiller";
+import { SingleResponseCard } from "@typeflowai/ui/SingleResponseCard";
 
 interface ResponseTimelineProps {
   workflows: TWorkflow[];

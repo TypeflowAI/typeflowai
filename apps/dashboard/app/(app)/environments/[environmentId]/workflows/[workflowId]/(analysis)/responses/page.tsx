@@ -1,8 +1,7 @@
 import { WorkflowAnalysisNavigation } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/components/WorkflowAnalysisNavigation";
-import ResponsePage from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/responses/components/ResponsePage";
+import { ResponsePage } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/responses/components/ResponsePage";
 import { WorkflowAnalysisCTA } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/WorkflowAnalysisCTA";
 import { getServerSession } from "next-auth";
-
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { RESPONSES_PER_PAGE, WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment } from "@typeflowai/lib/environment/service";

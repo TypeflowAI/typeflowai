@@ -6,7 +6,6 @@ import {
   mockEnvironmentId,
   mockMeta,
   mockPerson,
-  mockPersonId,
   mockResponse,
   mockResponseData,
   mockResponseNote,
@@ -17,25 +16,16 @@ import {
   mockWorkflowId,
   mockWorkflowSummaryOutput,
 } from "./__mocks__/data.mock";
-
 import { Prisma } from "@prisma/client";
 import { beforeEach, describe, expect, it } from "vitest";
 import { testInputValidation } from "vitestSetup";
-
 import { DatabaseError, ResourceNotFoundError } from "@typeflowai/types/errors";
-import {
-  TResponse,
-  TResponseFilterCriteria,
-  TResponseInput,
-  TResponseLegacyInput,
-} from "@typeflowai/types/responses";
+import { TResponse, TResponseFilterCriteria, TResponseInput } from "@typeflowai/types/responses";
 import { TTag } from "@typeflowai/types/tags";
-
 import { selectPerson } from "../../person/service";
 import { mockAttributeClass, mockWorkflowOutput } from "../../workflow/tests/__mock__/workflow.mock";
 import {
   createResponse,
-  createResponseLegacy,
   deleteResponse,
   getResponse,
   getResponseBySingleUseId,
@@ -75,16 +65,6 @@ const mockResponseInputWithUserId: TResponseInput = {
   ...mockResponseInputWithoutUserId,
   userId: mockUserId,
 };
-
-const createMockResponseLegacyInput = (personId?: string): TResponseLegacyInput => ({
-  finished: constantsForTests.boolean,
-  personId: personId ?? null,
-  workflowId: mockWorkflowId,
-  meta: mockMeta,
-  singleUseId: mockSingleUseId,
-  ttc: {},
-  data: {},
-});
 
 beforeEach(() => {
   // @ts-expect-error
@@ -258,20 +238,6 @@ describe("Tests for createResponse service", () => {
       prisma.response.create.mockRejectedValue(new Error(mockErrorMessage));
 
       await expect(createResponse(mockResponseInputWithUserId)).rejects.toThrow(Error);
-    });
-  });
-});
-
-describe("Tests for createResponseLegacy service", () => {
-  describe("Happy Path", () => {
-    it("Creates a response linked to an existing user", async () => {
-      const response = await createResponseLegacy(createMockResponseLegacyInput(mockPersonId));
-      expect(response).toEqual(expectedResponseWithPerson);
-    });
-
-    it("Creates a legacy response without an associated user ID", async () => {
-      const response = await createResponseLegacy(createMockResponseLegacyInput());
-      expect(response).toEqual(expectedResponseWithoutPerson);
     });
   });
 });

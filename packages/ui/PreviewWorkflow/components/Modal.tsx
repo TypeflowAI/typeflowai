@@ -1,20 +1,9 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
-
 import { cn } from "@typeflowai/lib/cn";
 import { TPlacement } from "@typeflowai/types/common";
-
 import { getPlacementStyle } from "../lib/utils";
 
-export default function Modal({
-  children,
-  isOpen,
-  placement,
-  previewMode,
-  clickOutsideClose,
-  darkOverlay,
-  borderRadius,
-  background,
-}: {
+interface ModalProps {
   children: ReactNode;
   isOpen: boolean;
   placement: TPlacement;
@@ -23,7 +12,18 @@ export default function Modal({
   darkOverlay: boolean;
   borderRadius?: number;
   background?: string;
-}) {
+}
+
+export const Modal = ({
+  children,
+  isOpen,
+  placement,
+  previewMode,
+  clickOutsideClose,
+  darkOverlay,
+  borderRadius,
+  background,
+}: ModalProps) => {
   const [show, setShow] = useState(true);
   const modalRef = useRef<HTMLDivElement | null>(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -152,4 +152,4 @@ export default function Modal({
       </div>
     </div>
   );
-}
+};

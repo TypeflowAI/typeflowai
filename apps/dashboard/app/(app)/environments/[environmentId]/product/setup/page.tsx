@@ -1,6 +1,5 @@
 import { WidgetStatusIndicator } from "@/app/(app)/environments/[environmentId]/components/WidgetStatusIndicator";
 import { ProductConfigNavigation } from "@/app/(app)/environments/[environmentId]/product/components/ProductConfigNavigation";
-
 // import { getMultiLanguagePermission } from "@typeflowai/ee/lib/service";
 import { IS_TYPEFLOWAI_CLOUD, WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
@@ -8,8 +7,7 @@ import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
 import EnvironmentNotice from "@typeflowai/ui/EnvironmentNotice";
 import { PageContentWrapper } from "@typeflowai/ui/PageContentWrapper";
 import { PageHeader } from "@typeflowai/ui/PageHeader";
-
-import SettingsCard from "../../settings/components/SettingsCard";
+import { SettingsCard } from "../../settings/components/SettingsCard";
 import EnvironmentIdField from "./components/EnvironmentIdField";
 import SetupInstructions from "./components/SetupInstructions";
 

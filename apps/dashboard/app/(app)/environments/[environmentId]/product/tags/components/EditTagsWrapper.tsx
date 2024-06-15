@@ -10,12 +10,11 @@ import { AlertCircleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
-
 import { cn } from "@typeflowai/lib/cn";
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TTag, TTagsCount } from "@typeflowai/types/tags";
 import { Button } from "@typeflowai/ui/Button";
-import EmptySpaceFiller from "@typeflowai/ui/EmptySpaceFiller";
+import { EmptySpaceFiller } from "@typeflowai/ui/EmptySpaceFiller";
 import { Input } from "@typeflowai/ui/Input";
 import { LoadingSpinner } from "@typeflowai/ui/LoadingSpinner";
 

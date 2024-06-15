@@ -2,11 +2,10 @@
 
 import WebhookModal from "@/app/(app)/environments/[environmentId]/integrations/webhooks/components/WebhookDetailModal";
 import { useState } from "react";
-
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TWebhook } from "@typeflowai/types/webhooks";
 import { TWorkflow } from "@typeflowai/types/workflows";
-import EmptySpaceFiller from "@typeflowai/ui/EmptySpaceFiller";
+import { EmptySpaceFiller } from "@typeflowai/ui/EmptySpaceFiller";
 
 export default function WebhookTable({
   environment,

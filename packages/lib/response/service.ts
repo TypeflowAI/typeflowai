@@ -1,7 +1,5 @@
 import "server-only";
-
 import { Prisma } from "@prisma/client";
-
 import { prisma } from "@typeflowai/database";
 import { TAttributes } from "@typeflowai/types/attributes";
 import { ZOptionalNumber, ZString } from "@typeflowai/types/common";
@@ -12,22 +10,19 @@ import {
   TResponse,
   TResponseFilterCriteria,
   TResponseInput,
-  TResponseLegacyInput,
   TResponseUpdateInput,
   ZResponseFilterCriteria,
   ZResponseInput,
-  ZResponseLegacyInput,
   ZResponseUpdateInput,
 } from "@typeflowai/types/responses";
 import { TTag } from "@typeflowai/types/tags";
 import { TWorkflowSummary } from "@typeflowai/types/workflows";
-
 import { getAttributes } from "../attribute/service";
 import { cache } from "../cache";
 import { ITEMS_PER_PAGE, WEBAPP_URL } from "../constants";
 import { displayCache } from "../display/cache";
 import { deleteDisplayByResponseId, getDisplayCountByWorkflowId } from "../display/service";
-import { createPerson, getPerson, getPersonByUserId } from "../person/service";
+import { createPerson, getPersonByUserId } from "../person/service";
 import { responseNoteCache } from "../responseNote/cache";
 import { getResponseNotes } from "../responseNote/service";
 import { putFile } from "../storage/service";
@@ -269,81 +264,6 @@ export const createResponse = async (responseInput: TResponseInput): Promise<TRe
       responseId: response.id,
     });
 
-    return response;
-  } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      throw new DatabaseError(error.message);
-    }
-
-    throw error;
-  }
-};
-
-export const createResponseLegacy = async (responseInput: TResponseLegacyInput): Promise<TResponse> => {
-  validateInputs([responseInput, ZResponseLegacyInput]);
-  captureTelemetry("response created");
-
-  try {
-    let person: TPerson | null = null;
-    let attributes: TAttributes | null = null;
-
-    if (responseInput.personId) {
-      person = await getPerson(responseInput.personId);
-    }
-    const ttcTemp = responseInput.ttc ?? {};
-    const questionId = Object.keys(ttcTemp)[0];
-    const ttc =
-      responseInput.finished && responseInput.ttc
-        ? {
-            ...ttcTemp,
-            _total: ttcTemp[questionId], // Add _total property with the same value
-          }
-        : ttcTemp;
-
-    if (person?.id) {
-      attributes = await getAttributes(person?.id as string);
-    }
-
-    const responsePrisma = await prisma.response.create({
-      data: {
-        workflow: {
-          connect: {
-            id: responseInput.workflowId,
-          },
-        },
-        finished: responseInput.finished,
-        data: responseInput.data,
-        ttc,
-        ...(responseInput.personId && {
-          person: {
-            connect: {
-              id: responseInput.personId,
-            },
-          },
-          personAttributes: attributes,
-        }),
-
-        ...(responseInput.meta && ({ meta: responseInput?.meta } as Prisma.JsonObject)),
-        singleUseId: responseInput.singleUseId,
-        language: responseInput.language,
-      },
-      select: responseSelection,
-    });
-
-    const response: TResponse = {
-      ...responsePrisma,
-      tags: responsePrisma.tags.map((tagPrisma: { tag: TTag }) => tagPrisma.tag),
-    };
-
-    responseCache.revalidate({
-      id: response.id,
-      personId: response.person?.id,
-      workflowId: response.workflowId,
-    });
-
-    responseNoteCache.revalidate({
-      responseId: response.id,
-    });
     return response;
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {

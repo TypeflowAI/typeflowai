@@ -1,6 +1,5 @@
-import ResponseTimeline from "@/app/(app)/environments/[environmentId]/(people)/people/[personId]/components/ResponseTimeline";
+import { ResponseTimeline } from "@/app/(app)/environments/[environmentId]/(people)/people/[personId]/components/ResponseTimeline";
 import { getServerSession } from "next-auth";
-
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { getResponsesByPersonId } from "@typeflowai/lib/response/service";
 import { getWorkflows } from "@typeflowai/lib/workflow/service";

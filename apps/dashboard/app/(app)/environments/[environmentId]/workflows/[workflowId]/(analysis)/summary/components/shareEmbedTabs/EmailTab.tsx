@@ -3,13 +3,11 @@
 import { Code2Icon, CopyIcon, MailIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
-
 import { AuthenticationError } from "@typeflowai/types/errors";
 import { Button } from "@typeflowai/ui/Button";
 import CodeBlock from "@typeflowai/ui/CodeBlock";
 import { LoadingSpinner } from "@typeflowai/ui/LoadingSpinner";
 import { capturePosthogEvent } from "@typeflowai/ui/PostHogClient";
-
 import { getEmailHtmlAction, sendEmbedWorkflowPreviewEmailAction } from "../../actions";
 
 interface EmailTabProps {
@@ -17,7 +15,7 @@ interface EmailTabProps {
   email: string;
 }
 
-export default function EmailTab({ workflowId, email }: EmailTabProps) {
+export const EmailTab = ({ workflowId, email }: EmailTabProps) => {
   const [showEmbed, setShowEmbed] = useState(false);
   const [emailHtmlPreview, setEmailHtmlPreview] = useState<string>("");
 
@@ -126,4 +124,4 @@ export default function EmailTab({ workflowId, email }: EmailTabProps) {
       )}
     </div>
   );
-}
+};

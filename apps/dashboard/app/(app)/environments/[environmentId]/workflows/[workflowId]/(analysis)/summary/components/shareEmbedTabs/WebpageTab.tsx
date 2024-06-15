@@ -2,12 +2,11 @@
 
 import { CopyIcon } from "lucide-react";
 import toast from "react-hot-toast";
-
 import { Button } from "@typeflowai/ui/Button";
 import CodeBlock from "@typeflowai/ui/CodeBlock";
 import { capturePosthogEvent } from "@typeflowai/ui/PostHogClient";
 
-export default function WebpageTab({ workflowUrl }) {
+export const WebpageTab = ({ workflowUrl }) => {
   const iframeCode = `<div style="position: relative; height:100vh; max-height:100vh; overflow:auto;"> 
   <iframe 
     src="${workflowUrl}" 
@@ -42,4 +41,4 @@ export default function WebpageTab({ workflowUrl }) {
       </div>
     </div>
   );
-}
+};

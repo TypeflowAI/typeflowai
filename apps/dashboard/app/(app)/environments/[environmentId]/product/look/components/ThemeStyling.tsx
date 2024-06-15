@@ -10,8 +10,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { SubmitHandler, UseFormReturn, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-
-import { COLOR_DEFAULTS, PREVIEW_SURVEY } from "@typeflowai/lib/styling/constants";
+import { COLOR_DEFAULTS, PREVIEW_WORKFLOW } from "@typeflowai/lib/styling/constants";
 import { TProduct, TProductStyling, ZProductStyling } from "@typeflowai/types/product";
 import { TWorkflow, TWorkflowStyling, TWorkflowType } from "@typeflowai/types/workflows";
 import { AlertDialog } from "@typeflowai/ui/AlertDialog";
@@ -25,17 +24,23 @@ import {
   FormProvider,
 } from "@typeflowai/ui/Form";
 import { Switch } from "@typeflowai/ui/Switch";
-
 import { updateProductAction } from "../actions";
 
 type ThemeStylingProps = {
   product: TProduct;
+  webAppUrl: string;
   environmentId: string;
   colors: string[];
   isUnsplashConfigured: boolean;
 };
 
-export const ThemeStyling = ({ product, environmentId, colors, isUnsplashConfigured }: ThemeStylingProps) => {
+export const ThemeStyling = ({
+  product,
+  webAppUrl,
+  environmentId,
+  colors,
+  isUnsplashConfigured,
+}: ThemeStylingProps) => {
   const router = useRouter();
 
   const form = useForm<TProductStyling>({
@@ -223,7 +228,8 @@ export const ThemeStyling = ({ product, environmentId, colors, isUnsplashConfigu
             <div className="sticky top-4 mb-4 h-[600px]">
               <ThemeStylingPreviewWorkflow
                 setQuestionId={(_id: string) => {}}
-                workflow={PREVIEW_SURVEY as TWorkflow}
+                workflow={PREVIEW_WORKFLOW as TWorkflow}
+                webAppUrl={webAppUrl}
                 product={{
                   ...product,
                   styling: form.getValues(),

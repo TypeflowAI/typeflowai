@@ -1,7 +1,6 @@
 import { WorkflowAnalysisNavigation } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/components/WorkflowAnalysisNavigation";
-import ResponsePage from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/responses/components/ResponsePage";
+import { ResponsePage } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/responses/components/ResponsePage";
 import { notFound } from "next/navigation";
-
 import { RESPONSES_PER_PAGE, WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
 import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";

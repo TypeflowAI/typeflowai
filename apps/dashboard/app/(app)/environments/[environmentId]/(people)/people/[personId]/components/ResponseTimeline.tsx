@@ -1,9 +1,8 @@
 "use client";
 
-import ResponseFeed from "@/app/(app)/environments/[environmentId]/(people)/people/[personId]/components/ResponsesFeed";
+import { ResponseFeed } from "@/app/(app)/environments/[environmentId]/(people)/people/[personId]/components/ResponsesFeed";
 import { ArrowDownUpIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-
 import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TResponse } from "@typeflowai/types/responses";

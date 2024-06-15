@@ -5,7 +5,7 @@ import {
   getResponseCountAction,
   getResponsesAction,
 } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/actions";
-import ResponseTimeline from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/responses/components/ResponseTimeline";
+import { ResponseTimeline } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/responses/components/ResponseTimeline";
 import { CustomFilter } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/components/CustomFilter";
 import { ResultsShareButton } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/components/ResultsShareButton";
 import { getFormattedFilters } from "@/app/lib/workflows/workflows";
@@ -32,7 +32,7 @@ interface ResponsePageProps {
   totalResponseCount: number;
 }
 
-const ResponsePage = ({
+export const ResponsePage = ({
   environment,
   workflow,
   workflowId,
@@ -173,5 +173,3 @@ const ResponsePage = ({
     </>
   );
 };
-
-export default ResponsePage;

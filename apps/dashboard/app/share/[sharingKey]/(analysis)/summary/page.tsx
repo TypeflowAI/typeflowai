@@ -1,7 +1,6 @@
 import { WorkflowAnalysisNavigation } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/components/WorkflowAnalysisNavigation";
-import SummaryPage from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/SummaryPage";
+import { SummaryPage } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/SummaryPage";
 import { notFound } from "next/navigation";
-
 import { getAttributeClasses } from "@typeflowai/lib/attributeClass/service";
 import { WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment } from "@typeflowai/lib/environment/service";

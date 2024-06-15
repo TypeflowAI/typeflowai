@@ -1,5 +1,5 @@
 import { ProductConfigNavigation } from "@/app/(app)/environments/[environmentId]/product/components/ProductConfigNavigation";
-// import SettingsCard from "@/app/(app)/environments/[environmentId]/settings/components/SettingsCard";
+// import { SettingsCard } from "@/app/(app)/environments/[environmentId]/settings/components/SettingsCard";
 import { notFound } from "next/navigation";
 // import EditLanguage from "@typeflowai/ee/multi-language/components/edit-language";
 // import { getIsPaidSubscription } from "@typeflowai/ee/subscription/lib/service";

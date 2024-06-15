@@ -1,9 +1,8 @@
 import { WorkflowAnalysisNavigation } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/components/WorkflowAnalysisNavigation";
-import SummaryPage from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/SummaryPage";
+import { SummaryPage } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/SummaryPage";
 import { WorkflowAnalysisCTA } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/WorkflowAnalysisCTA";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
-
 import { getAttributeClasses } from "@typeflowai/lib/attributeClass/service";
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { WEBAPP_URL } from "@typeflowai/lib/constants";

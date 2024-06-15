@@ -2,7 +2,6 @@
 
 import { Variants, motion } from "framer-motion";
 import { useRef, useState } from "react";
-
 import type { TProduct } from "@typeflowai/types/product";
 import { TWorkflow, TWorkflowType } from "@typeflowai/types/workflows";
 import { ClientLogo } from "@typeflowai/ui/ClientLogo";
@@ -13,6 +12,7 @@ import { WorkflowInline } from "@typeflowai/ui/Workflow";
 
 interface ThemeStylingPreviewWorkflowProps {
   workflow: TWorkflow;
+  webAppUrl: string;
   setQuestionId: (_: string) => void;
   product: TProduct;
   previewType: TWorkflowType;
@@ -48,6 +48,7 @@ const previewParentContainerVariant: Variants = {
 
 export const ThemeStylingPreviewWorkflow = ({
   workflow,
+  webAppUrl,
   product,
   previewType,
   setPreviewType,
@@ -165,6 +166,7 @@ export const ThemeStylingPreviewWorkflow = ({
               borderRadius={product.styling.roundness ?? 8}>
               <WorkflowInline
                 workflow={{ ...workflow, type: "app" }}
+                webAppUrl={webAppUrl}
                 isBrandingEnabled={product.inAppWorkflowBranding}
                 isRedirectDisabled={true}
                 onFileUpload={onFileUpload}
@@ -187,6 +189,7 @@ export const ThemeStylingPreviewWorkflow = ({
                 className={`${product.logo?.url && !product.styling.isLogoHidden && !isFullScreenPreview ? "mt-12" : ""} z-0 w-full max-w-md rounded-lg p-4`}>
                 <WorkflowInline
                   workflow={{ ...workflow, type: "link" }}
+                  webAppUrl={webAppUrl}
                   isBrandingEnabled={product.linkWorkflowBranding}
                   isRedirectDisabled={true}
                   onFileUpload={onFileUpload}

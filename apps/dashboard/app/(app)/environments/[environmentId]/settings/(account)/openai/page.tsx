@@ -1,9 +1,7 @@
 import { getServerSession } from "next-auth";
-
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
-
-import SettingsCard from "../../components/SettingsCard";
+import { SettingsCard } from "../../components/SettingsCard";
 import SettingsTitle from "../../components/SettingsTitle";
 import { EditApiKey } from "./components/EditApiKey";
 

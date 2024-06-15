@@ -1,6 +1,5 @@
 import { ProductConfigNavigation } from "@/app/(app)/environments/[environmentId]/product/components/ProductConfigNavigation";
 import { getServerSession } from "next-auth";
-
 // import { getMultiLanguagePermission } from "@typeflowai/ee/lib/service";
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
@@ -12,8 +11,7 @@ import { ErrorComponent } from "@typeflowai/ui/ErrorComponent";
 import { PageContentWrapper } from "@typeflowai/ui/PageContentWrapper";
 import { PageHeader } from "@typeflowai/ui/PageHeader";
 import { SettingsId } from "@typeflowai/ui/SettingsId";
-
-import SettingsCard from "../../settings/components/SettingsCard";
+import { SettingsCard } from "../../settings/components/SettingsCard";
 import DeleteProduct from "./components/DeleteProduct";
 import { EditProductNameForm } from "./components/EditProductNameForm";
 import { EditWaitingTimeForm } from "./components/EditWaitingTimeForm";

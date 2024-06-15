@@ -3,19 +3,17 @@
 import { Variants, motion } from "framer-motion";
 import { ExpandIcon, MonitorIcon, ShrinkIcon, SmartphoneIcon } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-
 import type { TEnvironment } from "@typeflowai/types/environment";
 import type { TProduct } from "@typeflowai/types/product";
 import { TProductStyling } from "@typeflowai/types/product";
 import { TUploadFileConfig } from "@typeflowai/types/storage";
 import { TWorkflow, TWorkflowStyling } from "@typeflowai/types/workflows";
-
 import { ClientLogo } from "../ClientLogo";
 import { MediaBackground } from "../MediaBackground";
 import { ResetProgressButton } from "../ResetProgressButton";
 import { WorkflowInline } from "../Workflow";
-import Modal from "./components/Modal";
-import TabOption from "./components/TabOption";
+import { Modal } from "./components/Modal";
+import { TabOption } from "./components/TabOption";
 
 type TPreviewType = "modal" | "fullwidth" | "email";
 
