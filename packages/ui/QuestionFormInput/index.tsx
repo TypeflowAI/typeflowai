@@ -78,7 +78,7 @@ export const QuestionFormInput = ({
   isInvalid,
   label,
   selectedLanguageCode,
-  setSelectedLanguageCode,
+  // setSelectedLanguageCode,
   maxLength,
   placeholder,
   onBlur,
