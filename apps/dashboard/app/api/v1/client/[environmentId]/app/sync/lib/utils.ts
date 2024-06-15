@@ -1,6 +1,6 @@
 import { parseRecallInfo } from "@typeflowai/lib/utils/recall";
-import { TLegacyWorkflow } from "@typeflowai/types/LegacyWorkflow";
 import { TAttributes } from "@typeflowai/types/attributes";
+import { TLegacyWorkflow } from "@typeflowai/types/legacyWorkflow";
 import { TWorkflow } from "@typeflowai/types/workflows";
 
 export const replaceAttributeRecall = (workflow: TWorkflow, attributes: TAttributes): TWorkflow => {
