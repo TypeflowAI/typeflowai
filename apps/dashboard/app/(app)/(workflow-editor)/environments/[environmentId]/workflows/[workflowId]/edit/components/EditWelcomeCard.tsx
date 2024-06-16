@@ -2,13 +2,14 @@
 
 import * as Collapsible from "@radix-ui/react-collapsible";
 import { usePathname } from "next/navigation";
-// import { useState } from "react";
-// import { LocalizedEditor } from "@typeflowai/ee/multi-language/components/localized-editor";
+import { useState } from "react";
 import { cn } from "@typeflowai/lib/cn";
 import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TWorkflow } from "@typeflowai/types/workflows";
 import { FileInput } from "@typeflowai/ui/FileInput";
 import { Label } from "@typeflowai/ui/Label";
+// import { LocalizedEditor } from "@typeflowai/ee/multi-language/components/localized-editor";
+import { MessageEditor } from "@typeflowai/ui/MessageEditor";
 import { QuestionFormInput } from "@typeflowai/ui/QuestionFormInput";
 import { Switch } from "@typeflowai/ui/Switch";
 
@@ -33,7 +34,7 @@ export default function EditWelcomeCard({
   setSelectedLanguageCode,
   attributeClasses,
 }: EditWelcomeCardProps) {
-  // const [firstRender, setFirstRender] = useState(true);
+  const [firstRender, setFirstRender] = useState(true);
   const path = usePathname();
   const environmentId = path?.split("/environments/")[1]?.split("/")[0];
 
@@ -42,7 +43,7 @@ export default function EditWelcomeCard({
   const setOpen = (e) => {
     if (e) {
       setActiveQuestionId("start");
-      // setFirstRender(true);
+      setFirstRender(true);
     } else {
       setActiveQuestionId(null);
     }
@@ -150,6 +151,18 @@ export default function EditWelcomeCard({
                   setFirstRender={setFirstRender}
                   questionIdx={-1}
                 /> */}
+                <MessageEditor
+                  id="html"
+                  value={localWorkflow.welcomeCard.html}
+                  localWorkflow={localWorkflow}
+                  isInvalid={isInvalid}
+                  updateQuestion={updateWorkflow}
+                  selectedLanguageCode={selectedLanguageCode}
+                  setSelectedLanguageCode={setSelectedLanguageCode}
+                  firstRender={firstRender}
+                  setFirstRender={setFirstRender}
+                  questionIdx={-1}
+                />
               </div>
             </div>
 

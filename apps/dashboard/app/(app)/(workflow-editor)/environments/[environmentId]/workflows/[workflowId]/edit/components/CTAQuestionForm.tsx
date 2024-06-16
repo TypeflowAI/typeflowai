@@ -1,11 +1,12 @@
 "use client";
 
-// import { useState } from "react";
-// import { LocalizedEditor } from "@typeflowai/ee/multi-language/components/localized-editor";
+import { useState } from "react";
 import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TWorkflow, TWorkflowCTAQuestion } from "@typeflowai/types/workflows";
 import { Input } from "@typeflowai/ui/Input";
 import { Label } from "@typeflowai/ui/Label";
+// import { LocalizedEditor } from "@typeflowai/ee/multi-language/components/localized-editor";
+import { MessageEditor } from "@typeflowai/ui/MessageEditor";
 import { QuestionFormInput } from "@typeflowai/ui/QuestionFormInput";
 import { RadioGroup, RadioGroupItem } from "@typeflowai/ui/RadioGroup";
 
@@ -34,7 +35,7 @@ export const CTAQuestionForm = ({
   setSelectedLanguageCode,
   attributeClasses,
 }: CTAQuestionFormProps): JSX.Element => {
-  // const [firstRender, setFirstRender] = useState(true);
+  const [firstRender, setFirstRender] = useState(true);
 
   return (
     <form>
@@ -66,6 +67,18 @@ export const CTAQuestionForm = ({
             setFirstRender={setFirstRender}
             questionIdx={questionIdx}
           /> */}
+          <MessageEditor
+            id="subheader"
+            value={question.html}
+            localWorkflow={localWorkflow}
+            isInvalid={isInvalid}
+            updateQuestion={updateQuestion}
+            selectedLanguageCode={selectedLanguageCode}
+            setSelectedLanguageCode={setSelectedLanguageCode}
+            firstRender={firstRender}
+            setFirstRender={setFirstRender}
+            questionIdx={questionIdx}
+          />
         </div>
       </div>
 
