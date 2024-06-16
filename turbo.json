@@ -1,10 +1,6 @@
 {
   "$schema": "https://turborepo.org/schema.json",
   "tasks": {
-    "@typeflowai/database#build": {
-      "cache": false,
-      "dependsOn": ["post-install"]
-    },
     "@typeflowai/dashboard#go": {
       "cache": false,
       "persistent": true,

@@ -20,8 +20,7 @@
     "format": "prisma format",
     "generate": "prisma generate",
     "lint": "eslint ./src --fix",
-    "post-install": "pnpm generate",
-    "predev": "pnpm generate"
+    "build": "pnpm generate"
   },
   "dependencies": {
     "@prisma/client": "^5.14.0",
