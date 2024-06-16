@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "preact/hooks";
-
 import { TProductStyling } from "@typeflowai/types/product";
 import { TCardArrangementOptions } from "@typeflowai/types/styling";
 import { TWorkflow, TWorkflowStyling } from "@typeflowai/types/workflows";
 
+// offset = 0 -> Current question card
+// offset < 0 -> Question cards that are already answered
+// offset > 0 -> Question that aren't answered yet
 interface StackedCardsContainerProps {
   cardArrangement: TCardArrangementOptions;
   currentQuestionId: string;
@@ -194,7 +196,3 @@ export const StackedCardsContainer = ({
     </div>
   );
 };
-
-// offset = 0 -> Current question card
-// offset < 0 -> Question cards that are already answered
-// offset > 0 -> Question that aren't answered yet
