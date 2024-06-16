@@ -147,11 +147,13 @@
       "dependsOn": ["^build:dev"],
       "outputs": ["dist/**", ".next/**"]
     },
-    "post-install": {
+    "db:setup": {
       "cache": false,
-      "dependsOn": [],
-      "outputs": [],
-      "inputs": ["./schema.prisma"]
+      "outputs": []
+    },
+    "db:down": {
+      "cache": false,
+      "outputs": []
     },
     "go": {
       "persistent": true,
@@ -162,6 +164,15 @@
     },
     "db:migrate:deploy": {
       "outputs": []
+    },
+    "db:push": {
+      "outputs": []
+    },
+    "db:seed": {
+      "outputs": []
+    },
+    "db:start": {
+      "cache": false
     },
     "dev": {
       "cache": false,
