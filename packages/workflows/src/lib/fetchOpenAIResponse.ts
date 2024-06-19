@@ -63,6 +63,8 @@ export const fetchOpenAIResponse = async ({
   let isFirstChunkProcessed = false;
 
   try {
+    console.log("Sending message to OpenAI API");
+    console.log("isStreaming: ", isStreaming);
     if (isStreaming) {
       const response = await typeflowaiAPI.client.openai.sendStreamingMessage(requestData);
       if (response.ok) {
@@ -128,6 +130,7 @@ export const fetchOpenAIResponse = async ({
     }
   } catch (error) {
     if (setIsOpenAIIssue) setIsOpenAIIssue(true);
+    console.log("Error calling OpenAI API:", error);
     console.error("Error calling OpenAI API:", error);
   } finally {
     if (!isFirstChunkProcessed && setIsLoading) {

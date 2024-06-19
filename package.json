@@ -23,7 +23,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "generate": "turbo run generate",
     "lint": "turbo run lint",
-    "release": "turbo run build --filter=@typeflow/js... && changeset publish",
+    "release": "turbo run build --filter=@typeflowai/js... && changeset publish",
     "test": "turbo run test --no-cache",
     "prepare": "husky install"
   },

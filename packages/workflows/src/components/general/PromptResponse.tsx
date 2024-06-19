@@ -12,6 +12,10 @@ import StartOverButton from "../buttons/StartOverButton";
 import { LoadingSpinner } from "./LoadingSpinner";
 import PromptMarkdownResponse from "./PromptMarkdownResponse";
 
+// Force the page to be dynamic and allow streaming responses up to 180 seconds
+export const dynamic = "force-dynamic";
+export const maxDuration = 180;
+
 interface PromptResponseProps {
   prompt: TWorkflowPrompt;
   webAppUrl: string;
