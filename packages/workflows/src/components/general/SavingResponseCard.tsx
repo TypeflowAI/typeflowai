@@ -1,9 +1,9 @@
-interface GeneratingResponseCardProps {
+interface SavingResponseCardProps {
   headline?: string;
   subheader?: string;
 }
 
-export const GeneratingResponseCard = ({ headline, subheader }: GeneratingResponseCardProps) => {
+export const SavingResponseCard = ({ headline, subheader }: SavingResponseCardProps) => {
   return (
     <div className="text-center">
       <div className="text-brand flex items-center justify-center">

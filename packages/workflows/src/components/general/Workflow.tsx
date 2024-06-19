@@ -1,5 +1,4 @@
 import { ActivatePromptCard } from "@/components/general/ActivatePromptCard";
-import { GeneratingResponseCard } from "@/components/general/GeneratingResponseCard";
 import { IsPreviewPromptCard } from "@/components/general/IsPreviewPromptCard";
 import { ProgressBar } from "@/components/general/ProgressBar";
 import { PromptResponse } from "@/components/general/PromptResponse";
@@ -22,6 +21,7 @@ import { extractFallbackValue, extractId, extractRecallInfo } from "@typeflowai/
 import type { TResponseData, TResponseTtc } from "@typeflowai/types/responses";
 import { WorkflowBaseProps } from "@typeflowai/types/typeflowAIWorkflows";
 import { TWorkflowQuestion } from "@typeflowai/types/workflows";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 export const Workflow = ({
   workflow,
@@ -348,7 +348,16 @@ export const Workflow = ({
                 isVisible: false,
                 isStreaming: false,
               });
-              return <GeneratingResponseCard headline="Saving your response..." />;
+              return (
+                <div>
+                  <div className="text-center">
+                    <div className="my-3 flex items-center justify-center">
+                      <LoadingSpinner />
+                    </div>
+                    <h1 className="text-brand">Generating response...</h1>
+                  </div>
+                </div>
+              );
             }
           }
         }
