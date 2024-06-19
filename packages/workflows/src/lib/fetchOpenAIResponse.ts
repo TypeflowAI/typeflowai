@@ -102,16 +102,17 @@ export const fetchOpenAIResponse = async ({
     } else {
       const response = await typeflowaiAPI.client.openai.sendMessage(requestData);
       if (response.ok) {
-        const data = response.data as TOpenAIResponse;
+        // const data = response.body as TOpenAIResponse;
+        const data: TOpenAIResponse = await response.json();
         if ("limitReached" in data && data.limitReached) {
           console.log("Error: Limit reached");
           if (setIsAILimitReached) setIsAILimitReached(true);
           if (setIsLoading) setIsLoading(false);
           return;
         }
-        const openAIResponse = response.data as TOpenAIResponse;
-        if (openAIResponse.choices && openAIResponse.choices.length > 0) {
-          const responseContent = openAIResponse.choices[0].message.content;
+        // const openAIResponse = response.data as TOpenAIResponse;
+        if (data.choices && data.choices.length > 0) {
+          const responseContent = data.choices[0].message.content;
           if (isVisible) {
             if (setOpenAIResponse) setOpenAIResponse(responseContent);
             if (setDisplayResponse) setDisplayResponse(responseContent);
@@ -125,7 +126,7 @@ export const fetchOpenAIResponse = async ({
           console.error("No choices available in the response");
         }
       } else {
-        console.error("Error in API response:", response.error);
+        console.error("Error in API response");
       }
     }
   } catch (error) {
