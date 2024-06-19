@@ -14,7 +14,7 @@ export function InviteEmail({ inviteeName, inviterName, verifyLink }: InviteEmai
     <Container>
       <Text>Hey {inviteeName},</Text>
       <Text>
-        Your colleague {inviterName} invited you to join them at Formbricks. To accept the invitation, please
+        Your colleague {inviterName} invited you to join them at TypeflowAI. To accept the invitation, please
         click the link below:
       </Text>
       <EmailButton href={verifyLink} label="Join organization" />

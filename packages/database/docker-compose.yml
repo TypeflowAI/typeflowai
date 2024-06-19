@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres:15-alpine
     volumes:
-      - formbricks-postgres:/var/lib/postgresql/data
+      - typeflowai-postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -21,5 +21,5 @@ services:
       - 1025:1025 # smtp server
 
 volumes:
-  formbricks-postgres:
+  typeflowai-postgres:
     driver: local
