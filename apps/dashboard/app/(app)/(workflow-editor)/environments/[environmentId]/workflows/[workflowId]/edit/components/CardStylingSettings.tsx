@@ -4,13 +4,13 @@ import * as Collapsible from "@radix-ui/react-collapsible";
 import { CheckIcon } from "lucide-react";
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
-
 import { cn } from "@typeflowai/lib/cn";
 import { COLOR_DEFAULTS } from "@typeflowai/lib/styling/constants";
 import { TProduct, TProductStyling } from "@typeflowai/types/product";
 import { TWorkflowStyling, TWorkflowType } from "@typeflowai/types/workflows";
 import { Badge } from "@typeflowai/ui/Badge";
 import { CardArrangementTabs } from "@typeflowai/ui/CardArrangementTabs";
+import { CardSizeTabs } from "@typeflowai/ui/CardSizeTabs";
 import { ColorPicker } from "@typeflowai/ui/ColorPicker";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel } from "@typeflowai/ui/Form";
 import { Slider } from "@typeflowai/ui/Slider";
@@ -39,6 +39,8 @@ export const CardStylingSettings = ({
   const workflowTypeDerived = isAppWorkflow ? "App / Website" : "Link";
   const isLogoVisible = !!product.logo?.url;
 
+  const linkCardSize = form.watch("cardSize.linkWorkflows") ?? "small";
+  const appCardSize = form.watch("cardSize.appWorkflows") ?? "small";
   const linkCardArrangement = form.watch("cardArrangement.linkWorkflows") ?? "simple";
   const appCardArrangement = form.watch("cardArrangement.appWorkflows") ?? "simple";
   const roundness = form.watch("roundness") ?? 8;
@@ -167,6 +169,34 @@ export const CardStylingSettings = ({
                     color={field.value || COLOR_DEFAULTS.cardShadowColor}
                     onChange={(color) => field.onChange(color)}
                     containerClass="max-w-xs"
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name={"cardSize"}
+            render={() => (
+              <FormItem>
+                <div>
+                  <FormLabel>Card Size for {workflowTypeDerived} Workflows</FormLabel>
+
+                  <FormDescription>
+                    Which size do you want your cards in {workflowTypeDerived} Workflows
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <CardSizeTabs
+                    key={isAppWorkflow ? "app" : "link"}
+                    workflowType={isAppWorkflow ? "app" : "link"}
+                    activeCardSize={isAppWorkflow ? appCardSize : linkCardSize}
+                    setActiveCardSize={(value, type) => {
+                      type === "app"
+                        ? form.setValue("cardSize.appWorkflows", value)
+                        : form.setValue("cardSize.linkWorkflows", value);
+                    }}
                   />
                 </FormControl>
               </FormItem>

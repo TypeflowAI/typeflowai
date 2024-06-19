@@ -1,9 +1,9 @@
-interface SavingCardProps {
+interface GeneratingResponseCardProps {
   headline?: string;
   subheader?: string;
 }
 
-export default function SavingCard({ headline, subheader }: SavingCardProps) {
+export const GeneratingResponseCard = ({ headline, subheader }: GeneratingResponseCardProps) => {
   return (
     <div className="text-center">
       <div className="text-brand flex items-center justify-center">
@@ -13,7 +13,7 @@ export default function SavingCard({ headline, subheader }: SavingCardProps) {
           viewBox="0 0 24 24"
           strokeWidth="1.5"
           stroke="currentColor"
-          class="h-24 w-24">
+          class="h-20 w-20">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -34,4 +34,4 @@ export default function SavingCard({ headline, subheader }: SavingCardProps) {
       </div>
     </div>
   );
-}
+};

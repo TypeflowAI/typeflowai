@@ -1,26 +1,24 @@
-import ActivatePromptCard from "@/components/general/ActivatePromptCard";
+import { ActivatePromptCard } from "@/components/general/ActivatePromptCard";
+import { GeneratingResponseCard } from "@/components/general/GeneratingResponseCard";
+import { IsPreviewPromptCard } from "@/components/general/IsPreviewPromptCard";
 import { ProgressBar } from "@/components/general/ProgressBar";
 import { PromptResponse } from "@/components/general/PromptResponse";
 import { QuestionConditional } from "@/components/general/QuestionConditional";
 import { ResponseErrorComponent } from "@/components/general/ResponseErrorComponent";
-import SavingCard from "@/components/general/SavingCard";
 import { ThankYouCard } from "@/components/general/ThankYouCard";
 import { TypeflowAIBranding } from "@/components/general/TypeflowAIBranding";
 import { WelcomeCard } from "@/components/general/WelcomeCard";
 import { WorkflowCloseButton } from "@/components/general/WorkflowCloseButton";
 import { AutoCloseWrapper } from "@/components/wrappers/AutoCloseWrapper";
 import { StackedCardsContainer } from "@/components/wrappers/StackedCardsContainer";
+import { fetchOpenAIResponse } from "@/lib/fetchOpenAIResponse";
 import { evaluateCondition } from "@/lib/logicEvaluator";
-import { processPromptMessage } from "@/lib/parsePrompt";
-import { getUpdatedTtc } from "@/lib/ttc";
 import { cn } from "@/lib/utils";
 import { useEffect, useMemo, useRef, useState } from "preact/hooks";
-import { TypeflowAIAPI } from "@typeflowai/api";
 import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
 import { structuredClone } from "@typeflowai/lib/pollyfills/structuredClone";
 import { formatDateWithOrdinal, isValidDateString } from "@typeflowai/lib/utils/datetime";
 import { extractFallbackValue, extractId, extractRecallInfo } from "@typeflowai/lib/utils/recall";
-import { TOpenAIResponse } from "@typeflowai/types/openai";
 import type { TResponseData, TResponseTtc } from "@typeflowai/types/responses";
 import { WorkflowBaseProps } from "@typeflowai/types/typeflowAIWorkflows";
 import { TWorkflowQuestion } from "@typeflowai/types/workflows";
@@ -82,10 +80,6 @@ export const Workflow = ({
   const getShowWorkflowCloseButton = (offset: number) => {
     return offset === 0 && workflow.type !== "link" && (clickOutside === undefined ? true : clickOutside);
   };
-  const typeflowaiAPI = new TypeflowAIAPI({
-    apiHost: webAppUrl,
-    environmentId: workflow.environmentId,
-  });
 
   useEffect(() => {
     // scroll to top when question changes
@@ -290,52 +284,6 @@ export const Workflow = ({
     setQuestionId(prevQuestionId);
   };
 
-  const fetchOpenAIResponse = async () => {
-    if (!workflow.prompt.message) return;
-
-    const promptMessage = processPromptMessage(
-      workflow.prompt.message,
-      workflow.prompt.attributes,
-      responseData
-    );
-
-    const requestData = {
-      messages: [
-        {
-          role: "system",
-          content: promptMessage,
-        },
-      ],
-      model: workflow.prompt.engine,
-      stream: false,
-    };
-
-    try {
-      const response = await typeflowaiAPI.client.openai.sendMessage(requestData);
-      if (response.ok) {
-        const data = response.data as TOpenAIResponse;
-        if ("limitReached" in data && data.limitReached) {
-          console.log("Error: Limit reached");
-          return;
-        }
-        const openAIResponse = response.data as TOpenAIResponse;
-        if (openAIResponse.choices && openAIResponse.choices.length > 0) {
-          const responseContent = openAIResponse.choices[0].message.content;
-          const updatedTtcObj = getUpdatedTtc(ttc, workflow.prompt.id, performance.now());
-          setTtc(updatedTtcObj);
-          const newResponseData = { ...responseData, [workflow.prompt.id]: responseContent };
-          onSubmit(newResponseData, updatedTtcObj);
-        } else {
-          console.error("No choices available in the response");
-        }
-      } else {
-        console.error("Error in API response:", response.error);
-      }
-    } catch (error) {
-      console.error("Error calling OpenAI API:", error);
-    }
-  };
-
   const getCardContent = (questionIdx: number, offset: number): JSX.Element | undefined => {
     if (showError) {
       return (
@@ -365,29 +313,44 @@ export const Workflow = ({
       } else if (questionIdx === workflow.questions.length && questionId === "prompt") {
         if (!workflow.prompt.enabled) {
           return <ActivatePromptCard headline="Edit and Activate your prompt" />;
-        } else if (workflow.prompt.enabled && !workflow.prompt.isVisible) {
-          if (!isPreview) {
-            fetchOpenAIResponse();
+        } else if (workflow.prompt.enabled) {
+          if (isPreview) {
+            return <IsPreviewPromptCard headline="Save and publish your tool for testing prompt" />;
+          } else {
+            if (workflow.prompt.isVisible) {
+              return (
+                <PromptResponse
+                  key={questionId}
+                  prompt={workflow.prompt}
+                  webAppUrl={webAppUrl}
+                  environmentId={workflow.environmentId}
+                  workflowResponses={responseData}
+                  onChange={onChange}
+                  onSubmit={onSubmit}
+                  onBack={onBack}
+                  ttc={ttc}
+                  setTtc={setTtc}
+                  isInIframe={isInIframe}
+                  isVisible={workflow.prompt.isVisible}
+                  isStreaming={workflow.prompt.isVisible ? workflow.prompt.isStreaming : false}
+                  currentQuestionId={questionId}
+                />
+              );
+            } else if (!workflow.prompt.isVisible) {
+              fetchOpenAIResponse({
+                prompt: workflow.prompt,
+                webAppUrl,
+                environmentId: workflow.environmentId,
+                workflowResponses: responseData,
+                ttc,
+                setTtc,
+                onSubmit,
+                isVisible: false,
+                isStreaming: false,
+              });
+              return <GeneratingResponseCard headline="Saving your response..." />;
+            }
           }
-          return <SavingCard headline="Saving your response..." />;
-        } else if (workflow.prompt.enabled && workflow.prompt.isVisible) {
-          return (
-            <PromptResponse
-              key={questionId}
-              prompt={workflow.prompt}
-              webAppUrl={webAppUrl}
-              environmentId={workflow.environmentId}
-              workflowResponses={responseData}
-              onChange={onChange}
-              onSubmit={onSubmit}
-              onBack={onBack}
-              ttc={ttc}
-              setTtc={setTtc}
-              isInIframe={isInIframe}
-              isPreview={isPreview}
-              currentQuestionId={questionId}
-            />
-          );
         }
       } else if (questionIdx === workflow.questions.length && questionId === "end") {
         return (

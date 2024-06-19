@@ -200,6 +200,40 @@ export default function PromtCard({
               </div>
             </div>
 
+            <div className="mt-8 flex items-center">
+              <div className="w-1/2">
+                <div className="mr-2">
+                  <Switch
+                    id="required-toggle"
+                    checked={prompt.isVisible}
+                    onClick={() => {
+                      updateWorkflow({ isVisible: !prompt.isVisible });
+                    }}
+                  />
+                </div>
+                <div className="flex-column">
+                  <Label htmlFor="required-toggle">Is visible</Label>
+                  <div className="text-sm text-slate-500">Show the prompt response in the AI tool</div>
+                </div>
+              </div>
+              <div className="w-1/2">
+                <div className="mr-2">
+                  <Switch
+                    id="required-toggle"
+                    disabled={!prompt.isVisible}
+                    checked={prompt.isVisible ? prompt.isStreaming : false}
+                    onClick={() => {
+                      updateWorkflow({ isStreaming: !prompt.isStreaming });
+                    }}
+                  />
+                </div>
+                <div className="flex-column">
+                  <Label htmlFor="required-toggle">Stream response</Label>
+                  <div className="text-sm text-slate-500">Allow receiving response in streaming</div>
+                </div>
+              </div>
+            </div>
+
             <div className="mt-4">
               <Collapsible.Root open={openAdvanced} onOpenChange={setOpenAdvanced} className="mt-5">
                 <Collapsible.CollapsibleTrigger className="flex items-center text-sm text-slate-700">
@@ -404,23 +438,6 @@ export default function PromtCard({
                 </Collapsible.CollapsibleContent>
               </Collapsible.Root>
             </div>
-
-            {open && (
-              <div className="mt-3 flex justify-end space-x-6 border-t border-slate-200">
-                {
-                  <div className="my-4 flex items-center justify-end space-x-2">
-                    <Label htmlFor="required-toggle">Is visible?</Label>
-                    <Switch
-                      id="required-toggle"
-                      checked={prompt.isVisible}
-                      onClick={() => {
-                        updateWorkflow({ isVisible: !prompt.isVisible });
-                      }}
-                    />
-                  </div>
-                }
-              </div>
-            )}
           </form>
         </Collapsible.CollapsibleContent>
       </Collapsible.Root>

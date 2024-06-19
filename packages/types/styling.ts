@@ -1,5 +1,4 @@
 import { z } from "zod";
-
 import { ZColor } from "./common";
 
 export const ZStylingColor = z.object({
@@ -8,12 +7,20 @@ export const ZStylingColor = z.object({
 });
 export type TStylingColor = z.infer<typeof ZStylingColor>;
 
+export const ZCardSizeOptions = z.enum(["small", "regular", "large"]);
+export type TCardSizeOptions = z.infer<typeof ZCardSizeOptions>;
+
 export const ZCardArrangementOptions = z.enum(["casual", "straight", "simple"]);
 export type TCardArrangementOptions = z.infer<typeof ZCardArrangementOptions>;
 
 export const ZCardArrangement = z.object({
   linkWorkflows: ZCardArrangementOptions,
   appWorkflows: ZCardArrangementOptions,
+});
+
+export const ZCardSize = z.object({
+  linkWorkflows: ZCardSizeOptions,
+  appWorkflows: ZCardSizeOptions,
 });
 
 export const ZWorkflowStylingBackground = z
@@ -46,6 +53,7 @@ export const ZBaseStyling = z.object({
   highlightBorderColor: ZStylingColor.nullish(),
   isDarkModeEnabled: z.boolean().nullish(),
   roundness: z.number().nullish(),
+  cardSize: ZCardSize.nullish(),
   cardArrangement: ZCardArrangement.nullish(),
   background: ZWorkflowStylingBackground.nullish(),
   hideProgressBar: z.boolean().nullish(),

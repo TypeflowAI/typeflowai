@@ -59,3 +59,6 @@ export { SlackIcon } from "./SlackIcon";
 export { MicrosoftIcon } from "./MicrosoftIcon";
 export { GithubIcon } from "./GithubIcon";
 export { GoogleIcon } from "./GoogleIcon";
+export { SmallCardIcon } from "./SmallCardIcon";
+export { RegularCardIcon } from "./RegularCardIcon";
+export { LargeCardIcon } from "./LargeCardIcon";

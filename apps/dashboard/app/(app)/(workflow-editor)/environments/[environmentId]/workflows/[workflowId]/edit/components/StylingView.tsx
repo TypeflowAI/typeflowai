@@ -3,7 +3,6 @@ import Link from "next/link";
 import React, { useEffect, useMemo, useState } from "react";
 import { UseFormReturn, useForm, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
-
 import { COLOR_DEFAULTS } from "@typeflowai/lib/styling/constants";
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TProduct, TProductStyling } from "@typeflowai/types/product";
@@ -20,7 +19,6 @@ import {
   FormProvider,
 } from "@typeflowai/ui/Form";
 import { Switch } from "@typeflowai/ui/Switch";
-
 import { BackgroundStylingCard } from "./BackgroundStylingCard";
 import { CardStylingSettings } from "./CardStylingSettings";
 import { FormStylingSettings } from "./FormStylingSettings";
@@ -79,6 +77,10 @@ export const StylingView = ({
         : undefined,
       isDarkModeEnabled: stylingDefaults.isDarkModeEnabled ?? false,
       roundness: stylingDefaults.roundness ?? 8,
+      cardSize: stylingDefaults.cardSize ?? {
+        linkWorkflows: "small",
+        appWorkflows: "small",
+      },
       cardArrangement: stylingDefaults.cardArrangement ?? {
         linkWorkflows: "simple",
         appWorkflows: "simple",

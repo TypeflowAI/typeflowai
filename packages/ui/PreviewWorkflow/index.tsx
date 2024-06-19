@@ -140,6 +140,23 @@ export const PreviewWorkflow = ({
     return product.styling;
   }, [product.styling, workflow.styling]);
 
+  const [cardWidthClass, setCardWidthClass] = useState("md:max-w-md");
+
+  useEffect(() => {
+    const determineCardWidthClass = () => {
+      switch (workflow.styling?.cardSize?.linkWorkflows) {
+        case "large":
+          return "md:max-w-4xl";
+        case "regular":
+          return "md:max-w-2xl";
+        default:
+          return "md:max-w-md";
+      }
+    };
+
+    setCardWidthClass(determineCardWidthClass());
+  }, [workflow.styling]);
+
   const updateQuestionId = useCallback(
     (newQuestionId: string) => {
       if (!newQuestionId || newQuestionId === "hidden" || newQuestionId === "multiLanguage") return;
@@ -358,7 +375,7 @@ export const PreviewWorkflow = ({
                     <ClientLogo environmentId={environment.id} product={product} previewWorkflow />
                   )}
                 </div>
-                <div className="z-0 w-full max-w-md rounded-lg border-transparent">
+                <div className={`z-0 w-full max-w-md rounded-lg border-transparent ${cardWidthClass}`}>
                   <WorkflowInline
                     workflow={{ ...workflow, type: "link" }}
                     webAppUrl={webAppUrl}

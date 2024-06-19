@@ -105,6 +105,7 @@ export const PREVIEW_WORKFLOW = {
     message: "",
     attributes: {},
     isVisible: true,
+    isStreaming: false,
     engine: OpenAIModel.GPT4,
   },
   thankYouCard: {

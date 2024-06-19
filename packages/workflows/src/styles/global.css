@@ -296,9 +296,8 @@ p.fb-editor-paragraph {
   margin: 0 !important;
   color: var(--color-fg-default) !important;
   background-color: var(--color-canvas-default) !important;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji" !important;
-  font-size: 16px !important;
+  font-family: Inter, Helvetica, Arial, sans-serif !important;
+  font-size: 14px !important;
   line-height: 1.5 !important;
   word-wrap: break-word !important;
 }

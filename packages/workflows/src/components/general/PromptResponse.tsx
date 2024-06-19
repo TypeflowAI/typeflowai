@@ -1,18 +1,14 @@
 import { BackButton } from "@/components/buttons/BackButton";
 import SubmitButton from "@/components/buttons/SubmitButton";
 import { ScrollableContainer } from "@/components/wrappers/ScrollableContainer";
-import { processPromptMessage } from "@/lib/parsePrompt";
+import { fetchOpenAIResponse } from "@/lib/fetchOpenAIResponse";
 import { getUpdatedTtc, useTtc } from "@/lib/ttc";
 import { useCallback, useEffect, useState } from "react";
-
-import { TypeflowAIAPI } from "@typeflowai/api";
 import { TResponseTtc } from "@typeflowai/types/responses";
 import { TResponseData } from "@typeflowai/types/responses";
 import { TWorkflowPrompt } from "@typeflowai/types/workflows";
-
 import CopyPromptButton from "../buttons/CopyPromptButton";
 import StartOverButton from "../buttons/StartOverButton";
-import TestPromptButton from "../buttons/TestPromptButton";
 import { LoadingSpinner } from "./LoadingSpinner";
 import PromptMarkdownResponse from "./PromptMarkdownResponse";
 
@@ -27,11 +23,11 @@ interface PromptResponseProps {
   ttc: TResponseTtc;
   setTtc: (ttc: TResponseTtc) => void;
   isInIframe: boolean;
-  isPreview?: boolean;
+  isVisible: boolean;
+  isStreaming: boolean;
   currentQuestionId: string;
 }
 
-// export default function PromptResponse({
 export const PromptResponse = ({
   prompt,
   workflowResponses,
@@ -43,7 +39,8 @@ export const PromptResponse = ({
   ttc,
   setTtc,
   isInIframe,
-  isPreview,
+  isVisible,
+  isStreaming,
   currentQuestionId,
 }: PromptResponseProps) => {
   const [startTime, setStartTime] = useState(performance.now());
@@ -55,92 +52,34 @@ export const PromptResponse = ({
   const [restartAIResponse, setRestartAIResponse] = useState(0);
   const [isResponseComplete, setIsResponseComplete] = useState(false);
   const [copyButtonLabel, setCopyButtonLabel] = useState("Copy");
-  const [isTestPromptClicked, setIsTestPromptClicked] = useState(false);
   const [isAILimitReached, setIsAILimitReached] = useState(false);
   const [isOpenAIIssue, setIsOpenAIIssue] = useState(false);
 
-  const typeflowaiAPI = new TypeflowAIAPI({
-    apiHost: webAppUrl,
-    environmentId: environmentId,
-  });
-
-  const fetchOpenAIResponse = async () => {
-    if (!prompt.message || (isPreview && !isTestPromptClicked)) return;
-    const existingResponse = workflowResponses[prompt.id];
-    if (restartAIResponse > 0 || !existingResponse) {
-      setIsOpenAIIssue(false);
-      setIsAILimitReached(false);
-      setIsLoading(true);
-
-      const promptMessage = processPromptMessage(prompt.message, prompt.attributes, workflowResponses);
-
-      const requestData = {
-        messages: [
-          {
-            role: "system",
-            content: promptMessage,
-          },
-        ],
-        model: prompt.engine,
-        stream: true,
-      };
-
-      let isFirstChunkProcessed = false;
-
-      try {
-        const response = await typeflowaiAPI.client.openai.sendStreamingMessage(requestData);
-        if (response.ok) {
-          const decoder = new TextDecoder();
-          if (response.body) {
-            const reader = response.body.getReader();
-
-            reader.read().then(function processText({ done, value }) {
-              if (done) {
-                setIsLoading(false);
-                return;
-              }
-              const chunk = decoder.decode(value, { stream: true });
-
-              if (!isFirstChunkProcessed) {
-                try {
-                  const data = JSON.parse(chunk);
-                  if (data.limitReached) {
-                    setIsAILimitReached(true);
-                    setIsLoading(false);
-                    return;
-                  }
-                } catch (e) {}
-                isFirstChunkProcessed = true;
-              }
-              setTextBuffer((prevBuffer) => prevBuffer + chunk);
-              reader.read().then(processText);
-            });
-          } else {
-            console.error("Error: Body response is not a ReadableStream.");
-          }
-        } else {
-          console.error("Error in API response");
-        }
-      } catch (error) {
-        setIsOpenAIIssue(true);
-        console.error("Error calling OpenAI API:", error);
-      } finally {
-        if (!isFirstChunkProcessed) {
-          setIsLoading(false);
-        }
-      }
-    } else if (typeof existingResponse === "string") {
-      setOpenAIResponse(existingResponse);
-      setDisplayResponse(existingResponse);
-      setIsLoading(false);
-    }
+  const fetchResponse = async () => {
+    setIsLoading(true);
+    await fetchOpenAIResponse({
+      prompt,
+      webAppUrl,
+      environmentId,
+      workflowResponses,
+      ttc,
+      setTtc,
+      onSubmit,
+      isVisible,
+      isStreaming,
+      setTextBuffer: (update: (prevBuffer: string) => string) => setTextBuffer(update),
+      setIsLoading,
+      setIsAILimitReached,
+      setIsOpenAIIssue,
+      setOpenAIResponse,
+      setDisplayResponse,
+    });
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    if (!isPreview || isTestPromptClicked) {
-      fetchOpenAIResponse();
-    }
-  }, [restartAIResponse, isPreview, isTestPromptClicked]);
+    fetchResponse();
+  }, [restartAIResponse]);
 
   const startOver = () => {
     setOpenAIResponse("");
@@ -193,48 +132,47 @@ export const PromptResponse = ({
       className="w-full">
       <ScrollableContainer>
         <div>
-          {prompt.description && (
-            <label
-              htmlFor={prompt.description}
-              className="text-heading mb-1.5 block text-base font-semibold leading-6">
-              <div className="flex">{prompt.description}</div>
-            </label>
-          )}
           <div className="mb-3 mt-4 flex w-full justify-between">
-            <label
-              htmlFor="openai-response"
-              className="text-heading mb-1.5 block text-base font-semibold leading-6">
-              <div className="flex">AI Response</div>
-            </label>
             {isResponseComplete && (
-              <CopyPromptButton
-                title="Copy AI response to clipboard"
-                copyButtonLabel={copyButtonLabel}
-                ariaLabel="Copy AI response to clipboard"
-                onClick={handleCopyClick}
-              />
+              <>
+                {prompt.description ? (
+                  <label
+                    htmlFor="openai-response"
+                    className="text-heading mb-1.5 block text-base font-semibold leading-6">
+                    <div className="flex">{prompt.description}</div>
+                  </label>
+                ) : (
+                  <div></div>
+                )}
+                <CopyPromptButton
+                  title="Copy AI response to clipboard"
+                  copyButtonLabel={copyButtonLabel}
+                  ariaLabel="Copy AI response to clipboard"
+                  onClick={handleCopyClick}
+                />
+              </>
             )}
           </div>
-          <div
-            className={`border-d min-h-10 rounded-md border border shadow-sm ${
-              isPreview && !isTestPromptClicked ? "p-2" : ""
-            }`}>
-            {isPreview && !isTestPromptClicked ? (
-              <TestPromptButton label="Test Prompt" onClick={() => setIsTestPromptClicked(true)} />
-            ) : isLoading ? (
-              <div className="flex p-2 text-sm">
-                <LoadingSpinner />
-                <p className="my-auto">Generating response...</p>
+          <div>
+            {/* <div> */}
+            {isLoading ? (
+              <div className="text-center">
+                <div className="my-3 flex items-center justify-center">
+                  <LoadingSpinner />
+                </div>
+                <h1 className="text-brand">Generating response...</h1>
               </div>
             ) : (
-              <div className="p-2 text-sm font-normal leading-6">
-                {isAILimitReached ? (
-                  <p>AI response limit reached. Please upgrade your plan to get more AI responses.</p>
-                ) : isOpenAIIssue ? (
-                  <p>There has been a problem calling OpenAI. Review your config.</p>
-                ) : (
-                  <PromptMarkdownResponse content={displayResponse} />
-                )}
+              <div className="border-d min-h-10 rounded-md border border shadow-sm">
+                <div className="p-2 text-sm font-normal leading-6">
+                  {isAILimitReached ? (
+                    <p>AI response limit reached. Please upgrade your plan to get more AI responses.</p>
+                  ) : isOpenAIIssue ? (
+                    <p>There has been a problem calling OpenAI. Review your config.</p>
+                  ) : (
+                    <PromptMarkdownResponse content={displayResponse} />
+                  )}
+                </div>
               </div>
             )}
           </div>
