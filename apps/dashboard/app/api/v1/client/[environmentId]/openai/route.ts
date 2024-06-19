@@ -1,11 +1,11 @@
 import { responses } from "@/app/lib/api/response";
-import { NextRequest } from "next/server";
-
+// import { NextRequest } from "next/server";
 import { createOpenAIMessage } from "@typeflowai/lib/openai/service";
 import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
 import { updateTeam } from "@typeflowai/lib/team/service";
 
-export async function POST(req: NextRequest): Promise<Response> {
+// export async function POST(req: NextRequest): Promise<Response> {
+export async function POST(req: Request): Promise<Response> {
   const { environmentId, openAIRequest } = await req.json();
 
   if (!environmentId) {
