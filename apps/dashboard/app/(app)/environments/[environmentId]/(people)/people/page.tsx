@@ -1,16 +1,14 @@
 import { PeopleSecondaryNavigation } from "@/app/(app)/environments/[environmentId]/(people)/people/components/PeopleSecondaryNavigation";
 import { CircleHelpIcon } from "lucide-react";
-
 import { ITEMS_PER_PAGE } from "@typeflowai/lib/constants";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
 import { getPeople, getPeopleCount } from "@typeflowai/lib/person/service";
 import { TPerson } from "@typeflowai/types/people";
 import { Button } from "@typeflowai/ui/Button";
-import EmptySpaceFiller from "@typeflowai/ui/EmptySpaceFiller";
+import { EmptySpaceFiller } from "@typeflowai/ui/EmptySpaceFiller";
 import { PageContentWrapper } from "@typeflowai/ui/PageContentWrapper";
 import { PageHeader } from "@typeflowai/ui/PageHeader";
 import { Pagination } from "@typeflowai/ui/Pagination";
-
 import { PersonCard } from "./components/PersonCard";
 
 export default async function PeoplePage({

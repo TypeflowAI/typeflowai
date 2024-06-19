@@ -6,11 +6,9 @@ import {
   mockEnvironmentId,
   mockMeta,
   mockPerson,
-  mockPersonAttributesData,
   mockResponse,
   mockResponseData,
   mockResponseNote,
-  mockResponsePersonAttributes,
   mockResponseWithMockPerson,
   mockSingleUseId,
   mockTags,
@@ -18,17 +16,14 @@ import {
   mockWorkflowId,
   mockWorkflowSummaryOutput,
 } from "./__mocks__/data.mock";
-
 import { Prisma } from "@prisma/client";
 import { beforeEach, describe, expect, it } from "vitest";
 import { testInputValidation } from "vitestSetup";
-
 import { DatabaseError, ResourceNotFoundError } from "@typeflowai/types/errors";
 import { TResponse, TResponseFilterCriteria, TResponseInput } from "@typeflowai/types/responses";
 import { TTag } from "@typeflowai/types/tags";
-
 import { selectPerson } from "../../person/service";
-import { mockWorkflowOutput } from "../../workflow/tests/__mock__/workflow.mock";
+import { mockAttributeClass, mockWorkflowOutput } from "../../workflow/tests/__mock__/workflow.mock";
 import {
   createResponse,
   deleteResponse,
@@ -36,7 +31,6 @@ import {
   getResponseBySingleUseId,
   getResponseCountByWorkflowId,
   getResponseDownloadUrl,
-  getResponsePersonAttributes,
   getResponses,
   getResponsesByEnvironmentId,
   getResponsesByPersonId,
@@ -286,46 +280,6 @@ describe("Tests for getResponse service", () => {
   });
 });
 
-describe("Tests for getAttributesFromResponses service", () => {
-  describe("Happy Path", () => {
-    it("Retrieves all attributes from responses for a given workflow ID", async () => {
-      prisma.response.findMany.mockResolvedValue(mockResponsePersonAttributes);
-      const attributes = await getResponsePersonAttributes(mockWorkflowId);
-      expect(attributes).toEqual(mockPersonAttributesData);
-    });
-
-    it("Returns an empty Object when no responses with attributes are found for the given workflow ID", async () => {
-      prisma.response.findMany.mockResolvedValue([]);
-
-      const responses = await getResponsePersonAttributes(mockWorkflowId);
-      expect(responses).toEqual({});
-    });
-  });
-
-  describe("Sad Path", () => {
-    testInputValidation(getResponsePersonAttributes, "123#");
-
-    it("Throws DatabaseError on PrismaClientKnownRequestError", async () => {
-      const mockErrorMessage = "Mock error message";
-      const errToThrow = new Prisma.PrismaClientKnownRequestError(mockErrorMessage, {
-        code: "P2002",
-        clientVersion: "0.0.1",
-      });
-
-      prisma.response.findMany.mockRejectedValue(errToThrow);
-
-      await expect(getResponsePersonAttributes(mockWorkflowId)).rejects.toThrow(DatabaseError);
-    });
-
-    it("Throws a generic Error for unexpected problems", async () => {
-      const mockErrorMessage = "Mock error message";
-      prisma.response.findMany.mockRejectedValue(new Error(mockErrorMessage));
-
-      await expect(getResponsePersonAttributes(mockWorkflowId)).rejects.toThrow(Error);
-    });
-  });
-});
-
 describe("Tests for getResponses service", () => {
   describe("Happy Path", () => {
     it("Fetches first 10 responses for a given workflow ID", async () => {
@@ -441,6 +395,7 @@ describe("Tests for getWorkflowSummary service", () => {
     it("Returns a summary of the workflow responses", async () => {
       prisma.workflow.findUnique.mockResolvedValue(mockWorkflowOutput);
       prisma.response.findMany.mockResolvedValue([mockResponse]);
+      prisma.attributeClass.findMany.mockResolvedValueOnce([mockAttributeClass]);
 
       const summary = await getWorkflowSummary(mockWorkflowId);
       expect(summary).toEqual(mockWorkflowSummaryOutput);
@@ -459,6 +414,7 @@ describe("Tests for getWorkflowSummary service", () => {
 
       prisma.workflow.findUnique.mockResolvedValue(mockWorkflowOutput);
       prisma.response.findMany.mockRejectedValue(errToThrow);
+      prisma.attributeClass.findMany.mockResolvedValueOnce([mockAttributeClass]);
 
       await expect(getWorkflowSummary(mockWorkflowId)).rejects.toThrow(DatabaseError);
     });
@@ -468,6 +424,7 @@ describe("Tests for getWorkflowSummary service", () => {
 
       prisma.workflow.findUnique.mockResolvedValue(mockWorkflowOutput);
       prisma.response.findMany.mockRejectedValue(new Error(mockErrorMessage));
+      prisma.attributeClass.findMany.mockResolvedValueOnce([mockAttributeClass]);
 
       await expect(getWorkflowSummary(mockWorkflowId)).rejects.toThrow(Error);
     });

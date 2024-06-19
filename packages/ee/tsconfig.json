@@ -1,5 +1,5 @@
 {
-  "extends": "@typeflowai/tsconfig/react-library.json",
+  "extends": "@typeflowai/config-typescript/nextjs.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
@@ -7,6 +7,6 @@
     },
     "resolveJsonModule": true
   },
-  "include": [".", "../ui/Targeting/TargetingIndicator.tsx"],
+  "include": [".", "../../packages/types/*.d.ts"],
   "exclude": ["dist", "build", "node_modules"]
 }

@@ -12,11 +12,12 @@ import { OpenTextSummary } from "@/app/(app)/environments/[environmentId]/workfl
 import { PictureChoiceSummary } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/PictureChoiceSummary";
 import { RatingSummary } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/RatingSummary";
 
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TWorkflowSummary } from "@typeflowai/types/workflows";
-import { TWorkflowQuestionType } from "@typeflowai/types/workflows";
+import { TWorkflowQuestionTypeEnum } from "@typeflowai/types/workflows";
 import { TWorkflow } from "@typeflowai/types/workflows";
-import EmptySpaceFiller from "@typeflowai/ui/EmptySpaceFiller";
+import { EmptySpaceFiller } from "@typeflowai/ui/EmptySpaceFiller";
 import { SkeletonLoader } from "@typeflowai/ui/SkeletonLoader";
 
 import { AddressSummary } from "./AddressSummary";
@@ -28,6 +29,7 @@ interface SummaryListProps {
   workflow: TWorkflow;
   fetchingSummary: boolean;
   totalResponseCount: number;
+  attributeClasses: TAttributeClass[];
 }
 
 export const SummaryList = ({
@@ -37,6 +39,7 @@ export const SummaryList = ({
   workflow,
   fetchingSummary,
   totalResponseCount,
+  attributeClasses,
 }: SummaryListProps) => {
   return (
     <div className="mt-10 space-y-8">
@@ -55,18 +58,20 @@ export const SummaryList = ({
         />
       ) : (
         summary.map((questionSummary) => {
-          if (questionSummary.type === TWorkflowQuestionType.OpenText) {
+          if (questionSummary.type === TWorkflowQuestionTypeEnum.OpenText) {
             return (
               <OpenTextSummary
                 key={questionSummary.question.id}
                 questionSummary={questionSummary}
                 environmentId={environment.id}
+                workflow={workflow}
+                attributeClasses={attributeClasses}
               />
             );
           }
           if (
-            questionSummary.type === TWorkflowQuestionType.MultipleChoiceSingle ||
-            questionSummary.type === TWorkflowQuestionType.MultipleChoiceMulti
+            questionSummary.type === TWorkflowQuestionTypeEnum.MultipleChoiceSingle ||
+            questionSummary.type === TWorkflowQuestionTypeEnum.MultipleChoiceMulti
           ) {
             return (
               <MultipleChoiceSummary
@@ -74,64 +79,112 @@ export const SummaryList = ({
                 questionSummary={questionSummary}
                 environmentId={environment.id}
                 workflowType={workflow.type}
+                workflow={workflow}
+                attributeClasses={attributeClasses}
               />
             );
           }
-          if (questionSummary.type === TWorkflowQuestionType.NPS) {
-            return <NPSSummary key={questionSummary.question.id} questionSummary={questionSummary} />;
-          }
-          if (questionSummary.type === TWorkflowQuestionType.CTA) {
-            return <CTASummary key={questionSummary.question.id} questionSummary={questionSummary} />;
-          }
-          if (questionSummary.type === TWorkflowQuestionType.Rating) {
-            return <RatingSummary key={questionSummary.question.id} questionSummary={questionSummary} />;
-          }
-          if (questionSummary.type === TWorkflowQuestionType.Consent) {
-            return <ConsentSummary key={questionSummary.question.id} questionSummary={questionSummary} />;
-          }
-          if (questionSummary.type === TWorkflowQuestionType.PictureSelection) {
+          if (questionSummary.type === TWorkflowQuestionTypeEnum.NPS) {
             return (
-              <PictureChoiceSummary key={questionSummary.question.id} questionSummary={questionSummary} />
+              <NPSSummary
+                key={questionSummary.question.id}
+                questionSummary={questionSummary}
+                workflow={workflow}
+                attributeClasses={attributeClasses}
+              />
             );
           }
-          if (questionSummary.type === TWorkflowQuestionType.Date) {
+          if (questionSummary.type === TWorkflowQuestionTypeEnum.CTA) {
+            return (
+              <CTASummary
+                key={questionSummary.question.id}
+                questionSummary={questionSummary}
+                workflow={workflow}
+                attributeClasses={attributeClasses}
+              />
+            );
+          }
+          if (questionSummary.type === TWorkflowQuestionTypeEnum.Rating) {
+            return (
+              <RatingSummary
+                key={questionSummary.question.id}
+                questionSummary={questionSummary}
+                workflow={workflow}
+                attributeClasses={attributeClasses}
+              />
+            );
+          }
+          if (questionSummary.type === TWorkflowQuestionTypeEnum.Consent) {
+            return (
+              <ConsentSummary
+                key={questionSummary.question.id}
+                questionSummary={questionSummary}
+                workflow={workflow}
+                attributeClasses={attributeClasses}
+              />
+            );
+          }
+          if (questionSummary.type === TWorkflowQuestionTypeEnum.PictureSelection) {
+            return (
+              <PictureChoiceSummary
+                key={questionSummary.question.id}
+                questionSummary={questionSummary}
+                workflow={workflow}
+                attributeClasses={attributeClasses}
+              />
+            );
+          }
+          if (questionSummary.type === TWorkflowQuestionTypeEnum.Date) {
             return (
               <DateQuestionSummary
                 key={questionSummary.question.id}
                 questionSummary={questionSummary}
                 environmentId={environment.id}
+                workflow={workflow}
+                attributeClasses={attributeClasses}
               />
             );
           }
-          if (questionSummary.type === TWorkflowQuestionType.FileUpload) {
+          if (questionSummary.type === TWorkflowQuestionTypeEnum.FileUpload) {
             return (
               <FileUploadSummary
                 key={questionSummary.question.id}
                 questionSummary={questionSummary}
                 environmentId={environment.id}
+                workflow={workflow}
+                attributeClasses={attributeClasses}
               />
             );
           }
-          if (questionSummary.type === TWorkflowQuestionType.Cal) {
+          if (questionSummary.type === TWorkflowQuestionTypeEnum.Cal) {
             return (
               <CalSummary
                 key={questionSummary.question.id}
                 questionSummary={questionSummary}
                 environmentId={environment.id}
+                workflow={workflow}
+                attributeClasses={attributeClasses}
               />
             );
           }
-          if (questionSummary.type === TWorkflowQuestionType.Matrix) {
+          if (questionSummary.type === TWorkflowQuestionTypeEnum.Matrix) {
             return (
-              <MatrixQuestionSummary key={questionSummary.question.id} questionSummary={questionSummary} />
+              <MatrixQuestionSummary
+                key={questionSummary.question.id}
+                questionSummary={questionSummary}
+                workflow={workflow}
+                attributeClasses={attributeClasses}
+              />
             );
           }
-          if (questionSummary.type === TWorkflowQuestionType.Address) {
+          if (questionSummary.type === TWorkflowQuestionTypeEnum.Address) {
             return (
               <AddressSummary
                 key={questionSummary.question.id}
                 questionSummary={questionSummary}
                 environmentId={environment.id}
+                workflow={workflow}
+                attributeClasses={attributeClasses}
               />
             );
           }

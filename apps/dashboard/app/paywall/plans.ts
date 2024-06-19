@@ -46,7 +46,7 @@ export const plansAndFeatures = {
       lookupKey: "enterprise",
       planName: "Enterprise",
       description:
-        "Total enterprise solution with unlimited flows and responses (OpenAI API key required), all templates, and GPT engines. For large organizations with high demands.",
+        "Total enterprise solution with unlimited flows and responses (OpenAI API key required), all templates, and GPT engines. For large teams with high demands.",
       price: 499,
       billingInterval: "year",
       features: [

@@ -9,14 +9,12 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
-
-import { customWorkflow, templates } from "@typeflowai/ee/prompt-templates/templates";
 import { TTeam } from "@typeflowai/types/teams";
 import { TTemplate } from "@typeflowai/types/templates";
 import { Button } from "@typeflowai/ui/Button";
 import { OptionCard } from "@typeflowai/ui/OptionCard";
 import { capturePosthogEvent } from "@typeflowai/ui/PostHogClient";
-
+import { customWorkflow, templates } from "@typeflowai/ui/TemplateList/templates";
 import { createWorkflowFromTemplate, finishOnboardingAction } from "../../actions";
 
 interface CreateFirstWorkflowProps {

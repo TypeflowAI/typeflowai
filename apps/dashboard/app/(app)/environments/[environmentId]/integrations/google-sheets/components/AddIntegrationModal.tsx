@@ -1,12 +1,19 @@
 import { createOrUpdateIntegrationAction } from "@/app/(app)/environments/[environmentId]/integrations/actions";
+import { getSpreadsheetNameByIdAction } from "@/app/(app)/environments/[environmentId]/integrations/google-sheets/actions";
+import {
+  constructGoogleSheetsUrl,
+  extractSpreadsheetIdFromUrl,
+  isValidGoogleSheetsUrl,
+} from "@/app/(app)/environments/[environmentId]/integrations/google-sheets/lib/util";
+import GoogleSheetLogo from "@/images/googleSheetsLogo.png";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
-import { checkForRecallInHeadline } from "@typeflowai/lib/utils/recall";
-import { TIntegrationItem } from "@typeflowai/types/integration";
+import { replaceHeadlineRecall } from "@typeflowai/lib/utils/recall";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import {
   TIntegrationGoogleSheets,
   TIntegrationGoogleSheetsConfigData,
@@ -16,32 +23,29 @@ import { TWorkflow } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
 import { Checkbox } from "@typeflowai/ui/Checkbox";
 import { DropdownSelector } from "@typeflowai/ui/DropdownSelector";
+import { Input } from "@typeflowai/ui/Input";
 import { Label } from "@typeflowai/ui/Label";
 import { Modal } from "@typeflowai/ui/Modal";
 
-import GoogleSheetLogo from "../images/google-sheets-small.png";
-
-interface AddWebhookModalProps {
+interface AddIntegrationModalProps {
   environmentId: string;
   open: boolean;
   workflows: TWorkflow[];
   setOpen: (v: boolean) => void;
-  spreadsheets: TIntegrationItem[];
   googleSheetIntegration: TIntegrationGoogleSheets;
   selectedIntegration?: (TIntegrationGoogleSheetsConfigData & { index: number }) | null;
+  attributeClasses: TAttributeClass[];
 }
 
-export default function AddIntegrationModal({
+export const AddIntegrationModal = ({
   environmentId,
   workflows,
   open,
   setOpen,
-  spreadsheets,
   googleSheetIntegration,
   selectedIntegration,
-}: AddWebhookModalProps) {
-  const { handleSubmit } = useForm();
-
+  attributeClasses,
+}: AddIntegrationModalProps) => {
   const integrationData = {
     spreadsheetId: "",
     spreadsheetName: "",
@@ -51,11 +55,11 @@ export default function AddIntegrationModal({
     questions: "",
     createdAt: new Date(),
   };
-
+  const { handleSubmit } = useForm();
   const [selectedQuestions, setSelectedQuestions] = useState<string[]>([]);
   const [isLinkingSheet, setIsLinkingSheet] = useState(false);
   const [selectedWorkflow, setSelectedWorkflow] = useState<TWorkflow | null>(null);
-  const [selectedSpreadsheet, setSelectedSpreadsheet] = useState<any>(null);
+  const [spreadsheetUrl, setSpreadsheetUrl] = useState("");
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const existingIntegrationData = googleSheetIntegration?.config?.data;
   const googleSheetIntegrationData: TIntegrationGoogleSheetsInput = {
@@ -70,18 +74,13 @@ export default function AddIntegrationModal({
   useEffect(() => {
     if (selectedWorkflow) {
       const questionIds = selectedWorkflow.questions.map((question) => question.id);
-      if (!selectedIntegration) {
-        setSelectedQuestions(questionIds);
-      }
+      setSelectedQuestions(questionIds);
     }
   }, [selectedIntegration, selectedWorkflow]);
 
   useEffect(() => {
     if (selectedIntegration) {
-      setSelectedSpreadsheet({
-        id: selectedIntegration.spreadsheetId,
-        name: selectedIntegration.spreadsheetName,
-      });
+      setSpreadsheetUrl(constructGoogleSheetsUrl(selectedIntegration.spreadsheetId));
       setSelectedWorkflow(
         workflows.find((workflow) => {
           return workflow.id === selectedIntegration.workflowId;
@@ -89,25 +88,32 @@ export default function AddIntegrationModal({
       );
       setSelectedQuestions(selectedIntegration.questionIds);
       return;
+    } else {
+      setSpreadsheetUrl("");
     }
     resetForm();
   }, [selectedIntegration, workflows]);
 
   const linkSheet = async () => {
     try {
-      if (!selectedSpreadsheet) {
-        throw new Error("Please select a spreadsheet");
+      if (isValidGoogleSheetsUrl(spreadsheetUrl)) {
+        throw new Error("Please enter a valid spreadsheet url");
       }
       if (!selectedWorkflow) {
         throw new Error("Please select a workflow");
       }
-
       if (selectedQuestions.length === 0) {
         throw new Error("Please select at least one question");
       }
+      const spreadsheetId = extractSpreadsheetIdFromUrl(spreadsheetUrl);
+      const spreadsheetName = await getSpreadsheetNameByIdAction(
+        googleSheetIntegration,
+        environmentId,
+        spreadsheetId
+      );
       setIsLinkingSheet(true);
-      integrationData.spreadsheetId = selectedSpreadsheet.id;
-      integrationData.spreadsheetName = selectedSpreadsheet.name;
+      integrationData.spreadsheetId = spreadsheetId;
+      integrationData.spreadsheetName = spreadsheetName;
       integrationData.workflowId = selectedWorkflow.id;
       integrationData.workflowName = selectedWorkflow.name;
       integrationData.questionIds = selectedQuestions;
@@ -148,7 +154,6 @@ export default function AddIntegrationModal({
 
   const resetForm = () => {
     setIsLinkingSheet(false);
-    setSelectedSpreadsheet("");
     setSelectedWorkflow(null);
   };
 
@@ -166,15 +171,8 @@ export default function AddIntegrationModal({
     }
   };
 
-  const hasMatchingId = googleSheetIntegration.config.data.some((configData) => {
-    if (!selectedSpreadsheet) {
-      return false;
-    }
-    return configData.spreadsheetId === selectedSpreadsheet.id;
-  });
-
   return (
-    <Modal open={open} setOpen={setOpenWithStates} noPadding closeOnOutsideClick={false}>
+    <Modal open={open} setOpen={setOpenWithStates} noPadding closeOnOutsideClick={true}>
       <div className="flex h-full flex-col rounded-lg">
         <div className="rounded-t-lg bg-slate-100">
           <div className="flex w-full items-center justify-between p-6">
@@ -194,23 +192,13 @@ export default function AddIntegrationModal({
             <div className="w-full space-y-4">
               <div>
                 <div className="mb-4">
-                  <DropdownSelector
-                    label="Select Spreadsheet"
-                    items={spreadsheets}
-                    selectedItem={selectedSpreadsheet}
-                    setSelectedItem={setSelectedSpreadsheet}
-                    disabled={spreadsheets.length === 0}
+                  <Label>Spreadsheet URL</Label>
+                  <Input
+                    value={spreadsheetUrl}
+                    onChange={(e) => setSpreadsheetUrl(e.target.value)}
+                    placeholder="https://docs.google.com/spreadsheets/d/<your-spreadsheet-id>"
+                    className="mt-1"
                   />
-                  {selectedSpreadsheet && hasMatchingId && (
-                    <p className="text-xs text-amber-700">
-                      <strong>Warning:</strong> You have already connected one workflow with this sheet. Your
-                      data will be inconsistent
-                    </p>
-                  )}
-                  <p className="m-1 text-xs text-slate-500">
-                    {spreadsheets.length === 0 &&
-                      "You have to create at least one spreadshseet to be able to setup this integration"}
-                  </p>
                 </div>
                 <div>
                   <DropdownSelector
@@ -231,23 +219,27 @@ export default function AddIntegrationModal({
                   <Label htmlFor="Workflows">Questions</Label>
                   <div className="mt-1 rounded-lg border border-slate-200">
                     <div className="grid content-center rounded-lg bg-slate-50 p-3 text-left text-sm text-slate-900">
-                      {checkForRecallInHeadline(selectedWorkflow, "default")?.questions.map((question) => (
-                        <div key={question.id} className="my-1 flex items-center space-x-2">
-                          <label htmlFor={question.id} className="flex cursor-pointer items-center">
-                            <Checkbox
-                              type="button"
-                              id={question.id}
-                              value={question.id}
-                              className="bg-white"
-                              checked={selectedQuestions.includes(question.id)}
-                              onCheckedChange={() => {
-                                handleCheckboxChange(question.id);
-                              }}
-                            />
-                            <span className="ml-2">{getLocalizedValue(question.headline, "default")}</span>
-                          </label>
-                        </div>
-                      ))}
+                      {replaceHeadlineRecall(selectedWorkflow, "default", attributeClasses)?.questions.map(
+                        (question) => (
+                          <div key={question.id} className="my-1 flex items-center space-x-2">
+                            <label htmlFor={question.id} className="flex cursor-pointer items-center">
+                              <Checkbox
+                                type="button"
+                                id={question.id}
+                                value={question.id}
+                                className="bg-white"
+                                checked={selectedQuestions.includes(question.id)}
+                                onCheckedChange={() => {
+                                  handleCheckboxChange(question.id);
+                                }}
+                              />
+                              <span className="ml-2 w-[30rem] truncate">
+                                {getLocalizedValue(question.headline, "default")}
+                              </span>
+                            </label>
+                          </div>
+                        )
+                      )}
                     </div>
                   </div>
                 </div>
@@ -286,4 +278,4 @@ export default function AddIntegrationModal({
       </div>
     </Modal>
   );
-}
+};

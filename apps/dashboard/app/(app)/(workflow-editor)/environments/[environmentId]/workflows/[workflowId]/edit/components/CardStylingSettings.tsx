@@ -2,157 +2,48 @@
 
 import * as Collapsible from "@radix-ui/react-collapsible";
 import { CheckIcon } from "lucide-react";
-import React, { useMemo } from "react";
-
+import React from "react";
+import { UseFormReturn } from "react-hook-form";
 import { cn } from "@typeflowai/lib/cn";
 import { COLOR_DEFAULTS } from "@typeflowai/lib/styling/constants";
 import { TProduct, TProductStyling } from "@typeflowai/types/product";
-import { TCardArrangementOptions } from "@typeflowai/types/styling";
 import { TWorkflowStyling, TWorkflowType } from "@typeflowai/types/workflows";
 import { Badge } from "@typeflowai/ui/Badge";
+import { CardArrangementTabs } from "@typeflowai/ui/CardArrangementTabs";
+import { CardSizeTabs } from "@typeflowai/ui/CardSizeTabs";
 import { ColorPicker } from "@typeflowai/ui/ColorPicker";
-import { Label } from "@typeflowai/ui/Label";
+import { FormControl, FormDescription, FormField, FormItem, FormLabel } from "@typeflowai/ui/Form";
 import { Slider } from "@typeflowai/ui/Slider";
-import { CardArrangement, ColorSelectorWithLabel } from "@typeflowai/ui/Styling";
 import { Switch } from "@typeflowai/ui/Switch";
 
 type CardStylingSettingsProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  styling: TWorkflowStyling | TProductStyling | null;
-  setStyling: React.Dispatch<React.SetStateAction<TWorkflowStyling | TProductStyling>>;
   isSettingsPage?: boolean;
   workflowType?: TWorkflowType;
   disabled?: boolean;
-  localProduct: TProduct;
+  product: TProduct;
+  form: UseFormReturn<TProductStyling | TWorkflowStyling>;
 };
 
 export const CardStylingSettings = ({
-  setStyling,
-  styling,
   isSettingsPage = false,
   workflowType,
   disabled,
   open,
-  localProduct,
+  product,
   setOpen,
+  form,
 }: CardStylingSettingsProps) => {
   const isAppWorkflow = workflowType === "app" || workflowType === "website";
-  const cardBgColor = styling?.cardBackgroundColor?.light || COLOR_DEFAULTS.cardBackgroundColor;
+  const workflowTypeDerived = isAppWorkflow ? "App / Website" : "Link";
+  const isLogoVisible = !!product.logo?.url;
 
-  const isLogoHidden = styling?.isLogoHidden ?? false;
-
-  const isLogoVisible = !!localProduct.logo?.url;
-
-  const linkWorkflowCardArrangement = styling?.cardArrangement?.linkWorkflows ?? "straight";
-
-  const inAppWorkflowCardArrangement = styling?.cardArrangement?.appWorkflows ?? "straight";
-
-  const setCardBgColor = (color: string) => {
-    setStyling((prev) => ({
-      ...prev,
-      cardBackgroundColor: {
-        ...(prev.cardBackgroundColor ?? {}),
-        light: color,
-      },
-    }));
-  };
-
-  const setCardArrangement = (arrangement: TCardArrangementOptions, workflowType: TWorkflowType) => {
-    const newCardArrangement = {
-      linkWorkflows: linkWorkflowCardArrangement,
-      appWorkflows: inAppWorkflowCardArrangement,
-    };
-
-    if (workflowType === "link") {
-      newCardArrangement.linkWorkflows = arrangement;
-    } else if (workflowType === "app" || workflowType === "website") {
-      newCardArrangement.appWorkflows = arrangement;
-    }
-
-    setStyling((prev) => ({
-      ...prev,
-      cardArrangement: newCardArrangement,
-    }));
-  };
-
-  const cardBorderColor = styling?.cardBorderColor?.light || COLOR_DEFAULTS.cardBorderColor;
-  const setCardBorderColor = (color: string) => {
-    setStyling((prev) => ({
-      ...prev,
-      cardBorderColor: {
-        ...(prev.cardBorderColor ?? {}),
-        light: color,
-      },
-    }));
-  };
-
-  const cardShadowColor = styling?.cardShadowColor?.light || COLOR_DEFAULTS.cardShadowColor;
-  const setCardShadowColor = (color: string) => {
-    setStyling((prev) => ({
-      ...prev,
-      cardShadowColor: {
-        ...(prev.cardShadowColor ?? {}),
-        light: color,
-      },
-    }));
-  };
-
-  const isHighlightBorderAllowed = !!styling?.highlightBorderColor;
-  const setIsHighlightBorderAllowed = (open: boolean) => {
-    if (!open) {
-      const { highlightBorderColor, ...rest } = styling ?? {};
-
-      setStyling({
-        ...rest,
-      });
-    } else {
-      setStyling((prev) => ({
-        ...prev,
-        highlightBorderColor: {
-          ...(prev.highlightBorderColor ?? {}),
-          light: COLOR_DEFAULTS.highlightBorderColor,
-        },
-      }));
-    }
-  };
-
-  const highlightBorderColor = styling?.highlightBorderColor?.light || COLOR_DEFAULTS.highlightBorderColor;
-  const setHighlightBorderColor = (color: string) => {
-    setStyling((prev) => ({
-      ...prev,
-      highlightBorderColor: {
-        ...(prev.highlightBorderColor ?? {}),
-        light: color,
-      },
-    }));
-  };
-
-  const roundness = styling?.roundness ?? 8;
-  const setRoundness = (value: number) => {
-    setStyling((prev) => ({
-      ...prev,
-      roundness: value,
-    }));
-  };
-
-  const toggleProgressBarVisibility = (hideProgressBar: boolean) => {
-    setStyling({
-      ...styling,
-      hideProgressBar,
-    });
-  };
-
-  const toggleLogoVisibility = () => {
-    setStyling((prev) => ({
-      ...prev,
-      isLogoHidden: !prev.isLogoHidden,
-    }));
-  };
-
-  const hideProgressBar = useMemo(() => {
-    return styling?.hideProgressBar;
-  }, [styling]);
+  const linkCardSize = form.watch("cardSize.linkWorkflows") ?? "small";
+  const appCardSize = form.watch("cardSize.appWorkflows") ?? "small";
+  const linkCardArrangement = form.watch("cardArrangement.linkWorkflows") ?? "simple";
+  const appCardArrangement = form.watch("cardArrangement.appWorkflows") ?? "simple";
+  const roundness = form.watch("roundness") ?? 8;
 
   return (
     <Collapsible.Root
@@ -194,107 +85,256 @@ export const CardStylingSettings = ({
         <hr className="py-1 text-slate-600" />
 
         <div className="flex flex-col gap-6 p-6 pt-2">
-          <div className="flex max-w-xs flex-col gap-4">
-            <div className="flex flex-col">
-              <h3 className="text-sm font-semibold text-slate-700">Roundness</h3>
-              <p className="text-xs text-slate-500">Change the border radius of the card and the inputs.</p>
-            </div>
-            <div className="flex flex-col justify-center rounded-lg border bg-slate-50 p-6">
-              <Slider value={[roundness]} max={22} onValueChange={(value) => setRoundness(value[0])} />
-            </div>
-          </div>
-
-          <ColorSelectorWithLabel
-            label="Card background color"
-            color={cardBgColor}
-            setColor={setCardBgColor}
-            description="Change the background color of the card."
-          />
-
-          <ColorSelectorWithLabel
-            label="Card border color"
-            color={cardBorderColor}
-            setColor={setCardBorderColor}
-            description="Change the border color of the card."
-          />
-
-          <ColorSelectorWithLabel
-            label="Card shadow color"
-            color={cardShadowColor}
-            setColor={setCardShadowColor}
-            description="Change the shadow color of the card."
-          />
-
-          <CardArrangement
-            workflowType={isAppWorkflow ? "app" : "link"}
-            activeCardArrangement={isAppWorkflow ? inAppWorkflowCardArrangement : linkWorkflowCardArrangement}
-            setActiveCardArrangement={setCardArrangement}
-          />
-
-          <>
-            <div className="flex items-center space-x-1">
-              <Switch
-                id="hideProgressBar"
-                checked={!!hideProgressBar}
-                onCheckedChange={(checked) => toggleProgressBarVisibility(checked)}
-              />
-              <Label htmlFor="hideProgressBar" className="cursor-pointer">
-                <div className="ml-2">
-                  <h3 className="text-sm font-semibold text-slate-700">Hide progress bar</h3>
-                  <p className="text-xs font-normal text-slate-500">
-                    Disable the visibility of workflow progress.
-                  </p>
-                </div>
-              </Label>
-            </div>
-
-            {isLogoVisible && (!workflowType || workflowType === "link") && !isSettingsPage && (
-              <div className="flex items-center space-x-1">
-                <Switch id="isLogoHidden" checked={isLogoHidden} onCheckedChange={toggleLogoVisibility} />
-                <Label htmlFor="isLogoHidden" className="cursor-pointer">
-                  <div className="ml-2 flex flex-col">
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-sm font-semibold text-slate-700">Hide logo</h3>
-                      <Badge text="Link Workflows" type="gray" size="normal" />
-                    </div>
-                    <p className="text-xs font-normal text-slate-500">
-                      Hides the logo in this specific workflow
-                    </p>
+          <div className="flex flex-col justify-center">
+            <FormField
+              control={form.control}
+              name="roundness"
+              render={() => (
+                <FormItem>
+                  <div>
+                    <FormLabel>Roundness</FormLabel>
+                    <FormDescription>Change the border radius of the card and the inputs.</FormDescription>
                   </div>
-                </Label>
-              </div>
-            )}
 
-            {(!workflowType || isAppWorkflow) && (
-              <div className="flex max-w-xs flex-col gap-4">
-                <div className="flex items-center gap-2">
-                  <Switch checked={isHighlightBorderAllowed} onCheckedChange={setIsHighlightBorderAllowed} />
-                  <div className="flex flex-col">
-                    <div className="flex items-center gap-2">
-                      <h3 className="whitespace-nowrap text-sm font-semibold text-slate-700">
-                        Add highlight border
-                      </h3>
-                      <Badge
-                        text="App & Website Workflows"
-                        type="gray"
-                        size="normal"
-                        className="whitespace-nowrap"
+                  <FormControl>
+                    <div className="rounded-lg border bg-slate-50 p-6">
+                      <Slider
+                        value={[roundness]}
+                        max={22}
+                        onValueChange={(value) => {
+                          form.setValue("roundness", value[0]);
+                        }}
                       />
                     </div>
-                    <p className="text-xs text-slate-500">Add an outer border to your workflow card.</p>
-                  </div>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <FormField
+            control={form.control}
+            name="cardBackgroundColor.light"
+            render={({ field }) => (
+              <FormItem className="space-y-4">
+                <div>
+                  <FormLabel>Card background color</FormLabel>
+                  <FormDescription>Change the background color of the card.</FormDescription>
                 </div>
 
-                {isHighlightBorderAllowed && (
+                <FormControl>
                   <ColorPicker
-                    color={highlightBorderColor}
-                    onChange={setHighlightBorderColor}
-                    containerClass="my-0"
+                    color={field.value || COLOR_DEFAULTS.cardBackgroundColor}
+                    onChange={(color) => field.onChange(color)}
+                    containerClass="max-w-xs"
                   />
-                )}
-              </div>
+                </FormControl>
+              </FormItem>
             )}
-          </>
+          />
+
+          <FormField
+            control={form.control}
+            name="cardBorderColor.light"
+            render={({ field }) => (
+              <FormItem className="space-y-4">
+                <div>
+                  <FormLabel>Card border color</FormLabel>
+                  <FormDescription>Change the border color of the card.</FormDescription>
+                </div>
+
+                <FormControl>
+                  <ColorPicker
+                    color={field.value || COLOR_DEFAULTS.cardBorderColor}
+                    onChange={(color) => field.onChange(color)}
+                    containerClass="max-w-xs"
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="cardShadowColor.light"
+            render={({ field }) => (
+              <FormItem className="space-y-4">
+                <div>
+                  <FormLabel>Card shadow color</FormLabel>
+                  <FormDescription>Change the shadow color of the card.</FormDescription>
+                </div>
+
+                <FormControl>
+                  <ColorPicker
+                    color={field.value || COLOR_DEFAULTS.cardShadowColor}
+                    onChange={(color) => field.onChange(color)}
+                    containerClass="max-w-xs"
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name={"cardSize"}
+            render={() => (
+              <FormItem>
+                <div>
+                  <FormLabel>Card Size for {workflowTypeDerived} Workflows</FormLabel>
+
+                  <FormDescription>
+                    Which size do you want your cards in {workflowTypeDerived} Workflows
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <CardSizeTabs
+                    key={isAppWorkflow ? "app" : "link"}
+                    workflowType={isAppWorkflow ? "app" : "link"}
+                    activeCardSize={isAppWorkflow ? appCardSize : linkCardSize}
+                    setActiveCardSize={(value, type) => {
+                      type === "app"
+                        ? form.setValue("cardSize.appWorkflows", value)
+                        : form.setValue("cardSize.linkWorkflows", value);
+                    }}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name={"cardArrangement"}
+            render={() => (
+              <FormItem>
+                <div>
+                  <FormLabel>Card Arrangement for {workflowTypeDerived} Workflows</FormLabel>
+
+                  <FormDescription>
+                    How funky do you want your cards in {workflowTypeDerived} Workflows
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <CardArrangementTabs
+                    key={isAppWorkflow ? "app" : "link"}
+                    workflowType={isAppWorkflow ? "app" : "link"}
+                    activeCardArrangement={isAppWorkflow ? appCardArrangement : linkCardArrangement}
+                    setActiveCardArrangement={(value, type) => {
+                      type === "app"
+                        ? form.setValue("cardArrangement.appWorkflows", value)
+                        : form.setValue("cardArrangement.linkWorkflows", value);
+                    }}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <div className="flex items-center space-x-1">
+            <FormField
+              control={form.control}
+              name="hideProgressBar"
+              render={({ field }) => (
+                <FormItem className="flex w-full items-center gap-2 space-y-0">
+                  <FormControl>
+                    <Switch
+                      id="hideProgressBar"
+                      checked={!!field.value}
+                      onCheckedChange={(checked) => field.onChange(checked)}
+                    />
+                  </FormControl>
+
+                  <div>
+                    <FormLabel>Hide progress bar</FormLabel>
+                    <FormDescription>Disable the visibility of workflow progress.</FormDescription>
+                  </div>
+                </FormItem>
+              )}
+            />
+          </div>
+
+          {isLogoVisible && (!workflowType || workflowType === "link") && !isSettingsPage && (
+            <div className="flex items-center space-x-1">
+              <FormField
+                control={form.control}
+                name="isLogoHidden"
+                render={({ field }) => (
+                  <FormItem className="flex w-full items-center gap-2 space-y-0">
+                    <FormControl>
+                      <Switch
+                        id="isLogoHidden"
+                        checked={!!field.value}
+                        onCheckedChange={(checked) => field.onChange(checked)}
+                      />
+                    </FormControl>
+
+                    <div>
+                      <FormLabel>
+                        Hide logo
+                        <Badge text="Link Workflows" type="gray" size="normal" />
+                      </FormLabel>
+                      <FormDescription>Hides the logo in this specific workflow</FormDescription>
+                    </div>
+                  </FormItem>
+                )}
+              />
+            </div>
+          )}
+
+          {(!workflowType || isAppWorkflow) && (
+            <div className="flex max-w-xs flex-col gap-4">
+              <div className="flex items-center space-x-1">
+                <FormField
+                  control={form.control}
+                  name="highlightBorderColor"
+                  render={({ field }) => (
+                    <FormItem className="flex w-full flex-col gap-2 space-y-0">
+                      <div className="flex items-center gap-2">
+                        <FormControl>
+                          <Switch
+                            id="highlightBorderColor"
+                            checked={!!field.value}
+                            onCheckedChange={(checked) => {
+                              if (!checked) {
+                                field.onChange(null);
+                                return;
+                              }
+
+                              field.onChange({
+                                light: COLOR_DEFAULTS.highlightBorderColor,
+                              });
+                            }}
+                          />
+                        </FormControl>
+
+                        <div>
+                          <FormLabel>Add highlight border</FormLabel>
+                          <FormDescription className="text-xs font-normal text-slate-500">
+                            Add an outer border to your workflow card.
+                          </FormDescription>
+                        </div>
+                      </div>
+
+                      {!!field.value && (
+                        <FormControl>
+                          <ColorPicker
+                            color={field.value?.light ?? COLOR_DEFAULTS.highlightBorderColor}
+                            onChange={(color: string) =>
+                              field.onChange({
+                                ...field.value,
+                                light: color,
+                              })
+                            }
+                            containerClass="my-0"
+                          />
+                        </FormControl>
+                      )}
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+          )}
         </div>
       </Collapsible.CollapsibleContent>
     </Collapsible.Root>

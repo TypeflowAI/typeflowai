@@ -1,7 +1,6 @@
 import { WorkflowAnalysisNavigation } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/components/WorkflowAnalysisNavigation";
-import ResponsePage from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/responses/components/ResponsePage";
+import { ResponsePage } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/responses/components/ResponsePage";
 import { notFound } from "next/navigation";
-
 import { RESPONSES_PER_PAGE, WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
 import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
@@ -18,23 +17,25 @@ export default async function Page({ params }) {
     return notFound();
   }
 
-  const workflow = await getWorkflow(workflowId);
+  const [workflow, environment, product, tags] = await Promise.all([
+    getWorkflow(params.workflowId),
+    getEnvironment(params.environmentId),
+    getProductByEnvironmentId(params.environmentId),
+    getTagsByEnvironmentId(params.environmentId),
+  ]);
 
   if (!workflow) {
     throw new Error("Workflow not found");
   }
 
-  const environment = await getEnvironment(workflow.environmentId);
-
   if (!environment) {
     throw new Error("Environment not found");
   }
-  const product = await getProductByEnvironmentId(environment.id);
+
   if (!product) {
     throw new Error("Product not found");
   }
 
-  const tags = await getTagsByEnvironmentId(environment.id);
   const totalResponseCount = await getResponseCountByWorkflowId(workflowId);
 
   return (

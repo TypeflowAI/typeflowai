@@ -2,6 +2,6 @@
 
 import { getAirtableTables } from "@typeflowai/lib/airtable/service";
 
-export async function refreshTablesAction(environmentId: string) {
+export const refreshTablesAction = async (environmentId: string) => {
   return await getAirtableTables(environmentId);
-}
+};

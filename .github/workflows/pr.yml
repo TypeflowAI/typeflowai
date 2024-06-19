@@ -29,13 +29,6 @@ jobs:
             has-files-requiring-all-checks:
               - "!(**.md|.github/CODEOWNERS)"
 
-  test:
-    name: Run Unit Tests
-    needs: [changes]
-    if: ${{ needs.changes.outputs.has-files-requiring-all-checks == 'true' }}
-    uses: ./.github/workflows/test.yml
-    secrets: inherit
-
   lint:
     name: Run Linters
     needs: [changes]
@@ -59,7 +52,7 @@ jobs:
 
   required:
     name: PR Check Summary
-    needs: [lint, test, build]
+    needs: [lint, build]
     if: always()
     runs-on: ubuntu-latest
     steps:

@@ -2,20 +2,19 @@
 
 import { Variants, motion } from "framer-motion";
 import { useRef, useState } from "react";
-
 import type { TProduct } from "@typeflowai/types/product";
 import { TWorkflow, TWorkflowType } from "@typeflowai/types/workflows";
 import { ClientLogo } from "@typeflowai/ui/ClientLogo";
 import { MediaBackground } from "@typeflowai/ui/MediaBackground";
-import Modal from "@typeflowai/ui/PreviewWorkflow/components/Modal";
+import { Modal } from "@typeflowai/ui/PreviewWorkflow/components/Modal";
 import { ResetProgressButton } from "@typeflowai/ui/ResetProgressButton";
 import { WorkflowInline } from "@typeflowai/ui/Workflow";
 
 interface ThemeStylingPreviewWorkflowProps {
   workflow: TWorkflow;
+  webAppUrl: string;
   setQuestionId: (_: string) => void;
   product: TProduct;
-  webAppUrl: string;
   previewType: TWorkflowType;
   setPreviewType: (type: TWorkflowType) => void;
 }
@@ -49,8 +48,8 @@ const previewParentContainerVariant: Variants = {
 
 export const ThemeStylingPreviewWorkflow = ({
   workflow,
-  product,
   webAppUrl,
+  product,
   previewType,
   setPreviewType,
   setQuestionId,
@@ -139,7 +138,7 @@ export const ThemeStylingPreviewWorkflow = ({
               : "expanded_with_fixed_positioning"
             : "shrink"
         }
-        className="relative flex h-[95] max-h-[95%] w-5/6 items-center justify-center rounded-lg border border-slate-300 bg-slate-200">
+        className="relative flex h-[95%] max-h-[95%] w-5/6 items-center justify-center rounded-lg border border-slate-300 bg-slate-200">
         <div className="flex h-full w-5/6 flex-1 flex-col">
           <div className="flex h-8 w-full items-center rounded-t-lg bg-slate-100">
             <div className="ml-6 flex space-x-2">
@@ -187,9 +186,7 @@ export const ThemeStylingPreviewWorkflow = ({
                 </div>
               )}
               <div
-                className={`${
-                  product.logo?.url && !product.styling.isLogoHidden && !isFullScreenPreview ? "mt-12" : ""
-                } z-0  w-full max-w-md rounded-lg p-4`}>
+                className={`${product.logo?.url && !product.styling.isLogoHidden && !isFullScreenPreview ? "mt-12" : ""} z-0 w-full max-w-md rounded-lg p-4`}>
                 <WorkflowInline
                   workflow={{ ...workflow, type: "link" }}
                   webAppUrl={webAppUrl}
@@ -212,9 +209,7 @@ export const ThemeStylingPreviewWorkflow = ({
       {/* for toggling between mobile and desktop mode  */}
       <div className="mt-2 flex rounded-full border-2 border-slate-300 p-1">
         <div
-          className={`${
-            previewType === "link" ? "rounded-full bg-slate-200" : ""
-          } cursor-pointer px-3 py-1 text-sm`}
+          className={`${previewType === "link" ? "rounded-full bg-slate-200" : ""} cursor-pointer px-3 py-1 text-sm`}
           onClick={() => setPreviewType("link")}>
           Link workflow
         </div>

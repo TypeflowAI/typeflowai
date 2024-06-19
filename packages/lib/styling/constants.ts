@@ -105,6 +105,7 @@ export const PREVIEW_WORKFLOW = {
     message: "",
     attributes: {},
     isVisible: true,
+    isStreaming: false,
     engine: OpenAIModel.GPT4,
   },
   thankYouCard: {
@@ -122,6 +123,7 @@ export const PREVIEW_WORKFLOW = {
   },
   displayOption: "displayOnce",
   recontactDays: null,
+  displayLimit: null,
   autoClose: null,
   runOnDate: null,
   closeOnDate: null,

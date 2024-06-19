@@ -1,5 +1,5 @@
 {
-  "extends": "@typeflowai/tsconfig/base.json",
+  "extends": "@typeflowai/config-typescript/base.json",
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"],
   "compilerOptions": {

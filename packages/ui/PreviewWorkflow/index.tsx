@@ -3,19 +3,17 @@
 import { Variants, motion } from "framer-motion";
 import { ExpandIcon, MonitorIcon, ShrinkIcon, SmartphoneIcon } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-
 import type { TEnvironment } from "@typeflowai/types/environment";
 import type { TProduct } from "@typeflowai/types/product";
 import { TProductStyling } from "@typeflowai/types/product";
 import { TUploadFileConfig } from "@typeflowai/types/storage";
 import { TWorkflow, TWorkflowStyling } from "@typeflowai/types/workflows";
-
 import { ClientLogo } from "../ClientLogo";
 import { MediaBackground } from "../MediaBackground";
 import { ResetProgressButton } from "../ResetProgressButton";
 import { WorkflowInline } from "../Workflow";
-import Modal from "./components/Modal";
-import TabOption from "./components/TabOption";
+import { Modal } from "./components/Modal";
+import { TabOption } from "./components/TabOption";
 
 type TPreviewType = "modal" | "fullwidth" | "email";
 
@@ -142,6 +140,23 @@ export const PreviewWorkflow = ({
     return product.styling;
   }, [product.styling, workflow.styling]);
 
+  const [cardWidthClass, setCardWidthClass] = useState("md:max-w-md");
+
+  useEffect(() => {
+    const determineCardWidthClass = () => {
+      switch (workflow.styling?.cardSize?.linkWorkflows) {
+        case "large":
+          return "md:max-w-4xl";
+        case "regular":
+          return "md:max-w-2xl";
+        default:
+          return "md:max-w-md";
+      }
+    };
+
+    setCardWidthClass(determineCardWidthClass());
+  }, [workflow.styling]);
+
   const updateQuestionId = useCallback(
     (newQuestionId: string) => {
       if (!newQuestionId || newQuestionId === "hidden" || newQuestionId === "multiLanguage") return;
@@ -228,7 +243,7 @@ export const PreviewWorkflow = ({
               : "expanded_with_fixed_positioning"
             : "shrink"
         }
-        className="relative flex h-[95] max-h-[95%] w-5/6 items-center justify-center rounded-lg border border-slate-300 bg-slate-200">
+        className="relative flex h-[95%] max-h-[95%] w-5/6 items-center justify-center rounded-lg border border-slate-300 bg-slate-200">
         {previewMode === "mobile" && (
           <>
             <p className="absolute left-0 top-0 m-2 rounded bg-slate-100 px-2 py-1 text-xs text-slate-400">
@@ -360,7 +375,7 @@ export const PreviewWorkflow = ({
                     <ClientLogo environmentId={environment.id} product={product} previewWorkflow />
                   )}
                 </div>
-                <div className="z-0 w-full max-w-md rounded-lg border-transparent">
+                <div className={`z-0 w-full max-w-md rounded-lg border-transparent ${cardWidthClass}`}>
                   <WorkflowInline
                     workflow={{ ...workflow, type: "link" }}
                     webAppUrl={webAppUrl}

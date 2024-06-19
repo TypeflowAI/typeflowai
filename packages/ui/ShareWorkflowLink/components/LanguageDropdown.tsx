@@ -1,11 +1,9 @@
 import { Languages } from "lucide-react";
 import { useRef, useState } from "react";
-
 import { getEnabledLanguages } from "@typeflowai/lib/i18n/utils";
 import { useClickOutside } from "@typeflowai/lib/utils/hooks/useClickOutside";
 import { TWorkflow } from "@typeflowai/types/workflows";
-
-// import { getLanguageLabel } from "../../../ee/multiLanguage/lib/isoLanguages";
+// import { getLanguageLabel } from "../../../ee/multi-language/lib/iso-languages";
 import { Button } from "../../Button";
 
 interface LanguageDropdownProps {

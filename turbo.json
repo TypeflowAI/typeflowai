@@ -1,10 +1,6 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "pipeline": {
-    "@typeflowai/database#build": {
-      "cache": false,
-      "dependsOn": ["post-install"]
-    },
+  "tasks": {
     "@typeflowai/dashboard#go": {
       "cache": false,
       "persistent": true,
@@ -138,6 +134,7 @@
         "UPLOADS_DIR",
         "VERCEL",
         "VERCEL_URL",
+        "VERSION",
         "WEBAPP_URL",
         "UNSPLASH_ACCESS_KEY"
       ]
@@ -146,11 +143,13 @@
       "dependsOn": ["^build:dev"],
       "outputs": ["dist/**", ".next/**"]
     },
-    "post-install": {
+    "db:setup": {
       "cache": false,
-      "dependsOn": [],
-      "outputs": [],
-      "inputs": ["./schema.prisma"]
+      "outputs": []
+    },
+    "db:down": {
+      "cache": false,
+      "outputs": []
     },
     "go": {
       "persistent": true,
@@ -161,6 +160,15 @@
     },
     "db:migrate:deploy": {
       "outputs": []
+    },
+    "db:push": {
+      "outputs": []
+    },
+    "db:seed": {
+      "outputs": []
+    },
+    "db:start": {
+      "cache": false
     },
     "dev": {
       "cache": false,
@@ -179,7 +187,8 @@
       "outputs": []
     },
     "clean": {
-      "outputs": []
+      "outputs": [],
+      "cache": false
     }
   }
 }

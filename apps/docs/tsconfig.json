@@ -1,5 +1,5 @@
 {
-  "extends": "@typeflowai/tsconfig/nextjs.json",
+  "extends": "@typeflowai/config-typescript/nextjs.json",
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "../../packages/types/*.d.ts"],
   "exclude": ["../../.env"],
   "compilerOptions": {

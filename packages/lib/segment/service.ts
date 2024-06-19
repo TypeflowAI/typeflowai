@@ -1,5 +1,4 @@
 import { Prisma } from "@prisma/client";
-
 import { prisma } from "@typeflowai/database";
 import { ZString } from "@typeflowai/types/common";
 import { ZId } from "@typeflowai/types/environment";
@@ -23,7 +22,6 @@ import {
   ZSegmentFilters,
   ZSegmentUpdateInput,
 } from "@typeflowai/types/segment";
-
 import {
   getActionCountInLastMonth,
   getActionCountInLastQuarter,
@@ -50,7 +48,7 @@ type PrismaSegment = Prisma.SegmentGetPayload<{
   };
 }>;
 
-export const selectSegment: Prisma.SegmentDefaultArgs["select"] = {
+export const selectSegment = {
   id: true,
   createdAt: true,
   updatedAt: true,
@@ -62,6 +60,8 @@ export const selectSegment: Prisma.SegmentDefaultArgs["select"] = {
   workflows: {
     select: {
       id: true,
+      name: true,
+      status: true,
     },
   },
 };

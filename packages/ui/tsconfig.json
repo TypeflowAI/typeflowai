@@ -1,5 +1,5 @@
 {
-  "extends": "@typeflowai/tsconfig/react-library.json",
+  "extends": "@typeflowai/config-typescript/react-library.json",
   "include": [".", "../types/*.d.ts", "../lib/templates.ts"],
   "exclude": ["build", "node_modules"],
   "compilerOptions": {

@@ -3,8 +3,8 @@
 import { TagIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { capitalizeFirstLetter } from "@typeflowai/lib/strings";
 import { convertDateTimeStringShort } from "@typeflowai/lib/time";
+import { capitalizeFirstLetter } from "@typeflowai/lib/utils/strings";
 import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { ErrorComponent } from "@typeflowai/ui/ErrorComponent";
 import { Label } from "@typeflowai/ui/Label";

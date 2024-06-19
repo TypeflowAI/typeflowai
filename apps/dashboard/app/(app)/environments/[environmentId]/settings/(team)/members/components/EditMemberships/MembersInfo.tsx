@@ -1,7 +1,6 @@
 import MemberActions from "@/app/(app)/environments/[environmentId]/settings/(team)/members/components/EditMemberships/MemberActions";
 import { isInviteExpired } from "@/app/lib/utils";
-
-// import { EditMembershipRole } from "@typeflowai/ee/roleManagement/components/EditMembershipRole";
+// import { EditMembershipRole } from "@typeflowai/ee/role-management/components/edit-membership-role";
 import { TInvite } from "@typeflowai/types/invites";
 import { TMember, TMembershipRole } from "@typeflowai/types/memberships";
 import { TTeam } from "@typeflowai/types/teams";

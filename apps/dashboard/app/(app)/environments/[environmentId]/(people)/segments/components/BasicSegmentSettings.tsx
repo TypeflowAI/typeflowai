@@ -9,11 +9,11 @@ import { structuredClone } from "@typeflowai/lib/pollyfills/structuredClone";
 import { isAdvancedSegment } from "@typeflowai/lib/segment/utils";
 import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TBaseFilter, TSegment, TSegmentWithWorkflowNames, ZSegmentFilters } from "@typeflowai/types/segment";
+import { BasicAddFilterModal } from "@typeflowai/ui/BasicAddFilterModal";
+import { BasicSegmentEditor } from "@typeflowai/ui/BasicSegmentEditor";
 import { Button } from "@typeflowai/ui/Button";
+import { ConfirmDeleteSegmentModal } from "@typeflowai/ui/ConfirmDeleteSegmentModal";
 import { Input } from "@typeflowai/ui/Input";
-import BasicAddFilterModal from "@typeflowai/ui/Targeting/BasicAddFilterModal";
-import BasicSegmentEditor from "@typeflowai/ui/Targeting/BasicSegmentEditor";
-import ConfirmDeleteSegmentModal from "@typeflowai/ui/Targeting/ConfirmDeleteSegmentModal";
 import { UpgradePlanNotice } from "@typeflowai/ui/UpgradePlanNotice";
 
 import { deleteBasicSegmentAction, updateBasicSegmentAction } from "../actions";

@@ -5,12 +5,12 @@ import WorkflowLinkUsed from "@/app/s/[workflowId]/components/WorkflowLinkUsed";
 import { getPrefillValue } from "@/app/s/[workflowId]/lib/prefilling";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-
 import { TypeflowAIAPI } from "@typeflowai/api";
 import { ResponseQueue } from "@typeflowai/lib/responseQueue";
 import { WorkflowState } from "@typeflowai/lib/workflowState";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TProduct } from "@typeflowai/types/product";
-import { TResponse, TResponseUpdate } from "@typeflowai/types/responses";
+import { TResponse, TResponseHiddenFieldValue, TResponseUpdate } from "@typeflowai/types/responses";
 import { TUploadFileConfig } from "@typeflowai/types/storage";
 import { TWorkflow } from "@typeflowai/types/workflows";
 import { ClientLogo } from "@typeflowai/ui/ClientLogo";
@@ -32,6 +32,7 @@ interface LinkWorkflowProps {
   responseCount?: number;
   verifiedEmail?: string;
   languageCode: string;
+  attributeClasses: TAttributeClass[];
 }
 
 export default function LinkWorkflow({
@@ -45,6 +46,7 @@ export default function LinkWorkflow({
   responseCount,
   verifiedEmail,
   languageCode,
+  attributeClasses,
 }: LinkWorkflowProps) {
   const responseId = singleUseResponse?.id;
   const searchParams = useSearchParams();
@@ -119,20 +121,17 @@ export default function LinkWorkflow({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const hiddenFieldsRecord = useMemo<Record<string, string | number | string[]> | null>(() => {
-    const fieldsRecord: Record<string, string | number | string[]> = {};
-    let fieldsSet = false;
+  const hiddenFieldsRecord = useMemo<TResponseHiddenFieldValue>(() => {
+    const fieldsRecord: TResponseHiddenFieldValue = {};
 
     workflow.hiddenFields?.fieldIds?.forEach((field) => {
       const answer = searchParams?.get(field);
       if (answer) {
         fieldsRecord[field] = answer;
-        fieldsSet = true;
       }
     });
 
-    // Only return the record if at least one field was set.
-    return fieldsSet ? fieldsRecord : null;
+    return fieldsRecord;
   }, [searchParams, workflow.hiddenFields?.fieldIds]);
 
   const getVerifiedEmail = useMemo<Record<string, string> | null>(() => {
@@ -147,6 +146,23 @@ export default function LinkWorkflow({
     responseQueue.updateWorkflowState(workflowState);
   }, [responseQueue, workflowState]);
 
+  const [cardWidthClass, setCardWidthClass] = useState("md:max-w-md");
+
+  useEffect(() => {
+    const determineCardWidthClass = () => {
+      switch (workflow.styling?.cardSize?.linkWorkflows) {
+        case "large":
+          return "md:max-w-4xl";
+        case "regular":
+          return "md:max-w-2xl";
+        default:
+          return "md:max-w-md";
+      }
+    };
+
+    setCardWidthClass(determineCardWidthClass());
+  }, [workflow.styling]);
+
   if (!workflowState.isResponseFinished() && hasFinishedSingleUseResponse) {
     return <WorkflowLinkUsed singleUseMessage={workflow.singleUse} />;
   }
@@ -159,6 +175,7 @@ export default function LinkWorkflow({
           isErrorComponent={true}
           languageCode={languageCode}
           styling={product.styling}
+          attributeClasses={attributeClasses}
         />
       );
     }
@@ -169,6 +186,7 @@ export default function LinkWorkflow({
         workflow={workflow}
         languageCode={languageCode}
         styling={product.styling}
+        attributeClasses={attributeClasses}
       />
     );
   }
@@ -196,7 +214,7 @@ export default function LinkWorkflow({
   return (
     <div className="flex max-h-dvh min-h-dvh items-end justify-center overflow-clip md:items-center">
       {!determineStyling().isLogoHidden && product.logo?.url && <ClientLogo product={product} />}
-      <div className="w-full space-y-6 p-0 md:max-w-md ">
+      <div className={`w-full space-y-6 p-0 ${cardWidthClass}`}>
         {isPreview && (
           <div className="fixed left-0 top-0 flex w-full items-center justify-between bg-slate-600 p-2 px-4 text-center text-sm text-white shadow-sm">
             <div />
@@ -262,6 +280,7 @@ export default function LinkWorkflow({
                   url: window.location.href,
                   source: sourceParam || "",
                 },
+                ...(Object.keys(hiddenFieldsRecord).length > 0 && { hiddenFields: hiddenFieldsRecord }),
               });
           }}
           onFileUpload={async (file: File, params: TUploadFileConfig) => {
@@ -280,6 +299,7 @@ export default function LinkWorkflow({
             setQuestionId = f;
           }}
           startAtQuestionId={startAt && isStartAtValid ? startAt : undefined}
+          hiddenFieldsRecord={hiddenFieldsRecord}
         />
       </div>
     </div>

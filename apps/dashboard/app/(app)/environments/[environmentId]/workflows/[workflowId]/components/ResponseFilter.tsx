@@ -7,23 +7,21 @@ import {
 import { getWorkflowFilterDataAction } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/actions";
 import QuestionFilterComboBox from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/components/QuestionFilterComboBox";
 import { generateQuestionAndFilterOptions } from "@/app/lib/workflows/workflows";
-import { getWorkflowFilterDataByWorkflowSharingKeyAction } from "@/app/share/[sharingKey]/action";
+import { getWorkflowFilterDataByWorkflowSharingKeyAction } from "@/app/share/[sharingKey]/actions";
 import clsx from "clsx";
 import { isEqual } from "lodash";
 import { TrashIcon } from "lucide-react";
 import { ChevronDown, ChevronUp, Plus } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-
-import { TWorkflow, TWorkflowQuestionType } from "@typeflowai/types/workflows";
+import { TWorkflow, TWorkflowQuestionTypeEnum } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
 import { Checkbox } from "@typeflowai/ui/Checkbox";
 import { Popover, PopoverContent, PopoverTrigger } from "@typeflowai/ui/Popover";
-
 import QuestionsComboBox, { OptionsType, QuestionOption } from "./QuestionsComboBox";
 
 export type QuestionFilterOptions = {
-  type: TWorkflowQuestionType | "Attributes" | "Tags" | "Languages";
+  type: TWorkflowQuestionTypeEnum | "Attributes" | "Tags" | "Languages";
   filterOptions: string[];
   filterComboBoxOptions: string[];
   id: string;
@@ -46,7 +44,7 @@ const ResponseFilter = ({ workflow }: ResponseFilterProps) => {
     // Fetch the initial data for the filter and load it into the state
     const handleInitialData = async () => {
       if (isOpen) {
-        const { attributes, meta, environmentTags } = isSharingPage
+        const { attributes, meta, environmentTags, hiddenFields } = isSharingPage
           ? await getWorkflowFilterDataByWorkflowSharingKeyAction(sharingKey, workflow.environmentId)
           : await getWorkflowFilterDataAction(workflow.id, workflow.environmentId);
 
@@ -54,7 +52,8 @@ const ResponseFilter = ({ workflow }: ResponseFilterProps) => {
           workflow,
           environmentTags,
           attributes,
-          meta
+          meta,
+          hiddenFields
         );
         setSelectedOptions({ questionFilterOptions, questionOptions });
       }

@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { cn } from "@typeflowai/lib/cn";
 import { createI18nString, extractLanguageCodes } from "@typeflowai/lib/i18n/utils";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TWorkflow, TWorkflowPictureSelectionQuestion } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
 import { FileInput } from "@typeflowai/ui/FileInput";
@@ -23,6 +24,7 @@ interface PictureSelectionFormProps {
   selectedLanguageCode: string;
   setSelectedLanguageCode: (language: string) => void;
   isInvalid: boolean;
+  attributeClasses: TAttributeClass[];
 }
 
 export const PictureSelectionForm = ({
@@ -33,6 +35,7 @@ export const PictureSelectionForm = ({
   selectedLanguageCode,
   setSelectedLanguageCode,
   isInvalid,
+  attributeClasses,
 }: PictureSelectionFormProps): JSX.Element => {
   const [showSubheader, setShowSubheader] = useState(!!question.subheader);
   const environmentId = localWorkflow.environmentId;
@@ -43,12 +46,14 @@ export const PictureSelectionForm = ({
       <QuestionFormInput
         id="headline"
         value={question.headline}
+        label={"Question*"}
         localWorkflow={localWorkflow}
         questionIdx={questionIdx}
         isInvalid={isInvalid}
         updateQuestion={updateQuestion}
         selectedLanguageCode={selectedLanguageCode}
         setSelectedLanguageCode={setSelectedLanguageCode}
+        attributeClasses={attributeClasses}
       />
       <div>
         {showSubheader && (
@@ -57,12 +62,14 @@ export const PictureSelectionForm = ({
               <QuestionFormInput
                 id="subheader"
                 value={question.subheader}
+                label={"Description"}
                 localWorkflow={localWorkflow}
                 questionIdx={questionIdx}
                 isInvalid={isInvalid}
                 updateQuestion={updateQuestion}
                 selectedLanguageCode={selectedLanguageCode}
                 setSelectedLanguageCode={setSelectedLanguageCode}
+                attributeClasses={attributeClasses}
               />
             </div>
 

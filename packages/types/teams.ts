@@ -25,7 +25,10 @@ export const ZTeam = z.object({
   id: z.string().cuid2(),
   createdAt: z.date(),
   updatedAt: z.date(),
-  name: z.string(),
+  name: z
+    .string({ message: "Name is required" })
+    .trim()
+    .min(1, { message: "Name must be at least 1 character long" }),
   billing: ZTeamBilling,
 });
 

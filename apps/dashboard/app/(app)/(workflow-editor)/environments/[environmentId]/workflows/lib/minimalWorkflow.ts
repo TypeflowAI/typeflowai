@@ -15,6 +15,7 @@ export const minimalWorkflow: TWorkflow = {
   triggers: [],
   redirectUrl: null,
   recontactDays: null,
+  displayLimit: null,
   welcomeCard: {
     enabled: false,
     headline: { default: "Welcome!" },
@@ -30,6 +31,7 @@ export const minimalWorkflow: TWorkflow = {
     message: "",
     attributes: {},
     isVisible: true,
+    isStreaming: false,
     engine: OpenAIModel.GPT35Turbo,
   },
   thankYouCard: {

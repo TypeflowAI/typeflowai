@@ -1,6 +1,5 @@
 import { TAttributes } from "@typeflowai/types/attributes";
 import type { TJSAppConfig, TJsAppConfigInput } from "@typeflowai/types/js";
-
 import {
   ErrorHandler,
   MissingFieldError,
@@ -56,7 +55,7 @@ export const initialize = async (
   if (existingConfig?.status === "error") {
     if (isDebug) {
       logger.debug(
-        "Formbricks is in error state, but debug mode is active. Resetting config and continuing."
+        "TypeflowAI is in error state, but debug mode is active. Resetting config and continuing."
       );
       appConfig.resetConfig();
       return okVoid();

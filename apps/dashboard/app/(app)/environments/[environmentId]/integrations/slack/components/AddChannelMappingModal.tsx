@@ -1,3 +1,4 @@
+import { createOrUpdateIntegrationAction } from "@/app/(app)/environments/[environmentId]/integrations/actions";
 import SlackLogo from "@/images/slacklogo.png";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
@@ -5,7 +6,8 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
-import { checkForRecallInHeadline } from "@typeflowai/lib/utils/recall";
+import { replaceHeadlineRecall } from "@typeflowai/lib/utils/recall";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TIntegrationItem } from "@typeflowai/types/integration";
 import {
   TIntegrationSlack,
@@ -19,8 +21,6 @@ import { DropdownSelector } from "@typeflowai/ui/DropdownSelector";
 import { Label } from "@typeflowai/ui/Label";
 import { Modal } from "@typeflowai/ui/Modal";
 
-import { createOrUpdateIntegrationAction } from "../../actions";
-
 interface AddChannelMappingModalProps {
   environmentId: string;
   workflows: TWorkflow[];
@@ -29,6 +29,7 @@ interface AddChannelMappingModalProps {
   slackIntegration: TIntegrationSlack;
   channels: TIntegrationItem[];
   selectedIntegration?: (TIntegrationSlackConfigData & { index: number }) | null;
+  attributeClasses: TAttributeClass[];
 }
 
 export const AddChannelMappingModal = ({
@@ -39,6 +40,7 @@ export const AddChannelMappingModal = ({
   channels,
   slackIntegration,
   selectedIntegration,
+  attributeClasses,
 }: AddChannelMappingModalProps) => {
   const { handleSubmit } = useForm();
 
@@ -169,7 +171,7 @@ export const AddChannelMappingModal = ({
   );
 
   return (
-    <Modal open={open} setOpen={setOpenWithStates} noPadding closeOnOutsideClick={false}>
+    <Modal open={open} setOpen={setOpenWithStates} noPadding closeOnOutsideClick={true}>
       <div className="flex h-full flex-col rounded-lg">
         <div className="rounded-t-lg bg-slate-100">
           <div className="flex w-full items-center justify-between p-6">
@@ -224,23 +226,25 @@ export const AddChannelMappingModal = ({
                   <Label htmlFor="Workflows">Questions</Label>
                   <div className="mt-1 rounded-lg border border-slate-200">
                     <div className="grid content-center rounded-lg bg-slate-50 p-3 text-left text-sm text-slate-900">
-                      {checkForRecallInHeadline(selectedWorkflow, "default")?.questions?.map((question) => (
-                        <div key={question.id} className="my-1 flex items-center space-x-2">
-                          <label htmlFor={question.id} className="flex cursor-pointer items-center">
-                            <Checkbox
-                              type="button"
-                              id={question.id}
-                              value={question.id}
-                              className="bg-white"
-                              checked={selectedQuestions.includes(question.id)}
-                              onCheckedChange={() => {
-                                handleCheckboxChange(question.id);
-                              }}
-                            />
-                            <span className="ml-2">{getLocalizedValue(question.headline, "default")}</span>
-                          </label>
-                        </div>
-                      ))}
+                      {replaceHeadlineRecall(selectedWorkflow, "default", attributeClasses)?.questions?.map(
+                        (question) => (
+                          <div key={question.id} className="my-1 flex items-center space-x-2">
+                            <label htmlFor={question.id} className="flex cursor-pointer items-center">
+                              <Checkbox
+                                type="button"
+                                id={question.id}
+                                value={question.id}
+                                className="bg-white"
+                                checked={selectedQuestions.includes(question.id)}
+                                onCheckedChange={() => {
+                                  handleCheckboxChange(question.id);
+                                }}
+                              />
+                              <span className="ml-2">{getLocalizedValue(question.headline, "default")}</span>
+                            </label>
+                          </div>
+                        )
+                      )}
                     </div>
                   </div>
                 </div>

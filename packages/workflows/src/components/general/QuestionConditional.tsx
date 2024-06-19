@@ -11,10 +11,9 @@ import { NPSQuestion } from "@/components/questions/NPSQuestion";
 import { OpenTextQuestion } from "@/components/questions/OpenTextQuestion";
 import { PictureSelectionQuestion } from "@/components/questions/PictureSelectionQuestion";
 import { RatingQuestion } from "@/components/questions/RatingQuestion";
-
 import { TResponseData, TResponseTtc } from "@typeflowai/types/responses";
 import { TUploadFileConfig } from "@typeflowai/types/storage";
-import { TWorkflowQuestion, TWorkflowQuestionType } from "@typeflowai/types/workflows";
+import { TWorkflowQuestion, TWorkflowQuestionTypeEnum } from "@typeflowai/types/workflows";
 
 interface QuestionConditionalProps {
   question: TWorkflowQuestion;
@@ -51,7 +50,7 @@ export const QuestionConditional = ({
   isInIframe,
   currentQuestionId,
 }: QuestionConditionalProps) => {
-  return question.type === TWorkflowQuestionType.OpenText ? (
+  return question.type === TWorkflowQuestionTypeEnum.OpenText ? (
     <OpenTextQuestion
       key={question.id}
       question={question}
@@ -68,7 +67,7 @@ export const QuestionConditional = ({
       isInIframe={isInIframe}
       currentQuestionId={currentQuestionId}
     />
-  ) : question.type === TWorkflowQuestionType.MultipleChoiceSingle ? (
+  ) : question.type === TWorkflowQuestionTypeEnum.MultipleChoiceSingle ? (
     <MultipleChoiceSingleQuestion
       key={question.id}
       question={question}
@@ -85,7 +84,7 @@ export const QuestionConditional = ({
       isInIframe={isInIframe}
       currentQuestionId={currentQuestionId}
     />
-  ) : question.type === TWorkflowQuestionType.MultipleChoiceMulti ? (
+  ) : question.type === TWorkflowQuestionTypeEnum.MultipleChoiceMulti ? (
     <MultipleChoiceMultiQuestion
       key={question.id}
       question={question}
@@ -102,7 +101,7 @@ export const QuestionConditional = ({
       isInIframe={isInIframe}
       currentQuestionId={currentQuestionId}
     />
-  ) : question.type === TWorkflowQuestionType.NPS ? (
+  ) : question.type === TWorkflowQuestionTypeEnum.NPS ? (
     <NPSQuestion
       key={question.id}
       question={question}
@@ -119,7 +118,7 @@ export const QuestionConditional = ({
       isInIframe={isInIframe}
       currentQuestionId={currentQuestionId}
     />
-  ) : question.type === TWorkflowQuestionType.CTA ? (
+  ) : question.type === TWorkflowQuestionTypeEnum.CTA ? (
     <CTAQuestion
       key={question.id}
       question={question}
@@ -136,7 +135,7 @@ export const QuestionConditional = ({
       isInIframe={isInIframe}
       currentQuestionId={currentQuestionId}
     />
-  ) : question.type === TWorkflowQuestionType.Rating ? (
+  ) : question.type === TWorkflowQuestionTypeEnum.Rating ? (
     <RatingQuestion
       key={question.id}
       question={question}
@@ -153,7 +152,7 @@ export const QuestionConditional = ({
       isInIframe={isInIframe}
       currentQuestionId={currentQuestionId}
     />
-  ) : question.type === TWorkflowQuestionType.Consent ? (
+  ) : question.type === TWorkflowQuestionTypeEnum.Consent ? (
     <ConsentQuestion
       key={question.id}
       question={question}
@@ -170,7 +169,7 @@ export const QuestionConditional = ({
       isInIframe={isInIframe}
       currentQuestionId={currentQuestionId}
     />
-  ) : question.type === TWorkflowQuestionType.Date ? (
+  ) : question.type === TWorkflowQuestionTypeEnum.Date ? (
     <DateQuestion
       key={question.id}
       question={question}
@@ -187,7 +186,7 @@ export const QuestionConditional = ({
       isInIframe={isInIframe}
       currentQuestionId={currentQuestionId}
     />
-  ) : question.type === TWorkflowQuestionType.PictureSelection ? (
+  ) : question.type === TWorkflowQuestionTypeEnum.PictureSelection ? (
     <PictureSelectionQuestion
       key={question.id}
       question={question}
@@ -204,7 +203,7 @@ export const QuestionConditional = ({
       isInIframe={isInIframe}
       currentQuestionId={currentQuestionId}
     />
-  ) : question.type === TWorkflowQuestionType.FileUpload ? (
+  ) : question.type === TWorkflowQuestionTypeEnum.FileUpload ? (
     <FileUploadQuestion
       key={question.id}
       workflowId={workflowId}
@@ -223,7 +222,7 @@ export const QuestionConditional = ({
       isInIframe={isInIframe}
       currentQuestionId={currentQuestionId}
     />
-  ) : question.type === TWorkflowQuestionType.Cal ? (
+  ) : question.type === TWorkflowQuestionTypeEnum.Cal ? (
     <CalQuestion
       key={question.id}
       question={question}
@@ -240,7 +239,7 @@ export const QuestionConditional = ({
       setTtc={setTtc}
       currentQuestionId={currentQuestionId}
     />
-  ) : question.type === TWorkflowQuestionType.Matrix ? (
+  ) : question.type === TWorkflowQuestionTypeEnum.Matrix ? (
     <MatrixQuestion
       question={question}
       value={typeof value === "object" && !Array.isArray(value) ? value : {}}
@@ -255,7 +254,7 @@ export const QuestionConditional = ({
       setTtc={setTtc}
       currentQuestionId={currentQuestionId}
     />
-  ) : question.type === TWorkflowQuestionType.Address ? (
+  ) : question.type === TWorkflowQuestionTypeEnum.Address ? (
     <AddressQuestion
       question={question}
       value={Array.isArray(value) ? value : undefined}

@@ -1,7 +1,6 @@
 // extend this object in order to add more validation rules
 import { isEqual } from "lodash";
 import { toast } from "react-hot-toast";
-
 import { extractLanguageCodes, getLocalizedValue } from "@typeflowai/lib/i18n/utils";
 import { checkForEmptyFallBackValue } from "@typeflowai/lib/utils/recall";
 import { ZSegmentFilters } from "@typeflowai/types/segment";
@@ -16,7 +15,7 @@ import {
   TWorkflowOpenTextQuestion,
   TWorkflowPictureSelectionQuestion,
   TWorkflowQuestion,
-  TWorkflowQuestionType,
+  TWorkflowQuestionTypeEnum,
   TWorkflowQuestions,
   TWorkflowThankYouCard,
   TWorkflowWelcomeCard,
@@ -128,7 +127,11 @@ export const validationRules = {
     }
 
     for (const field of fieldsToValidate) {
-      if (question[field] && typeof question[field][defaultLanguageCode] !== "undefined") {
+      if (
+        question[field] &&
+        typeof question[field][defaultLanguageCode] !== "undefined" &&
+        question[field][defaultLanguageCode].trim() !== ""
+      ) {
         isValid = isValid && isLabelValidForAllLanguages(question[field], languages);
       }
     }
@@ -235,6 +238,7 @@ export const validateId = (
     "hidden",
     "verifiedEmail",
     "multiLanguage",
+    "embed",
   ];
   if (forbiddenIds.includes(field)) {
     toast.error(`${type} Id not allowed.`);
@@ -254,12 +258,13 @@ export const validateId = (
   return true;
 };
 
-// Checks if there is a cycle present in the workflow data logic.
-export const isWorkflowLogicCyclic = (questions: TWorkflowQuestions) => {
+// Checks if there is a cycle present in the workflow data logic and returns all questions responsible for the cycle.
+export const findQuestionsWithCyclicLogic = (questions: TWorkflowQuestions): string[] => {
   const visited: Record<string, boolean> = {};
   const recStack: Record<string, boolean> = {};
+  const cyclicQuestions: Set<string> = new Set();
 
-  const checkForCycle = (questionId: string) => {
+  const checkForCyclicLogic = (questionId: string): boolean => {
     if (!visited[questionId]) {
       visited[questionId] = true;
       recStack[questionId] = true;
@@ -269,12 +274,14 @@ export const isWorkflowLogicCyclic = (questions: TWorkflowQuestions) => {
         for (const logic of question.logic) {
           const destination = logic.destination;
           if (!destination) {
-            return false;
+            continue;
           }
 
-          if (!visited[destination] && checkForCycle(destination)) {
+          if (!visited[destination] && checkForCyclicLogic(destination)) {
+            cyclicQuestions.add(questionId);
             return true;
           } else if (recStack[destination]) {
+            cyclicQuestions.add(questionId);
             return true;
           }
         }
@@ -282,7 +289,7 @@ export const isWorkflowLogicCyclic = (questions: TWorkflowQuestions) => {
         // Handle default behavior
         const nextQuestionIndex = questions.findIndex((question) => question.id === questionId) + 1;
         const nextQuestion = questions[nextQuestionIndex];
-        if (nextQuestion && !visited[nextQuestion.id] && checkForCycle(nextQuestion.id)) {
+        if (nextQuestion && !visited[nextQuestion.id] && checkForCyclicLogic(nextQuestion.id)) {
           return true;
         }
       }
@@ -294,12 +301,10 @@ export const isWorkflowLogicCyclic = (questions: TWorkflowQuestions) => {
 
   for (const question of questions) {
     const questionId = question.id;
-    if (checkForCycle(questionId)) {
-      return true;
-    }
+    checkForCyclicLogic(questionId);
   }
 
-  return false;
+  return Array.from(cyclicQuestions);
 };
 
 export const isWorkflowValid = (
@@ -366,8 +371,8 @@ export const isWorkflowValid = (
     existingQuestionIds.add(question.id);
 
     if (
-      question.type === TWorkflowQuestionType.MultipleChoiceSingle ||
-      question.type === TWorkflowQuestionType.MultipleChoiceMulti
+      question.type === TWorkflowQuestionTypeEnum.MultipleChoiceSingle ||
+      question.type === TWorkflowQuestionTypeEnum.MultipleChoiceMulti
     ) {
       const haveSameChoices =
         question.choices.some((element) => element.label[selectedLanguageCode]?.trim() === "") ||
@@ -463,7 +468,9 @@ export const isWorkflowValid = (
   }
 
   // Detecting any cyclic dependencies in workflow logic.
-  if (isWorkflowLogicCyclic(workflow.questions)) {
+  const questionsWithCyclicLogic = findQuestionsWithCyclicLogic(workflow.questions);
+  if (questionsWithCyclicLogic.length > 0) {
+    setInvalidQuestions(questionsWithCyclicLogic);
     toast.error("Cyclic logic detected. Please fix it before saving.");
     return false;
   }

@@ -1,13 +1,11 @@
 "use client";
 
 import { UsersIcon } from "lucide-react";
-
-// import SegmentSettings from "@typeflowai/ee/advancedTargeting/components/SegmentSettings";
+// import SegmentSettings from "@typeflowai/ee/advanced-targeting/components/segment-settings";
 import { TActionClass } from "@typeflowai/types/actionClasses";
 import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TSegment, TSegmentWithWorkflowNames } from "@typeflowai/types/segment";
 import { ModalWithTabs } from "@typeflowai/ui/ModalWithTabs";
-
 import BasicSegmentSettings from "./BasicSegmentSettings";
 import SegmentActivityTab from "./SegmentActivityTab";
 

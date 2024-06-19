@@ -6,8 +6,8 @@ import WorkflowInactive from "@/app/s/[workflowId]/components/WorkflowInactive";
 import { getMetadataForLinkWorkflow } from "@/app/s/[workflowId]/metadata";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-
 import { getIsPaidSubscription } from "@typeflowai/ee/subscription/lib/service";
+import { getAttributeClasses } from "@typeflowai/lib/attributeClass/service";
 import { IMPRINT_URL, IS_TYPEFLOWAI_CLOUD, PRIVACY_URL, WEBAPP_URL } from "@typeflowai/lib/constants";
 import { createPerson, getPersonByUserId } from "@typeflowai/lib/person/service";
 import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
@@ -17,7 +17,6 @@ import { getWorkflow } from "@typeflowai/lib/workflow/service";
 import { ZId } from "@typeflowai/types/environment";
 import { TResponse } from "@typeflowai/types/responses";
 import { MediaBackground } from "@typeflowai/ui/MediaBackground";
-
 import { getEmailVerificationDetails } from "./lib/helpers";
 
 interface LinkWorkflowPageProps {
@@ -125,11 +124,16 @@ export default async function LinkWorkflowPage({ params, searchParams }: LinkWor
     throw new Error("Product not found");
   }
 
+  const attributeClasses = await getAttributeClasses(workflow.environmentId);
+
   const getLanguageCode = (): string => {
     if (!langParam || !isMultiLanguageAllowed) return "default";
     else {
       const selectedLanguage = workflow.languages.find((workflowLanguage) => {
-        return workflowLanguage.language.code === langParam || workflowLanguage.language.alias === langParam;
+        return (
+          workflowLanguage.language.code === langParam.toLowerCase() ||
+          workflowLanguage.language.alias?.toLowerCase() === langParam.toLowerCase()
+        );
       });
       if (selectedLanguage?.default || !selectedLanguage?.enabled) {
         return "default";
@@ -167,6 +171,7 @@ export default async function LinkWorkflowPage({ params, searchParams }: LinkWor
         IS_TYPEFLOWAI_CLOUD={IS_TYPEFLOWAI_CLOUD}
         verifiedEmail={verifiedEmail}
         languageCode={languageCode}
+        attributeClasses={attributeClasses}
       />
     );
   }
@@ -185,6 +190,7 @@ export default async function LinkWorkflowPage({ params, searchParams }: LinkWor
           responseCount={workflow.welcomeCard.showResponseCount ? responseCount : undefined}
           verifiedEmail={verifiedEmail}
           languageCode={languageCode}
+          attributeClasses={attributeClasses}
         />
         <LegalFooter
           IMPRINT_URL={IMPRINT_URL}

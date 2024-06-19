@@ -1,6 +1,6 @@
 import { render } from "@react-email/render";
 import nodemailer from "nodemailer";
-
+import type SMTPTransport from "nodemailer/lib/smtp-transport";
 import {
   DEBUG,
   MAIL_FROM,
@@ -16,24 +16,22 @@ import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
 import { TResponse } from "@typeflowai/types/responses";
 import { TWeeklySummaryNotificationResponse } from "@typeflowai/types/weeklySummary";
 import { TWorkflow } from "@typeflowai/types/workflows";
+import { ForgotPasswordEmail } from "./components/auth/forgot-password-email";
+import { PasswordResetNotifyEmail } from "./components/auth/password-reset-notify-email";
+import { VerificationEmail } from "./components/auth/verification-email";
+import { EmailTemplate } from "./components/general/email-template";
+import { InviteAcceptedEmail } from "./components/invite/invite-accepted-email";
+import { InviteEmail } from "./components/invite/invite-email";
+import { OnboardingInviteEmail } from "./components/invite/onboarding-invite-email";
+import { NoLiveWorkflowNotificationEmail } from "./components/weekly-summary/no-live-workflow-notification-email";
+import { WeeklySummaryNotificationEmail } from "./components/weekly-summary/weekly-summary-notification-email";
+import { EmbedWorkflowPreviewEmail } from "./components/workflow/embed-workflow-preview-email";
+import { LinkWorkflowEmail } from "./components/workflow/link-workflow-email";
+import { ResponseFinishedEmail } from "./components/workflow/response-finished-email";
 
-import { ForgotPasswordEmail } from "./components/auth/ForgotPasswordEmail";
-import { PasswordResetNotifyEmail } from "./components/auth/PasswordResetNotifyEmail";
-import { VerificationEmail } from "./components/auth/VerificationEmail";
-import { EmailTemplate } from "./components/general/EmailTemplate";
-import { InviteAcceptedEmail } from "./components/invite/InviteAcceptedEmail";
-import { InviteEmail } from "./components/invite/InviteEmail";
-import { OnboardingInviteEmail } from "./components/invite/OnboardingInviteEmail";
-import { NoLiveWorkflowNotificationEmail } from "./components/weekly-summary/NoLiveWorkflowNotificationEmail";
-import { WeeklySummaryNotificationEmail } from "./components/weekly-summary/WeeklySummaryNotificationEmail";
-import { EmbedWorkflowPreviewEmail } from "./components/workflow/EmbedWorkflowPreviewEmail";
-import { LinkWorkflowEmail } from "./components/workflow/LinkWorkflowEmail";
-import { ResponseFinishedEmail } from "./components/workflow/ResponseFinishedEmail";
+export const IS_SMTP_CONFIGURED = Boolean(SMTP_HOST && SMTP_PORT);
 
-export const IS_SMTP_CONFIGURED: boolean =
-  SMTP_HOST && SMTP_PORT && SMTP_USER && SMTP_PASSWORD ? true : false;
-
-interface sendEmailData {
+interface SendEmailDataProps {
   to: string;
   replyTo?: string;
   subject: string;
@@ -65,29 +63,26 @@ const getEmailSubject = (productName: string): string => {
 
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-export const sendEmail = async (emailData: sendEmailData) => {
-  try {
-    if (IS_SMTP_CONFIGURED) {
-      let transporter = nodemailer.createTransport({
-        host: SMTP_HOST,
-        port: SMTP_PORT,
-        secure: SMTP_SECURE_ENABLED, // true for 465, false for other ports
-        auth: {
-          user: SMTP_USER,
-          pass: SMTP_PASSWORD,
-        },
-        logger: DEBUG,
-        debug: DEBUG,
-      });
-      const emailDefaults = {
-        from: `TypeflowAI <${MAIL_FROM || "noreply@typeflowai.com"}>`,
-      };
-      await transporter.sendMail({ ...emailDefaults, ...emailData });
-    } else {
-      console.error(`Could not Email :: SMTP not configured :: ${emailData.subject}`);
-    }
-  } catch (error) {
-    throw error;
+export const sendEmail = async (emailData: SendEmailDataProps) => {
+  if (IS_SMTP_CONFIGURED) {
+    const transporter = nodemailer.createTransport({
+      host: SMTP_HOST,
+      port: SMTP_PORT,
+      secure: SMTP_SECURE_ENABLED, // true for 465, false for other ports
+      auth: {
+        user: SMTP_USER,
+        pass: SMTP_PASSWORD,
+      },
+      logger: DEBUG,
+      debug: DEBUG,
+    } as SMTPTransport.Options);
+    const emailDefaults = {
+      from: `TypeflowAI <${MAIL_FROM || "noreply@typeflowai.com"}>`,
+    };
+    await transporter.sendMail({ ...emailDefaults, ...emailData });
+  } else {
+    // eslint-disable-next-line no-console -- necessary for logging email configuration errors
+    console.error(`Could not Email :: SMTP not configured :: ${emailData.subject}`);
   }
 };
 
@@ -203,8 +198,8 @@ export const sendEmbedWorkflowPreviewEmail = async (
   environmentId: string
 ) => {
   await sendEmail({
-    to: to,
-    subject: subject,
+    to,
+    subject,
     html: render(EmailTemplate({ content: EmbedWorkflowPreviewEmail({ html, environmentId }) })),
   });
 };
@@ -213,7 +208,7 @@ export const sendLinkWorkflowToVerifiedEmail = async (data: LinkWorkflowEmailDat
   const workflowId = data.workflowId;
   const email = data.email;
   const workflowData = data.workflowData;
-  const singleUseId = data.suId ?? null;
+  const singleUseId = data.suId;
   const token = createTokenForLinkWorkflow(workflowId, email);
   const getWorkflowLink = () => {
     if (singleUseId) {

@@ -7,7 +7,8 @@ import { useMemo, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 
 import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
-import { checkForRecallInHeadline } from "@typeflowai/lib/utils/recall";
+import { replaceHeadlineRecall } from "@typeflowai/lib/utils/recall";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TProductStyling } from "@typeflowai/types/product";
 import { TWorkflow } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
@@ -20,6 +21,7 @@ interface VerifyEmailProps {
   singleUseId?: string;
   languageCode: string;
   styling: TProductStyling;
+  attributeClasses: TAttributeClass[];
 }
 
 export const VerifyEmail = ({
@@ -28,10 +30,11 @@ export const VerifyEmail = ({
   singleUseId,
   languageCode,
   styling,
+  attributeClasses,
 }: VerifyEmailProps) => {
   workflow = useMemo(() => {
-    return checkForRecallInHeadline(workflow, "default");
-  }, [workflow]);
+    return replaceHeadlineRecall(workflow, "default", attributeClasses);
+  }, [workflow, attributeClasses]);
 
   const [showPreviewQuestions, setShowPreviewQuestions] = useState(false);
   const [email, setEmail] = useState<string | null>(null);

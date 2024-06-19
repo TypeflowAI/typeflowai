@@ -1,7 +1,6 @@
 import { ReactRenderer } from "@tiptap/react";
 import tippy from "tippy.js";
-
-import { MentionList } from "../components/MentionList";
+import { MentionList } from "../components/mention-list";
 
 export const Suggestion = {
   render: () => {

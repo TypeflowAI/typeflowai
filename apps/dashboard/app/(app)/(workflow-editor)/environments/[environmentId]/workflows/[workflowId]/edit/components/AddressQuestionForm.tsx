@@ -4,6 +4,7 @@ import { PlusIcon, TrashIcon } from "lucide-react";
 import { useState } from "react";
 
 import { createI18nString, extractLanguageCodes } from "@typeflowai/lib/i18n/utils";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TWorkflow, TWorkflowAddressQuestion } from "@typeflowai/types/workflows";
 import { AdvancedOptionToggle } from "@typeflowai/ui/AdvancedOptionToggle";
 import { Button } from "@typeflowai/ui/Button";
@@ -18,6 +19,7 @@ interface AddressQuestionFormProps {
   isInvalid: boolean;
   selectedLanguageCode: string;
   setSelectedLanguageCode: (language: string) => void;
+  attributeClasses: TAttributeClass[];
 }
 
 export const AddressQuestionForm = ({
@@ -28,6 +30,7 @@ export const AddressQuestionForm = ({
   localWorkflow,
   selectedLanguageCode,
   setSelectedLanguageCode,
+  attributeClasses,
 }: AddressQuestionFormProps): JSX.Element => {
   const [showSubheader, setShowSubheader] = useState(!!question.subheader);
   const workflowLanguageCodes = extractLanguageCodes(localWorkflow.languages ?? []);
@@ -37,12 +40,14 @@ export const AddressQuestionForm = ({
       <QuestionFormInput
         id="headline"
         value={question.headline}
+        label={"Question*"}
         localWorkflow={localWorkflow}
         questionIdx={questionIdx}
         isInvalid={isInvalid}
         updateQuestion={updateQuestion}
         selectedLanguageCode={selectedLanguageCode}
         setSelectedLanguageCode={setSelectedLanguageCode}
+        attributeClasses={attributeClasses}
       />
 
       <div>
@@ -52,12 +57,14 @@ export const AddressQuestionForm = ({
               <QuestionFormInput
                 id="subheader"
                 value={question.subheader}
+                label={"Description*"}
                 localWorkflow={localWorkflow}
                 questionIdx={questionIdx}
                 isInvalid={isInvalid}
                 updateQuestion={updateQuestion}
                 selectedLanguageCode={selectedLanguageCode}
                 setSelectedLanguageCode={setSelectedLanguageCode}
+                attributeClasses={attributeClasses}
               />
             </div>
 

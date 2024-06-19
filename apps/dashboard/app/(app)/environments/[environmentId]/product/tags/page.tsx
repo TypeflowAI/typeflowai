@@ -1,7 +1,6 @@
 import { ProductConfigNavigation } from "@/app/(app)/environments/[environmentId]/product/components/ProductConfigNavigation";
-import SettingsCard from "@/app/(app)/environments/[environmentId]/settings/components/SettingsCard";
+import { SettingsCard } from "@/app/(app)/environments/[environmentId]/settings/components/SettingsCard";
 import { getServerSession } from "next-auth";
-
 // import { getMultiLanguagePermission } from "@typeflowai/ee/lib/service";
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
@@ -13,7 +12,6 @@ import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
 import { ErrorComponent } from "@typeflowai/ui/ErrorComponent";
 import { PageContentWrapper } from "@typeflowai/ui/PageContentWrapper";
 import { PageHeader } from "@typeflowai/ui/PageHeader";
-
 import EditTagsWrapper from "./components/EditTagsWrapper";
 
 export default async function MembersSettingsPage({ params }) {

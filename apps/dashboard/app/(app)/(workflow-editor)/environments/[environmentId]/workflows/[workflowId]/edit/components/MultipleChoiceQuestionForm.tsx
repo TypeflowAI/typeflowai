@@ -1,25 +1,25 @@
 "use client";
 
+import { DndContext } from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { createId } from "@paralleldrive/cuid2";
 import { PlusIcon, TrashIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { toast } from "react-hot-toast";
-
 import { createI18nString, extractLanguageCodes } from "@typeflowai/lib/i18n/utils";
 import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import {
   TI18nString,
   TShuffleOption,
   TWorkflow,
   TWorkflowMultipleChoiceQuestion,
-  TWorkflowQuestionType,
+  TWorkflowQuestionTypeEnum,
 } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
 import { Label } from "@typeflowai/ui/Label";
 import { QuestionFormInput } from "@typeflowai/ui/QuestionFormInput";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@typeflowai/ui/Select";
-
-import { isLabelValidForAllLanguages } from "../lib/validation";
+import { SelectQuestionChoice } from "./SelectQuestionChoice";
 
 interface OpenQuestionFormProps {
   localWorkflow: TWorkflow;
@@ -30,6 +30,7 @@ interface OpenQuestionFormProps {
   selectedLanguageCode: string;
   setSelectedLanguageCode: (language: string) => void;
   isInvalid: boolean;
+  attributeClasses: TAttributeClass[];
 }
 
 export const MultipleChoiceQuestionForm = ({
@@ -40,6 +41,7 @@ export const MultipleChoiceQuestionForm = ({
   localWorkflow,
   selectedLanguageCode,
   setSelectedLanguageCode,
+  attributeClasses,
 }: OpenQuestionFormProps): JSX.Element => {
   const lastChoiceRef = useRef<HTMLInputElement>(null);
   const [isNew, setIsNew] = useState(true);
@@ -183,12 +185,14 @@ export const MultipleChoiceQuestionForm = ({
       <QuestionFormInput
         id="headline"
         value={question.headline}
+        label={"Question*"}
         localWorkflow={localWorkflow}
         questionIdx={questionIdx}
         isInvalid={isInvalid}
         updateQuestion={updateQuestion}
         selectedLanguageCode={selectedLanguageCode}
         setSelectedLanguageCode={setSelectedLanguageCode}
+        attributeClasses={attributeClasses}
       />
 
       <div>
@@ -198,12 +202,14 @@ export const MultipleChoiceQuestionForm = ({
               <QuestionFormInput
                 id="subheader"
                 value={question.subheader}
+                label={"Description"}
                 localWorkflow={localWorkflow}
                 questionIdx={questionIdx}
                 isInvalid={isInvalid}
                 updateQuestion={updateQuestion}
                 selectedLanguageCode={selectedLanguageCode}
                 setSelectedLanguageCode={setSelectedLanguageCode}
+                attributeClasses={attributeClasses}
               />
             </div>
 
@@ -236,75 +242,58 @@ export const MultipleChoiceQuestionForm = ({
       </div>
 
       <div className="mt-3">
-        <Label htmlFor="choices">Options</Label>
-        <div className="mt-2 -space-y-2" id="choices">
-          {question.choices &&
-            question.choices.map((choice, choiceIdx) => (
-              <div className="inline-flex w-full items-center">
-                <div className="flex w-full space-x-2">
-                  <QuestionFormInput
-                    key={choice.id}
-                    id={`choice-${choiceIdx}`}
-                    placeholder={choice.id === "other" ? "Other" : `Option ${choiceIdx + 1}`}
-                    localWorkflow={localWorkflow}
-                    questionIdx={questionIdx}
-                    value={choice.label}
-                    onBlur={() => {
-                      const duplicateLabel = findDuplicateLabel();
-                      if (duplicateLabel) {
-                        toast.error("Duplicate choices");
-                        setisInvalidValue(duplicateLabel);
-                      } else {
-                        setisInvalidValue(null);
-                      }
-                    }}
-                    updateChoice={updateChoice}
-                    selectedLanguageCode={selectedLanguageCode}
-                    setSelectedLanguageCode={setSelectedLanguageCode}
-                    isInvalid={
-                      isInvalid &&
-                      !isLabelValidForAllLanguages(question.choices[choiceIdx].label, workflowLanguages)
-                    }
-                    className={`${choice.id === "other" ? "border border-dashed" : ""}`}
-                  />
-                  {choice.id === "other" && (
-                    <QuestionFormInput
-                      id="otherOptionPlaceholder"
-                      localWorkflow={localWorkflow}
-                      placeholder={"Please specify"}
+        <Label htmlFor="choices">Options*</Label>
+        <div className="mt-2" id="choices">
+          <DndContext
+            onDragEnd={(event) => {
+              const { active, over } = event;
+
+              if (active.id === "other" || over?.id === "other") {
+                return;
+              }
+
+              if (!active || !over) {
+                return;
+              }
+
+              const activeIndex = question.choices.findIndex((choice) => choice.id === active.id);
+              const overIndex = question.choices.findIndex((choice) => choice.id === over.id);
+
+              const newChoices = [...question.choices];
+
+              newChoices.splice(activeIndex, 1);
+              newChoices.splice(overIndex, 0, question.choices[activeIndex]);
+
+              updateQuestion(questionIdx, { choices: newChoices });
+            }}>
+            <SortableContext items={question.choices} strategy={verticalListSortingStrategy}>
+              <div className="flex flex-col">
+                {question.choices &&
+                  question.choices.map((choice, choiceIdx) => (
+                    <SelectQuestionChoice
+                      key={choice.id}
+                      choice={choice}
+                      choiceIdx={choiceIdx}
                       questionIdx={questionIdx}
-                      value={
-                        question.otherOptionPlaceholder
-                          ? question.otherOptionPlaceholder
-                          : createI18nString("Please specify", workflowLanguageCodes)
-                      }
-                      updateQuestion={updateQuestion}
+                      updateChoice={updateChoice}
+                      deleteChoice={deleteChoice}
+                      addChoice={addChoice}
+                      setisInvalidValue={setisInvalidValue}
+                      isInvalid={isInvalid}
+                      localWorkflow={localWorkflow}
                       selectedLanguageCode={selectedLanguageCode}
                       setSelectedLanguageCode={setSelectedLanguageCode}
-                      isInvalid={
-                        isInvalid &&
-                        !isLabelValidForAllLanguages(question.choices[choiceIdx].label, workflowLanguages)
-                      }
-                      className="border border-dashed"
+                      workflowLanguages={workflowLanguages}
+                      findDuplicateLabel={findDuplicateLabel}
+                      question={question}
+                      updateQuestion={updateQuestion}
+                      workflowLanguageCodes={workflowLanguageCodes}
+                      attributeClasses={attributeClasses}
                     />
-                  )}
-                </div>
-                {question.choices && question.choices.length > 2 && (
-                  <TrashIcon
-                    className="ml-2 h-4 w-4 cursor-pointer text-slate-400 hover:text-slate-500"
-                    onClick={() => deleteChoice(choiceIdx)}
-                  />
-                )}
-                <div className="ml-2 h-4 w-4">
-                  {choice.id !== "other" && (
-                    <PlusIcon
-                      className="h-full w-full cursor-pointer text-slate-400 hover:text-slate-500"
-                      onClick={() => addChoice(choiceIdx)}
-                    />
-                  )}
-                </div>
+                  ))}
               </div>
-            ))}
+            </SortableContext>
+          </DndContext>
           <div className="flex items-center justify-between space-x-2">
             {question.choices.filter((c) => c.id === "other").length === 0 && (
               <Button size="sm" variant="minimal" type="button" onClick={() => addOther()}>
@@ -318,13 +307,14 @@ export const MultipleChoiceQuestionForm = ({
               onClick={() => {
                 updateQuestion(questionIdx, {
                   type:
-                    question.type === TWorkflowQuestionType.MultipleChoiceMulti
-                      ? TWorkflowQuestionType.MultipleChoiceSingle
-                      : TWorkflowQuestionType.MultipleChoiceMulti,
+                    question.type === TWorkflowQuestionTypeEnum.MultipleChoiceMulti
+                      ? TWorkflowQuestionTypeEnum.MultipleChoiceSingle
+                      : TWorkflowQuestionTypeEnum.MultipleChoiceMulti,
                 });
               }}>
               Convert to{" "}
-              {question.type === TWorkflowQuestionType.MultipleChoiceSingle ? "Multiple" : "Single"} Select
+              {question.type === TWorkflowQuestionTypeEnum.MultipleChoiceSingle ? "Multiple" : "Single"}
+              Select
             </Button>
 
             <div className="flex flex-1 items-center justify-end gap-2">

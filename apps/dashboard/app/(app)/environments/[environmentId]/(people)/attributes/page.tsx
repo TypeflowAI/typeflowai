@@ -29,7 +29,7 @@ export default async function AttributesPage({ params }) {
 
   return (
     <PageContentWrapper>
-      <PageHeader pageTitle="People" cta={HowToAddAttributesButton}>
+      <PageHeader pageTitle="Attributes" cta={HowToAddAttributesButton}>
         <PeopleSecondaryNavigation activeId="attributes" environmentId={params.environmentId} />
       </PageHeader>
       <AttributeClassesTable attributeClasses={attributeClasses} />

@@ -1,5 +1,5 @@
 export const constantsForTests = {
-  uuid: "78e7d4ad-c324-4dac-bf06-55e3b0ba7e6e",
+  uuid: "123e4567-e89b-12d3-a456-426614174000",
   browser: "Chrome",
   url: "https://www.example.com",
   boolean: true,

@@ -9,7 +9,6 @@ import { getIntegrations } from "@typeflowai/lib/integration/service";
 import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
 import { getResponseCountByWorkflowId } from "@typeflowai/lib/response/service";
 import { convertDatesInObject } from "@typeflowai/lib/time";
-import { checkForRecallInHeadline } from "@typeflowai/lib/utils/recall";
 import { getWorkflow, updateWorkflow } from "@typeflowai/lib/workflow/service";
 import { ZPipelineInput } from "@typeflowai/types/pipelines";
 import { TUserNotificationSettings } from "@typeflowai/types/user";
@@ -106,8 +105,7 @@ export async function POST(request: Request) {
       getIntegrations(environmentId),
       getWorkflow(workflowId),
     ]);
-    const workflow = workflowData ? checkForRecallInHeadline(workflowData, "default") : undefined;
-
+    const workflow = workflowData ?? undefined;
     if (integrations.length > 0 && workflow) {
       handleIntegrations(integrations, inputValidation.data, workflow);
     }

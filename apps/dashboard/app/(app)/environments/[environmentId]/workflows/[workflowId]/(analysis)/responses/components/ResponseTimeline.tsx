@@ -2,7 +2,6 @@
 
 import { EmptyAppWorkflows } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/components/EmptyInAppWorkflows";
 import { useEffect, useRef, useState } from "react";
-
 import { getMembershipByUserIdTeamIdAction } from "@typeflowai/lib/membership/hooks/actions";
 import { getAccessFlags } from "@typeflowai/lib/membership/utils";
 import { TEnvironment } from "@typeflowai/types/environment";
@@ -10,8 +9,8 @@ import { TResponse } from "@typeflowai/types/responses";
 import { TTag } from "@typeflowai/types/tags";
 import { TUser } from "@typeflowai/types/user";
 import { TWorkflow } from "@typeflowai/types/workflows";
-import EmptySpaceFiller from "@typeflowai/ui/EmptySpaceFiller";
-import SingleResponseCard from "@typeflowai/ui/SingleResponseCard";
+import { EmptySpaceFiller } from "@typeflowai/ui/EmptySpaceFiller";
+import { SingleResponseCard } from "@typeflowai/ui/SingleResponseCard";
 import { SkeletonLoader } from "@typeflowai/ui/SkeletonLoader";
 
 interface ResponseTimelineProps {
@@ -31,7 +30,7 @@ interface ResponseTimelineProps {
   isSharingPage?: boolean;
 }
 
-export default function ResponseTimeline({
+export const ResponseTimeline = ({
   environment,
   responses,
   workflow,
@@ -45,7 +44,7 @@ export default function ResponseTimeline({
   responseCount,
   totalResponseCount,
   isSharingPage = false,
-}: ResponseTimelineProps) {
+}: ResponseTimelineProps) => {
   const [isViewer, setIsViewer] = useState(false);
   const loadingRef = useRef(null);
 
@@ -122,4 +121,4 @@ export default function ResponseTimeline({
       )}
     </div>
   );
-}
+};

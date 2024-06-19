@@ -1,5 +1,6 @@
-import SlackWrapper from "@/app/(app)/environments/[environmentId]/integrations/slack/components/SlackWrapper";
+import { SlackWrapper } from "@/app/(app)/environments/[environmentId]/integrations/slack/components/SlackWrapper";
 
+import { getAttributeClasses } from "@typeflowai/lib/attributeClass/service";
 import { SLACK_CLIENT_ID, SLACK_CLIENT_SECRET, WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
 import { getIntegrationByType } from "@typeflowai/lib/integration/service";
@@ -11,13 +12,14 @@ import { GoBackButton } from "@typeflowai/ui/GoBackButton";
 import { PageContentWrapper } from "@typeflowai/ui/PageContentWrapper";
 import { PageHeader } from "@typeflowai/ui/PageHeader";
 
-export default async function Slack({ params }) {
+const Page = async ({ params }) => {
   const isEnabled = !!(SLACK_CLIENT_ID && SLACK_CLIENT_SECRET);
 
-  const [workflows, slackIntegration, environment] = await Promise.all([
+  const [workflows, slackIntegration, environment, attributeClasses] = await Promise.all([
     getWorkflows(params.environmentId),
     getIntegrationByType(params.environmentId, "slack"),
     getEnvironment(params.environmentId),
+    getAttributeClasses(params.environmentId),
   ]);
 
   if (!environment) {
@@ -41,8 +43,11 @@ export default async function Slack({ params }) {
           workflows={workflows}
           slackIntegration={slackIntegration as TIntegrationSlack}
           webAppUrl={WEBAPP_URL}
+          attributeClasses={attributeClasses}
         />
       </div>
     </PageContentWrapper>
   );
-}
+};
+
+export default Page;

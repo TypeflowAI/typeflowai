@@ -49,9 +49,7 @@ Zone.Identifier
 
 # Playwright
 /test-results/
-/playwright-report/
 /blob-report/
-/playwright/.cache/
 
 # uploads
 packages/lib/uploads
@@ -60,6 +58,6 @@ packages/lib/uploads
 vite.config.*.timestamp-*
 
 # Formbricks Enterprise License
-packages/ee/roleManagement/
-packages/ee/advancedTargeting/
-packages/ee/multiLanguage/
+packages/ee/role-management/
+packages/ee/advanced-targeting/
+packages/ee/multi-language/

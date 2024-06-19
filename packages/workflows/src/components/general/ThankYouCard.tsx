@@ -5,7 +5,6 @@ import { QuestionMedia } from "@/components/general/QuestionMedia";
 import RedirectCountDown from "@/components/general/RedirectCountdown";
 import Subheader from "@/components/general/Subheader";
 import { ScrollableContainer } from "@/components/wrappers/ScrollableContainer";
-
 import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
 import { TI18nString } from "@typeflowai/types/workflows";
 
@@ -92,7 +91,7 @@ export const ThankYouCard = ({
           </>
         ) : (
           <>
-            <div className="my-3">
+            <div className="my-3 flex items-center justify-center">
               <LoadingSpinner />
             </div>
             <h1 className="text-brand">Sending responses...</h1>

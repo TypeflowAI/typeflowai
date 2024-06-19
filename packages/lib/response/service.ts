@@ -1,7 +1,5 @@
 import "server-only";
-
 import { Prisma } from "@prisma/client";
-
 import { prisma } from "@typeflowai/database";
 import { TAttributes } from "@typeflowai/types/attributes";
 import { ZOptionalNumber, ZString } from "@typeflowai/types/common";
@@ -13,15 +11,12 @@ import {
   TResponseFilterCriteria,
   TResponseInput,
   TResponseUpdateInput,
-  TWorkflowMetaFieldFilter,
-  TWorkflowPersonAttributes,
   ZResponseFilterCriteria,
   ZResponseInput,
   ZResponseUpdateInput,
 } from "@typeflowai/types/responses";
 import { TTag } from "@typeflowai/types/tags";
 import { TWorkflowSummary } from "@typeflowai/types/workflows";
-
 import { getAttributes } from "../attribute/service";
 import { cache } from "../cache";
 import { ITEMS_PER_PAGE, WEBAPP_URL } from "../constants";
@@ -33,7 +28,6 @@ import { getResponseNotes } from "../responseNote/service";
 import { putFile } from "../storage/service";
 import { captureTelemetry } from "../telemetry";
 import { convertToCsv, convertToXlsxBuffer } from "../utils/fileConversion";
-import { checkForRecallInHeadline } from "../utils/recall";
 import { validateInputs } from "../utils/validate";
 import { getWorkflow } from "../workflow/service";
 import { responseCache } from "./cache";
@@ -42,6 +36,9 @@ import {
   calculateTtcTotal,
   extractWorkflowDetails,
   getQuestionWiseSummary,
+  getResponseHiddenFields,
+  getResponseMeta,
+  getResponsePersonAttributes,
   getResponsesFileName,
   getResponsesJson,
   getWorkflowSummaryDropOff,
@@ -99,7 +96,7 @@ export const responseSelection = {
   },
 };
 
-export const getResponsesByPersonId = (personId: string, page?: number): Promise<Array<TResponse> | null> =>
+export const getResponsesByPersonId = (personId: string, page?: number): Promise<TResponse[] | null> =>
   cache(
     async () => {
       validateInputs([personId, ZId], [page, ZOptionalNumber]);
@@ -121,7 +118,7 @@ export const getResponsesByPersonId = (personId: string, page?: number): Promise
           throw new ResourceNotFoundError("Response from PersonId", personId);
         }
 
-        let responses: Array<TResponse> = [];
+        let responses: TResponse[] = [];
 
         await Promise.all(
           responsePrisma.map(async (response) => {
@@ -204,6 +201,7 @@ export const createResponse = async (responseInput: TResponseInput): Promise<TRe
     singleUseId,
     ttc: initialTtc,
   } = responseInput;
+
   try {
     let person: TPerson | null = null;
     let attributes: TAttributes | null = null;
@@ -222,28 +220,30 @@ export const createResponse = async (responseInput: TResponseInput): Promise<TRe
 
     const ttc = initialTtc ? (finished ? calculateTtcTotal(initialTtc) : initialTtc) : {};
 
-    const responsePrisma = await prisma.response.create({
-      data: {
-        workflow: {
+    const prismaData: Prisma.ResponseCreateInput = {
+      workflow: {
+        connect: {
+          id: workflowId,
+        },
+      },
+      finished: finished,
+      data: data,
+      language: language,
+      ...(person?.id && {
+        person: {
           connect: {
-            id: workflowId,
+            id: person.id,
           },
         },
-        finished: finished,
-        data: data,
-        language: language,
-        ...(person?.id && {
-          person: {
-            connect: {
-              id: person.id,
-            },
-          },
-          personAttributes: attributes,
-        }),
-        ...(meta && ({ meta } as Prisma.JsonObject)),
-        singleUseId,
-        ttc: ttc,
-      },
+        personAttributes: attributes,
+      }),
+      ...(meta && ({ meta } as Prisma.JsonObject)),
+      singleUseId,
+      ttc: ttc,
+    };
+
+    const responsePrisma = await prisma.response.create({
+      data: prismaData,
       select: responseSelection,
     });
 
@@ -311,37 +311,33 @@ export const getResponse = (responseId: string): Promise<TResponse | null> =>
     }
   )();
 
-export const getResponsePersonAttributes = (workflowId: string): Promise<TWorkflowPersonAttributes> =>
+export const getResponseFilteringValues = async (workflowId: string) =>
   cache(
     async () => {
       validateInputs([workflowId, ZId]);
 
       try {
-        let attributes: TWorkflowPersonAttributes = {};
-        const responseAttributes = await prisma.response.findMany({
+        const workflow = await getWorkflow(workflowId);
+        if (!workflow) {
+          throw new ResourceNotFoundError("Workflow", workflowId);
+        }
+
+        const responses = await prisma.response.findMany({
           where: {
-            workflowId: workflowId,
+            workflowId,
           },
           select: {
+            data: true,
+            meta: true,
             personAttributes: true,
           },
         });
 
-        responseAttributes.forEach((response) => {
-          Object.keys(response.personAttributes ?? {}).forEach((key) => {
-            if (response.personAttributes && attributes[key]) {
-              attributes[key].push(response.personAttributes[key].toString());
-            } else if (response.personAttributes) {
-              attributes[key] = [response.personAttributes[key].toString()];
-            }
-          });
-        });
+        const personAttributes = getResponsePersonAttributes(responses);
+        const meta = getResponseMeta(responses);
+        const hiddenFields = getResponseHiddenFields(workflow, responses);
 
-        Object.keys(attributes).forEach((key) => {
-          attributes[key] = Array.from(new Set(attributes[key]));
-        });
-
-        return attributes;
+        return { personAttributes, meta, hiddenFields };
       } catch (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
           throw new DatabaseError(error.message);
@@ -350,67 +346,7 @@ export const getResponsePersonAttributes = (workflowId: string): Promise<TWorkfl
         throw error;
       }
     },
-    [`getResponsePersonAttributes-${workflowId}`],
-    {
-      tags: [responseCache.tag.byWorkflowId(workflowId)],
-    }
-  )();
-
-export const getResponseMeta = (workflowId: string): Promise<TWorkflowMetaFieldFilter> =>
-  cache(
-    async () => {
-      validateInputs([workflowId, ZId]);
-
-      try {
-        const responseMeta = await prisma.response.findMany({
-          where: {
-            workflowId: workflowId,
-          },
-          select: {
-            meta: true,
-          },
-        });
-
-        const meta: { [key: string]: Set<string> } = {};
-
-        responseMeta.forEach((response) => {
-          Object.entries(response.meta).forEach(([key, value]) => {
-            // skip url
-            if (key === "url") return;
-
-            // Handling nested objects (like userAgent)
-            if (typeof value === "object" && value !== null) {
-              Object.entries(value).forEach(([nestedKey, nestedValue]) => {
-                if (typeof nestedValue === "string" && nestedValue) {
-                  if (!meta[nestedKey]) {
-                    meta[nestedKey] = new Set();
-                  }
-                  meta[nestedKey].add(nestedValue);
-                }
-              });
-            } else if (typeof value === "string" && value) {
-              if (!meta[key]) {
-                meta[key] = new Set();
-              }
-              meta[key].add(value);
-            }
-          });
-        });
-
-        // Convert Set to Array
-        const result = Object.fromEntries(
-          Object.entries(meta).map(([key, valueSet]) => [key, Array.from(valueSet)])
-        );
-
-        return result;
-      } catch (error) {
-        if (error instanceof Prisma.PrismaClientKnownRequestError) {
-          throw new DatabaseError(error.message);
-        }
-        throw error;
-      }
-    },
-    [`getResponseMeta-${workflowId}`],
+    [`getResponseFilteringValues-${workflowId}`],
     {
       tags: [responseCache.tag.byWorkflowId(workflowId)],
     }
@@ -418,19 +354,20 @@ export const getResponseMeta = (workflowId: string): Promise<TWorkflowMetaFieldF
 
 export const getResponses = (
   workflowId: string,
-  page?: number,
-  batchSize?: number,
+  limit?: number,
+  offset?: number,
   filterCriteria?: TResponseFilterCriteria
 ): Promise<TResponse[]> =>
   cache(
     async () => {
       validateInputs(
         [workflowId, ZId],
-        [page, ZOptionalNumber],
-        [batchSize, ZOptionalNumber],
+        [limit, ZOptionalNumber],
+        [offset, ZOptionalNumber],
         [filterCriteria, ZResponseFilterCriteria.optional()]
       );
-      batchSize = batchSize ?? RESPONSES_PER_PAGE;
+
+      limit = limit ?? RESPONSES_PER_PAGE;
       try {
         const responses = await prisma.response.findMany({
           where: {
@@ -443,8 +380,8 @@ export const getResponses = (
               createdAt: "desc",
             },
           ],
-          take: page ? batchSize : undefined,
-          skip: page ? batchSize * (page - 1) : undefined,
+          take: limit ? limit : undefined,
+          skip: offset ? offset : undefined,
         });
 
         const transformedResponses: TResponse[] = await Promise.all(
@@ -465,7 +402,7 @@ export const getResponses = (
         throw error;
       }
     },
-    [`getResponses-${workflowId}-${page}-${batchSize}-${JSON.stringify(filterCriteria)}`],
+    [`getResponses-${workflowId}-${limit}-${offset}-${JSON.stringify(filterCriteria)}`],
     {
       tags: [responseCache.tag.byWorkflowId(workflowId)],
     }
@@ -481,7 +418,6 @@ export const getWorkflowSummary = (
 
       try {
         const workflow = await getWorkflow(workflowId);
-
         if (!workflow) {
           throw new ResourceNotFoundError("Workflow", workflowId);
         }
@@ -492,7 +428,7 @@ export const getWorkflowSummary = (
 
         const responsesArray = await Promise.all(
           Array.from({ length: pages }, (_, i) => {
-            return getResponses(workflowId, i + 1, batchSize, filterCriteria);
+            return getResponses(workflowId, batchSize, i * batchSize, filterCriteria);
           })
         );
         const responses = responsesArray.flat();
@@ -503,11 +439,7 @@ export const getWorkflowSummary = (
 
         const dropOff = getWorkflowSummaryDropOff(workflow, responses, displayCount);
         const meta = getWorkflowSummaryMeta(responses, displayCount);
-        const questionWiseSummary = getQuestionWiseSummary(
-          checkForRecallInHeadline(workflow, "default"),
-          responses,
-          dropOff
-        );
+        const questionWiseSummary = getQuestionWiseSummary(workflow, responses, dropOff);
 
         return { meta, dropOff, summary: questionWiseSummary };
       } catch (error) {
@@ -546,7 +478,7 @@ export const getResponseDownloadUrl = async (
 
     const responsesArray = await Promise.all(
       Array.from({ length: pages }, (_, i) => {
-        return getResponses(workflowId, i + 1, batchSize, filterCriteria);
+        return getResponses(workflowId, batchSize, i * batchSize, filterCriteria);
       })
     );
     const responses = responsesArray.flat();
@@ -595,10 +527,14 @@ export const getResponseDownloadUrl = async (
   }
 };
 
-export const getResponsesByEnvironmentId = (environmentId: string, page?: number): Promise<TResponse[]> =>
+export const getResponsesByEnvironmentId = (
+  environmentId: string,
+  limit?: number,
+  offset?: number
+): Promise<TResponse[]> =>
   cache(
     async () => {
-      validateInputs([environmentId, ZId], [page, ZOptionalNumber]);
+      validateInputs([environmentId, ZId], [limit, ZOptionalNumber], [offset, ZOptionalNumber]);
 
       try {
         const responses = await prisma.response.findMany({
@@ -613,8 +549,8 @@ export const getResponsesByEnvironmentId = (environmentId: string, page?: number
               createdAt: "desc",
             },
           ],
-          take: page ? ITEMS_PER_PAGE : undefined,
-          skip: page ? ITEMS_PER_PAGE * (page - 1) : undefined,
+          take: limit ? limit : undefined,
+          skip: offset ? offset : undefined,
         });
 
         const transformedResponses: TResponse[] = await Promise.all(
@@ -635,7 +571,7 @@ export const getResponsesByEnvironmentId = (environmentId: string, page?: number
         throw error;
       }
     },
-    [`getResponsesByEnvironmentId-${environmentId}-${page}`],
+    [`getResponsesByEnvironmentId-${environmentId}-${limit}-${offset}`],
     {
       tags: [responseCache.tag.byEnvironmentId(environmentId)],
     }

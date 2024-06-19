@@ -3,23 +3,21 @@
 import { PlusCircleIcon, SparklesIcon, SplitIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
-import { TemplateIconComponent } from "@typeflowai/ee/prompt-templates/template-icons";
-import { customWorkflow, templates, testTemplate } from "@typeflowai/ee/prompt-templates/templates";
 import { cn } from "@typeflowai/lib/cn";
 import type { TEnvironment } from "@typeflowai/types/environment";
 import type { TProduct } from "@typeflowai/types/product";
 import { TTemplate } from "@typeflowai/types/templates";
 import { TUser } from "@typeflowai/types/user";
 import { TWorkflowInput } from "@typeflowai/types/workflows";
-
 import { Button } from "../Button";
 import { DiamondIcon } from "../Icons/DiamondIcon";
 import { capturePosthogEvent } from "../PostHogClient";
+import { TemplateIcon } from "../TemplateIcon";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../Tooltip";
 import { createWorkflowAction } from "./actions";
 import { adjustEngineForTemplate, adjustPromptForTemplate } from "./lib/utils";
 import { replacePresetPlaceholders } from "./lib/utils";
+import { customWorkflow, templates, testTemplate } from "./templates";
 
 interface TemplateList {
   environmentId: string;
@@ -199,7 +197,7 @@ export const TemplateList = ({
             )}>
             <div className="flex flex-row">
               {template.icon && (
-                <TemplateIconComponent
+                <TemplateIcon
                   icon={template.icon}
                   className="text-brand h-12 w-12 "
                   style={{

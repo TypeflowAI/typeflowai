@@ -28,7 +28,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { cn } from "@typeflowai/lib/cn";
 import { getAccessFlags } from "@typeflowai/lib/membership/utils";
-import { capitalizeFirstLetter, truncate } from "@typeflowai/lib/strings";
+import { capitalizeFirstLetter, truncate } from "@typeflowai/lib/utils/strings";
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TMembershipRole } from "@typeflowai/types/memberships";
 import { TProduct } from "@typeflowai/types/product";

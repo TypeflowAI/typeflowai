@@ -3,11 +3,7 @@
 import { getServerSession } from "next-auth";
 
 import { authOptions } from "@typeflowai/lib/authOptions";
-import {
-  getResponseDownloadUrl,
-  getResponseMeta,
-  getResponsePersonAttributes,
-} from "@typeflowai/lib/response/service";
+import { getResponseDownloadUrl, getResponseFilteringValues } from "@typeflowai/lib/response/service";
 import { getTagsByEnvironmentId } from "@typeflowai/lib/tag/service";
 import { canUserAccessWorkflow, verifyUserRoleAccess } from "@typeflowai/lib/workflow/auth";
 import { updateWorkflow } from "@typeflowai/lib/workflow/service";
@@ -36,13 +32,12 @@ export async function getWorkflowFilterDataAction(workflowId: string, environmen
   const isAuthorized = await canUserAccessWorkflow(session.user.id, workflowId);
   if (!isAuthorized) throw new AuthorizationError("Not authorized");
 
-  const [tags, attributes, meta] = await Promise.all([
+  const [tags, { personAttributes: attributes, meta, hiddenFields }] = await Promise.all([
     getTagsByEnvironmentId(environmentId),
-    getResponsePersonAttributes(workflowId),
-    getResponseMeta(workflowId),
+    getResponseFilteringValues(workflowId),
   ]);
 
-  return { environmentTags: tags, attributes, meta };
+  return { environmentTags: tags, attributes, meta, hiddenFields };
 }
 
 export async function updateWorkflowAction(workflow: TWorkflow): Promise<TWorkflow> {

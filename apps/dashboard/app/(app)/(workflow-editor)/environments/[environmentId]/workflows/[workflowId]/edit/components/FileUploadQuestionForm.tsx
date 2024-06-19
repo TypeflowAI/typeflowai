@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import { extractLanguageCodes } from "@typeflowai/lib/i18n/utils";
 import { createI18nString } from "@typeflowai/lib/i18n/utils";
 import { useGetBillingInfo } from "@typeflowai/lib/team/hooks/useGetBillingInfo";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TAllowedFileExtension, ZAllowedFileExtension } from "@typeflowai/types/common";
 import { TProduct } from "@typeflowai/types/product";
 import { TWorkflow, TWorkflowFileUploadQuestion } from "@typeflowai/types/workflows";
@@ -25,6 +26,7 @@ interface FileUploadFormProps {
   selectedLanguageCode: string;
   setSelectedLanguageCode: (languageCode: string) => void;
   isInvalid: boolean;
+  attributeClasses: TAttributeClass[];
 }
 
 export const FileUploadQuestionForm = ({
@@ -36,6 +38,7 @@ export const FileUploadQuestionForm = ({
   product,
   selectedLanguageCode,
   setSelectedLanguageCode,
+  attributeClasses,
 }: FileUploadFormProps): JSX.Element => {
   const [showSubheader, setShowSubheader] = useState(!!question.subheader);
   const [extension, setExtension] = useState("");
@@ -115,12 +118,14 @@ export const FileUploadQuestionForm = ({
       <QuestionFormInput
         id="headline"
         value={question.headline}
+        label={"Question*"}
         localWorkflow={localWorkflow}
         questionIdx={questionIdx}
         isInvalid={isInvalid}
         updateQuestion={updateQuestion}
         selectedLanguageCode={selectedLanguageCode}
         setSelectedLanguageCode={setSelectedLanguageCode}
+        attributeClasses={attributeClasses}
       />
       <div>
         {showSubheader && (
@@ -129,12 +134,14 @@ export const FileUploadQuestionForm = ({
               <QuestionFormInput
                 id="subheader"
                 value={question.subheader}
+                label={"Description"}
                 localWorkflow={localWorkflow}
                 questionIdx={questionIdx}
                 isInvalid={isInvalid}
                 updateQuestion={updateQuestion}
                 selectedLanguageCode={selectedLanguageCode}
                 setSelectedLanguageCode={setSelectedLanguageCode}
+                attributeClasses={attributeClasses}
               />
             </div>
 
@@ -171,7 +178,7 @@ export const FileUploadQuestionForm = ({
           onToggle={() => updateQuestion(questionIdx, { allowMultipleFiles: !question.allowMultipleFiles })}
           htmlId="allowMultipleFile"
           title="Allow Multiple Files"
-          description="Let people upload up to 10 files at the same time."
+          description="Let people upload up to 25 files at the same time."
           childBorder
           customContainerClass="p-0"></AdvancedOptionToggle>
 

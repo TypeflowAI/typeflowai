@@ -1,6 +1,7 @@
 import { InboxIcon } from "lucide-react";
 
-import { TWorkflowQuestionSummaryCta } from "@typeflowai/types/workflows";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
+import { TWorkflow, TWorkflowQuestionSummaryCta } from "@typeflowai/types/workflows";
 import { ProgressBar } from "@typeflowai/ui/ProgressBar";
 
 import { convertFloatToNDecimal } from "../lib/utils";
@@ -8,14 +9,18 @@ import { QuestionSummaryHeader } from "./QuestionSummaryHeader";
 
 interface CTASummaryProps {
   questionSummary: TWorkflowQuestionSummaryCta;
+  workflow: TWorkflow;
+  attributeClasses: TAttributeClass[];
 }
 
-export const CTASummary = ({ questionSummary }: CTASummaryProps) => {
+export const CTASummary = ({ questionSummary, workflow, attributeClasses }: CTASummaryProps) => {
   return (
     <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
       <QuestionSummaryHeader
+        workflow={workflow}
         questionSummary={questionSummary}
         showResponses={false}
+        attributeClasses={attributeClasses}
         insights={
           <>
             <div className="flex items-center rounded-lg bg-slate-100 p-2">

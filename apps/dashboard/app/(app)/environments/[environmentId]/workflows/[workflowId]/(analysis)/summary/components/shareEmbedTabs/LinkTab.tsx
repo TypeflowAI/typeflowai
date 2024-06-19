@@ -1,6 +1,5 @@
 import UrlShortenerForm from "@/app/(app)/environments/[environmentId]/components/UrlShortenerForm";
 import Link from "next/link";
-
 import { TWorkflow } from "@typeflowai/types/workflows";
 import { ShareWorkflowLink } from "@typeflowai/ui/ShareWorkflowLink";
 
@@ -11,7 +10,7 @@ interface LinkTabProps {
   setWorkflowUrl: (url: string) => void;
 }
 
-export default function LinkTab({ workflow, webAppUrl, workflowUrl, setWorkflowUrl }: LinkTabProps) {
+export const LinkTab = ({ workflow, webAppUrl, workflowUrl, setWorkflowUrl }: LinkTabProps) => {
   const docsLinks = [
     {
       title: "Identify users",
@@ -69,4 +68,4 @@ export default function LinkTab({ workflow, webAppUrl, workflowUrl, setWorkflowU
       </div>
     </div>
   );
-}
+};

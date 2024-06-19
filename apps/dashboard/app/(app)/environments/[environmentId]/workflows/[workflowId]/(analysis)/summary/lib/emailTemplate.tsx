@@ -1,4 +1,4 @@
-import { getPreviewEmailTemplateHtml } from "@typeflowai/email/components/workflow/PreviewEmailTemplate";
+import { getPreviewEmailTemplateHtml } from "@typeflowai/email/components/workflow/preview-email-template";
 import { WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
 import { getStyling } from "@typeflowai/lib/utils/styling";

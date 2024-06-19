@@ -4,6 +4,7 @@ import { PlusIcon, TrashIcon } from "lucide-react";
 import { useState } from "react";
 
 import { createI18nString, extractLanguageCodes } from "@typeflowai/lib/i18n/utils";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TWorkflow, TWorkflowNPSQuestion } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
 import { QuestionFormInput } from "@typeflowai/ui/QuestionFormInput";
@@ -18,6 +19,7 @@ interface NPSQuestionFormProps {
   selectedLanguageCode: string;
   setSelectedLanguageCode: (languageCode: string) => void;
   isInvalid: boolean;
+  attributeClasses: TAttributeClass[];
 }
 
 export const NPSQuestionForm = ({
@@ -30,6 +32,7 @@ export const NPSQuestionForm = ({
   localWorkflow,
   selectedLanguageCode,
   setSelectedLanguageCode,
+  attributeClasses,
 }: NPSQuestionFormProps): JSX.Element => {
   const [showSubheader, setShowSubheader] = useState(!!question.subheader);
   const workflowLanguageCodes = extractLanguageCodes(localWorkflow.languages);
@@ -38,12 +41,14 @@ export const NPSQuestionForm = ({
       <QuestionFormInput
         id="headline"
         value={question.headline}
+        label={"Question*"}
         localWorkflow={localWorkflow}
         questionIdx={questionIdx}
         isInvalid={isInvalid}
         updateQuestion={updateQuestion}
         selectedLanguageCode={selectedLanguageCode}
         setSelectedLanguageCode={setSelectedLanguageCode}
+        attributeClasses={attributeClasses}
       />
 
       <div>
@@ -53,12 +58,14 @@ export const NPSQuestionForm = ({
               <QuestionFormInput
                 id="subheader"
                 value={question.subheader}
+                label={"Description"}
                 localWorkflow={localWorkflow}
                 questionIdx={questionIdx}
                 isInvalid={isInvalid}
                 updateQuestion={updateQuestion}
                 selectedLanguageCode={selectedLanguageCode}
                 setSelectedLanguageCode={setSelectedLanguageCode}
+                attributeClasses={attributeClasses}
               />
             </div>
 
@@ -95,24 +102,28 @@ export const NPSQuestionForm = ({
           <QuestionFormInput
             id="lowerLabel"
             value={question.lowerLabel}
+            label={"Lower Label"}
             localWorkflow={localWorkflow}
             questionIdx={questionIdx}
             isInvalid={isInvalid}
             updateQuestion={updateQuestion}
             selectedLanguageCode={selectedLanguageCode}
             setSelectedLanguageCode={setSelectedLanguageCode}
+            attributeClasses={attributeClasses}
           />
         </div>
         <div className="w-full">
           <QuestionFormInput
             id="upperLabel"
             value={question.upperLabel}
+            label={"Upper Label"}
             localWorkflow={localWorkflow}
             questionIdx={questionIdx}
             isInvalid={isInvalid}
             updateQuestion={updateQuestion}
             selectedLanguageCode={selectedLanguageCode}
             setSelectedLanguageCode={setSelectedLanguageCode}
+            attributeClasses={attributeClasses}
           />
         </div>
       </div>
@@ -122,6 +133,7 @@ export const NPSQuestionForm = ({
           <QuestionFormInput
             id="buttonLabel"
             value={question.buttonLabel}
+            label={`"Next" Button Label`}
             localWorkflow={localWorkflow}
             questionIdx={questionIdx}
             maxLength={48}
@@ -130,6 +142,7 @@ export const NPSQuestionForm = ({
             updateQuestion={updateQuestion}
             selectedLanguageCode={selectedLanguageCode}
             setSelectedLanguageCode={setSelectedLanguageCode}
+            attributeClasses={attributeClasses}
           />
         </div>
       )}

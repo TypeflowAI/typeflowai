@@ -1,14 +1,12 @@
 import { AccountSettingsNavbar } from "@/app/(app)/environments/[environmentId]/settings/(account)/components/AccountSettingsNavbar";
-import SettingsCard from "@/app/(app)/environments/[environmentId]/settings/components/SettingsCard";
+import { SettingsCard } from "@/app/(app)/environments/[environmentId]/settings/components/SettingsCard";
 import { getServerSession } from "next-auth";
-
 import { prisma } from "@typeflowai/database";
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { getUser } from "@typeflowai/lib/user/service";
 import { TUserNotificationSettings } from "@typeflowai/types/user";
 import { PageContentWrapper } from "@typeflowai/ui/PageContentWrapper";
 import { PageHeader } from "@typeflowai/ui/PageHeader";
-
 import EditAlerts from "./components/EditAlerts";
 import EditWeeklySummary from "./components/EditWeeklySummary";
 import IntegrationsTip from "./components/IntegrationsTip";

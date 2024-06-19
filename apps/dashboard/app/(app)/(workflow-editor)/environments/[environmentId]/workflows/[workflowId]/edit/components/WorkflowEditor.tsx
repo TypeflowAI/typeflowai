@@ -28,7 +28,6 @@ interface WorkflowEditorProps {
   environment: TEnvironment;
   webAppUrl: string;
   actionClasses: TActionClass[];
-  attributeClasses: TAttributeClass[];
   segments: TSegment[];
   responseCount: number;
   membershipRole?: TMembershipRole;
@@ -38,6 +37,7 @@ interface WorkflowEditorProps {
   isTypeflowAICloud: boolean;
   isUnsplashConfigured: boolean;
   isEngineLimited: boolean;
+  attributeClasses: TAttributeClass[];
 }
 
 export default function WorkflowEditor({
@@ -168,6 +168,7 @@ export default function WorkflowEditor({
                 setSelectedLanguageCode={setSelectedLanguageCode}
                 isMultiLanguageAllowed={isMultiLanguageAllowed}
                 isTypeflowAICloud={isTypeflowAICloud}
+                attributeClasses={attributeClasses}
               />
             )}
 

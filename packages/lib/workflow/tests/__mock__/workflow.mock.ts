@@ -1,5 +1,4 @@
 import { Prisma } from "@prisma/client";
-
 import { TActionClass } from "@typeflowai/types/actionClasses";
 import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TProduct } from "@typeflowai/types/product";
@@ -10,10 +9,9 @@ import {
   TWorkflowInput,
   TWorkflowLanguage,
   TWorkflowQuestion,
-  TWorkflowQuestionType,
+  TWorkflowQuestionTypeEnum,
   TWorkflowWelcomeCard,
 } from "@typeflowai/types/workflows";
-
 import { selectPerson } from "../../../person/service";
 import { selectWorkflow } from "../../service";
 
@@ -66,6 +64,7 @@ export const mockProduct: TProduct = {
   brandColor: "#000000",
   highlightBorderColor: "#000000",
   recontactDays: 0,
+  displayLimit: 0,
   linkWorkflowBranding: false,
   inAppWorkflowBranding: false,
   placement: "bottomRight",
@@ -146,7 +145,7 @@ export const mockAttributeClass: TAttributeClass = {
 
 const mockQuestion: TWorkflowQuestion = {
   id: mockId,
-  type: TWorkflowQuestionType.OpenText,
+  type: TWorkflowQuestionTypeEnum.OpenText,
   headline: { default: "Question Text", de: "Fragetext" },
   required: false,
   inputType: "text",
@@ -169,6 +168,7 @@ const baseWorkflowProperties = {
   closeOnDate: currentDate,
   redirectUrl: "http://github.com/typeflowai/typeflowai",
   recontactDays: 3,
+  displayLimit: 3,
   welcomeCard: mockWelcomeCard,
   questions: [mockQuestion],
   thankYouCard: { enabled: false },

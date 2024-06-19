@@ -73,21 +73,15 @@ export default function TeamActions({
 
   return (
     <>
-      <div className="mb-4 text-right">
+      <div className="mb-4 flex justify-end space-x-2 text-right">
         {role !== "owner" && (
-          <Button
-            EndIcon={XIcon}
-            variant="secondary"
-            size="sm"
-            className="mr-2"
-            onClick={() => setLeaveTeamModalOpen(true)}>
+          <Button EndIcon={XIcon} variant="secondary" size="sm" onClick={() => setLeaveTeamModalOpen(true)}>
             Leave team
           </Button>
         )}
         <Button
           variant="secondary"
           size="sm"
-          className="mr-2"
           onClick={() => {
             setCreateTeamModalOpen(true);
           }}>

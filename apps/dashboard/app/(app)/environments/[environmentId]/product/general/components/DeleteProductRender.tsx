@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-import { truncate } from "@typeflowai/lib/strings";
+import { truncate } from "@typeflowai/lib/utils/strings";
 import { TProduct } from "@typeflowai/types/product";
 import { Button } from "@typeflowai/ui/Button";
 import { DeleteDialog } from "@typeflowai/ui/DeleteDialog";

@@ -26,6 +26,9 @@ export interface WorkflowBaseProps {
   isCardBorderVisible?: boolean;
   startAtQuestionId?: string;
   clickOutside?: boolean;
+  hiddenFieldsRecord?: TResponseData;
+  shouldResetQuestionId?: boolean;
+  fullSizeCards?: boolean;
 }
 
 export interface WorkflowInlineProps extends WorkflowBaseProps {

@@ -1,9 +1,9 @@
 import { WorkflowAnalysisNavigation } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/components/WorkflowAnalysisNavigation";
-import SummaryPage from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/SummaryPage";
+import { SummaryPage } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/SummaryPage";
 import { WorkflowAnalysisCTA } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/WorkflowAnalysisCTA";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
-
+import { getAttributeClasses } from "@typeflowai/lib/attributeClass/service";
 import { authOptions } from "@typeflowai/lib/authOptions";
 import { WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
@@ -29,15 +29,17 @@ export default async function Page({ params }) {
     return notFound();
   }
 
-  const workflow = await getWorkflow(workflowId);
-
-  if (!workflow) {
-    throw new Error("Workflow not found");
-  }
-  const environment = await getEnvironment(workflow.environmentId);
+  const [workflow, environment, attributeClasses] = await Promise.all([
+    getWorkflow(params.workflowId),
+    getEnvironment(params.environmentId),
+    getAttributeClasses(params.environmentId),
+  ]);
 
   if (!environment) {
     throw new Error("Environment not found");
+  }
+  if (!workflow) {
+    throw new Error("Workflow not found");
   }
 
   const product = await getProductByEnvironmentId(environment.id);
@@ -87,6 +89,7 @@ export default async function Page({ params }) {
         webAppUrl={WEBAPP_URL}
         user={user}
         totalResponseCount={totalResponseCount}
+        attributeClasses={attributeClasses}
       />
     </PageContentWrapper>
   );

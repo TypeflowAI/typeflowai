@@ -4,10 +4,9 @@ import { OptionsType } from "@/app/(app)/environments/[environmentId]/workflows/
 import clsx from "clsx";
 import { ChevronDown, ChevronUp, X } from "lucide-react";
 import * as React from "react";
-
 import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
 import { useClickOutside } from "@typeflowai/lib/utils/hooks/useClickOutside";
-import { TWorkflowQuestionType } from "@typeflowai/types/workflows";
+import { TWorkflowQuestionTypeEnum } from "@typeflowai/types/workflows";
 import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@typeflowai/ui/Command";
 import {
   DropdownMenu,
@@ -23,13 +22,7 @@ type QuestionFilterComboBoxProps = {
   filterComboBoxValue: string | string[] | undefined;
   onChangeFilterValue: (o: string) => void;
   onChangeFilterComboBoxValue: (o: string | string[]) => void;
-  type:
-    | OptionsType.OTHERS
-    | TWorkflowQuestionType
-    | OptionsType.ATTRIBUTES
-    | OptionsType.TAGS
-    | OptionsType.META
-    | undefined;
+  type?: TWorkflowQuestionTypeEnum | Omit<OptionsType, OptionsType.QUESTIONS>;
   handleRemoveMultiSelect: (value: string[]) => void;
   disabled?: boolean;
 };
@@ -53,9 +46,9 @@ const QuestionFilterComboBox = ({
 
   // multiple when question type is multi selection
   const isMultiple =
-    type === TWorkflowQuestionType.MultipleChoiceMulti ||
-    type === TWorkflowQuestionType.MultipleChoiceSingle ||
-    type === TWorkflowQuestionType.PictureSelection;
+    type === TWorkflowQuestionTypeEnum.MultipleChoiceMulti ||
+    type === TWorkflowQuestionTypeEnum.MultipleChoiceSingle ||
+    type === TWorkflowQuestionTypeEnum.PictureSelection;
 
   // when question type is multi selection so we remove the option from the options which has been already selected
   const options = isMultiple
@@ -69,7 +62,7 @@ const QuestionFilterComboBox = ({
 
   // disable the combo box for selection of value when question type is nps or rating and selected value is submitted or skipped
   const isDisabledComboBox =
-    (type === TWorkflowQuestionType.NPS || type === TWorkflowQuestionType.Rating) &&
+    (type === TWorkflowQuestionTypeEnum.NPS || type === TWorkflowQuestionTypeEnum.Rating) &&
     (filterValue === "Submitted" || filterValue === "Skipped");
 
   return (

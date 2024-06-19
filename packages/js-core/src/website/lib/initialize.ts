@@ -1,5 +1,4 @@
 import type { TJSAppConfig, TJsWebsiteConfig, TJsWebsiteConfigInput } from "@typeflowai/types/js";
-
 import {
   ErrorHandler,
   MissingFieldError,
@@ -54,7 +53,7 @@ export const initialize = async (
   if (existingConfig?.status === "error") {
     if (isDebug) {
       logger.debug(
-        "Formbricks is in error state, but debug mode is active. Resetting config and continuing."
+        "TypeflowAI is in error state, but debug mode is active. Resetting config and continuing."
       );
       websiteConfig.resetConfig();
       return okVoid();

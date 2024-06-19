@@ -66,6 +66,7 @@ export const selectWorkflow = {
   hiddenFields: true,
   displayOption: true,
   recontactDays: true,
+  displayLimit: true,
   autoClose: true,
   runOnDate: true,
   closeOnDate: true,
@@ -375,7 +376,7 @@ export const updateWorkflow = async (updatedWorkflow: TWorkflow): Promise<TWorkf
         : [];
       const updatedLanguageIds =
         languages.length > 1 ? updatedWorkflow.languages.map((l) => l.language.id) : [];
-      const enabledLangaugeIds = languages.map((language) => {
+      const enabledLanguageIds = languages.map((language) => {
         if (language.enabled) return language.language.id;
       });
 
@@ -393,7 +394,7 @@ export const updateWorkflow = async (updatedWorkflow: TWorkflow): Promise<TWorkf
         where: { languageId: workflowLanguage.language.id },
         data: {
           default: workflowLanguage.language.id === defaultLanguageId,
-          enabled: enabledLangaugeIds.includes(workflowLanguage.language.id),
+          enabled: enabledLanguageIds.includes(workflowLanguage.language.id),
         },
       }));
 
@@ -402,7 +403,7 @@ export const updateWorkflow = async (updatedWorkflow: TWorkflow): Promise<TWorkf
         data.languages.create = languagesToAdd.map((languageId) => ({
           languageId: languageId,
           default: languageId === defaultLanguageId,
-          enabled: enabledLangaugeIds.includes(languageId),
+          enabled: enabledLanguageIds.includes(languageId),
         }));
       }
 
@@ -410,7 +411,7 @@ export const updateWorkflow = async (updatedWorkflow: TWorkflow): Promise<TWorkf
       if (languagesToRemove.length > 0) {
         data.languages.deleteMany = languagesToRemove.map((languageId) => ({
           languageId: languageId,
-          enabled: enabledLangaugeIds.includes(languageId),
+          enabled: enabledLanguageIds.includes(languageId),
         }));
       }
     }
@@ -500,6 +501,7 @@ export const updateWorkflow = async (updatedWorkflow: TWorkflow): Promise<TWorkf
     // @ts-expect-error
     const modifiedWorkflow: TWorkflow = {
       ...prismaWorkflow, // Properties from prismaWorkflow
+      displayPercentage: Number(prismaWorkflow.displayPercentage) || null,
       segment: workflowSegment,
     };
 
@@ -531,15 +533,10 @@ export async function deleteWorkflow(workflowId: string) {
       select: selectWorkflow,
     });
 
-    if (deletedWorkflow.type === "app") {
+    if (deletedWorkflow.type === "app" && deletedWorkflow.segment?.isPrivate) {
       const deletedSegment = await prisma.segment.delete({
         where: {
-          title: workflowId,
-          isPrivate: true,
-          environmentId_title: {
-            environmentId: deletedWorkflow.environmentId,
-            title: workflowId,
-          },
+          id: deletedWorkflow.segment.id,
         },
       });
 
@@ -862,17 +859,36 @@ export const getSyncWorkflows = (
 
         // filter workflows that meet the displayOption criteria
         workflows = workflows.filter((workflow) => {
-          if (workflow.displayOption === "respondMultiple") {
-            return true;
-          } else if (workflow.displayOption === "displayOnce") {
-            return displays.filter((display) => display.workflowId === workflow.id).length === 0;
-          } else if (workflow.displayOption === "displayMultiple") {
-            return (
-              displays.filter((display) => display.workflowId === workflow.id && display.responseId !== null)
-                .length === 0
-            );
-          } else {
-            throw Error("Invalid displayOption");
+          switch (workflow.displayOption) {
+            case "respondMultiple":
+              return true;
+            case "displayOnce":
+              return displays.filter((display) => display.workflowId === workflow.id).length === 0;
+            case "displayMultiple":
+              return (
+                displays
+                  .filter((display) => display.workflowId === workflow.id)
+                  .filter((display) => display.responseId).length === 0
+              );
+            case "displaySome":
+              if (workflow.displayLimit === null) {
+                return true;
+              }
+
+              if (
+                displays
+                  .filter((display) => display.workflowId === workflow.id)
+                  .some((display) => display.responseId)
+              ) {
+                return false;
+              }
+
+              return (
+                displays.filter((display) => display.workflowId === workflow.id).length <
+                workflow.displayLimit
+              );
+            default:
+              throw Error("Invalid displayOption");
           }
         });
 

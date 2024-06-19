@@ -1,6 +1,7 @@
 import Image from "next/image";
 
-import { TWorkflowQuestionSummaryPictureSelection } from "@typeflowai/types/workflows";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
+import { TWorkflow, TWorkflowQuestionSummaryPictureSelection } from "@typeflowai/types/workflows";
 import { ProgressBar } from "@typeflowai/ui/ProgressBar";
 
 import { convertFloatToNDecimal } from "../lib/utils";
@@ -8,14 +9,24 @@ import { QuestionSummaryHeader } from "./QuestionSummaryHeader";
 
 interface PictureChoiceSummaryProps {
   questionSummary: TWorkflowQuestionSummaryPictureSelection;
+  workflow: TWorkflow;
+  attributeClasses: TAttributeClass[];
 }
 
-export const PictureChoiceSummary = ({ questionSummary }: PictureChoiceSummaryProps) => {
+export const PictureChoiceSummary = ({
+  questionSummary,
+  workflow,
+  attributeClasses,
+}: PictureChoiceSummaryProps) => {
   const results = questionSummary.choices.sort((a, b) => b.count - a.count);
 
   return (
     <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
-      <QuestionSummaryHeader questionSummary={questionSummary} />
+      <QuestionSummaryHeader
+        questionSummary={questionSummary}
+        workflow={workflow}
+        attributeClasses={attributeClasses}
+      />
       <div className="space-y-5 px-4 pb-6 pt-4 text-sm md:px-6 md:text-base">
         {results.map((result) => (
           <div key={result.id}>

@@ -10,7 +10,7 @@ import { TIntegrationGoogleSheets } from "@typeflowai/types/integration/googleSh
 import { TIntegrationNotion, TIntegrationNotionConfigData } from "@typeflowai/types/integration/notion";
 import { TIntegrationSlack } from "@typeflowai/types/integration/slack";
 import { TPipelineInput } from "@typeflowai/types/pipelines";
-import { TWorkflow, TWorkflowQuestionType } from "@typeflowai/types/workflows";
+import { TWorkflow, TWorkflowQuestionTypeEnum } from "@typeflowai/types/workflows";
 
 export async function handleIntegrations(
   integrations: TIntegration[],
@@ -59,8 +59,12 @@ async function handleGoogleSheetsIntegration(
   if (integration.config.data.length > 0) {
     for (const element of integration.config.data) {
       if (element.workflowId === data.workflowId) {
-        const values = await extractResponses(data, element.questionIds as string[], workflow);
-        await writeData(integration.config.key, element.spreadsheetId, values);
+        const values = await extractResponses(data, element.questionIds, workflow);
+        const integrationData = structuredClone(integration);
+        integrationData.config.data.forEach((data) => {
+          data.createdAt = new Date(data.createdAt);
+        });
+        await writeData(integrationData, element.spreadsheetId, values);
       }
     }
   }
@@ -99,7 +103,7 @@ async function extractResponses(
 
     if (responseValue !== undefined) {
       let answer: typeof responseValue;
-      if (question.type === TWorkflowQuestionType.PictureSelection) {
+      if (question.type === TWorkflowQuestionTypeEnum.PictureSelection) {
         const selectedChoiceIds = responseValue as string[];
         answer = question?.choices
           .filter((choice) => selectedChoiceIds.includes(choice.id))
@@ -143,7 +147,7 @@ function buildNotionPayloadProperties(
   const responses = data.response.data;
 
   const mappingQIds = mapping
-    .filter((m) => m.question.type === TWorkflowQuestionType.PictureSelection)
+    .filter((m) => m.question.type === TWorkflowQuestionTypeEnum.PictureSelection)
     .map((m) => m.question.id);
 
   Object.keys(responses).forEach((resp) => {
@@ -161,7 +165,7 @@ function buildNotionPayloadProperties(
     const value = responses[map.question.id];
 
     properties[map.column.name] = {
-      [map.column.type]: getValue(map.column.type, value),
+      [map.column.type]: getValue(map.column.type, processResponseData(value)),
     };
   });
 

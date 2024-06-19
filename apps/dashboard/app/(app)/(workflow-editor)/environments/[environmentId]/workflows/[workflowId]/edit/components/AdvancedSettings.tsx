@@ -1,3 +1,4 @@
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TWorkflow, TWorkflowQuestion } from "@typeflowai/types/workflows";
 
 import LogicEditor from "./LogicEditor";
@@ -9,6 +10,7 @@ interface AdvancedSettingsProps {
   localWorkflow: TWorkflow;
   setLocalWorkflow: (workflow: TWorkflow) => void;
   updateQuestion: (questionIdx: number, updatedAttributes: any) => void;
+  attributeClasses: TAttributeClass[];
 }
 
 export const AdvancedSettings = ({
@@ -17,6 +19,7 @@ export const AdvancedSettings = ({
   localWorkflow,
   setLocalWorkflow,
   updateQuestion,
+  attributeClasses,
 }: AdvancedSettingsProps) => {
   return (
     <div>
@@ -26,6 +29,7 @@ export const AdvancedSettings = ({
           updateQuestion={updateQuestion}
           localWorkflow={localWorkflow}
           questionIdx={questionIdx}
+          attributeClasses={attributeClasses}
         />
       </div>
 

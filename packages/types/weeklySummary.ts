@@ -1,8 +1,13 @@
 import { z } from "zod";
-
+import { ZAttributeClass } from "./attributeClasses";
 import { ZResponseData } from "./responses";
 import { ZUserNotificationSettings } from "./user";
-import { ZWorkflowQuestion, ZWorkflowStatus } from "./workflows";
+import {
+  ZWorkflowHiddenFields,
+  ZWorkflowQuestion,
+  ZWorkflowQuestionType,
+  ZWorkflowStatus,
+} from "./workflows";
 
 const ZWeeklySummaryInsights = z.object({
   totalCompletedResponses: z.number(),
@@ -17,7 +22,7 @@ export type TWeeklySummaryInsights = z.infer<typeof ZWeeklySummaryInsights>;
 export const ZWeeklySummaryWorkflowResponseData = z.object({
   headline: z.string(),
   responseValue: z.union([z.string(), z.array(z.string())]),
-  questionType: z.string(),
+  questionType: ZWorkflowQuestionType,
 });
 
 export type TWeeklySummaryWorkflowResponseData = z.infer<typeof ZWeeklySummaryWorkflowResponseData>;
@@ -27,7 +32,7 @@ export const ZWeeklySummaryNotificationDataWorkflow = z.object({
   name: z.string(),
   responses: z.array(ZWeeklySummaryWorkflowResponseData),
   responseCount: z.number(),
-  status: z.string(),
+  status: ZWorkflowStatus,
 });
 
 export type TWeeklySummaryNotificationDataWorkflow = z.infer<typeof ZWeeklySummaryNotificationDataWorkflow>;
@@ -60,6 +65,7 @@ export const ZWeeklySummaryWorkflowData = z.object({
   status: ZWorkflowStatus,
   responses: z.array(ZWeeklyEmailResponseData),
   displays: z.array(z.object({ id: z.string() })),
+  hiddenFields: ZWorkflowHiddenFields,
 });
 
 export type TWeeklySummaryWorkflowData = z.infer<typeof ZWeeklySummaryWorkflowData>;
@@ -67,6 +73,7 @@ export type TWeeklySummaryWorkflowData = z.infer<typeof ZWeeklySummaryWorkflowDa
 export const ZWeeklySummaryEnvironmentData = z.object({
   id: z.string(),
   workflows: z.array(ZWeeklySummaryWorkflowData),
+  attributeClasses: z.array(ZAttributeClass),
 });
 
 export type TWeeklySummaryEnvironmentData = z.infer<typeof ZWeeklySummaryEnvironmentData>;

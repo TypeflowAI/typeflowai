@@ -13,29 +13,30 @@
     "db:migrate:deploy": "env DATABASE_URL=\"${MIGRATE_DATABASE_URL:-$DATABASE_URL}\" prisma migrate deploy",
     "db:migrate:dev": "dotenv -e ../../.env -- pnpm prisma migrate dev",
     "db:push": "prisma db push --accept-data-loss",
+    "db:up": "docker compose up -d",
     "db:setup": "pnpm db:up && pnpm db:migrate:dev",
     "db:start": "pnpm db:setup",
+    "db:down": "docker compose down",
     "format": "prisma format",
     "generate": "prisma generate",
     "lint": "eslint ./src --fix",
-    "post-install": "pnpm generate",
-    "predev": "pnpm generate"
+    "build": "pnpm generate"
   },
   "dependencies": {
-    "@prisma/client": "^5.13.0",
+    "@prisma/client": "^5.14.0",
     "@prisma/extension-accelerate": "^1.0.0",
     "dotenv-cli": "^7.4.2"
   },
   "devDependencies": {
-    "@typeflowai/tsconfig": "workspace:*",
+    "@typeflowai/config-typescript": "workspace:*",
     "@typeflowai/types": "workspace:*",
     "@paralleldrive/cuid2": "^2.2.2",
-    "eslint-config-typeflowai": "workspace:*",
-    "prisma": "^5.13.0",
+    "@typeflowai/eslint-config": "workspace:*",
+    "prisma": "^5.14.0",
     "prisma-dbml-generator": "^0.12.0",
     "prisma-json-types-generator": "^3.0.4",
     "ts-node": "^10.9.2",
-    "zod": "^3.23.7",
+    "zod": "^3.23.8",
     "zod-prisma": "^0.5.4"
   }
 }

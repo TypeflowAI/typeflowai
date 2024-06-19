@@ -14,14 +14,15 @@ import toast from "react-hot-toast";
 
 import { getLocalizedValue } from "@typeflowai/lib/i18n/utils";
 import { structuredClone } from "@typeflowai/lib/pollyfills/structuredClone";
-import { checkForRecallInHeadline } from "@typeflowai/lib/utils/recall";
+import { replaceHeadlineRecall } from "@typeflowai/lib/utils/recall";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TIntegrationInput } from "@typeflowai/types/integration";
 import {
   TIntegrationNotion,
   TIntegrationNotionConfigData,
   TIntegrationNotionDatabase,
 } from "@typeflowai/types/integration/notion";
-import { TWorkflow, TWorkflowQuestionType } from "@typeflowai/types/workflows";
+import { TWorkflow, TWorkflowQuestionTypeEnum } from "@typeflowai/types/workflows";
 import { Button } from "@typeflowai/ui/Button";
 import { DropdownSelector } from "@typeflowai/ui/DropdownSelector";
 import { Label } from "@typeflowai/ui/Label";
@@ -35,9 +36,10 @@ interface AddIntegrationModalProps {
   notionIntegration: TIntegrationNotion;
   databases: TIntegrationNotionDatabase[];
   selectedIntegration: (TIntegrationNotionConfigData & { index: number }) | null;
+  attributeClasses: TAttributeClass[];
 }
 
-export default function AddIntegrationModal({
+export const AddIntegrationModal = ({
   environmentId,
   workflows,
   open,
@@ -45,7 +47,8 @@ export default function AddIntegrationModal({
   notionIntegration,
   databases,
   selectedIntegration,
-}: AddIntegrationModalProps) {
+  attributeClasses,
+}: AddIntegrationModalProps) => {
   const { handleSubmit } = useForm();
   const [selectedDatabase, setSelectedDatabase] = useState<TIntegrationNotionDatabase | null>();
   const [selectedWorkflow, setSelectedWorkflow] = useState<TWorkflow | null>(null);
@@ -109,7 +112,7 @@ export default function AddIntegrationModal({
 
   const questionItems = useMemo(() => {
     const questions = selectedWorkflow
-      ? checkForRecallInHeadline(selectedWorkflow, "default")?.questions.map((q) => ({
+      ? replaceHeadlineRecall(selectedWorkflow, "default", attributeClasses)?.questions.map((q) => ({
           id: q.id,
           name: getLocalizedValue(q.headline, "default"),
           type: q.type,
@@ -120,7 +123,7 @@ export default function AddIntegrationModal({
       ? selectedWorkflow?.hiddenFields.fieldIds?.map((fId) => ({
           id: fId,
           name: fId,
-          type: TWorkflowQuestionType.OpenText,
+          type: TWorkflowQuestionTypeEnum.OpenText,
         })) || []
       : [];
     return [...questions, ...hiddenFields];
@@ -260,11 +263,14 @@ export default function AddIntegrationModal({
               </>
             );
           case ERRORS.MAPPING:
+            const question = questionTypes.find((qt) => qt.id === ques.type);
+            if (!question) return null;
             return (
               <>
-                - <i>&quot;{ques.name}&quot;</i> of type{" "}
-                <b>{questionTypes.find((qt) => qt.id === ques.type)?.label}</b> can&apos;t be mapped to the
-                column <i>&quot;{col.name}&quot;</i> of type <b>{col.type}</b>
+                - <i>&quot;{ques.name}&quot;</i> of type <b>{question.label}</b> can&apos;t be mapped to the
+                column <i>&quot;{col.name}&quot;</i> of type <b>{col.type}</b>. Instead use column of type{" "}
+                {""}
+                <b>{TYPE_MAPPING[question.id].join(" ,")}.</b>
               </>
             );
           default:
@@ -517,4 +523,4 @@ export default function AddIntegrationModal({
       </div>
     </Modal>
   );
-}
+};

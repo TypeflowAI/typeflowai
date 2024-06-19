@@ -247,6 +247,7 @@ enum WorkflowType {
 enum displayOptions {
   displayOnce
   displayMultiple
+  displaySome
   respondMultiple
 }
 
@@ -281,6 +282,7 @@ model Workflow {
   responses             Response[]
   displayOption         displayOptions            @default(displayOnce)
   recontactDays         Int?
+  displayLimit          Int?
   triggers              WorkflowTrigger[]
   /// @zod.custom(imports.ZWorkflowInlineTriggers)
   /// [WorkflowInlineTriggers]
@@ -315,7 +317,7 @@ model Workflow {
   verifyEmail       Json?
   pin               String?
   resultShareKey    String?            @unique
-  displayPercentage Int?
+  displayPercentage Decimal?
   languages         WorkflowLanguage[]
 
   @@index([environmentId, updatedAt])
@@ -577,7 +579,7 @@ model User {
   id                        String           @id @default(cuid())
   createdAt                 DateTime         @default(now()) @map(name: "created_at")
   updatedAt                 DateTime         @updatedAt @map(name: "updated_at")
-  name                      String?
+  name                      String
   email                     String           @unique
   emailVerified             DateTime?        @map(name: "email_verified")
   imageUrl                  String?

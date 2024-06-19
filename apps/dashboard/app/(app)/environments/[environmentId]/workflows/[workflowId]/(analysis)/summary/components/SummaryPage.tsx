@@ -12,11 +12,12 @@ import { getFormattedFilters } from "@/app/lib/workflows/workflows";
 import {
   getResponseCountByWorkflowSharingKeyAction,
   getSummaryByWorkflowSharingKeyAction,
-} from "@/app/share/[sharingKey]/action";
+} from "@/app/share/[sharingKey]/actions";
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
-import { checkForRecallInHeadline } from "@typeflowai/lib/utils/recall";
+import { replaceHeadlineRecall } from "@typeflowai/lib/utils/recall";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TUser } from "@typeflowai/types/user";
 import { TWorkflow, TWorkflowSummary } from "@typeflowai/types/workflows";
@@ -46,15 +47,17 @@ interface SummaryPageProps {
   webAppUrl: string;
   user?: TUser;
   totalResponseCount: number;
+  attributeClasses: TAttributeClass[];
 }
 
-const SummaryPage = ({
+export const SummaryPage = ({
   environment,
   workflow,
   workflowId,
   webAppUrl,
   user,
   totalResponseCount,
+  attributeClasses,
 }: SummaryPageProps) => {
   const params = useParams();
   const sharingKey = params.sharingKey as string;
@@ -104,9 +107,9 @@ const SummaryPage = ({
 
   const searchParams = useSearchParams();
 
-  workflow = useMemo(() => {
-    return checkForRecallInHeadline(workflow, "default");
-  }, [workflow]);
+  const workflowMemoized = useMemo(() => {
+    return replaceHeadlineRecall(workflow, "default", attributeClasses);
+  }, [workflow, attributeClasses]);
 
   useEffect(() => {
     if (!searchParams?.get("referer")) {
@@ -123,19 +126,20 @@ const SummaryPage = ({
       />
       {showDropOffs && <SummaryDropOffs dropOff={workflowSummary.dropOff} />}
       <div className="flex gap-1.5">
-        <CustomFilter workflow={workflow} />
-        {!isSharingPage && <ResultsShareButton workflow={workflow} webAppUrl={webAppUrl} user={user} />}
+        <CustomFilter workflow={workflowMemoized} />
+        {!isSharingPage && (
+          <ResultsShareButton workflow={workflowMemoized} webAppUrl={webAppUrl} user={user} />
+        )}
       </div>
       <SummaryList
         summary={workflowSummary.summary}
         responseCount={responseCount}
-        workflow={workflow}
+        workflow={workflowMemoized}
         environment={environment}
         fetchingSummary={isFetchingSummary}
         totalResponseCount={totalResponseCount}
+        attributeClasses={attributeClasses}
       />
     </>
   );
 };
-
-export default SummaryPage;

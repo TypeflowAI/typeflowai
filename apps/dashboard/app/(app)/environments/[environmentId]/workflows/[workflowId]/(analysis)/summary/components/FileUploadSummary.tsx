@@ -5,7 +5,8 @@ import { useState } from "react";
 import { getPersonIdentifier } from "@typeflowai/lib/person/utils";
 import { getOriginalFileNameFromUrl } from "@typeflowai/lib/storage/utils";
 import { timeSince } from "@typeflowai/lib/time";
-import { TWorkflowQuestionSummaryFileUpload } from "@typeflowai/types/workflows";
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
+import { TWorkflow, TWorkflowQuestionSummaryFileUpload } from "@typeflowai/types/workflows";
 import { PersonAvatar } from "@typeflowai/ui/Avatars";
 import { Button } from "@typeflowai/ui/Button";
 
@@ -14,9 +15,16 @@ import { QuestionSummaryHeader } from "./QuestionSummaryHeader";
 interface FileUploadSummaryProps {
   questionSummary: TWorkflowQuestionSummaryFileUpload;
   environmentId: string;
+  workflow: TWorkflow;
+  attributeClasses: TAttributeClass[];
 }
 
-export const FileUploadSummary = ({ questionSummary, environmentId }: FileUploadSummaryProps) => {
+export const FileUploadSummary = ({
+  questionSummary,
+  environmentId,
+  workflow,
+  attributeClasses,
+}: FileUploadSummaryProps) => {
   const [visibleResponses, setVisibleResponses] = useState(10);
 
   const handleLoadMore = () => {
@@ -28,7 +36,11 @@ export const FileUploadSummary = ({ questionSummary, environmentId }: FileUpload
 
   return (
     <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
-      <QuestionSummaryHeader questionSummary={questionSummary} />
+      <QuestionSummaryHeader
+        questionSummary={questionSummary}
+        workflow={workflow}
+        attributeClasses={attributeClasses}
+      />
       <div className="">
         <div className="grid h-10 grid-cols-4 items-center border-y border-slate-200 bg-slate-100 text-sm font-bold text-slate-600">
           <div className="pl-4 md:pl-6">User</div>
@@ -85,14 +97,14 @@ export const FileUploadSummary = ({ questionSummary, environmentId }: FileUpload
 
                           <div className="flex flex-col items-center justify-center p-2">
                             <FileIcon className="h-6 text-slate-500" />
-                            <p className="mt-2 text-sm text-slate-500">{fileName}</p>
+                            <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{fileName}</p>
                           </div>
                         </div>
                       );
                     })
                   ) : (
                     <div className="flex w-full flex-col items-center justify-center p-2">
-                      <p className="mt-2 text-sm font-semibold text-slate-500">skipped</p>
+                      <p className="mt-2 text-sm font-semibold text-slate-500 dark:text-slate-400">skipped</p>
                     </div>
                   ))}
               </div>

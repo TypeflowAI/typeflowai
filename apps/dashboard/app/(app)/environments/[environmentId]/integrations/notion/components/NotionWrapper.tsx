@@ -1,10 +1,11 @@
 "use client";
 
-import AddIntegrationModal from "@/app/(app)/environments/[environmentId]/integrations/notion/components/AddIntegrationModal";
-import Connect from "@/app/(app)/environments/[environmentId]/integrations/notion/components/Connect";
-import Home from "@/app/(app)/environments/[environmentId]/integrations/notion/components/Home";
+import { AddIntegrationModal } from "@/app/(app)/environments/[environmentId]/integrations/notion/components/AddIntegrationModal";
+import { ManageIntegration } from "@/app/(app)/environments/[environmentId]/integrations/notion/components/ManageIntegration";
+import notionLogo from "@/images/notion.png";
 import { useState } from "react";
 
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TEnvironment } from "@typeflowai/types/environment";
 import {
   TIntegrationNotion,
@@ -12,6 +13,9 @@ import {
   TIntegrationNotionDatabase,
 } from "@typeflowai/types/integration/notion";
 import { TWorkflow } from "@typeflowai/types/workflows";
+import { ConnectIntegration } from "@typeflowai/ui/ConnectIntegration";
+
+import { authorize } from "../lib/notion";
 
 interface NotionWrapperProps {
   notionIntegration: TIntegrationNotion | undefined;
@@ -20,16 +24,18 @@ interface NotionWrapperProps {
   webAppUrl: string;
   workflows: TWorkflow[];
   databasesArray: TIntegrationNotionDatabase[];
+  attributeClasses: TAttributeClass[];
 }
 
-export default function NotionWrapper({
+export const NotionWrapper = ({
   notionIntegration,
   enabled,
   environment,
   webAppUrl,
   workflows,
   databasesArray,
-}: NotionWrapperProps) {
+  attributeClasses,
+}: NotionWrapperProps) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isConnected, setIsConnected] = useState(
     notionIntegration ? notionIntegration.config.key?.bot_id : false
@@ -37,6 +43,14 @@ export default function NotionWrapper({
   const [selectedIntegration, setSelectedIntegration] = useState<
     (TIntegrationNotionConfigData & { index: number }) | null
   >(null);
+
+  const handleNotionAuthorization = async () => {
+    authorize(environment.id, webAppUrl).then((url: string) => {
+      if (url) {
+        window.location.replace(url);
+      }
+    });
+  };
 
   return (
     <>
@@ -50,8 +64,9 @@ export default function NotionWrapper({
             notionIntegration={notionIntegration}
             databases={databasesArray}
             selectedIntegration={selectedIntegration}
+            attributeClasses={attributeClasses}
           />
-          <Home
+          <ManageIntegration
             environment={environment}
             notionIntegration={notionIntegration}
             setOpenAddIntegrationModal={setModalOpen}
@@ -60,8 +75,13 @@ export default function NotionWrapper({
           />
         </>
       ) : (
-        <Connect enabled={enabled} environmentId={environment.id} webAppUrl={webAppUrl} />
+        <ConnectIntegration
+          isEnabled={enabled}
+          integrationType={"notion"}
+          handleAuthorization={handleNotionAuthorization}
+          integrationLogoSrc={notionLogo}
+        />
       )}
     </>
   );
-}
+};

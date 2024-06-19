@@ -3,7 +3,7 @@ interface ActivatePromptProps {
   subheader?: string;
 }
 
-export default function ActivatePromptCard({ headline, subheader }: ActivatePromptProps) {
+export const ActivatePromptCard = ({ headline, subheader }: ActivatePromptProps) => {
   return (
     <div className="relative pt-6 text-center">
       <div className="text-brand flex items-center justify-center">
@@ -13,7 +13,7 @@ export default function ActivatePromptCard({ headline, subheader }: ActivateProm
           viewBox="0 0 24 24"
           strokeWidth="1.5"
           stroke="currentColor"
-          class="h-24 w-24">
+          class="h-20 w-20">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -36,4 +36,4 @@ export default function ActivatePromptCard({ headline, subheader }: ActivateProm
       </div>
     </div>
   );
-}
+};

@@ -1,8 +1,7 @@
 import { TAction } from "@typeflowai/types/actions";
 import { TEnvironment } from "@typeflowai/types/environment";
-import EmptySpaceFiller from "@typeflowai/ui/EmptySpaceFiller";
+import { EmptySpaceFiller } from "@typeflowai/ui/EmptySpaceFiller";
 import { UpgradePlanNotice } from "@typeflowai/ui/UpgradePlanNotice";
-
 import { ActivityItemContent, ActivityItemIcon, ActivityItemPopover } from "./ActivityItemComponents";
 
 interface IActivityTimelineProps {

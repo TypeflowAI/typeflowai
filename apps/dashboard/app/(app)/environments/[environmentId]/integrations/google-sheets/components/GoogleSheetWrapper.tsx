@@ -1,49 +1,52 @@
 "use client";
 
-import { refreshSheetAction } from "@/app/(app)/environments/[environmentId]/integrations/google-sheets/actions";
+import { ManageIntegration } from "@/app/(app)/environments/[environmentId]/integrations/google-sheets/components/ManageIntegration";
+import { authorize } from "@/app/(app)/environments/[environmentId]/integrations/google-sheets/lib/google";
+import googleSheetLogo from "@/images/googleSheetsLogo.png";
 import { useState } from "react";
 
+import { TAttributeClass } from "@typeflowai/types/attributeClasses";
 import { TEnvironment } from "@typeflowai/types/environment";
-import { TIntegrationItem } from "@typeflowai/types/integration";
 import {
   TIntegrationGoogleSheets,
   TIntegrationGoogleSheetsConfigData,
 } from "@typeflowai/types/integration/googleSheet";
 import { TWorkflow } from "@typeflowai/types/workflows";
+import { ConnectIntegration } from "@typeflowai/ui/ConnectIntegration";
 
-import AddIntegrationModal from "./AddIntegrationModal";
-import Connect from "./Connect";
-import Home from "./Home";
+import { AddIntegrationModal } from "./AddIntegrationModal";
 
 interface GoogleSheetWrapperProps {
-  enabled: boolean;
+  isEnabled: boolean;
   environment: TEnvironment;
   workflows: TWorkflow[];
-  spreadSheetArray: TIntegrationItem[];
   googleSheetIntegration?: TIntegrationGoogleSheets;
   webAppUrl: string;
+  attributeClasses: TAttributeClass[];
 }
 
-export default function GoogleSheetWrapper({
-  enabled,
+export const GoogleSheetWrapper = ({
+  isEnabled,
   environment,
   workflows,
-  spreadSheetArray,
   googleSheetIntegration,
   webAppUrl,
-}: GoogleSheetWrapperProps) {
+  attributeClasses,
+}: GoogleSheetWrapperProps) => {
   const [isConnected, setIsConnected] = useState(
     googleSheetIntegration ? googleSheetIntegration.config?.key : false
   );
-  const [spreadsheets, setSpreadsheets] = useState(spreadSheetArray);
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const [selectedIntegration, setSelectedIntegration] = useState<
     (TIntegrationGoogleSheetsConfigData & { index: number }) | null
   >(null);
 
-  const refreshSheet = async () => {
-    const latestSpreadsheets = await refreshSheetAction(environment.id);
-    setSpreadsheets(latestSpreadsheets);
+  const handleGoogleAuthorization = async () => {
+    authorize(environment.id, webAppUrl).then((url: string) => {
+      if (url) {
+        window.location.replace(url);
+      }
+    });
   };
 
   return (
@@ -55,22 +58,26 @@ export default function GoogleSheetWrapper({
             workflows={workflows}
             open={isModalOpen}
             setOpen={setModalOpen}
-            spreadsheets={spreadsheets}
             googleSheetIntegration={googleSheetIntegration}
             selectedIntegration={selectedIntegration}
+            attributeClasses={attributeClasses}
           />
-          <Home
+          <ManageIntegration
             environment={environment}
             googleSheetIntegration={googleSheetIntegration}
             setOpenAddIntegrationModal={setModalOpen}
             setIsConnected={setIsConnected}
             setSelectedIntegration={setSelectedIntegration}
-            refreshSheet={refreshSheet}
           />
         </>
       ) : (
-        <Connect enabled={enabled} environmentId={environment.id} webAppUrl={webAppUrl} />
+        <ConnectIntegration
+          isEnabled={isEnabled}
+          integrationType={"googleSheets"}
+          handleAuthorization={handleGoogleAuthorization}
+          integrationLogoSrc={googleSheetLogo}
+        />
       )}
     </>
   );
-}
+};

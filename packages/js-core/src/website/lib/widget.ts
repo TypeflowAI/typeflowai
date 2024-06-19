@@ -2,12 +2,12 @@ import { TypeflowAIAPI } from "@typeflowai/api";
 import { ResponseQueue } from "@typeflowai/lib/responseQueue";
 import { getStyling } from "@typeflowai/lib/utils/styling";
 import WorkflowState from "@typeflowai/lib/workflowState";
-import { TJSWebsiteStateDisplay } from "@typeflowai/types/js";
-import { TResponseUpdate } from "@typeflowai/types/responses";
+import { TJSWebsiteStateDisplay, TJsTrackProperties } from "@typeflowai/types/js";
+import { TResponseHiddenFieldValue, TResponseUpdate } from "@typeflowai/types/responses";
 import { TWorkflow } from "@typeflowai/types/workflows";
 
 import { Logger } from "../../shared/logger";
-import { getDefaultLanguageCode, getLanguageCode } from "../../shared/utils";
+import { getDefaultLanguageCode, getLanguageCode, handleHiddenFields } from "../../shared/utils";
 import { WebsiteConfig } from "./config";
 import { filterPublicWorkflows } from "./sync";
 
@@ -25,11 +25,15 @@ export const setIsWorkflowRunning = (value: boolean) => {
 };
 
 const shouldDisplayBasedOnPercentage = (displayPercentage: number) => {
-  const randomNum = Math.floor(Math.random() * 100) + 1;
+  const randomNum = Math.floor(Math.random() * 10000) / 100;
   return randomNum <= displayPercentage;
 };
 
-export const triggerWorkflow = async (workflow: TWorkflow, action?: string): Promise<void> => {
+export const triggerWorkflow = async (
+  workflow: TWorkflow,
+  action?: string,
+  properties?: TJsTrackProperties
+): Promise<void> => {
   // Check if the workflow should be displayed based on displayPercentage
   if (workflow.displayPercentage) {
     const shouldDisplayWorkflow = shouldDisplayBasedOnPercentage(workflow.displayPercentage);
@@ -38,10 +42,19 @@ export const triggerWorkflow = async (workflow: TWorkflow, action?: string): Pro
       return; // skip displaying the workflow
     }
   }
-  await renderWidget(workflow, action);
+  const hiddenFieldsObject: TResponseHiddenFieldValue = handleHiddenFields(
+    workflow.hiddenFields,
+    properties?.hiddenFields
+  );
+
+  await renderWidget(workflow, action, hiddenFieldsObject);
 };
 
-const renderWidget = async (workflow: TWorkflow, action?: string) => {
+const renderWidget = async (
+  workflow: TWorkflow,
+  action?: string,
+  hiddenFields: TResponseHiddenFieldValue = {}
+) => {
   if (isWorkflowRunning) {
     logger.debug("A workflow is already running. Skipping.");
     return;
@@ -94,9 +107,9 @@ const renderWidget = async (workflow: TWorkflow, action?: string) => {
 
   setTimeout(() => {
     typeflowAIWorkflows.renderWorkflowModal({
-      workflow: workflow,
+      workflow,
+      isBrandingEnabled,
       webAppUrl: websiteConfig.get().apiHost,
-      isBrandingEnabled: isBrandingEnabled,
       clickOutside,
       darkOverlay,
       languageCode,
@@ -176,6 +189,7 @@ const renderWidget = async (workflow: TWorkflow, action?: string) => {
             url: window.location.href,
             action,
           },
+          hiddenFields,
         });
       },
       onClose: closeWorkflow,

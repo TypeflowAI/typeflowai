@@ -1,7 +1,7 @@
 import { TypeflowAIAPI } from "@typeflowai/api";
 import { TResponseUpdate } from "@typeflowai/types/responses";
 
-import { delay } from "./utils";
+import { delay } from "./utils/promises";
 import WorkflowState from "./workflowState";
 
 interface QueueConfig {
@@ -90,6 +90,7 @@ export class ResponseQueue {
           workflowId: this.workflowState.workflowId,
           userId: this.workflowState.userId || null,
           singleUseId: this.workflowState.singleUseId || null,
+          data: { ...responseUpdate.data, ...responseUpdate.hiddenFields },
         });
         if (!response.ok) {
           throw new Error("Could not create response");

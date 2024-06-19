@@ -2,8 +2,6 @@ import { sendFreeLimitReachedEventToPosthogBiWeekly } from "@/app/api/v1/client/
 import { responses } from "@/app/lib/api/response";
 import { transformErrorToDetails } from "@/app/lib/api/validator";
 import { NextRequest } from "next/server";
-
-import { getExampleWorkflowTemplate } from "@typeflowai/ee/prompt-templates/templates";
 import { getActionClassByEnvironmentIdAndName, getActionClasses } from "@typeflowai/lib/actionClass/service";
 import {
   IS_TYPEFLOWAI_CLOUD,
@@ -20,6 +18,7 @@ import { TJsWebsiteLegacyStateSync, TJsWebsiteStateSync, ZJsWebsiteSyncInput } f
 import { TLegacyWorkflow } from "@typeflowai/types/legacyWorkflow";
 import { TProduct } from "@typeflowai/types/product";
 import { TWorkflow } from "@typeflowai/types/workflows";
+import { getExampleWorkflowTemplate } from "@typeflowai/ui/TemplateList/templates";
 
 export async function OPTIONS(): Promise<Response> {
   return responses.successResponse({}, true);
@@ -113,7 +112,7 @@ export async function GET(
     const noCodeActionClasses = actionClasses.filter((actionClass) => actionClass.type === "noCode");
 
     // Define 'transformedWorkflows' which can be an array of either TLegacyWorkflow or TWorkflow.
-    let transformedWorkflows: TLegacyWorkflow[] | TWorkflow[] = workflows;
+    let transformedWorkflows: TLegacyWorkflow[] | TWorkflow[] = filteredWorkflows;
     let state: TJsWebsiteStateSync | TJsWebsiteLegacyStateSync = {
       workflows: !isInAppWorkflowLimitReached ? transformedWorkflows : [],
       actionClasses,

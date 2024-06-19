@@ -2,14 +2,9 @@ import { Prisma } from "@prisma/client";
 import { isAfter, isBefore, isSameDay } from "date-fns";
 
 import { TDisplay } from "@typeflowai/types/displays";
-import {
-  TResponse,
-  TResponseFilterCriteria,
-  TResponseUpdateInput,
-  TWorkflowPersonAttributes,
-} from "@typeflowai/types/responses";
+import { TResponse, TResponseFilterCriteria, TResponseUpdateInput } from "@typeflowai/types/responses";
 import { TTag } from "@typeflowai/types/tags";
-import { TWorkflowQuestionType } from "@typeflowai/types/workflows";
+import { TWorkflowQuestionTypeEnum } from "@typeflowai/types/workflows";
 
 import { responseNoteSelect } from "../../../responseNote/service";
 import { responseSelection } from "../../service";
@@ -103,98 +98,6 @@ export const mockResponse: ResponseMock = {
   language: "English",
   ttc: {},
 };
-
-export const mockResponsePersonAttributes: ResponseMock[] = [
-  {
-    id: mockResponseId,
-    workflowId: mockWorkflowId,
-    singleUseId: mockSingleUseId,
-    data: {},
-    createdAt: new Date(),
-    finished: constantsForTests.boolean,
-    meta: mockMeta,
-    notes: [mockResponseNote],
-    tags: mockTags,
-    personId: mockPersonId,
-    updatedAt: new Date(),
-    ttc: {},
-    person: null,
-    language: null,
-    personAttributes: { Plan: "Paid", "Init Attribute 1": "one", "Init Attribute 2": "two" },
-  },
-  {
-    id: mockResponseId,
-    workflowId: mockWorkflowId,
-    singleUseId: mockSingleUseId,
-    data: {},
-    createdAt: new Date(),
-    finished: constantsForTests.boolean,
-    meta: mockMeta,
-    notes: [mockResponseNote],
-    tags: mockTags,
-    personId: mockPersonId,
-    updatedAt: new Date(),
-    ttc: {},
-    person: null,
-    language: null,
-    personAttributes: {
-      Plan: "Paid",
-      "Init Attribute 1": "three",
-      "Init Attribute 2": "four",
-    },
-  },
-  {
-    id: mockResponseId,
-    workflowId: mockWorkflowId,
-    singleUseId: mockSingleUseId,
-    data: {},
-    createdAt: new Date(),
-    finished: constantsForTests.boolean,
-    meta: mockMeta,
-    notes: [mockResponseNote],
-    tags: mockTags,
-    personId: mockPersonId,
-    updatedAt: new Date(),
-    ttc: {},
-    person: null,
-    language: null,
-    personAttributes: { Plan: "Paid", "Init Attribute 1": "five", "Init Attribute 2": "six" },
-  },
-  {
-    id: mockResponseId,
-    workflowId: mockWorkflowId,
-    singleUseId: mockSingleUseId,
-    data: {},
-    createdAt: new Date(),
-    finished: constantsForTests.boolean,
-    meta: mockMeta,
-    notes: [mockResponseNote],
-    tags: mockTags,
-    personId: mockPersonId,
-    updatedAt: new Date(),
-    ttc: {},
-    person: null,
-    language: null,
-    personAttributes: { Plan: "Paid", "Init Attribute 1": "five", "Init Attribute 2": "four" },
-  },
-  {
-    id: mockResponseId,
-    workflowId: mockWorkflowId,
-    singleUseId: mockSingleUseId,
-    data: {},
-    createdAt: new Date(),
-    finished: constantsForTests.boolean,
-    meta: mockMeta,
-    notes: [mockResponseNote],
-    tags: mockTags,
-    personId: mockPersonId,
-    updatedAt: new Date(),
-    ttc: {},
-    person: null,
-    language: null,
-    personAttributes: { Plan: "Paid", "Init Attribute 1": "three", "Init Attribute 2": "two" },
-  },
-];
 
 const getMockTags = (tags: string[]): { tag: TTag }[] => {
   return tags.map((tag) => ({
@@ -445,12 +348,6 @@ export const mockResponseData: TResponseUpdateInput["data"] = {
   key3: 20,
 };
 
-export const mockPersonAttributesData: TWorkflowPersonAttributes = {
-  Plan: ["Paid"],
-  "Init Attribute 1": ["one", "three", "five"],
-  "Init Attribute 2": ["two", "four", "six"],
-};
-
 export const getMockUpdateResponseInput = (finished: boolean = false): TResponseUpdateInput => ({
   data: mockResponseData,
   finished,
@@ -484,7 +381,7 @@ export const mockWorkflowSummaryOutput = {
         id: "ars2tjk8hsi8oqk1uac00mo8",
         inputType: "text",
         required: false,
-        type: TWorkflowQuestionType.OpenText,
+        type: TWorkflowQuestionTypeEnum.OpenText,
       },
       responseCount: 0,
       samples: [],

@@ -5,18 +5,16 @@ import {
   getResponseCountAction,
   getResponsesAction,
 } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/actions";
-import ResponseTimeline from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/responses/components/ResponseTimeline";
+import { ResponseTimeline } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/responses/components/ResponseTimeline";
 import { CustomFilter } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/components/CustomFilter";
 import { ResultsShareButton } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/components/ResultsShareButton";
 import { getFormattedFilters } from "@/app/lib/workflows/workflows";
 import {
   getResponseCountByWorkflowSharingKeyAction,
   getResponsesByWorkflowSharingKeyAction,
-} from "@/app/share/[sharingKey]/action";
+} from "@/app/share/[sharingKey]/actions";
 import { useParams, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
-
-import { checkForRecallInHeadline } from "@typeflowai/lib/utils/recall";
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TResponse } from "@typeflowai/types/responses";
 import { TTag } from "@typeflowai/types/tags";
@@ -34,7 +32,7 @@ interface ResponsePageProps {
   totalResponseCount: number;
 }
 
-const ResponsePage = ({
+export const ResponsePage = ({
   environment,
   workflow,
   workflowId,
@@ -64,10 +62,6 @@ const ResponsePage = ({
   );
 
   const searchParams = useSearchParams();
-
-  workflow = useMemo(() => {
-    return checkForRecallInHeadline(workflow, "default");
-  }, [workflow]);
 
   const fetchNextPage = useCallback(async () => {
     const newPage = page + 1;
@@ -179,5 +173,3 @@ const ResponsePage = ({
     </>
   );
 };
-
-export default ResponsePage;
