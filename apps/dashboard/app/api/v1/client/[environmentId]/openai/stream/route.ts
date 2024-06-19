@@ -2,6 +2,8 @@ import { createOpenAIStreamMessage } from "@typeflowai/lib/openai/service";
 import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
 import { updateTeam } from "@typeflowai/lib/team/service";
 
+export const dynamic = "force-dynamic"; // static by default, unless reading the request
+
 export async function POST(req: Request): Promise<Response> {
   const { environmentId, openAIRequest } = await req.json();
 
