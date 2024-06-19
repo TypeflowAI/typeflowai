@@ -1,6 +1,6 @@
 import { TOpenAIRequest } from "@typeflowai/types/openai";
 
-import { makeRequest } from "../../utils/makeRequest";
+// import { makeRequest } from "../../utils/makeRequest";
 
 // import { makeStreamingRequest } from "../../utils/makeStreamingRequest";
 
@@ -13,10 +13,23 @@ export class OpenAiAPI {
     this.environmentId = environmentId;
   }
   async sendMessage(openAIRequest: TOpenAIRequest) {
-    return makeRequest(this.apiHost, `/api/v1/client/${this.environmentId}/openai`, "POST", {
-      environmentId: this.environmentId,
-      openAIRequest,
+    // return makeRequest(this.apiHost, `/api/v1/client/${this.environmentId}/openai`, "POST", {
+    //   environmentId: this.environmentId,
+    //   openAIRequest,
+    // });
+    const response = await fetch(`${this.apiHost}/api/v1/client/${this.environmentId}/openai`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ environmentId: this.environmentId, openAIRequest: openAIRequest }),
     });
+
+    if (!response.ok) {
+      throw new Error(`Error with OpenAI API: ${response.status}`);
+    }
+
+    return response;
   }
 
   async sendStreamingMessage(openAIRequest: TOpenAIRequest) {
