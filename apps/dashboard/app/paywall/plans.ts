@@ -13,7 +13,7 @@ export const plansAndFeatures = {
         { title: "Unlimited workflows", comingSoon: false, unlimited: false },
         { title: "500 Workflow AI responses", comingSoon: false, unlimited: false },
         { title: "Access to +350 Templates", comingSoon: false, unlimited: false },
-        { title: "GPT-3.5Turbo", comingSoon: false, unlimited: false },
+        { title: "GPT-3.5Turbo, GPT-4. GPT-4o...", comingSoon: false, unlimited: false },
         {
           title: "Integrations (Webhooks, Zapier, Notion, Slack, Google Sheets, Airtable)",
           comingSoon: false,
@@ -33,7 +33,7 @@ export const plansAndFeatures = {
         { title: "Unlimited workflows", comingSoon: false, unlimited: false },
         { title: "2500 Workflow AI responses", comingSoon: false, unlimited: false },
         { title: "Access to +350 Templates", comingSoon: false, unlimited: false },
-        { title: "GPT-4", comingSoon: false, unlimited: false },
+        { title: "GPT-3.5Turbo, GPT-4. GPT-4o...", comingSoon: false, unlimited: false },
         {
           title: "Integrations (Webhooks, Zapier, Notion, Slack, Google Sheets, Airtable)",
           comingSoon: false,
