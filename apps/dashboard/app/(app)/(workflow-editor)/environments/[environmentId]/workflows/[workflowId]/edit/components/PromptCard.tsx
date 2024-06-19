@@ -25,16 +25,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@typeflowai/ui/Switch";
 
 const engineOptions = {
-  "GPT-3.5 Turbo (No configuring)": OpenAIModel.GPT35Turbo,
-  "GPT-3.5 Turbo 16k (Most Capable GPT-3 Model)": OpenAIModel.GPT35Turbo16k,
+  "GPT-3.5 Turbo": OpenAIModel.GPT35Turbo,
   "GPT-4 (Slowest, Most Capable)": OpenAIModel.GPT4,
-  "GPT-4 32k (Longer Responses)": OpenAIModel.GPT432k,
-  "GPT-4 Turbo (Most Capable GPT-4 Model)": OpenAIModel.GPT4Turbo,
+  "GPT-4 Turbo (Longer Responses)": OpenAIModel.GPT4Turbo,
+  "GPT-4o (Most Capable GPT-4 Model)": OpenAIModel.GPT4o,
 };
 
 const engineOptionsLimited = {
-  "GPT-3.5 Turbo (No configuring)": OpenAIModel.GPT35Turbo,
-  "GPT-3.5 Turbo 16k (Most Capable GPT-3 Model)": OpenAIModel.GPT35Turbo16k,
+  "GPT-3.5 Turbo": OpenAIModel.GPT35Turbo,
 };
 
 const getEngineValueForKey = (displayKey) => {

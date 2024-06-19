@@ -2,10 +2,9 @@ import { z } from "zod";
 
 export enum OpenAIModel {
   GPT35Turbo = "gpt-3.5-turbo",
-  GPT35Turbo16k = "gpt-3.5-turbo-16k",
   GPT4 = "gpt-4",
-  GPT432k = "gpt-4-32k",
-  GPT4Turbo = "gpt-4-vision-preview",
+  GPT4Turbo = "gpt-4-turbo",
+  GPT4o = "gpt-4o",
 }
 
 export const ZOpenAIModel = z.nativeEnum(OpenAIModel);
