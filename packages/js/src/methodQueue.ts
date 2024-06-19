@@ -1,4 +1,4 @@
-// Simple queue for formbricks methods
+// Simple queue for typeflowai methods
 
 export class MethodQueue {
   private queue: (() => Promise<void>)[] = [];
