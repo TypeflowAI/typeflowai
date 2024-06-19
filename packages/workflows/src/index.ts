@@ -4,10 +4,6 @@ import { addCustomThemeToDom, addStylesToDom } from "@/lib/styles";
 import { h, render } from "preact";
 import { WorkflowInlineProps, WorkflowModalProps } from "@typeflowai/types/typeflowAIWorkflows";
 
-// Force the page to be dynamic and allow streaming responses up to 180 seconds
-export const dynamic = "force-dynamic";
-export const maxDuration = 180;
-
 export const renderWorkflowInline = (props: WorkflowInlineProps) => {
   addStylesToDom();
   addCustomThemeToDom({ styling: props.styling });
