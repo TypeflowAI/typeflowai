@@ -8,11 +8,11 @@
       "maxDuration": 10,
       "memory": 200
     },
-    "app/api/v1/client/**/openai/*.ts": {
+    "app/api/openai/*.ts": {
       "maxDuration": 180,
       "memory": 512
     },
-    "app/api/v1/client/**/openai/stream/*.ts": {
+    "app/api/openai/stream/*.ts": {
       "maxDuration": 180,
       "memory": 512
     },

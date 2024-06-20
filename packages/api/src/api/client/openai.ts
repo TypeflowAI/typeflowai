@@ -17,7 +17,7 @@ export class OpenAiAPI {
     //   environmentId: this.environmentId,
     //   openAIRequest,
     // });
-    const response = await fetch(`${this.apiHost}/api/v1/client/${this.environmentId}/openai`, {
+    const response = await fetch(`${this.apiHost}/api/openai`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -33,7 +33,7 @@ export class OpenAiAPI {
   }
 
   async sendStreamingMessage(openAIRequest: TOpenAIRequest) {
-    const response = await fetch(`${this.apiHost}/api/v1/client/${this.environmentId}/openai/stream`, {
+    const response = await fetch(`${this.apiHost}/api/openai/stream`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
