@@ -1,5 +1,4 @@
 import { CheckCircle2Icon } from "lucide-react";
-
 import { getLanguageCode, getLocalizedValue } from "@typeflowai/lib/i18n/utils";
 import { formatDateWithOrdinal } from "@typeflowai/lib/utils/datetime";
 import { parseRecallInfo } from "@typeflowai/lib/utils/recall";
@@ -11,9 +10,9 @@ import {
   TWorkflowQuestion,
   TWorkflowQuestionTypeEnum,
 } from "@typeflowai/types/workflows";
-
 import { AddressResponse } from "../../AddressResponse";
 import { FileUploadResponse } from "../../FileUploadResponse";
+import { MarkdownResponse } from "../../MarkdownResponse";
 import { PictureSelectionResponse } from "../../PictureSelectionResponse";
 import { RatingResponse } from "../../RatingResponse";
 import { isValidValue } from "../util";
@@ -64,13 +63,13 @@ export const SingleResponseCardBody = ({
   };
 
   const renderResponse = (
-    questionType: TWorkflowQuestionTypeEnum,
+    questionType: TWorkflowQuestionTypeEnum | "prompt",
     responseData: string | number | string[] | Record<string, string>,
-    question: TWorkflowQuestion
+    question: TWorkflowQuestion | string
   ) => {
     switch (questionType) {
       case TWorkflowQuestionTypeEnum.Rating:
-        if (typeof responseData === "number")
+        if (typeof responseData === "number" && typeof question !== "string")
           return <RatingResponse scale={question.scale} answer={responseData} range={question.range} />;
       case TWorkflowQuestionTypeEnum.Date:
         if (typeof responseData === "string") {
@@ -106,6 +105,10 @@ export const SingleResponseCardBody = ({
       case TWorkflowQuestionTypeEnum.Address:
         if (Array.isArray(responseData)) {
           return <AddressResponse value={responseData} />;
+        }
+      case "prompt":
+        if (typeof responseData === "string") {
+          return <MarkdownResponse content={responseData} />;
         }
       default:
         if (
@@ -178,6 +181,12 @@ export const SingleResponseCardBody = ({
             </div>
           );
         })}
+        {response.data["prompt"] && (
+          <div>
+            <p className="text-sm text-slate-500">AI Response</p>
+            {renderResponse("prompt", response.data["prompt"], "prompt")}
+          </div>
+        )}
       </div>
       {workflow.hiddenFields.enabled && workflow.hiddenFields.fieldIds && (
         <HiddenFields hiddenFields={workflow.hiddenFields} responseData={response.data} />

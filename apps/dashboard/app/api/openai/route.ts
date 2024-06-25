@@ -10,19 +10,19 @@ export async function POST(req: Request): Promise<Response> {
 
   if (!environmentId) {
     // return responses.badRequestResponse("environmentId is required");
-    return new Response("EnvironmentId is required");
+    return new Response("EnvironmentId is required", { status: 400 });
   }
 
   const team = await getTeamByEnvironmentId(environmentId);
 
   if (!team) {
     // return responses.badRequestResponse("Team does not exist");
-    return new Response("Team does not exist");
+    return new Response("Team does not exist", { status: 404 });
   }
 
   if (!openAIRequest) {
     // return responses.badRequestResponse("OpenAI Request is required");
-    return new Response("OpenAI Request is required");
+    return new Response("OpenAI Request is required", { status: 400 });
   }
 
   try {
@@ -65,6 +65,11 @@ export async function POST(req: Request): Promise<Response> {
   } catch (err) {
     // return responses.internalServerErrorResponse("Something went wrong getting OpenAI API response");
     console.log("err", err);
-    return err;
+    return new Response(JSON.stringify({ error: "Something went wrong getting OpenAI API response" }), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
 }

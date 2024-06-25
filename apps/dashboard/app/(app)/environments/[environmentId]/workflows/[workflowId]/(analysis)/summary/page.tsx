@@ -3,14 +3,14 @@ import { SummaryPage } from "@/app/(app)/environments/[environmentId]/workflows/
 import { WorkflowAnalysisCTA } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/WorkflowAnalysisCTA";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
-import { getAttributeClasses } from "@typeflowai/lib/attributeClass/service";
 import { authOptions } from "@typeflowai/lib/authOptions";
-import { WEBAPP_URL } from "@typeflowai/lib/constants";
+import { RESPONSES_PER_PAGE, WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
 import { getMembershipByUserIdTeamId } from "@typeflowai/lib/membership/service";
 import { getAccessFlags } from "@typeflowai/lib/membership/utils";
 import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
 import { getResponseCountByWorkflowId } from "@typeflowai/lib/response/service";
+import { getTagsByEnvironmentId } from "@typeflowai/lib/tag/service";
 import { getTeamByEnvironmentId } from "@typeflowai/lib/team/service";
 import { getUser } from "@typeflowai/lib/user/service";
 import { getWorkflow } from "@typeflowai/lib/workflow/service";
@@ -29,10 +29,9 @@ export default async function Page({ params }) {
     return notFound();
   }
 
-  const [workflow, environment, attributeClasses] = await Promise.all([
+  const [workflow, environment] = await Promise.all([
     getWorkflow(params.workflowId),
     getEnvironment(params.environmentId),
-    getAttributeClasses(params.environmentId),
   ]);
 
   if (!environment) {
@@ -52,6 +51,7 @@ export default async function Page({ params }) {
     throw new Error("User not found");
   }
 
+  const tags = await getTagsByEnvironmentId(params.environmentId);
   const team = await getTeamByEnvironmentId(params.environmentId);
 
   if (!team) {
@@ -87,9 +87,10 @@ export default async function Page({ params }) {
         workflow={workflow}
         workflowId={params.workflowId}
         webAppUrl={WEBAPP_URL}
+        environmentTags={tags}
         user={user}
+        responsesPerPage={RESPONSES_PER_PAGE}
         totalResponseCount={totalResponseCount}
-        attributeClasses={attributeClasses}
       />
     </PageContentWrapper>
   );

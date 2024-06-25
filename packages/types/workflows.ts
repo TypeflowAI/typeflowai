@@ -64,6 +64,7 @@ export const ZWorkflowPrompt = z.object({
   attributes: ZPromptAttributes.default({}),
   isVisible: z.boolean().default(true),
   isStreaming: z.boolean().default(false),
+  allowRetry: z.boolean().optional().default(false),
   engine: z.nativeEnum(OpenAIModel).default(OpenAIModel.GPT35Turbo),
 });
 

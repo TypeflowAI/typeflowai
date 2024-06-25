@@ -75,6 +75,7 @@ export const PromptResponse = ({
       setDisplayResponse,
     });
     setIsLoading(false);
+    setIsResponseComplete(true);
   };
 
   useEffect(() => {
@@ -97,7 +98,6 @@ export const PromptResponse = ({
       return () => clearTimeout(timeoutId);
     } else {
       if (displayResponse.length > 0) {
-        setIsResponseComplete(true);
         setOpenAIResponse(displayResponse);
         onChange({ [prompt.id]: displayResponse });
       }
@@ -178,34 +178,36 @@ export const PromptResponse = ({
           </div>
         </div>
       </ScrollableContainer>
-      <div className="flex w-full justify-between px-6 py-4">
-        <BackButton
-          backButtonLabel="Back"
-          onClick={() => {
-            const updatedttc = getUpdatedTtc(ttc, prompt.id, performance.now() - startTime);
-            setTtc(updatedttc);
-            onBack();
-          }}
-        />
-        <div className="flex justify-end">
-          {isResponseComplete && (
-            <StartOverButton
-              title="Start over"
-              ariaLabel="Start over"
-              onClick={() => {
-                startOver();
-              }}
-              label="Start Over"
-            />
-          )}
-          <SubmitButton
-            buttonLabel="Finish"
-            isLastQuestion={false}
-            isPromptVisible={true}
-            onClick={() => {}}
+      {isResponseComplete && (
+        <div className="flex w-full justify-between px-6 py-4">
+          <BackButton
+            backButtonLabel="Back"
+            onClick={() => {
+              const updatedttc = getUpdatedTtc(ttc, prompt.id, performance.now() - startTime);
+              setTtc(updatedttc);
+              onBack();
+            }}
           />
+          <div className="flex justify-end">
+            {prompt.allowRetry && (
+              <StartOverButton
+                title="Start over"
+                ariaLabel="Start over"
+                onClick={() => {
+                  startOver();
+                }}
+                label="Start Over"
+              />
+            )}
+            <SubmitButton
+              buttonLabel="Finish"
+              isLastQuestion={false}
+              isPromptVisible={true}
+              onClick={() => {}}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </form>
   );
 };

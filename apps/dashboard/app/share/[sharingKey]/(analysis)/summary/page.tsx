@@ -1,11 +1,11 @@
 import { WorkflowAnalysisNavigation } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/components/WorkflowAnalysisNavigation";
 import { SummaryPage } from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/summary/components/SummaryPage";
 import { notFound } from "next/navigation";
-import { getAttributeClasses } from "@typeflowai/lib/attributeClass/service";
-import { WEBAPP_URL } from "@typeflowai/lib/constants";
+import { RESPONSES_PER_PAGE, WEBAPP_URL } from "@typeflowai/lib/constants";
 import { getEnvironment } from "@typeflowai/lib/environment/service";
 import { getProductByEnvironmentId } from "@typeflowai/lib/product/service";
 import { getResponseCountByWorkflowId } from "@typeflowai/lib/response/service";
+import { getTagsByEnvironmentId } from "@typeflowai/lib/tag/service";
 import { getWorkflow, getWorkflowIdByResultShareKey } from "@typeflowai/lib/workflow/service";
 import { PageContentWrapper } from "@typeflowai/ui/PageContentWrapper";
 import { PageHeader } from "@typeflowai/ui/PageHeader";
@@ -17,11 +17,11 @@ export default async function Page({ params }) {
     return notFound();
   }
 
-  const [workflow, environment, attributeClasses, product] = await Promise.all([
+  const [workflow, environment, product, tags] = await Promise.all([
     getWorkflow(params.workflowId),
     getEnvironment(params.environmentId),
-    getAttributeClasses(params.environmentId),
     getProductByEnvironmentId(params.environmentId),
+    getTagsByEnvironmentId(params.environmentId),
   ]);
 
   if (!workflow) {
@@ -52,10 +52,11 @@ export default async function Page({ params }) {
         <SummaryPage
           environment={environment}
           workflow={workflow}
-          workflowId={workflow.id}
+          workflowId={workflowId}
           webAppUrl={WEBAPP_URL}
+          environmentTags={tags}
+          responsesPerPage={RESPONSES_PER_PAGE}
           totalResponseCount={totalResponseCount}
-          attributeClasses={attributeClasses}
         />
       </PageContentWrapper>
     </div>

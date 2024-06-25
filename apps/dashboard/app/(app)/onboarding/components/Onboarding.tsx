@@ -10,11 +10,9 @@ import { CreateFirstWorkflow } from "@/app/(app)/onboarding/components/link/Crea
 import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
 import { TEnvironment } from "@typeflowai/types/environment";
 import { TTeam } from "@typeflowai/types/teams";
 import { TUser } from "@typeflowai/types/user";
-
 import PathwaySelect from "./PathwaySelect";
 import { OnboardingHeader } from "./ProgressBar";
 
@@ -56,7 +54,7 @@ export function Onboarding({
   const handleMessageEvent = (event: MessageEvent) => {
     if (event.origin !== webAppUrl) return;
 
-    if (event.data === "typeflowaiWorkflowCompleted") {
+    if (event.data === "typeflowAIWorkflowCompleted") {
       handleWorkflowCompletion();
     }
   };

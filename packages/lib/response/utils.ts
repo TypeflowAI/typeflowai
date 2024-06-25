@@ -1,7 +1,5 @@
 import "server-only";
-
 import { Prisma } from "@prisma/client";
-
 import {
   TResponse,
   TResponseFilterCriteria,
@@ -25,7 +23,6 @@ import {
   TWorkflowQuestionTypeEnum,
   TWorkflowSummary,
 } from "@typeflowai/types/workflows";
-
 import { getLocalizedValue } from "../i18n/utils";
 import { processResponseData } from "../responses";
 import { getTodaysDateTimeFormatted } from "../time";
@@ -415,6 +412,9 @@ export const extractWorkflowDetails = (workflow: TWorkflow, responses: TResponse
     const headline = getLocalizedValue(question.headline, "default") ?? question.id;
     return `${idx + 1}. ${headline}`;
   });
+  if (workflow.prompt?.enabled) {
+    questions.push("AI Response");
+  }
   const hiddenFields = workflow.hiddenFields?.fieldIds || [];
   const userAttributes = Array.from(
     new Set(responses.map((response) => Object.keys(response.personAttributes ?? {})).flat())
@@ -458,9 +458,14 @@ export const getResponsesJson = (
 
     // workflow response data
     questions.forEach((question, i) => {
-      const questionId = workflow?.questions[i].id || "";
-      const answer = response.data[questionId];
-      jsonData[idx][question] = processResponseData(answer);
+      if (question === "AI Response") {
+        const answer = response.data["prompt"];
+        jsonData[idx][question] = processResponseData(answer);
+      } else {
+        const questionId = workflow?.questions[i]?.id || "";
+        const answer = response.data[questionId];
+        jsonData[idx][question] = processResponseData(answer);
+      }
     });
 
     // user attributes
