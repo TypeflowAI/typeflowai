@@ -21,7 +21,7 @@ export default function WorkflowStarter({
   return (
     <>
       <h1 className="px-6 text-3xl font-extrabold text-slate-700">
-        You&apos;re all set! Time to create your first workflow.
+        You&apos;re all set! Time to create your first AI tool.
       </h1>
 
       <TemplateList

@@ -198,7 +198,7 @@ export default function PromtCard({
               </div>
             </div>
 
-            <div className="mt-8 flex items-center">
+            <div className="mt-8 flex items-start">
               <div className="w-1/3">
                 <div className="pr-6">
                   <div className="mr-2">
