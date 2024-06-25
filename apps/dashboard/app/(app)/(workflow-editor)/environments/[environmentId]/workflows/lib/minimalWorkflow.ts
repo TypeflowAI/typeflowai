@@ -32,6 +32,7 @@ export const minimalWorkflow: TWorkflow = {
     attributes: {},
     isVisible: true,
     isStreaming: false,
+    allowRetry: false,
     engine: OpenAIModel.GPT35Turbo,
   },
   thankYouCard: {

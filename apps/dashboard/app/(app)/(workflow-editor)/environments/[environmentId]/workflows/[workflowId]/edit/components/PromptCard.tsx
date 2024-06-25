@@ -199,35 +199,55 @@ export default function PromtCard({
             </div>
 
             <div className="mt-8 flex items-center">
-              <div className="w-1/2">
-                <div className="mr-2">
-                  <Switch
-                    id="required-toggle"
-                    checked={prompt.isVisible}
-                    onClick={() => {
-                      updateWorkflow({ isVisible: !prompt.isVisible });
-                    }}
-                  />
-                </div>
-                <div className="flex-column">
-                  <Label htmlFor="required-toggle">Is visible</Label>
-                  <div className="text-sm text-slate-500">Show the prompt response in the AI tool</div>
+              <div className="w-1/3">
+                <div className="pr-6">
+                  <div className="mr-2">
+                    <Switch
+                      id="required-toggle"
+                      checked={prompt.isVisible}
+                      onClick={() => {
+                        updateWorkflow({ isVisible: !prompt.isVisible });
+                      }}
+                    />
+                  </div>
+                  <div className="flex-column">
+                    <Label htmlFor="required-toggle">Is visible</Label>
+                    <div className="text-sm text-slate-500">Show the prompt response in the AI tool</div>
+                  </div>
                 </div>
               </div>
-              <div className="w-1/2">
+              <div className="w-1/3">
+                <div className="pr-6">
+                  <div className="mr-2">
+                    <Switch
+                      id="required-toggle"
+                      disabled={!prompt.isVisible}
+                      checked={prompt.isVisible ? prompt.isStreaming : false}
+                      onClick={() => {
+                        updateWorkflow({ isStreaming: !prompt.isStreaming });
+                      }}
+                    />
+                  </div>
+                  <div className="flex-column">
+                    <Label htmlFor="required-toggle">Stream response</Label>
+                    <div className="text-sm text-slate-500">Allow receiving response in streaming</div>
+                  </div>
+                </div>
+              </div>
+              <div className="w-1/3">
                 <div className="mr-2">
                   <Switch
                     id="required-toggle"
                     disabled={!prompt.isVisible}
-                    checked={prompt.isVisible ? prompt.isStreaming : false}
+                    checked={prompt.isVisible ? prompt.allowRetry : false}
                     onClick={() => {
-                      updateWorkflow({ isStreaming: !prompt.isStreaming });
+                      updateWorkflow({ allowRetry: !prompt.allowRetry });
                     }}
                   />
                 </div>
                 <div className="flex-column">
-                  <Label htmlFor="required-toggle">Stream response</Label>
-                  <div className="text-sm text-slate-500">Allow receiving response in streaming</div>
+                  <Label htmlFor="required-toggle">Allow retry</Label>
+                  <div className="text-sm text-slate-500">Allow re-execute prompt</div>
                 </div>
               </div>
             </div>

@@ -1,13 +1,11 @@
 import { ParsedEvent, ReconnectInterval, createParser } from "eventsource-parser";
-
 import { ZString } from "@typeflowai/types/common";
 import { TOpenAIRequest, ZOpenAIRequest } from "@typeflowai/types/openai";
-
 import { OPENAI_SECRET_KEY } from "../constants";
 import { getTeam } from "../team/service";
 import { validateInputs } from "../utils/validate";
 
-export async function createOpenAIMessage(teamId: string, requestData: TOpenAIRequest): Promise<any> {
+export async function createOpenAIMessage(teamId: string, requestData: TOpenAIRequest): Promise<Response> {
   const team = await getTeam(teamId);
   if (!team) {
     throw new Error("Team not found");
@@ -36,7 +34,12 @@ export async function createOpenAIMessage(teamId: string, requestData: TOpenAIRe
       throw new Error(`Error: ${response.status}`);
     }
 
-    return await response.json();
+    // return await response.json();
+    const json = await response.json();
+    return new Response(JSON.stringify(json), {
+      status: response.status,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
     throw error;
   }

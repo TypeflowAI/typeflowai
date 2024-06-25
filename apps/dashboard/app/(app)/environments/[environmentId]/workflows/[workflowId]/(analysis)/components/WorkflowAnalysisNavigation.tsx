@@ -1,9 +1,8 @@
 "use client";
 
 import revalidateWorkflowIdPath from "@/app/(app)/environments/[environmentId]/workflows/[workflowId]/(analysis)/actions";
-import { InboxIcon, PresentationIcon } from "lucide-react";
+import { PresentationIcon } from "lucide-react";
 import { useParams, usePathname } from "next/navigation";
-
 import { SecondaryNavigation } from "@typeflowai/ui/SecondaryNavigation";
 
 interface WorkflowAnalysisNavigationProps {
@@ -31,20 +30,10 @@ export const WorkflowAnalysisNavigation = ({
   const navigation = [
     {
       id: "summary",
-      label: "Summary",
+      label: `Summary ${responseCount !== null ? `(${responseCount} resp.)` : ""}`,
       icon: <PresentationIcon className="h-5 w-5" />,
       href: `${url}/summary?referer=true`,
       current: pathname?.includes("/summary"),
-      onClick: () => {
-        revalidateWorkflowIdPath(environmentId, workflowId);
-      },
-    },
-    {
-      id: "responses",
-      label: `Responses ${responseCount !== null ? `(${responseCount})` : ""}`,
-      icon: <InboxIcon className="h-5 w-5" />,
-      href: `${url}/responses?referer=true`,
-      current: pathname?.includes("/responses"),
       onClick: () => {
         revalidateWorkflowIdPath(environmentId, workflowId);
       },

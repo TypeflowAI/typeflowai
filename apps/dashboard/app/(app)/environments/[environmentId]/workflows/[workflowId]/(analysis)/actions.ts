@@ -2,7 +2,6 @@
 
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
-
 import { authOptions } from "@typeflowai/lib/authOptions";
 import {
   getResponseCountByWorkflowId,
@@ -36,8 +35,8 @@ export async function getMoreResponses(
 
 export async function getResponsesAction(
   workflowId: string,
-  page: number,
-  batchSize?: number,
+  limit: number = 10,
+  offset: number = 0,
   filterCriteria?: TResponseFilterCriteria
 ): Promise<TResponse[]> {
   const session = await getServerSession(authOptions);
@@ -46,8 +45,7 @@ export async function getResponsesAction(
   const isAuthorized = await canUserAccessWorkflow(session.user.id, workflowId);
   if (!isAuthorized) throw new AuthorizationError("Not authorized");
 
-  batchSize = batchSize ?? 10;
-  const responses = await getResponses(workflowId, page, batchSize, filterCriteria);
+  const responses = await getResponses(workflowId, limit, offset, filterCriteria);
   return responses;
 }
 
