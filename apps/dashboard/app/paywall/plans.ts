@@ -6,12 +6,12 @@ export const plansAndFeatures = {
       lookupKey: "basic",
       planName: "Basic",
       description:
-        "Maximize efficiency with unlimited workflows, 500 AI responses, and over 350 templates. Includes GPT-3.5Turbo and diverse integrations. Ideal for growing teams.",
+        "Maximize efficiency with 2 AI tools, 500 AI responses, and over 350 templates. Includes GPT-4 and diverse integrations. Ideal for growing teams.",
       price: 29,
       billingInterval: "month",
       features: [
-        { title: "Unlimited workflows", comingSoon: false, unlimited: false },
-        { title: "500 Workflow AI responses", comingSoon: false, unlimited: false },
+        { title: "2 AI Tools", comingSoon: false, unlimited: false },
+        { title: "500 AI tool responses", comingSoon: false, unlimited: false },
         { title: "Access to +350 Templates", comingSoon: false, unlimited: false },
         { title: "GPT-3.5Turbo, GPT-4. GPT-4o...", comingSoon: false, unlimited: false },
         {
@@ -26,12 +26,13 @@ export const plansAndFeatures = {
       lookupKey: "pro",
       planName: "Pro",
       description:
-        "Advance with 2,500 AI responses, unlimited workflows, and the power of GPT-4. Extensive integrations for professionals seeking excellence and efficiency.",
-      price: 99,
+        "Advance with 2,500 AI responses, unlimited AI tools, and the power of GPT-4o. Extensive integrations for professionals seeking excellence and efficiency.",
+      oldPrice: 99,
+      price: 49,
       billingInterval: "month",
       features: [
-        { title: "Unlimited workflows", comingSoon: false, unlimited: false },
-        { title: "2500 Workflow AI responses", comingSoon: false, unlimited: false },
+        { title: "Unlimited AI Tools", comingSoon: false, unlimited: false },
+        { title: "2500 AI tool responses", comingSoon: false, unlimited: false },
         { title: "Access to +350 Templates", comingSoon: false, unlimited: false },
         { title: "GPT-3.5Turbo, GPT-4. GPT-4o...", comingSoon: false, unlimited: false },
         {
@@ -47,12 +48,13 @@ export const plansAndFeatures = {
       planName: "Enterprise",
       description:
         "Total enterprise solution with unlimited flows and responses (OpenAI API key required), all templates, and GPT engines. For large teams with high demands.",
+      oldPrice: 999,
       price: 499,
-      billingInterval: "year",
+      billingInterval: "once",
       features: [
-        { title: "Unlimited workflows", comingSoon: false, unlimited: false },
+        { title: "Unlimited AI Tools", comingSoon: false, unlimited: false },
         {
-          title: "Unlimited workflow responses (OpenAI API key required)",
+          title: "Unlimited AI tool responses (OpenAI API key required)",
           comingSoon: false,
           unlimited: false,
         },

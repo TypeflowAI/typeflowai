@@ -36,22 +36,26 @@ export const createSubscription = async (
       quantity: 1,
     };
 
-    const session = await stripe.checkout.sessions.create({
+    const sessionParams: Stripe.Checkout.SessionCreateParams = {
       mode: "subscription",
       payment_method_types: ["card"],
       line_items: [lineItem],
       automatic_tax: {
         enabled: true,
       },
-      // success_url: `${baseUrl}/paywall/plan-created?environmentId=${environmentId}`,
-      // cancel_url: `${baseUrl}/paywall`,
       success_url: `${WEBAPP_URL}/billing-confirmation?environmentId=${environmentId}`,
       cancel_url: `${WEBAPP_URL}/environments/${environmentId}/settings/billing`,
-      allow_promotion_codes: true,
+      // allow_promotion_codes: true,
       subscription_data: {
         metadata: { teamId },
       },
-    });
+    };
+
+    if (priceLookupKey === StripePriceLookupKeys.pro || priceLookupKey === StripePriceLookupKeys.enterprise) {
+      sessionParams.discounts = [{ coupon: "Fo5jiiWB" }];
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionParams);
 
     return { status: 200, data: "Your Plan has been created!", newPlan: true, url: session.url };
   } catch (err) {

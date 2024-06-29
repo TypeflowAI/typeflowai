@@ -1,7 +1,5 @@
 import { CheckIcon } from "lucide-react";
-
 import { TTeam } from "@typeflowai/types/teams";
-
 import { Badge } from "../Badge";
 import { BillingSlider } from "../BillingSlider";
 import { Button } from "../Button";

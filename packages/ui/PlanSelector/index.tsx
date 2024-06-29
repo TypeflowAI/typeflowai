@@ -1,6 +1,5 @@
 import { CheckIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
-
 import { Button } from "../Button";
 
 interface Feature {
@@ -13,6 +12,7 @@ interface Plan {
   lookupKey: string;
   planName: string;
   description: string;
+  oldPrice?: number;
   price: number;
   billingInterval: string;
   features: Feature[];
@@ -82,6 +82,11 @@ export const PlanSelector = ({
                                 <div className="text-slate-headline flex items-center text-xl font-medium">
                                   <div className="flex items-center">{plan.planName}</div>
                                   <div className="ml-auto font-bold">
+                                    {plan.oldPrice && (
+                                      <span className="my-auto mr-2 text-base font-semibold text-slate-500 line-through">
+                                        ${plan.oldPrice}
+                                      </span>
+                                    )}
                                     <span className="text-slate-800">${plan.price}</span>
                                     <span className="text-sm font-medium text-slate-500">
                                       {" "}
