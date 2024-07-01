@@ -21,10 +21,6 @@ export function CreateReminderNotificationBody({ notificationData }: CreateRemin
         href={`${WEBAPP_URL}/environments/${notificationData.environmentId}/workflows?utm_source=weekly&utm_medium=email&utm_content=SetupANewWorkflowCTA`}
         label="Setup a new workflow"
       />
-      <Text className="pt-4">
-        Need help finding the right workflow for your product? Pick a 15-minute slot{" "}
-        <a href="https://cal.com/johannes/15">in our CEOs calendar</a> or reply to this email :)
-      </Text>
       <NotificationFooter environmentId={notificationData.environmentId} />
     </Container>
   );
