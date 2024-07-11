@@ -10,7 +10,6 @@ export const PlanCard = ({
   plan,
   sliderFeatureName,
   price,
-  isLifetimePrice,
   actionText,
   team,
   metric,
@@ -28,8 +27,7 @@ export const PlanCard = ({
   subtitle: string;
   plan: string;
   sliderFeatureName: string;
-  price: number;
-  isLifetimePrice?: boolean;
+  price?: number;
   actionText: string;
   team: TTeam;
   metric?: string;
@@ -91,11 +89,6 @@ export const PlanCard = ({
             ) : null}
           </>
         )}
-        {isLifetimePrice && team.billing.subscriptionType !== plan && (
-          <>
-            <Badge text="Pay once use forever" size="normal" type="success" />
-          </>
-        )}
         <p className=" whitespace-pre-wrap text-sm text-slate-600">{subtitle}</p>
 
         {team.billing.subscriptionType === plan && metric && (
@@ -148,27 +141,27 @@ export const PlanCard = ({
               <div className="w-1/4"></div>
               <div className="w-3/4">
                 <div className="my-2">
-                  <div>
-                    {actionText && (
-                      <>
-                        <span className="text-sm font-medium text-slate-400">{actionText}</span>
-                        <br />
-                      </>
-                    )}
-
-                    <span className="text-3xl font-bold text-slate-800">${price}</span>
-
-                    {isLifetimePrice ? (
-                      <span className="text-base font-medium text-slate-400">/ once</span>
-                    ) : (
+                  {plan !== "enterprise" ? (
+                    <div>
+                      {actionText && (
+                        <>
+                          <span className="text-sm font-medium text-slate-400">{actionText}</span>
+                          <br />
+                        </>
+                      )}
+                      <span className="text-3xl font-bold text-slate-800">${price}</span>
                       <span className="text-base font-medium text-slate-400">/ month</span>
-                    )}
-                  </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <span className="text-xl font-medium text-slate-800">Let&apos;s talk!</span>
+                    </div>
+                  )}
                 </div>
 
                 {team.billing.subscriptionType !== plan && (
                   <>
-                    {team.billing.subscriptionType === "basic" || team.billing.subscriptionType !== "pro" ? (
+                    {team.billing.subscriptionType === "basic" && plan === "pro" ? (
                       <Button
                         variant="primary"
                         className="w-full justify-center py-2 text-white shadow-sm"
@@ -191,8 +184,21 @@ export const PlanCard = ({
                         variant="primary"
                         className="w-full justify-center py-2 text-white shadow-sm"
                         loading={loading}
-                        onClick={() => onUpgrade()}>
-                        Buy for lifetime
+                        onClick={() => {
+                          if (typeof window !== "undefined" && window.Beacon) {
+                            const beaconContainer = document.getElementById("beacon-container");
+                            if (beaconContainer) {
+                              beaconContainer.style.display = "block";
+                              window.Beacon("open");
+                            }
+                            window.Beacon("on", "close", () => {
+                              if (beaconContainer) {
+                                beaconContainer.style.display = "none";
+                              }
+                            });
+                          }
+                        }}>
+                        Contact us
                       </Button>
                     ) : null}
                   </>

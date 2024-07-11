@@ -9,9 +9,8 @@ import {
 } from "@/app/(app)/environments/[environmentId]/settings/(team)/billing/actions";
 import { basicFeatures, enterpriseFeatures, plansAndFeatures, proFeatures } from "@/app/paywall/plans";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-
 import {
   ProductSubscriptionTypes,
   StripePriceLookupKeys,
@@ -23,7 +22,6 @@ import { Button } from "@typeflowai/ui/Button";
 import { PlanCard } from "@typeflowai/ui/PlanCard";
 import { PlanSelector } from "@typeflowai/ui/PlanSelector";
 import { capturePosthogEvent } from "@typeflowai/ui/PostHogClient";
-
 import { FreeTrialCard } from "./FreeTrialCard";
 
 interface aiLimits {
@@ -164,6 +162,12 @@ export default function PricingTableComponent({
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.Beacon) {
+      window.Beacon("open");
+    }
+  }, []);
+
   return (
     <div className="relative">
       <div className="max-w-4xl justify-between gap-4 rounded-lg">
@@ -266,8 +270,6 @@ export default function PricingTableComponent({
               subtitle={"Unlimited AI responses"}
               plan={ProductSubscriptionTypes.enterprise}
               sliderFeatureName="ai"
-              price={999}
-              isLifetimePrice={true}
               actionText={""}
               team={team}
               metric="AI responses"

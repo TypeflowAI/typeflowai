@@ -26,8 +26,8 @@ export default function SidebarLogin() {
       <div className="3xl:w-2/3 z-50 mb-10 space-y-8 px-20 text-center">
         <Image className="mx-auto mb-10" src={Logo} width={175} height={35} alt="favicon" />
         <h2 className="mx-10 text-5xl font-medium leading-tight text-white">
-          Next-Gen AI Forms <br /> with GPT <br />
-          <span className="text-lime-300">superpowers</span>
+          Build AI Tools in <br /> minutes <br />
+          <span className="text-lime-300">without coding</span>
         </h2>
       </div>
       <div className="text-violet-950">
