@@ -4,13 +4,11 @@ import { createPlanAction } from "@/app/(app)/environments/[environmentId]/setti
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-
 import { StripePriceLookupKeys, StripeProductNames } from "@typeflowai/ee/stripe/lib/constants";
 import { TTeam } from "@typeflowai/types/teams";
 import { Logo } from "@typeflowai/ui/Logo";
 import { PlanSelector } from "@typeflowai/ui/PlanSelector";
 import { capturePosthogEvent } from "@typeflowai/ui/PostHogClient";
-
 import { startFreeTrialAction } from "../actions";
 
 interface Feature {
@@ -23,8 +21,8 @@ interface Plan {
   lookupKey: string;
   planName: string;
   description: string;
-  price: number;
-  billingInterval: string;
+  price?: number;
+  billingInterval?: string;
   features: Feature[];
 }
 
