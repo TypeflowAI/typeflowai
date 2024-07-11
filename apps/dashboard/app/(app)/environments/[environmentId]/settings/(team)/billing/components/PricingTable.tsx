@@ -9,9 +9,8 @@ import {
 } from "@/app/(app)/environments/[environmentId]/settings/(team)/billing/actions";
 import { basicFeatures, enterpriseFeatures, plansAndFeatures, proFeatures } from "@/app/paywall/plans";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-
 import {
   ProductSubscriptionTypes,
   StripePriceLookupKeys,
@@ -23,7 +22,6 @@ import { Button } from "@typeflowai/ui/Button";
 import { PlanCard } from "@typeflowai/ui/PlanCard";
 import { PlanSelector } from "@typeflowai/ui/PlanSelector";
 import { capturePosthogEvent } from "@typeflowai/ui/PostHogClient";
-
 import { FreeTrialCard } from "./FreeTrialCard";
 
 interface aiLimits {
@@ -54,7 +52,6 @@ export default function PricingTableComponent({
   const hasAnActiveSubscription = ["active", "canceled", "scheduled"].includes(
     team.billing.subscriptionStatus
   );
-  const hasALifetimeSubscription = team.billing.subscriptionType === ProductSubscriptionTypes.enterprise;
 
   const openCustomerPortal = async () => {
     setLoadingCustomerPortal(true);
@@ -164,6 +161,12 @@ export default function PricingTableComponent({
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.Beacon) {
+      window.Beacon("open");
+    }
+  }, []);
+
   return (
     <div className="relative">
       <div className="max-w-4xl justify-between gap-4 rounded-lg">
@@ -215,59 +218,53 @@ export default function PricingTableComponent({
 
         {hasAnActiveSubscription ? (
           <div>
-            {!hasALifetimeSubscription && (
-              <>
-                <PlanCard
-                  title={StripeProductNames[ProductSubscriptionTypes.basic]}
-                  subtitle={"Get up to 500 AI responses every month"}
-                  plan={ProductSubscriptionTypes.basic}
-                  sliderFeatureName="ai"
-                  price={29}
-                  actionText={""}
-                  team={team}
-                  metric="AI responses"
-                  sliderValue={aiLimits.basic - (aiResponseCount ?? 0)}
-                  sliderLimit={aiLimits.basic * 1.2}
-                  tierLimit={aiLimits.basic}
-                  paidFeatures={basicFeatures}
-                  loading={changingPlan}
-                  onDowngrade={() => changePlan("downgrade", StripePriceLookupKeys.basic)}
-                  onUnsubscribe={(e) =>
-                    handleUnsubscribe(e, ProductSubscriptionTypes[ProductSubscriptionTypes.basic])
-                  }
-                  onReactivate={() => handleReactivateSubscription(StripePriceLookupKeys.basic)}
-                />
+            <PlanCard
+              title={StripeProductNames[ProductSubscriptionTypes.basic]}
+              subtitle={"Get up to 500 AI responses every month"}
+              plan={ProductSubscriptionTypes.basic}
+              sliderFeatureName="ai"
+              price={29}
+              actionText={""}
+              team={team}
+              metric="AI responses"
+              sliderValue={aiLimits.basic - (aiResponseCount ?? 0)}
+              sliderLimit={aiLimits.basic * 1.2}
+              tierLimit={aiLimits.basic}
+              paidFeatures={basicFeatures}
+              loading={changingPlan}
+              onDowngrade={() => changePlan("downgrade", StripePriceLookupKeys.basic)}
+              onUnsubscribe={(e) =>
+                handleUnsubscribe(e, ProductSubscriptionTypes[ProductSubscriptionTypes.basic])
+              }
+              onReactivate={() => handleReactivateSubscription(StripePriceLookupKeys.basic)}
+            />
 
-                <PlanCard
-                  title={StripeProductNames[ProductSubscriptionTypes.pro]}
-                  subtitle={"Get up to 2500 AI responses every month"}
-                  plan={ProductSubscriptionTypes.pro}
-                  sliderFeatureName="ai"
-                  price={99}
-                  actionText={""}
-                  team={team}
-                  metric="AI responses"
-                  sliderValue={aiLimits.pro - (aiResponseCount ?? 0)}
-                  sliderLimit={aiLimits.pro * 1.2}
-                  tierLimit={aiLimits.pro}
-                  paidFeatures={proFeatures}
-                  loading={changingPlan}
-                  onUpgrade={() => changePlan("upgrade", StripePriceLookupKeys.pro)}
-                  onDowngrade={() => changePlan("downgrade", StripePriceLookupKeys.pro)}
-                  onUnsubscribe={(e) =>
-                    handleUnsubscribe(e, ProductSubscriptionTypes[ProductSubscriptionTypes.pro])
-                  }
-                  onReactivate={() => handleReactivateSubscription(StripePriceLookupKeys.pro)}
-                />
-              </>
-            )}
+            <PlanCard
+              title={StripeProductNames[ProductSubscriptionTypes.pro]}
+              subtitle={"Get up to 2500 AI responses every month"}
+              plan={ProductSubscriptionTypes.pro}
+              sliderFeatureName="ai"
+              price={99}
+              actionText={""}
+              team={team}
+              metric="AI responses"
+              sliderValue={aiLimits.pro - (aiResponseCount ?? 0)}
+              sliderLimit={aiLimits.pro * 1.2}
+              tierLimit={aiLimits.pro}
+              paidFeatures={proFeatures}
+              loading={changingPlan}
+              onUpgrade={() => changePlan("upgrade", StripePriceLookupKeys.pro)}
+              onDowngrade={() => changePlan("downgrade", StripePriceLookupKeys.pro)}
+              onUnsubscribe={(e) =>
+                handleUnsubscribe(e, ProductSubscriptionTypes[ProductSubscriptionTypes.pro])
+              }
+              onReactivate={() => handleReactivateSubscription(StripePriceLookupKeys.pro)}
+            />
             <PlanCard
               title={StripeProductNames[ProductSubscriptionTypes.enterprise]}
               subtitle={"Unlimited AI responses"}
               plan={ProductSubscriptionTypes.enterprise}
               sliderFeatureName="ai"
-              price={999}
-              isLifetimePrice={true}
               actionText={""}
               team={team}
               metric="AI responses"

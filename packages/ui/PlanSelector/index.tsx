@@ -13,8 +13,9 @@ interface Plan {
   planName: string;
   description: string;
   oldPrice?: number;
-  price: number;
-  billingInterval: string;
+  price?: number;
+  isCustom?: boolean;
+  billingInterval?: string;
   features: Feature[];
 }
 
@@ -41,6 +42,12 @@ export const PlanSelector = ({
   freePlanAvailable,
 }: PlanSelectorProps) => {
   const [selectedPlan, setSelectedPlan] = useState<Plan>(plans[0]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.Beacon) {
+      window.Beacon("open");
+    }
+  }, []);
 
   useEffect(() => {
     setSelectedPlan(plans[0]);
@@ -82,16 +89,24 @@ export const PlanSelector = ({
                                 <div className="text-slate-headline flex items-center text-xl font-medium">
                                   <div className="flex items-center">{plan.planName}</div>
                                   <div className="ml-auto font-bold">
-                                    {plan.oldPrice && (
-                                      <span className="my-auto mr-2 text-base font-semibold text-slate-500 line-through">
-                                        ${plan.oldPrice}
+                                    {plan.isCustom ? (
+                                      <span className="text-lg font-medium text-slate-700">
+                                        Let&apos;s talk!
                                       </span>
+                                    ) : (
+                                      <>
+                                        {plan.oldPrice && (
+                                          <span className="my-auto mr-2 text-base font-semibold text-slate-500 line-through">
+                                            ${plan.oldPrice}
+                                          </span>
+                                        )}
+                                        <span className="text-slate-800">${plan.price}</span>
+                                        <span className="text-sm font-medium text-slate-500">
+                                          {" "}
+                                          /{plan.billingInterval}
+                                        </span>
+                                      </>
                                     )}
-                                    <span className="text-slate-800">${plan.price}</span>
-                                    <span className="text-sm font-medium text-slate-500">
-                                      {" "}
-                                      /{plan.billingInterval}
-                                    </span>
                                   </div>
                                 </div>
                                 <p className="mt-2 whitespace-pre-wrap text-sm text-slate-600">
@@ -106,11 +121,12 @@ export const PlanSelector = ({
                       <div className="flex-1">
                         <div className="mt-6 flex h-full flex-col rounded-lg border border-slate-300 bg-slate-200 p-4 px-6 md:mt-0">
                           <p className="text-xl font-semibold capitalize">
-                            {selectedPlan.planName} -
-                            <span>
-                              {" "}
-                              ${selectedPlan.price}/{selectedPlan.billingInterval}
-                            </span>
+                            {selectedPlan.planName}
+                            {!selectedPlan.isCustom && (
+                              <span>
+                                {" - "}${selectedPlan.price}/{selectedPlan.billingInterval}
+                              </span>
+                            )}
                           </p>
                           <div className="mb-4 mt-4 text-left text-lg">
                             <ul>
@@ -125,17 +141,39 @@ export const PlanSelector = ({
                             </ul>
                           </div>
                           <div className="mb-4 mt-3">
-                            <Button
-                              variant="primary"
-                              size="xl"
-                              className="w-full justify-center font-bold text-white shadow-sm hover:opacity-90"
-                              loading={loading}
-                              onClick={() => onSelectPlan(getPlanKey(selectedPlan.lookupKey))}>
-                              {freePlanAvailable
-                                ? `Buy ${selectedPlan.planName} - $${selectedPlan.price}/${selectedPlan.billingInterval}`
-                                : `Upgrade to ${selectedPlan.planName} - $${selectedPlan.price}/${selectedPlan.billingInterval}`}
-                            </Button>
-
+                            {selectedPlan.isCustom ? (
+                              <Button
+                                variant="primary"
+                                size="xl"
+                                className="w-full justify-center font-bold text-white shadow-sm hover:opacity-90"
+                                onClick={() => {
+                                  if (typeof window !== "undefined" && window.Beacon) {
+                                    const beaconContainer = document.getElementById("beacon-container");
+                                    if (beaconContainer) {
+                                      beaconContainer.style.display = "block";
+                                      window.Beacon("open");
+                                    }
+                                    window.Beacon("on", "close", () => {
+                                      if (beaconContainer) {
+                                        beaconContainer.style.display = "none";
+                                      }
+                                    });
+                                  }
+                                }}>
+                                Contact us
+                              </Button>
+                            ) : (
+                              <Button
+                                variant="primary"
+                                size="xl"
+                                className="w-full justify-center font-bold text-white shadow-sm hover:opacity-90"
+                                loading={loading}
+                                onClick={() => onSelectPlan(getPlanKey(selectedPlan.lookupKey))}>
+                                {freePlanAvailable
+                                  ? `Buy ${selectedPlan.planName} - $${selectedPlan.price}/${selectedPlan.billingInterval}`
+                                  : `Upgrade to ${selectedPlan.planName} - $${selectedPlan.price}/${selectedPlan.billingInterval}`}
+                              </Button>
+                            )}
                             <div className="pt-2 text-sm font-medium opacity-75"></div>
                           </div>
                         </div>

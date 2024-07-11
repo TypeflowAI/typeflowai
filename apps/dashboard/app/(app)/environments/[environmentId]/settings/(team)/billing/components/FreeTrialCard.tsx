@@ -1,5 +1,4 @@
 import { XIcon } from "lucide-react";
-
 import { BillingSlider } from "@typeflowai/ui/BillingSlider";
 
 export const FreeTrialCard = ({
@@ -57,7 +56,7 @@ export const FreeTrialCard = ({
                 <div className="rounded-full border border-red-300 bg-red-100 p-0.5">
                   <XIcon className="h-5 w-5 p-0.5 text-red-500" />
                 </div>
-                <span className="ml-2 text-sm text-slate-500">Workflows AI responses</span>
+                <span className="ml-2 text-sm text-slate-500">AI Tool responses</span>
               </li>
             </ul>
           </div>

@@ -4,7 +4,6 @@ import { SigninForm } from "@/app/(auth)/auth/login/components/SigninForm";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-
 import { authOptions } from "@typeflowai/lib/authOptions";
 import {
   AZURE_OAUTH_ENABLED,
@@ -19,7 +18,7 @@ import {
 
 export const metadata: Metadata = {
   title: "Login",
-  description: "Next-Gen AI Forms with GPT Superpowers.",
+  description: "Build AI Tools in minutes without coding.",
 };
 
 export default async function SignInPage() {
