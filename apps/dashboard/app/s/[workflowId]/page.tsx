@@ -1,5 +1,5 @@
 import { validateWorkflowSingleUseId } from "@/app/lib/singleUseWorkflows";
-import LegalFooter from "@/app/s/[workflowId]/components/LegalFooter";
+// import LegalFooter from "@/app/s/[workflowId]/components/LegalFooter";
 import LinkWorkflow from "@/app/s/[workflowId]/components/LinkWorkflow";
 import PinScreen from "@/app/s/[workflowId]/components/PinScreen";
 import WorkflowInactive from "@/app/s/[workflowId]/components/WorkflowInactive";
@@ -192,12 +192,12 @@ export default async function LinkWorkflowPage({ params, searchParams }: LinkWor
           languageCode={languageCode}
           attributeClasses={attributeClasses}
         />
-        <LegalFooter
+        {/* <LegalFooter
           IMPRINT_URL={IMPRINT_URL}
           PRIVACY_URL={PRIVACY_URL}
           IS_TYPEFLOWAI_CLOUD={IS_TYPEFLOWAI_CLOUD}
           workflowUrl={WEBAPP_URL + "/s/" + workflow.id}
-        />
+        /> */}
       </MediaBackground>
     </div>
   ) : null;
