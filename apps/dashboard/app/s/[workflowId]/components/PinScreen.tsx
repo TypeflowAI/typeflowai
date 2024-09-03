@@ -1,7 +1,7 @@
 "use client";
 
 import { validateWorkflowPinAction } from "@/app/s/[workflowId]/actions";
-import LegalFooter from "@/app/s/[workflowId]/components/LegalFooter";
+// import LegalFooter from "@/app/s/[workflowId]/components/LegalFooter";
 import LinkWorkflow from "@/app/s/[workflowId]/components/LinkWorkflow";
 import { TWorkflowPinValidationResponseError } from "@/app/s/[workflowId]/types";
 import type { NextPage } from "next";
@@ -39,9 +39,9 @@ const LinkWorkflowPinScreen: NextPage<LinkWorkflowPinScreenProps> = (props) => {
     userId,
     singleUseId,
     singleUseResponse,
-    IMPRINT_URL,
-    PRIVACY_URL,
-    IS_TYPEFLOWAI_CLOUD,
+    // IMPRINT_URL,
+    // PRIVACY_URL,
+    // IS_TYPEFLOWAI_CLOUD,
     verifiedEmail,
     languageCode,
     attributeClasses,

@@ -1,5 +1,5 @@
 import { validateWorkflowSingleUseId } from "@/app/lib/singleUseWorkflows";
-import LegalFooter from "@/app/s/[workflowId]/components/LegalFooter";
+// import LegalFooter from "@/app/s/[workflowId]/components/LegalFooter";
 import LinkWorkflow from "@/app/s/[workflowId]/components/LinkWorkflow";
 import PinScreen from "@/app/s/[workflowId]/components/PinScreen";
 import WorkflowInactive from "@/app/s/[workflowId]/components/WorkflowInactive";
