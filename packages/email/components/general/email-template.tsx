@@ -27,7 +27,7 @@ export function EmailTemplate({ content }: EmailTemplateProps) {
             <Section>
               <Link href="https://typeflowai.com?utm_source=email_header&utm_medium=email" target="_blank">
                 <Img
-                  src="https://typeflowai-assets-bucket.s3.us-east-2.amazonaws.com/logo_dark.png"
+                  src="https://typeflow-ai-assets-bucket.s3.us-east-2.amazonaws.com/logo_dark.png"
                   alt="TypeflowAI Logo"
                   className="mx-auto w-80"
                 />
